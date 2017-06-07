@@ -283,7 +283,8 @@
                 "quotes": "Quote requests",
                 "profile": "Profile",
                 "addresses": "Addresses",
-                "change_password": "Change password"
+                "change_password": "Change password",
+                "company_info": "Company info"
             }
         },
         "activate_account": {
@@ -489,6 +490,12 @@
                 "new-password": "Old and new passwords are the same!",
                 "repeat-password": "New passwords doesn't match!"
             }
+        },
+        "edit_company_info": {
+            "title": "Edit company info",
+            "company_name": "Company name",
+            "company_addresses": "Company Addresses",
+            "no_addresses_message": "Company have no addresses yet."
         }
     },
     "homepage": {
