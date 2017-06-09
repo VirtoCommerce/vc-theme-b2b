@@ -460,7 +460,7 @@
         "register": {
             "title": "Create Account",
             "account_type_personal": "Personal account",
-            "account_type_distributor": "Distributor account",
+            "account_type_corporate": "Corporate account",
             "company_name": "Company Name",
             "first_name": "First Name",
             "last_name": "Last Name",
@@ -505,7 +505,8 @@
             "type": "Member type",
             "createdDate": "Created date",
             "createdBy": "Created by",
-            "status": "Status"
+            "status": "Status",
+            "actions": "Actions"
         }
     },
     "homepage": {

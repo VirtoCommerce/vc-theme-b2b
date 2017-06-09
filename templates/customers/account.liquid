@@ -34,7 +34,7 @@
                 <a ng-link="['Quotes']">{{ 'customer.account.menu_label.quotes' | t }}</a>
             </li>
             {% endif %}
-            {% if customer.is_distributor_account %}
+            {% if customer.is_corporate_account %}
             <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyInfo'}">
                 <a ng-link="['CompanyInfo']">{{ 'customer.account.menu_label.company_info' | t }}</a>
             </li>

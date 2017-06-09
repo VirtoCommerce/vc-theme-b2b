@@ -15,13 +15,13 @@
               <input name="accountType" type="radio" value="Personal" ng-model="accountType" ng-checked="true" /> {{ 'customer.register.account_type_personal' | t }}
           </div>
           <div class="grid-item one-half text-right">
-              <input name="accountType" type="radio" value="Distributor" ng-model="accountType" /> {{ 'customer.register.account_type_distributor' | t }}
+              <input name="accountType" type="radio" value="Corporate" ng-model="accountType" /> {{ 'customer.register.account_type_corporate' | t }}
           </div>
       </div>
       <hr />
 
       <label for="company_name" class="hidden-label">{{ 'customer.register_company.company_name' | t }}</label>
-      <input ng-show="accountType=='Distributor'" type="text" value="" name="customer[company_name]" id="company_name" placeholder="{{ 'customer.register.company_name' | t }}" {% if form.errors contains "company_name" %} class="error" {% endif %} autocapitalize="words">
+      <input ng-show="accountType=='Corporate'" type="text" value="" name="customer[company_name]" id="company_name" placeholder="{{ 'customer.register.company_name' | t }}" {% if form.errors contains "company_name" %} class="error" {% endif %} autocapitalize="words">
 
       <label for="first_name" class="hidden-label">{{ 'customer.register.first_name' | t }}</label>
       <input type="text" value="" name="customer[first_name]" id="first_name" placeholder="{{ 'customer.register.first_name' | t }}" {% if form.errors contains "first_name" %} class="error"{% endif %} autocapitalize="words" autofocus>

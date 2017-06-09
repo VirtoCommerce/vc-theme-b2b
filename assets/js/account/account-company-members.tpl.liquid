@@ -10,6 +10,7 @@
         <th>{{ 'customer.edit_company_members.createdDate' | t }}</th>
         <th>{{ 'customer.edit_company_members.createdBy' | t }}</th>
         <th>{{ 'customer.edit_company_members.status' | t }}</th>
+        <th>{{ 'customer.edit_company_members.actions' | t }}</th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +20,11 @@
         <td ng-bind="member.createdDate | date"></td>
         <td ng-bind="member.createdBy"></td>
         <td>Active</td>
+        <td>
+          <span>
+            <a>Edit</a> | <a>Delete</a> | <a>Deactivate</a>
+          </span>
+        </td>
       </tr>
     </tbody>
   </table>
