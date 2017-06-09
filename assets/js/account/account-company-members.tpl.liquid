@@ -1,0 +1,30 @@
+﻿<ng-outlet ng-init=""></ng-outlet>
+
+<script id="account-company-members-list.tpl" type="text/ng-template">
+  <h4>{{ 'customer.edit_company_members.title' | t }}</h4>
+  <table class="full" ng-if="$ctrl.entries.length">
+    <thead>
+      <tr>
+        <th>{{ 'customer.edit_company_members.name' | t }}</th>
+        <th>{{ 'customer.edit_company_members.type' | t }}</th>
+        <th>{{ 'customer.edit_company_members.createdDate' | t }}</th>
+        <th>{{ 'customer.edit_company_members.createdBy' | t }}</th>
+        <th>{{ 'customer.edit_company_members.status' | t }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="member in $ctrl.entries">
+        <td ng-bind="member.name"></td>
+        <td ng-bind="member.memberType"></td>
+        <td ng-bind="member.createdDate | date"></td>
+        <td ng-bind="member.createdBy"></td>
+        <td>Active</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
+
+  <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.edit_company_members.none' | t }}</p>
+</script>
+

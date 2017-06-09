@@ -8,7 +8,8 @@
         getCountries: { url: 'storefrontapi/countries', isArray: true },
         getCountryRegions: { url: 'storefrontapi/countries/:code3/regions', isArray: true },
         getCustomerOrganization: { url: 'storefrontapi/account/organization' },
-        updateCustomerOrganization: { url: 'storefrontapi/account/organization', method: 'POST' }
+        updateCustomerOrganization: { url: 'storefrontapi/account/organization', method: 'POST' },
+        getOrganizationMembers: { url: 'storefrontapi/account/organization/members', method: 'POST' }
     });
 }])
 .factory('storefront.orderApi', ['$resource', function ($resource) {

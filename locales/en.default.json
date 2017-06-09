@@ -284,7 +284,8 @@
                 "profile": "Profile",
                 "addresses": "Addresses",
                 "change_password": "Change password",
-                "company_info": "Company info"
+                "company_info": "Company info",
+                "company_members": "Company members"
             }
         },
         "activate_account": {
@@ -496,6 +497,15 @@
             "company_name": "Company name",
             "company_addresses": "Company Addresses",
             "no_addresses_message": "Company have no addresses yet."
+        },
+        "edit_company_members": {
+            "title": "Company members",
+            "none": "There is no any members yet.",
+            "name": "Name",
+            "type": "Member type",
+            "createdDate": "Created date",
+            "createdBy": "Created by",
+            "status": "Status"
         }
     },
     "homepage": {
