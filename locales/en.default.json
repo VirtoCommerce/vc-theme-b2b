@@ -275,6 +275,7 @@
     "customer": {
         "account": {
             "title": "My Account",
+            "corporate_title":  "Corporate", 
             "details": "Account Details",
             "return": "Return to Account Details",
             "menu_label": {
