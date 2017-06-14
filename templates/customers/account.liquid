@@ -9,12 +9,17 @@
             <div class="loader"></div>
             <span>{{ 'general.loading' | t }}</span>
         </div>
-		<aside class="grid-item large--one-fifth grid-border--bottom">
+		<header class="section-header clearfix">
+			<div class="section-header--right">
+				{% include 'toggle-dashboard' %}
+			</div>
+		</header>
+		<aside id="dashboard" class="grid-item large--one-fifth grid-border--bottom">
 			<div class="grid-uniform">
 				<div class="grid-item">
-					<h3>{{ 'customer.account.title' | t }}</h3>
+					<h3 class="nav-title">{{ 'customer.account.title' | t }}</h3>
 				</div>
-				<ul class="nav nav-pills nav-justified nav-justified-inverse grid-item">
+				<ul class="nav nav-pills nav-justified nav-justified-fixed grid-item">
 					<li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountProfileUpdate'}">
 						<a ng-link="['Profile']">{{ 'customer.account.menu_label.profile' | t }}</a>
 					</li>
@@ -39,9 +44,9 @@
 					{% endif %}          
 				</ul>
                 <div class="grid-item">
-                    <h3>{{ 'customer.account.corporate_title' | t }}</h3>
+                    <h3 class="nav-title">{{ 'customer.account.corporate' | t }}</h3>
                 </div>
-                <ul class="nav nav-pills nav-justified nav-justified-inverse grid-item">
+                <ul class="nav nav-pills nav-justified nav-justified-fixed grid-item">
                     {% if customer.is_corporate_account %}
                     <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyInfo'}">
                         <a ng-link="['CompanyInfo']">{{ 'customer.account.menu_label.company_info' | t }}</a>

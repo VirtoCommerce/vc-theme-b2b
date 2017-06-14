@@ -244,6 +244,7 @@
             }
         },
         "sidebar": {
+            "dashboard":  "Dashboard", 
             "filters": "Filters",
             "shop_by": "Shop By",
             "all": "All",
@@ -275,7 +276,7 @@
     "customer": {
         "account": {
             "title": "My Account",
-            "corporate_title":  "Corporate", 
+            "corporate": "Corporate",
             "details": "Account Details",
             "return": "Return to Account Details",
             "menu_label": {
