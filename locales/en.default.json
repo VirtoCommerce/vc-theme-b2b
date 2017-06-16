@@ -287,7 +287,8 @@
                 "addresses": "Addresses",
                 "change_password": "Change password",
                 "company_info": "Company info",
-                "company_members": "Company members"
+                "company_members": "Company members",
+                "permissions":  "Permissions" 
             }
         },
         "activate_account": {

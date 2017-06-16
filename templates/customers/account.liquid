@@ -54,6 +54,9 @@
                     <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyMembers'}">
                         <a ng-link="['CompanyMembers']">{{ 'customer.account.menu_label.company_members' | t }}</a>
                     </li>
+                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountPermissions'}">
+                        <a ng-link="['Permissions']">{{ 'customer.account.menu_label.permissions' | t }}</a>
+                    </li>
                     {% endif %}
                 </ul>
 			</div>

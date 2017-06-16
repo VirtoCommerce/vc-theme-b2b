@@ -7,6 +7,183 @@
     }
 }
 
+/*tree*/
+ul.ivh-treeview ul.ivh-treeview {
+    padding-left: 0;
+}
+ul.ivh-treeview .ivh-treeview-node .ivh-treeview-twistie-leaf,
+ul.ivh-treeview .ivh-treeview-node .ivh-treeview-twistie-expanded,
+ul.ivh-treeview .ivh-treeview-node-collapsed .ivh-treeview-twistie-collapsed {
+    position: relative;
+    width: 6px;
+    height: 11px;
+    margin: 0 0.5em;
+}
+ul.ivh-treeview .ivh-treeview-node.ivh-treeview-node-leaf > .ivh-treeview-node-content > .ivh-treeview-toggle > .ivh-treeview-twistie-wrapper > .ivh-treeview-twistie > .ivh-treeview-twistie-leaf,
+ul.ivh-treeview .ivh-treeview-node:not(.ivh-treeview-node-leaf):not(.ivh-treeview-node-collapsed) > .ivh-treeview-node-content > .ivh-treeview-toggle > .ivh-treeview-twistie-wrapper > .ivh-treeview-twistie > .ivh-treeview-twistie-expanded,
+ul.ivh-treeview .ivh-treeview-node-collapsed > .ivh-treeview-node-content > .ivh-treeview-toggle > .ivh-treeview-twistie-wrapper > .ivh-treeview-twistie > .ivh-treeview-twistie-collapsed {
+     display: inline-block;
+}
+ul.ivh-treeview .ivh-treeview-node .ivh-treeview-twistie-expanded span,
+ul.ivh-treeview .ivh-treeview-node-collapsed .ivh-treeview-twistie-collapsed span {
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 6px;
+    height: 11px;
+    background-image: url('twistie.svg');
+    background-image: url('twistie.svg'), none;
+    -webkit-transition: all 5s ease-in-out;
+    transition: all 5s ease-in-out;
+}
+ul.ivh-treeview .ivh-treeview-node:not(.ivh-treeview-node-leaf):not(.ivh-treeview-node-collapsed) > .ivh-treeview-node-content > .ivh-treeview-toggle > .ivh-treeview-twistie-wrapper > .ivh-treeview-twistie > .ivh-treeview-twistie-expanded span {
+    -ms-transform: translateY(-50%) rotate(90deg);
+    -webkit-transform: translateY(-50%) rotate(90deg);
+    transform: translateY(-50%) rotate(90deg);
+    -webkit-animation: twistie-collapsed-to-expand-animation 0.2s 1;
+    animation: twistie-collapsed-to-expand-animation 0.2s 1;
+}
+ul.ivh-treeview .ivh-treeview-node.ivh-treeview-node-collapsed > .ivh-treeview-node-content > .ivh-treeview-toggle > .ivh-treeview-twistie-wrapper > .ivh-treeview-twistie > .ivh-treeview-twistie-collapsed span {
+    -webkit-animation: twistie-expand-to-collapsed-animation 0.2s 1;
+    animation: twistie-expand-to-collapsed-animation 0.2s 1;
+}
+@-webkit-keyframes twistie-collapsed-to-expand-animation {
+    from {
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+    to {
+        -webkit-transform: translateY(-50%) rotate(90deg);
+        transform: translateY(-50%) rotate(90deg);
+    }
+}
+@keyframes twistie-collapsed-to-expand-animation {
+    from {
+        transform: translateY(-50%);
+    }
+    to {
+        transform: translateY(-50%) rotate(90deg);
+    }
+}
+@-webkit-keyframes twistie-expand-to-collapsed-animation {
+    from {
+        -webkit-transform: translateY(-50%) rotate(90deg);
+        transform: translateY(-50%) rotate(90deg);
+    }
+    to {
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+}
+@keyframes twistie-expand-to-collapsed-animation {
+    from {
+        transform: translateY(-50%) rotate(90deg);
+    }
+    to {
+        transform: translateY(-50%);
+    }
+}
+.ivh-treeview-checkbox-wrapper {
+    display: inline-block;
+    white-space: nowrap;
+    padding-right: 0.25em;
+}
+.ivh-treeview-checkbox-wrapper span {
+    display: block;
+}
+input[type="checkbox"].ivh-treeview-checkbox {
+    display: inline-block;
+}
+.ivh-treeview-checkbox {
+    border: 1px solid;
+    border-color: #d9d9d9;
+    border-radius: 4px;
+    box-shadow: 0 0 0 0 #1990c6 inset;
+    cursor: pointer;
+    outline: 0;
+    -webkit-appearance: none;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    width: 18px;
+    height: 18px;
+    vertical-align: -4px;
+}
+.no-js .ivh-treeview-checkbox {
+    float: left
+}
+.ivh-treeview-checkbox:hover {
+    border-color: #cccccc
+}
+.ivh-treeview-checkbox:disabled {
+    background-color: #fafafa;
+    border-color: #cccccc
+}
+.ivh-treeview-checkbox::after {
+    content: "";
+    -webkit-transition: all 0.2s ease-in-out 0.1s;
+    transition: all 0.2s ease-in-out 0.1s;
+    display: block;
+    position: absolute;
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 0 ")";
+    filter: alpha(opacity=0);
+    width: 10px;
+    height: 8px;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: scale(0.2);
+    -ms-transform: scale(0.2);
+    transform: scale(0.2);
+    margin-left: -5px;
+    margin-top: -4px;
+}
+.ivh-treeview-checkbox:focus {
+    border-color: #d9d9d9;
+}
+.ivh-treeview-checkbox:indeterminate::after {
+    background: #1990c6;
+    border-radius: 2px;
+    opacity: 1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 100 ")";
+    filter: alpha(opacity=100);
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    margin-top: -5px;
+}
+.ivh-treeview-checkbox:checked {
+    border: none;
+    border-color: #d9d9d9;
+    box-shadow: 0 0 0 10px #1990c6 inset
+}
+.ivh-treeview-checkbox:checked::after {
+    background-image: url('checkbox-tick.svg');
+    background-image: url('checkbox-tick.svg'), none;
+    opacity: 1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 100 ")";
+    filter: alpha(opacity=100);
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+}
+.ivh-treeview-checkbox:checked:focus {
+    border-color: #136f99
+}
+.ivh-treeview-node-label {
+    color: #737373;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.no-js .ivh-treeview-node-label {
+    float: left
+}
+
 /*nav*/
 @media (min-width: 768px) {
     #dashboard {
