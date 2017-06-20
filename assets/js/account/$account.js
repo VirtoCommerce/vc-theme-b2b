@@ -36,7 +36,7 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
          { path: '/companyMembers/...', name: 'CompanyMembers', component: 'vcAccountCompanyMembers' },
          { path: '/permissions', name: 'Permissions', component: 'vcAccountPermissions' }
     ],
-    controller: ['storefront.accountApi', 'storefrontApp.mainContext', 'loadingIndicatorService', function (accountApi, mainContext, loader) {
+    controller: ['storefront.accountApi', 'storefrontApp.mainContext', 'authService', 'loadingIndicatorService', function (accountApi, mainContext, authService, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
 
@@ -81,6 +81,8 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
                 return accountApi.updateCustomerOrganization(updateRequest).$promise;
             });
         };
+
+        authService.fillAuthData();
     }]
 })
 

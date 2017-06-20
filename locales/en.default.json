@@ -510,6 +510,10 @@
             "createdBy": "Created by",
             "status": "Status",
             "actions": "Actions"
+        },
+        "permissions": {
+            "title":  "Roles",
+            "none":  "No roles available" 
         }
     },
     "homepage": {
