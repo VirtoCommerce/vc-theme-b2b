@@ -40,11 +40,13 @@
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.7/angular-sanitize.min.js' | script_tag }}
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-translate/2.12.1/angular-translate.min.js' | script_tag }}
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-translate/2.12.1/angular-translate-loader-url/angular-translate-loader-url.min.js' | script_tag }}
-
+	
     {{ '~/default-theme/account/scripts' | script_bundle_tag }}
+    {{ 'themes/assets/corporateAccountApi.js' | script_tag }}
     {{ 'themes/assets/account-register.js' | script_tag }}
     {{ 'themes/assets/account-company-info.js' | script_tag }}
     {{ 'themes/assets/account-company-members.js' | script_tag }}
+    {{ 'themes/assets/member.js' | script_tag }}
 
     {{ content_for_header }}
 

@@ -68,18 +68,6 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
                 return accountApi.changePassword(changePasswordData).$promise;
             });
         };
-
-        $ctrl.getCustomerOrganization = function (callback) {
-            loader.wrapLoading(function () {
-                return accountApi.getCustomerOrganization(callback).$promise;
-            });
-        };
-
-        $ctrl.updateCustomerOrganization = function (updateRequest) {
-            loader.wrapLoading(function () {
-                return accountApi.updateCustomerOrganization(updateRequest).$promise;
-            });
-        };
     }]
 })
 
