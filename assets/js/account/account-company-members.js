@@ -71,8 +71,15 @@
             var showDialog = function (text) {
                 confirmService.confirm(text).then(function (confirmed) {
                     if (confirmed) {
-                        //$ctrl.company.addresses.splice($index, 1);
-                        //$ctrl.updateCompanyInfo($ctrl.company);
+                        loader.wrapLoading(function () {
+                            return corporateAccountApi.remove({ ids: memberId },
+                            function () {
+                                $ctrl.pageSettings.pageChanged();
+                            },
+                            function (error) {
+                                debugger;
+                            }).$promise;
+                        });
                     }
                 });
             };
