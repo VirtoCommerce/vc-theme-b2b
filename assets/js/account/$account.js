@@ -33,9 +33,10 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
          { path: '/addresses', name: 'Addresses', component: 'vcAccountAddresses' },
          { path: '/changePassword', name: 'PasswordChange', component: 'vcAccountPasswordChange' },
          { path: '/companyInfo', name: 'CompanyInfo', component: 'vcAccountCompanyInfo' },
-         { path: '/companyMembers/...', name: 'CompanyMembers', component: 'vcAccountCompanyMembers' }
+         { path: '/companyMembers/...', name: 'CompanyMembers', component: 'vcAccountCompanyMembers' },
+         { path: '/permissions', name: 'Permissions', component: 'vcAccountPermissions' }
     ],
-    controller: ['storefront.accountApi', 'storefrontApp.mainContext', 'loadingIndicatorService', function (accountApi, mainContext, loader) {
+    controller: ['storefront.accountApi', 'storefrontApp.mainContext', 'authService', 'loadingIndicatorService', function (accountApi, mainContext, authService, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
 
@@ -68,6 +69,8 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
                 return accountApi.changePassword(changePasswordData).$promise;
             });
         };
+
+        authService.fillAuthData();
     }]
 })
 

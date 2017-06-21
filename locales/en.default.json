@@ -244,6 +244,7 @@
             }
         },
         "sidebar": {
+            "dashboard":  "Dashboard", 
             "filters": "Filters",
             "shop_by": "Shop By",
             "all": "All",
@@ -275,6 +276,7 @@
     "customer": {
         "account": {
             "title": "My Account",
+            "corporate": "Corporate",
             "details": "Account Details",
             "return": "Return to Account Details",
             "menu_label": {
@@ -285,7 +287,8 @@
                 "addresses": "Addresses",
                 "change_password": "Change password",
                 "company_info": "Company info",
-                "company_members": "Company members"
+                "company_members": "Company members",
+                "permissions":  "Permissions" 
             }
         },
         "activate_account": {
@@ -509,6 +512,10 @@
             "status": "Status",
             "actions": "Actions",
             "delete_confirm": "Are you sure you wish to delete this member?"
+        },
+        "permissions": {
+            "title":  "Roles",
+            "none":  "No roles available"
         },
         "edit_company_member": {
             "return_text": "Return to members list",
