@@ -69,6 +69,12 @@ input[type="radio"].input-radio {
     border-color: #d9d9d9;
     box-shadow: 0 0 0 10px #1990c6 inset
 }
+.input-checkbox:checked:disabled,
+.input-radio:checked:disabled {
+    border: none;
+    border-color: #cccccc;
+    box-shadow: 0 0 0 10px #cccccc inset
+}
 .input-checkbox:checked:after,
 .input-radio:checked:after {
     -webkit-transform: scale(1);

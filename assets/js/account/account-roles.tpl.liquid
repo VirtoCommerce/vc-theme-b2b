@@ -1,16 +1,16 @@
 ﻿<div class="one-half">
-    <h4>{{ 'customer.permissions.title' | t }}</h4>
+    <h4>{{ 'customer.roles.title' | t }}</h4>
     <div class="display-table" ng-if="$ctrl.roles.length">
         <div class="checkbox-wrapper" ng-repeat="role in $ctrl.roles">
             <div class="display-row">
                 <div class="checkbox__input">
-                    <input class="input-checkbox" id="role-{% raw %}{{$index}}{% endraw %}" type="checkbox" ng-checked="$ctrl.hasRole(role)" />
+                    <input class="input-checkbox" id="role-{% raw %}{{$index}}{% endraw %}" type="checkbox" disabled ng-checked="$ctrl.hasRole(role)" />
                 </div>
-                <label class="checkbox__label" for="role-{% raw %}{{$index}}{% endraw %}" ng-bind="role.name"></label>
+                <label class="checkbox__label" for="role-{% raw %}{{$index}}{% endraw %}" ng-bind="role"></label>
             </div>
-            <div class="display-row" ng-if="role.description">
+            <div class="display-row">
                 <br/>
-                <p class="checkbox__description">{% raw %}{{role.description}}{% endraw %}</p>
+                <p class="checkbox__description">{% raw %}{{ ('customer.roles.descriptions.' + role.toLowerCase().replace(" ", "_")) | translate }}{% endraw %}</p>
             </div>
         </div>
     </div>

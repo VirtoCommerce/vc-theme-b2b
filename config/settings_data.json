@@ -1,3 +1,11 @@
 {
-    "current": "Blue"
+  "current": "Blue",
+  "presets": {
+    "Blue": {
+      "available_roles": [
+        "Employee",
+        "Manager"
+      ]
+    }
+  }
 }

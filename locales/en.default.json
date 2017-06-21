@@ -288,7 +288,7 @@
                 "change_password": "Change password",
                 "company_info": "Company info",
                 "company_members": "Company members",
-                "permissions":  "Permissions" 
+                "roles":  "Roles" 
             }
         },
         "activate_account": {
@@ -335,6 +335,14 @@
             "cancel": "Return to Store",
             "guest_title": "Continue as a guest",
             "guest_continue": "Let's go"
+        },
+        "roles": {
+            "title":  "Roles",
+            "none":  "No roles available",
+            "descriptions": {
+                "employee":  "Basic functionality for employee", 
+                "manager": "Company info, members & roles management"
+            }
         },
         "orders": {
             "title": "Order History",
@@ -510,10 +518,6 @@
             "createdBy": "Created by",
             "status": "Status",
             "actions": "Actions"
-        },
-        "permissions": {
-            "title":  "Roles",
-            "none":  "No roles available" 
         }
     },
     "homepage": {

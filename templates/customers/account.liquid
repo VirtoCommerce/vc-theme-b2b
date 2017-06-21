@@ -54,8 +54,8 @@
                     <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyMembers'}" va-permission="storefront:companyMembers:access">
                         <a ng-link="['CompanyMembers']">{{ 'customer.account.menu_label.company_members' | t }}</a>
                     </li>
-                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountPermissions'}">
-                        <a ng-link="['Permissions']">{{ 'customer.account.menu_label.permissions' | t }}</a>
+                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountRoles'}">
+                        <a ng-link="['Roles']">{{ 'customer.account.menu_label.roles' | t }}</a>
                     </li>
                     {% endif %}
                 </ul>

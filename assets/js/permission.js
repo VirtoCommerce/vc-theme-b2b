@@ -21,6 +21,7 @@
                 }
 
                 toggleVisibilityBasedOnPermission();
+                scope.$on('loginStatusChanged', toggleVisibilityBasedOnPermission);
             }
         }
     };
