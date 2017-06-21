@@ -512,12 +512,26 @@
         "edit_company_members": {
             "title": "Company members",
             "none": "There is no any members yet.",
-            "name": "Name",
+            "first_name": "First name",
+            "last_name": "Last name",
             "type": "Member type",
             "createdDate": "Created date",
             "createdBy": "Created by",
             "status": "Status",
-            "actions": "Actions"
+            "actions": "Actions",
+            "delete_confirm": "Are you sure you wish to delete this member?"
+        },
+        "edit_company_member": {
+            "return_text": "Return to members list",
+            "title": "Member information",
+            "first_name": "First name",
+            "last_name": "Last name",
+            "middle_name": "Middle name",
+            "full_name": "Full name",
+            "btn_update": "Update",
+            "add_new": "Add new member",
+            "add": "Add",
+            "cancel": "Cancel"
         }
     },
     "homepage": {

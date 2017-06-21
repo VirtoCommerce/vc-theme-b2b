@@ -70,18 +70,6 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
             });
         };
 
-        $ctrl.getCustomerOrganization = function (callback) {
-            loader.wrapLoading(function () {
-                return accountApi.getCustomerOrganization(callback).$promise;
-            });
-        };
-
-        $ctrl.updateCustomerOrganization = function (updateRequest) {
-            loader.wrapLoading(function () {
-                return accountApi.updateCustomerOrganization(updateRequest).$promise;
-            });
-        };
-
         $scope.$watch(function() {
             return mainContext.customer;
         }, function (customer) {

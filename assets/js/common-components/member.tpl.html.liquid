@@ -1,0 +1,24 @@
+<form accept-charset="UTF8" name="mbrForm" novalidate="novalidate">
+    <div class="form-fieldset" ng-init="$ctrl.setForm(mbrForm)">
+        <div class="form-group">
+            <div class="cols">
+                <div class="col col-50">
+                  <vc-labeled-input value="$ctrl.member.firstName" name="FirstName" placeholder="{{ 'customer.edit_company_member.first_name' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
+                </div>
+                <div class="col col-50">
+                    <vc-labeled-input value="$ctrl.member.middleName" name="MiddleName" placeholder="{{ 'customer.edit_company_member.middle_name' | t }}" form="$ctrl.form"></vc-labeled-input>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="cols">
+                <div class="col col-50">
+                    <vc-labeled-input value="$ctrl.member.lastName" name="LastName" placeholder="{{ 'customer.edit_company_member.last_name' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
+                </div>
+                <div class="col col-50">
+                    <vc-labeled-input value="$ctrl.member.fullName" name="FullName" placeholder="{{ 'customer.edit_company_member.full_name' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

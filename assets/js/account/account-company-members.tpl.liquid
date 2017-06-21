@@ -5,8 +5,8 @@
   <table class="full" ng-if="$ctrl.entries.length">
     <thead>
       <tr>
-        <th>{{ 'customer.edit_company_members.name' | t }}</th>
-        <th>{{ 'customer.edit_company_members.type' | t }}</th>
+        <th>{{ 'customer.edit_company_members.first_name' | t }}</th>
+        <th>{{ 'customer.edit_company_members.last_name' | t }}</th>
         <th>{{ 'customer.edit_company_members.createdDate' | t }}</th>
         <th>{{ 'customer.edit_company_members.createdBy' | t }}</th>
         <th>{{ 'customer.edit_company_members.status' | t }}</th>
@@ -15,14 +15,17 @@
     </thead>
     <tbody>
       <tr ng-repeat="member in $ctrl.entries">
-        <td ng-bind="member.name"></td>
-        <td ng-bind="member.memberType"></td>
+        <td ng-bind="member.firstName"></td>
+        <td ng-bind="member.lastName"></td>
         <td ng-bind="member.createdDate | date"></td>
         <td ng-bind="member.createdBy"></td>
-        <td>Active</td>
+        <td ng-bind="member.isActive?'Active':'Not active'"></td>
         <td>
           <span>
-            <a>Edit</a> | <a>Delete</a> | <a>Deactivate</a>
+            <a ng-link="['MemberDetail', {member: member.id, pageNumber: $ctrl.pageSettings.currentPage}]">Edit</a> |
+            <a>Delete</a> |  <!--ng-click="$ctrl.delete(member.id)" href=""-->
+            <a ng-if="member.isActive" ng-click="$ctrl.changeStatus(member.id)" href="">Deactivate</a>
+            <a ng-if="!member.isActive" ng-click="$ctrl.changeStatus(member.id)" href="">Activate</a>
           </span>
         </td>
       </tr>
@@ -31,6 +34,52 @@
 
   <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
 
-  <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.edit_company_members.none' | t }}</p>
+  <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.edit_company_member.none' | t }}</p>
+
+  <button ng-click="$ctrl.newMember={}" ng-if="!$ctrl.newMember" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
+    <span class="btn-text">{{ 'customer.edit_company_member.add_new' | t }}</span>
+    <span class="btn-loading"></span>
+  </button>
+  <div ng-if="$ctrl.newMember" class="one-half">
+    <h2 ng-if="$ctrl.newMember">{{ 'customer.edit_company_member.add_new' | t }}</h2>
+    <vc-member member="$ctrl.newMember" member-component="$ctrl.newMemberComponent"></vc-member>
+    <div>
+      <button ng-click="$ctrl.cancel()" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
+        <span class="btn-text">{{ 'customer.edit_company_member.cancel' | t }}</span>
+        <span class="btn-loading"></span>
+      </button>
+      <span class="form-spacer"></span>
+      <button ng-click="$ctrl.addNewMember()" ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
+        <span class="btn-text">{{ 'customer.edit_company_member.add' | t }}</span>
+        <span class="btn-loading"></span>
+      </button>
+    </div>
+  </div>
 </script>
 
+<script id="account-company-members-detail.tpl" type="text/ng-template">
+  <p>
+    <a ng-link="['MemberList', {pageNumber: $ctrl.pageNumber}]">
+      <span class="fa fa-arrow-left"></span> {{ 'customer.edit_company_member.return_text' | t }}
+    </a>
+  </p>
+
+  <div class="cols">
+    <div class="col col-66 main">
+      <div class="cols">
+        <div class="col col-66">
+          <h4>{{ 'customer.edit_company_member.title' | t }}</h4>
+
+          <vc-member member="$ctrl.member" member-component="$ctrl.memberComponent"></vc-member>
+
+          <div>
+            <button ng-click="$ctrl.submitMember()" ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }">
+              <span class="btn-text">{{ 'customer.edit_company_member.btn_update' | t }}</span>
+              <span class="btn-loading"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>

@@ -3,7 +3,7 @@
     <form ng-submit="$ctrl.submit()" name="detailForm">
         <vc-labeled-input value="$ctrl.company.name" name="company_name" placeholder="{{ 'customer.edit_company_info.company_name' | t }}" form="detailForm" required="true" autofocus="true"></vc-labeled-input>
 
-        <button ng-click="$ctrl.updateOrganizationInfo()" class="vc-btn" ng-disabled="$ctrl.loader.isLoading" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
+        <button ng-click="$ctrl.updateCompanyInfo($ctrl.company)" class="vc-btn" ng-disabled="$ctrl.loader.isLoading" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
             <span class="btn-text">{{ 'customer.edit_profile.submit' | t }}</span>
             <span class="btn-loading"></span>
         </button>
