@@ -23,7 +23,7 @@
         <td>
           <span>
             <a ng-link="['MemberDetail', {member: member.id, pageNumber: $ctrl.pageSettings.currentPage}]">Edit</a> |
-            <a>Delete</a> |  <!--ng-click="$ctrl.delete(member.id)" href=""-->
+            <a ng-click="$ctrl.delete(member.id)" href="">Delete</a> | 
             <a ng-if="member.isActive" ng-click="$ctrl.changeStatus(member.id)" href="">Deactivate</a>
             <a ng-if="!member.isActive" ng-click="$ctrl.changeStatus(member.id)" href="">Activate</a>
           </span>
@@ -34,7 +34,7 @@
 
   <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
 
-  <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.edit_company_member.none' | t }}</p>
+  <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.edit_company_members.none' | t }}</p>
 
   <button ng-click="$ctrl.newMember={}" ng-if="!$ctrl.newMember" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
     <span class="btn-text">{{ 'customer.edit_company_member.add_new' | t }}</span>

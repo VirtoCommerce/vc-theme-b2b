@@ -19,7 +19,7 @@
             id: "7a7e3a91-d510-4913-9745-49d809614ed8",
             isAdministrator: false,
             memberId: "7a7e3a91-d510-4913-9745-49d809614ed8",
-            permissions: ["storefront:companyInfo:access", "catalog:access", "catalog:read"],
+            permissions: ["storefront:companyInfo:access", "storefront:companyMembers:access", "catalog:access", "catalog:read"],
             roles: [
                 {
                     id: "12dc3bacf2a34c8d9f72dea5468f1f5a",

@@ -2,7 +2,7 @@ angular.module('storefront.account')
 .factory('storefront.corporateAccountApi', ['$resource', function ($resource) {
     var urlPrefix = 'http://localhost/admin/';
 
-    return $resource(urlPrefix + 'api/b2b/company', null, {
+    return $resource(urlPrefix + 'api/b2b/companyMembers', null, {
         getCompanyById: { url: urlPrefix + 'api/b2b/company/:id' },
         updateCompany: { url: urlPrefix + 'api/b2b/company', method: 'POST' },
 
