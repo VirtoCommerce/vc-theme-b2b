@@ -1,6 +1,6 @@
 var storefrontApp = angular.module('storefrontApp');
 storefrontApp.component('vcMember', {
-    templateUrl: "themes/assets/js/common-components/member.tpl.html",
+    templateUrl: "themes/assets/member.tpl.html",
     bindings: {
         member: '=',
         //addresses: '<',

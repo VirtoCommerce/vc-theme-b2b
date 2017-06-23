@@ -1,6 +1,9 @@
 ﻿angular.module('storefront.account')
 .factory('authService', ['storefrontApp.mainContext', '$http', '$interpolate', '$rootScope', function (mainContext, $http, $interpolate, $rootScope) {
     var serviceBase = 'http://localhost/admin';
+    //var serviceBase = 'http://demovc-admin-dev.azurewebsites.net';
+    var api_key = '1b5ad880c3ce44089f8312c3cde88645';
+
     var userService = '/api/platform/security/users/';
     var currentAuthContext = {
         userId: null,
@@ -13,7 +16,7 @@
     };
 
     currentAuthContext.fillAuthData = function (userName) {
-        return $http.get(serviceBase + userService + (userName || mainContext.customer.userName)).then(
+        return $http.get(serviceBase + userService + (userName || mainContext.customer.userName) + '?api_key=' + api_key).then(
             function (results) {
                 var authContext = changeAuth(results.data);
                 if (!userName) {

@@ -72,13 +72,10 @@
                 confirmService.confirm(text).then(function (confirmed) {
                     if (confirmed) {
                         loader.wrapLoading(function () {
-                            return corporateAccountApi.remove({ ids: memberId },
-                            function () {
-                                $ctrl.pageSettings.pageChanged();
-                            },
-                            function (error) {
-                                debugger;
-                            }).$promise;
+                            return corporateAccountApi.deleteCompanyMember({ ids: memberId },
+                                function () {
+                                    $ctrl.pageSettings.pageChanged();
+                                }).$promise;
                         });
                     }
                 });
