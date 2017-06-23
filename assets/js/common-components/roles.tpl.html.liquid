@@ -1,0 +1,15 @@
+﻿<div class="display-table" ng-if="$ctrl.roles.length">
+    <div class="checkbox-wrapper" ng-repeat="role in $ctrl.roles">
+        <div class="display-row">
+            <div class="checkbox__input">
+                <input class="input-checkbox" id="role-{% raw %}{{$index}}{% endraw %}" type="checkbox" ng-model="role.assigned" ng-disabled="$ctrl.readonly" ng-checked="$ctrl.checked(role)" ui-indeterminate="$ctrl.indeterminate(role)" />
+            </div>
+            <label class="checkbox__label" for="role-{% raw %}{{$index}}{% endraw %}" ng-bind="role.name"></label>
+        </div>
+        <div class="display-row">
+            <br />
+            <p class="checkbox__description">{% raw %}{{ role.description | translate }}{% endraw %}</p>
+        </div>
+    </div>
+</div>
+<p ng-if="!$ctrl.roles.length">{{ 'customer.roles.none' | t }}</p>

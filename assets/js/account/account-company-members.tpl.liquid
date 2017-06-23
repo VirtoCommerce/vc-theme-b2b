@@ -64,22 +64,24 @@
     </a>
   </p>
 
-  <div class="cols">
-    <div class="col col-66 main">
-      <div class="cols">
-        <div class="col col-66">
-          <h4>{{ 'customer.edit_company_member.title' | t }}</h4>
+  <div class="one-whole">
+    <h4>{{ 'customer.edit_company_member.title' | t }}</h4>
 
-          <vc-member member="$ctrl.member" member-component="$ctrl.memberComponent"></vc-member>
+    <vc-member member="$ctrl.member" member-component="$ctrl.memberComponent"></vc-member>
 
-          <div>
-            <button ng-click="$ctrl.submitMember()" ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }">
-              <span class="btn-text">{{ 'customer.edit_company_member.btn_update' | t }}</span>
-              <span class="btn-loading"></span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <button ng-click="$ctrl.submitMember()" ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }">
+      <span class="btn-text">{{ 'customer.edit_company_member.btn_update' | t }}</span>
+      <span class="btn-loading"></span>
+    </button>
+  </div>
+  <div class="one-whole">
+      <h4>{{ 'customer.edit_company_member.roles' | t }}</h4>
+      
+      <vc-roles logins="$ctrl.logins" roles-component="$ctrl.rolesComponent"></vc-roles>
+
+      <button ng-click="$ctrl.submitRoles()" ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }">
+          <span class="btn-text">{{ 'customer.edit_company_member.btn_update' | t }}</span>
+          <span class="btn-loading"></span>
+      </button>
   </div>
 </script>

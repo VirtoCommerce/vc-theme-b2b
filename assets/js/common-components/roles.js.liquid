@@ -1,0 +1,47 @@
+﻿angular.module('storefront.account')
+.component('vcRoles', {
+    templateUrl: "themes/assets/js/common-components/roles.tpl.html.liquid",
+    bindings: {
+        rolesComponent: "=",
+        logins: "<",
+        readonly: "@"
+    },
+    controller: ['$scope', 'authService', 'loadingIndicatorService', function ($scope, authService, loader) {
+        var ctrl = this;
+        ctrl.loader = loader;
+
+        this.$onInit = function () {            
+            ctrl.rolesComponent = this;
+        };
+
+        this.$onDestroy = function () {            
+            ctrl.rolesComponent = null;
+        };
+
+        ctrl.roles = {{ settings.available_roles | json }};
+        ctrl.roles = _.map(ctrl.roles, function(role){
+            return { name: role, description: 'customer.roles.descriptions.' + role.toLowerCase().replace(" ", "_"), assigned: undefined };
+        });
+
+        ctrl.$onChanges = function() {
+            if (ctrl.logins && ctrl.logins.length)
+            {
+                _.each(ctrl.logins, function(login){
+                    authService.fillAuthData(login).then(function(authContext) {
+                        _.each(ctrl.roles, function(availableRole) {
+                            var assigned = _.some(authContext.roles, function(assignedRole) { return availableRole.name === assignedRole.name });
+                            availableRole.assigned = availableRole.assigned !== null ? (availableRole.assigned === undefined ? assigned : (availableRole.assigned === assigned ? assigned : null)) : null;
+                        });
+                    });
+                });
+            }
+        };
+
+        ctrl.checked = function(role) {
+            return role.assigned === true;
+        }
+        ctrl.indeterminate = function(role) {
+            return role.assigned === null;
+        }
+    }]
+});

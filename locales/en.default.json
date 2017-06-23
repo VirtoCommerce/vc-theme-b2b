@@ -337,7 +337,7 @@
             "guest_continue": "Let's go"
         },
         "roles": {
-            "title":  "Roles",
+            "title":  "My roles",
             "none":  "No roles available",
             "descriptions": {
                 "employee":  "Basic functionality for employee", 
@@ -528,6 +528,7 @@
             "last_name": "Last name",
             "middle_name": "Middle name",
             "full_name": "Full name",
+            "roles": "User roles",
             "btn_update": "Update",
             "add_new": "Add new member",
             "add": "Add",

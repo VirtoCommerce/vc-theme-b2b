@@ -94,11 +94,12 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefront.corporateAccountApi', '$rootScope', '$window', 'loadingIndicatorService', 'confirmService', function (corporateAccountApi, $rootScope, $window, loader, confirmService) {
+    controller: ['storefront.corporateAccountApi', '$rootScope', '$window', 'authService', 'loadingIndicatorService', 'confirmService', function (corporateAccountApi, $rootScope, $window, authService, loader, confirmService) {
         var $ctrl = this;
         $ctrl.loader = loader;
 
         $ctrl.memberComponent = null;
+        $ctrl.rolesComponent = null;
 
         var loadPromise;
 
@@ -106,6 +107,7 @@
             loader.wrapLoading(function () {
                 return corporateAccountApi.getCompanyMember({ id: $ctrl.memberNumber }, function (member) {
                     $ctrl.member = member;
+                    $ctrl.logins = _.map(_.filter(member.securityAccounts, function(account) { return account.storeId === "{{shop.id}}"; }), function(account) { return account.userName });
                 }).$promise;
             });
         }
@@ -123,6 +125,12 @@
                     return corporateAccountApi.updateCompanyMember($ctrl.member).$promise;
                 });
             }
+        };
+
+        $ctrl.submitRoles = function () {
+            angular.forEach($ctrl.logins, function(login) {
+                authService.changeAuthData({ roles: $ctrl.rolesComponent.roles }, login);
+            });
         };
     }]
 });

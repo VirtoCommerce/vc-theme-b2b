@@ -1,28 +1,16 @@
 ﻿angular.module('storefront.account')
 .component('vcAccountRoles', {
     templateUrl: "themes/assets/js/account/account-roles.tpl.liquid",
-    controller: ['authService', 'loadingIndicatorService', function (authService, loader) {
+    controller: ['$scope', 'authService', 'loadingIndicatorService', function ($scope, authService, loader) {
         var ctrl = this;
         ctrl.loader = loader;
 
-        var roles = {{ settings.available_roles | json }};
-        ctrl.pageSettings = { currentPage: 1, itemsPerPageCount: 10, numPages: 10 };
-        ctrl.pageSettings.pageChanged = function () {
-            var start = (ctrl.pageSettings.currentPage - 1) * ctrl.pageSettings.itemsPerPageCount;
-            var end = start + ctrl.pageSettings.itemsPerPageCount;
-            ctrl.roles = roles.slice(start, end);
-            ctrl.pageSettings.totalItems = roles.length;
-        };
+        ctrl.rolesComponent = null;
 
-        ctrl.hasRole = function(role) {
-            return _.some(authService.roles, function(currentRole) {
-                return currentRole.name === role;
-            });
-        }
-
-        this.$routerOnActivate = function (next) {
-            ctrl.pageSettings.currentPage = next.params.pageNumber || ctrl.pageSettings.currentPage;
-            ctrl.pageSettings.pageChanged();
-        };
+        ctrl.logins = authService.userLogin ? [authService.userLogin] : [];
+        $scope.$on('loginStatusChanged', function(e, authContext) {
+            if (!ctrl.logins.length)
+                ctrl.logins = [authContext.userLogin];
+        });
     }]
 });

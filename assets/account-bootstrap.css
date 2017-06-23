@@ -1,4 +1,8 @@
-﻿.display-row {
+﻿.one-whole {
+    margin-bottom: 30px;
+}
+
+.display-row {
     display: table-row;
 }
 
@@ -83,6 +87,27 @@ input[type="radio"].input-radio {
     opacity: 1;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 100 ")";
     filter: alpha(opacity=100)
+}
+.input-checkbox:indeterminate:disabled,
+.input-radio:indeterminate:disabled {
+    background: #cccccc;
+    border: none;
+    border-color: #cccccc;
+}
+.input-checkbox:indeterminate:after,
+.input-radio:indeterminate:after {
+    background: #1990c6;
+    border-radius: 2px;
+    opacity: 1;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 100 ")";
+    filter: alpha(opacity=100);
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    margin-top: -5px;
 }
 .input-checkbox:checked:focus,
 .input-radio:checked:focus {

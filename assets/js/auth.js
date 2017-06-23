@@ -1,7 +1,8 @@
 ﻿angular.module('storefront.account')
 .factory('authService', ['storefrontApp.mainContext', '$http', '$interpolate', '$rootScope', function (mainContext, $http, $interpolate, $rootScope) {
-    var serviceBase = 'http://localhost/admin/' + '/api/platform/security/users/';
-    var authContext = {
+    var serviceBase = 'http://localhost/admin';
+    var userService = '/api/platform/security/users/';
+    var currentAuthContext = {
         userId: null,
         userLogin: null,
         fullName: null,
@@ -11,29 +12,73 @@
         isAuthenticated: false
     };
 
-    authContext.fillAuthData = function () {
-        $http.get(serviceBase + mainContext.customer.userName).then(
+    currentAuthContext.fillAuthData = function (userName) {
+        return $http.get(serviceBase + userService + (userName || mainContext.customer.userName)).then(
             function (results) {
-                changeAuth(results.data);
-            },
-            function (error) { });
+                var authContext = changeAuth(results.data);
+                if (!userName) {
+                    angular.extend(currentAuthContext, authContext);
+                    $rootScope.$broadcast('loginStatusChanged', authContext);
+                }
+                return authContext;
+            });
     };
 
-    authContext.checkPermission = function (permission, securityScopes) {
+    currentAuthContext.changeAuthData = function (data, userName) {
+        // get all available roles
+        $http.post(serviceBase + '/api/platform/security/roles/').then(function (rolesSearch) {
+            // get full filled user entity
+            $http.get(serviceBase + userService + (userName || mainContext.customer.userName)).then(
+                function(results) {
+                    var authContext = changeAuth(results.data);
+                    var dataRoles = data.roles;
+                    data.roles = authContext.roles;
+                    angular.extend(authContext, data);
+                    var user = angular.extend({ }, results.data, {
+                        id: authContext.userId,
+                        permissions: authContext.permissions,
+                        userName: authContext.userLogin,
+                        userLogin: authContext.fullName,
+                        userType: authContext.userType,
+                        isAdministrator: authContext.isAdministrator
+                    });
+
+                    // assign & unassign roles
+                    var isEqualRole = function(firstRole, secondRole) { return firstRole.name === secondRole.name };
+                    var currentRoles = authContext.roles;
+                    var unassignedRoles = _.filter(currentRoles, function (currentRole) { return _.some(dataRoles, function (role) { return isEqualRole(role, currentRole) && role.assigned === false; }); });
+                    var assignedRoles = _.filter(rolesSearch.data.roles, function (availableRole) { return _.some(dataRoles, function (role) { return isEqualRole(role, availableRole) && role.assigned === true; }); });
+                    currentRoles = _.filter(currentRoles, function(currentRole) { return !unassignedRoles.length || !_.some(unassignedRoles, function(unassignedRole) { return isEqualRole(currentRole, unassignedRole); }); });
+                    Array.prototype.push.apply(currentRoles, _.filter(assignedRoles, function (assignedRole) { return !currentRoles.length || !_.some(currentRoles, function (currentRole) { return isEqualRole(currentRole, assignedRole); }); }));
+                    user.roles = currentRoles;
+
+                    // update user
+                    $http.put(serviceBase + userService, user).then(
+                    function() {
+                        if (!userName) {
+                            angular.extend(currentAuthContext, authContext);
+                            $rootScope.$broadcast('loginStatusChanged', authContext);
+                        }
+                    });
+                });
+            });
+    };
+
+    currentAuthContext.checkPermission = function (permission, securityScopes) {
         //first check admin permission
         // var hasPermission = $.inArray('admin', authContext.permissions) > -1;
-        var hasPermission = authContext.isAdministrator;
+        var hasPermission = currentAuthContext.isAdministrator;
         if (!hasPermission && permission) {
             permission = permission.trim();
             //first check global permissions
-            hasPermission = $.inArray(permission, authContext.permissions) > -1;
+            hasPermission = $.inArray(permission, currentAuthContext.permissions) > -1;
             if (!hasPermission && securityScopes) {
                 if (typeof securityScopes === 'string' || angular.isArray(securityScopes)) {
                     securityScopes = angular.isArray(securityScopes) ? securityScopes : securityScopes.split(',');
                     //Check permissions in scope
                     hasPermission = _.some(securityScopes, function (x) {
                         var permissionWithScope = permission + ":" + x;
-                        var retVal = $.inArray(permissionWithScope, authContext.permissions) > -1;
+                        var retVal = $.inArray(permissionWithScope, currentAuthContext.permissions) > -1;
                         //console.log(permissionWithScope + "=" + retVal);
                         return retVal;
                     });
@@ -44,6 +89,7 @@
     };
 
     function changeAuth(results) {
+        var authContext = {};
         authContext.userId = results.id;
         authContext.roles = results.roles;
         authContext.permissions = results.permissions;
@@ -58,9 +104,8 @@
                 return $interpolate(x)(authContext);
             });
         }
-
-        $rootScope.$broadcast('loginStatusChanged', authContext);
+        return authContext;
     };
 
-    return authContext;
+    return currentAuthContext;
 }]);
