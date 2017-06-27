@@ -15,6 +15,7 @@
     controller: ['storefrontApp.mainContext', 'storefront.corporateAccountApi', 'loadingIndicatorService', 'confirmService', '$translate', function (mainContext, corporateAccountApi, loader, confirmService, $translate) {
         var $ctrl = this;
         $ctrl.newMemberComponent = null;
+        $ctrl.newRolesComponent = null;
         $ctrl.loader = loader;
         $ctrl.pageSettings = { currentPage: 1, itemsPerPageCount: 5, numPages: 10 };
         $ctrl.pageSettings.pageChanged = function () {
@@ -36,6 +37,19 @@
             $ctrl.pageSettings.pageChanged();
         };
 
+        $ctrl.invite = function () {
+           $ctrl.inviteInfo.emails = $ctrl.inviteInfo.rawEmails.split(/[,;]|\r|\r\n|\n/g);
+            corporateAccountApi.invite({
+                storeId: "{{shop.id}}",
+                companyId: mainContext.customer.companyId,
+                emails: $ctrl.inviteInfo.emails,
+                adminName: mainContext.customer.fullName,
+                adminEmail: mainContext.customer.email,
+                message: $ctrl.inviteInfo.message,
+                callbackUrl: "http://localhost/Electronics/test"
+            });
+        };
+
         $ctrl.addNewMember = function () {
             if ($ctrl.newMemberComponent.validate()) {
                 $ctrl.newMember.organizations = [];
@@ -53,6 +67,12 @@
                 return corporateAccountApi.updateCompanyMember(companyMember).$promise;
             });
         };
+
+        //$ctrl.updateRoles = function() {
+        //    angular.forEach($ctrl.logins, function(login) {
+        //        authService.changeAuthData({ roles: $ctrl.rolesComponent.roles }, login);
+        //    });
+        //};
 
         $ctrl.cancel = function () {
             $ctrl.newMember = null;

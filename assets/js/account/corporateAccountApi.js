@@ -12,6 +12,8 @@ angular.module('storefront.account')
         getCompanyMembers: { url: urlPrefix + 'api/b2b/companyMembers', method: 'POST' },
         getCompanyMember: { url: urlPrefix + 'api/b2b/companyMember/:id' },
         updateCompanyMember: { url: urlPrefix + 'api/b2b/companyMember', method: 'POST' },
-        deleteCompanyMember: { url: urlPrefix + 'api/b2b/companyMembers', method: 'DELETE' }
+        deleteCompanyMember: { url: urlPrefix + 'api/b2b/companyMembers', method: 'DELETE' },
+
+        invite: { url: urlPrefix + 'api/b2b/invite', method: 'POST' }
     });
 }])

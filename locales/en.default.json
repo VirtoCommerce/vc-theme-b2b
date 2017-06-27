@@ -530,6 +530,14 @@
             "full_name": "Full name",
             "roles": "User roles",
             "btn_update": "Update",
+            "invite":  {
+              "title": "Invite members",
+              "emails_title":  "Enter email addresses",
+              "emails_placeholder": "Enter emails addresses for the persons you wish to invite. Use commas, semicolons or carriage returns to separate multiple entires.",
+              "message_title": "Email invitation message",
+              "message_placeholder": "Each person you wish to invite will receive an email with instructions. Customize the email with optional message.",
+              "submit":  "Invite" 
+            },
             "add_new": "Add new member",
             "add": "Add",
             "cancel": "Cancel"
