@@ -470,8 +470,6 @@
         },
         "register": {
             "title": "Create Account",
-            "account_type_personal": "Personal account",
-            "account_type_corporate": "Corporate account",
             "company_name": "Company Name",
             "first_name": "First Name",
             "last_name": "Last Name",
@@ -480,7 +478,10 @@
             "password": "Password",
             "submit": "Create",
             "or": "or",
-            "cancel": "Return to Store"
+            "cancel": "Return to Store",
+            "registration_success_text": "Registration completed successfully",
+            "goto_text": "Go to",
+            "login_page_text": "Login page"
         },
         "edit_profile": {
             "title": "Edit Profile",

@@ -1,6 +1,6 @@
 var storefrontApp = angular.module('storefrontApp');
-storefrontApp.component('vcMember', {
-    templateUrl: "themes/assets/member.tpl.html",
+storefrontApp.component('vcMemberDetail', {
+    templateUrl: "themes/assets/memberDetail.tpl.html",
     bindings: {
         member: '=',
         memberComponent: '='
@@ -16,8 +16,9 @@ storefrontApp.component('vcMember', {
             $ctrl.memberComponent = null;
         };
 
-        $ctrl.setForm = function (frm) { debugger; $ctrl.form = frm; };
-
+        $ctrl.setForm = function (frm) {
+            $ctrl.form = frm;
+        };
 
         $ctrl.validate = function () {
             if ($ctrl.form) {
