@@ -37,9 +37,11 @@
             $ctrl.pageSettings.pageChanged();
         };
 
+        $ctrl.inviteEmailsValidationPattern = new RegExp(/((^|((?!^)([,;]|\r|\r\n|\n)))([a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*))+$/);
         $ctrl.invite = function () {
-           $ctrl.inviteInfo.emails = $ctrl.inviteInfo.rawEmails.split(/[,;]|\r|\r\n|\n/g);
-            corporateAccountApi.invite({
+            $ctrl.inviteInfo.emails = $ctrl.inviteInfo.rawEmails.split(/[,;]|\r|\r\n|\n/g);
+            loader.wrapLoading(function(){
+              return corporateAccountApi.invite({
                 storeId: "{{shop.id}}",
                 companyId: mainContext.customer.companyId,
                 emails: $ctrl.inviteInfo.emails,
@@ -47,7 +49,8 @@
                 adminEmail: mainContext.customer.email,
                 message: $ctrl.inviteInfo.message,
                 callbackUrl: "http://localhost/Electronics/test"
-            });
+              }).$promise;
+            }).then($ctrl.cancel()).then($ctrl.pageSettings.pageChanged);
         };
 
         $ctrl.addNewMember = function () {
@@ -75,6 +78,7 @@
         //};
 
         $ctrl.cancel = function () {
+            $ctrl.inviteInfo = null;
             $ctrl.newMember = null;
         };
 
@@ -102,6 +106,11 @@
             };
 
             $translate('customer.edit_company_members.delete_confirm').then(showDialog, showDialog);
+        };
+
+        $ctrl.validate = function (){
+            $ctrl.inviteForm.$setSubmitted();
+            return $ctrl.inviteForm.valid;
         };
     }]
 })

@@ -41,23 +41,21 @@
     <span class="btn-loading"></span>
   </button>
   <div ng-if="$ctrl.inviteInfo">
-      <h3>{{ 'customer.edit_company_member.invite.title' | t }}</h3>
-      <form ng-submit="$ctrl.invite()" name="inviteForm">
-          <div class="form-group">
-              <h5>{{ 'customer.edit_company_member.invite.emails_title' | t }}</h5>
-              <p>{{ 'customer.edit_company_member.invite.emails_placeholder' | t }}</p>
-              <textarea class="form-input" ng-model="$ctrl.inviteInfo.rawEmails"></textarea>
-          </div>
-          <div class="form-group">
-              <h5>{{ 'customer.edit_company_member.invite.message_title' | t }}</h5>
-              <p>{{ 'customer.edit_company_member.invite.message_placeholder' | t }}</p>
-              <textarea class="form-input" ng-model="$ctrl.inviteInfo.message"></textarea>
-          </div>
-          <button ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
-              <span class="btn-text">{{ 'customer.edit_company_member.invite.submit' | t }}</span>
-              <span class="btn-loading"></span>
-          </button>
-      </form>
+    <h3>{{ 'customer.edit_company_member.invite.title' | t }}</h3>
+    <form ng-submit="$ctrl.invite()" name="inviteForm">
+        <h5>{{ 'customer.edit_company_member.invite.emails_title' | t }}</h5>
+        <vc-labeled-text-area name="inviteEmails" form="inviteForm" label="{{ 'customer.edit_company_member.invite.emails_placeholder' | t }}" value="$ctrl.inviteInfo.rawEmails" required="true" pattern="$ctrl.inviteEmailsValidationPattern" autofocus="true"></vc-labeled-text-area>
+        <h5>{{ 'customer.edit_company_member.invite.message_title' | t }}</h5>
+        <vc-labeled-text-area name="inviteMessage" form="inviteForm" label="{{ 'customer.edit_company_member.invite.message_placeholder' | t }}" value="$ctrl.inviteInfo.message" required="false"></vc-labeled-text-area>
+        <button ng-click="$ctrl.cancel()" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
+          <span class="btn-text">{{ 'customer.edit_company_member.cancel' | t }}</span>
+          <span class="btn-loading"></span>
+        </button>
+        <button ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }">
+          <span class="btn-text">{{ 'customer.edit_company_member.invite.submit' | t }}</span>
+          <span class="btn-loading"></span>
+        </button>
+    </form>
   </div>
     
   <button ng-click="$ctrl.newMember={}" ng-if="!$ctrl.newMember && !$ctrl.inviteInfo" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
@@ -66,9 +64,9 @@
   </button>
   <div ng-if="$ctrl.newMember">
     <div class="one-whole">
-        <h2>{{ 'customer.edit_company_member.add_new' | t }}</h2>
-        <vc-member member="$ctrl.newMember" member-component="$ctrl.newMemberComponent"></vc-member>
-        <vc-roles logins="$ctrl.newLogins" roles-component="$ctrl.newRolesComponent"></vc-roles>
+      <h2>{{ 'customer.edit_company_member.add_new' | t }}</h2>
+      <vc-member member="$ctrl.newMember" member-component="$ctrl.newMemberComponent"></vc-member>
+      <vc-roles logins="$ctrl.newLogins" roles-component="$ctrl.newRolesComponent"></vc-roles>
     </div>
     <div class="one-whole">
       <button ng-click="$ctrl.cancel()" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">

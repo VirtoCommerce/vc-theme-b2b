@@ -1,0 +1,12 @@
+﻿<div class="form-group" ng-class="{'error': ($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && $ctrl.form[$ctrl.name].$invalid }">
+    <label for="{% raw %}{{ $ctrl.name }}{% endraw %}" ng-bind="$ctrl.label"></label>
+    <textarea ng-model="$ctrl.value"
+              name="{% raw %}{{ $ctrl.name }}{% endraw %}"
+              id="{% raw %}{{ $ctrl.name }}{% endraw %}"
+              autofocus="{% raw %}{{ $ctrl.autofocus }}{% endraw %}"
+              ng-required="$ctrl.required" class="form-input"
+              ng-pattern="$ctrl.pattern"
+              ng-change="$ctrl.changed()"/>
+    <span class="form-error" ng-if="($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && $ctrl.form[$ctrl.name].$error.required" ng-bind="$ctrl.requiredError || '{{ 'common.required' | t }}'"></span>
+    <span class="form-error" ng-if="($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && !$ctrl.form[$ctrl.name].$error.required && $ctrl.form[$ctrl.name].$invalid">{{ 'common.invalid' | t }}</span>
+</div>
