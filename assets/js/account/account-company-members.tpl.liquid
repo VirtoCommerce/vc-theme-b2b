@@ -42,7 +42,7 @@
   </button>
   <div ng-if="$ctrl.inviteInfo">
     <h3>{{ 'customer.edit_company_member.invite.title' | t }}</h3>
-    <form ng-submit="$ctrl.invite()" name="inviteForm">
+    <form accept-charset="UTF8" name="inviteForm" ng-submit="$ctrl.invite()" novalidate="novalidate">
         <h5>{{ 'customer.edit_company_member.invite.emails_title' | t }}</h5>
         <vc-labeled-text-area name="inviteEmails" form="inviteForm" label="{{ 'customer.edit_company_member.invite.emails_placeholder' | t }}" value="$ctrl.inviteInfo.rawEmails" required="true" pattern="$ctrl.inviteEmailsValidationPattern" autofocus="true"></vc-labeled-text-area>
         <h5>{{ 'customer.edit_company_member.invite.message_title' | t }}</h5>

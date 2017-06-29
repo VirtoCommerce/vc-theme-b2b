@@ -1,6 +1,6 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('accountRegisterController', ['$scope', 'storefrontApp.mainContext', 'storefront.corporateAccountApi', 'storefront.corporateRegisterApi', 'loadingIndicatorService', function ($scope, mainContext, corporateAccountApi, corporateRegisterApi, loader) {
+storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateAccountApi', 'storefront.corporateRegisterApi', 'loadingIndicatorService', function ($q, $scope, mainContext, corporateAccountApi, corporateRegisterApi, loader) {
     $scope.loader = loader;
     $scope.memberComponent = null;
     $scope.newMember = null;
@@ -22,23 +22,32 @@ storefrontApp.controller('accountRegisterController', ['$scope', 'storefrontApp.
         $scope.newMember = {};
         $scope.newMember.storeId = storeId;
 
+        $scope.complete = false;
+
         var invite = getParams().invite;
         if (invite) {
             $scope.newMember.invite = invite;
             $scope.loader.wrapLoading(function() {
-                return corporateAccountApi.getCompanyMember({ id: invite }, function (result) {
-                    $scope.newMember.companyId = result.organizations[0];
-                    $scope.newMember.email = result.emails[0];
-                }).$promise.then(function() {
-                    return corporateAccountApi.getCompanyById({ id: $scope.newMember.companyId }, function (result) {
-                        $scope.newMember.companyName = result.name;
-                    }).$promise;
-                });
+                return corporateAccountApi.getCompanyMember({ id: invite }).$promise
+                    .then(function(result) {
+                        if (!result.id) {
+                            $scope.error = "{{ 'customer.register.registration_invite_revoked_text' | t }}";
+                            return $q.reject("Invite revoked");
+                        }
+                        if (result.securityAccounts && result.securityAccounts.length) {
+                            $scope.error = "{{ 'customer.register.registration_invite_already_used_text' | t }}";
+                            return $q.reject("Invite already used");
+                        }
+                        $scope.newMember.companyId = result.organizations[0];
+                        $scope.newMember.email = result.emails[0];
+                    })
+                    .then(function () {
+                        return corporateAccountApi.getCompanyById({ id: $scope.newMember.companyId }, function(result) {
+                            $scope.newMember.companyName = result.name;
+                        }).$promise;
+                    });
             });
         }
-
-        $scope.registrationComplete = false;
-
     };
 
     $scope.register = function () {
@@ -47,9 +56,9 @@ storefrontApp.controller('accountRegisterController', ['$scope', 'storefrontApp.
                 $scope.loader.wrapLoading(function () {
                     return corporateRegisterApi.registerByInvite({ invite: $scope.newMember.invite }, $scope.newMember, function (result) {
                         if (result.message) {
-                            alert(result.message);
+                            $scope.error = result.message;
                         } else {
-                            $scope.registrationComplete = true;
+                            $scope.complete = true;
                         }
                     }).$promise;
                 });
@@ -57,9 +66,9 @@ storefrontApp.controller('accountRegisterController', ['$scope', 'storefrontApp.
                 $scope.loader.wrapLoading(function() {
                     return corporateRegisterApi.register($scope.newMember, function(result) {
                         if (result.message) {
-                            alert(result.message);
+                            $scope.error = result.message;
                         } else {
-                            $scope.registrationComplete = true;
+                            $scope.complete = true;
                         }
                     }).$promise;
                 });

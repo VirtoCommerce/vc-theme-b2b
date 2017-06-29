@@ -480,6 +480,9 @@
             "or": "or",
             "cancel": "Return to Store",
             "registration_success_text": "Registration completed successfully",
+            "registration_failed_text": "Registration failed",
+            "registration_invite_revoked_text": "You invitation is revoked",
+            "registration_invite_already_used_text": "Your account is already created, please <a href=\\\"account/login\\\">login</a>",
             "goto_text": "Go to",
             "login_page_text": "Login page"
         },
