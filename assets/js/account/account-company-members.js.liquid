@@ -12,7 +12,7 @@
 
 .component('vcAccountCompanyMembersList', {
     templateUrl: "account-company-members-list.tpl",
-    controller: ['storefrontApp.mainContext', 'storefront.corporateAccountApi', 'loadingIndicatorService', 'confirmService', '$translate', function (mainContext, corporateAccountApi, loader, confirmService, $translate) {
+    controller: ['storefrontApp.mainContext', 'storefront.corporateAccountApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, corporateAccountApi, loader, confirmService, $location, $translate) {
         var $ctrl = this;
         $ctrl.newMemberComponent = null;
         $ctrl.newRolesComponent = null;
@@ -48,7 +48,7 @@
                 adminName: mainContext.customer.fullName,
                 adminEmail: mainContext.customer.email,
                 message: $ctrl.inviteInfo.message,
-                callbackUrl: "http://localhost/Electronics/test"
+                callbackUrl: $location.protocol() + "://" + $location.host() + ":" + $location.port() + "{{ "/account/register" | absolute_url }}"
               }).$promise;
             }).then($ctrl.cancel()).then($ctrl.pageSettings.pageChanged);
         };

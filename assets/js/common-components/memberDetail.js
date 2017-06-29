@@ -5,8 +5,15 @@ storefrontApp.component('vcMemberDetail', {
         member: '=',
         memberComponent: '='
     },
-    controller: ['$scope', function ($scope) {
+    controller: ['$scope', 'loadingIndicatorService', function ($scope, loader) {
         var $ctrl = this;
+        $ctrl.originalMember = { };
+
+        $scope.$watch(function() {
+            return loader.isLoading;
+        }, function() {
+            angular.copy($ctrl.member, $ctrl.originalMember);
+        });
 
         this.$onInit = function () {
             $ctrl.memberComponent = this;

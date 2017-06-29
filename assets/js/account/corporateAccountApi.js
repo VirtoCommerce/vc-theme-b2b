@@ -25,6 +25,7 @@ angular.module('storefront.account')
     var api_key = '1b5ad880c3ce44089f8312c3cde88645';
 
     return $resource(urlPrefix + 'api/b2b/register:api_key', { api_key: api_key }, {
-        register: { url: urlPrefix + 'api/b2b/register', method: 'POST' }
+        register: { url: urlPrefix + 'api/b2b/register', method: 'POST' },
+        registerByInvite: { url: urlPrefix + 'api/b2b/register/:invite', method: 'POST' }
     });
 }])
