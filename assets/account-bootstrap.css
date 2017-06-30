@@ -584,3 +584,40 @@ input[type="radio"].input-radio {
 .modal-footer:after {
     clear: both;
 }
+
+/*breadcrumbs*/
+
+.breadcrumb {
+    margin-top: 1em
+}
+.breadcrumb__item {
+    display: inline-block;
+    font-size: 1.333em;
+    color: #999999
+}
+.breadcrumb__item .current {
+    font-weight: 600;
+}
+.breadcrumb__item:after {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 11px;
+    vertical-align: middle;
+    margin: 0 0.5em;
+    background-image: url('breadcrumb-chevron-dark.svg');
+    background-image: url('breadcrumb-chevron-dark.svg'), none
+}
+.breadcrumb__item:last-child:after {
+    display: none
+}
+.breadcrumb__item--current {
+    font-weight: 500;
+    color: #4d4d4d
+}
+.breadcrumb__link {
+    cursor: pointer;
+}
+.breadcrumb--center {
+    text-align: center
+}

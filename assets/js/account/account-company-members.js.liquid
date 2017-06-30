@@ -7,6 +7,10 @@
     ],
     controller: ['storefront.accountApi', function (accountApi) {
         var $ctrl = this;
+
+        this.$routerOnActivate = function (next) {
+            next.params.breadcrumb = "{{ 'customer.edit_company_members.title' |t }}";
+        };
     }]
 })
 
@@ -33,6 +37,7 @@
         };
 
         this.$routerOnActivate = function (next) {
+            next.params.breadcrumb = "{{ 'customer.edit_company_members.title' |t }}";
             $ctrl.pageSettings.currentPage = next.params.pageNumber || $ctrl.pageSettings.currentPage;
             $ctrl.pageSettings.pageChanged();
         };
@@ -130,9 +135,10 @@
 
         var loadPromise;
 
-        function refresh() {
+        function refresh(routingInstruction) {
             loader.wrapLoading(function () {
                 return corporateAccountApi.getCompanyMember({ id: $ctrl.memberNumber }, function (member) {
+                    routingInstruction.params.breadcrumb = member.fullName;
                     $ctrl.member = member;
                     $ctrl.logins = _.map(_.filter(member.securityAccounts, function(account) { return account.storeId === "{{shop.id}}"; }), function(account) { return account.userName });
                 }).$promise;
@@ -143,7 +149,7 @@
             $ctrl.pageNumber = next.params.pageNumber || 1;
             $ctrl.memberNumber = next.params.member;
 
-            refresh();
+            refresh(next);
         };
 
         $ctrl.submitMember = function () {

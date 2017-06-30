@@ -1,0 +1,7 @@
+﻿<ul class="breadcrumbs">
+    <li class="breadcrumb__item" ng-class="{'breadcrumb__item--completed': $index < $last, 'breadcrumb__item--current': $index === $last}" ng-repeat="instruction in $ctrl.instructions">
+        <a class="breadcrumb__link" ng-click="$ctrl.go(instruction)">
+            {% raw %}{{ instruction.component.params.breadcrumb }}{% endraw %}
+        </a>
+    </li>
+</ul>
