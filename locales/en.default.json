@@ -516,8 +516,8 @@
         "edit_company_members": {
             "title": "Company members",
             "none": "There is no any members yet.",
-            "first_name": "First name",
-            "last_name": "Last name",
+            "name": "Name",
+            "email": "Email",
             "type": "Member type",
             "createdDate": "Created date",
             "createdBy": "Created by",

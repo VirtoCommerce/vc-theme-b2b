@@ -5,27 +5,21 @@
   <table class="full" ng-if="$ctrl.entries.length">
     <thead>
       <tr>
-        <th>{{ 'customer.edit_company_members.first_name' | t }}</th>
-        <th>{{ 'customer.edit_company_members.last_name' | t }}</th>
-        <th>{{ 'customer.edit_company_members.createdDate' | t }}</th>
-        <th>{{ 'customer.edit_company_members.createdBy' | t }}</th>
+        <th>{{ 'customer.edit_company_members.name' | t }}</th>
         <th>{{ 'customer.edit_company_members.status' | t }}</th>
         <th>{{ 'customer.edit_company_members.actions' | t }}</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="member in $ctrl.entries">
-        <td ng-bind="member.firstName"></td>
-        <td ng-bind="member.lastName"></td>
-        <td ng-bind="member.createdDate | date"></td>
-        <td ng-bind="member.createdBy"></td>
+        <td ng-bind="member.fullName"></td>
         <td ng-bind="member.isActive?'Active':'Not active'"></td>
         <td>
           <span>
-            <a ng-click="$ctrl.edit(member.id)" href="">Edit</a> |
-            <a ng-click="$ctrl.delete(member.id)" href="">Delete</a> | 
-            <a ng-if="member.isActive" ng-click="$ctrl.changeStatus(member.id)" href="">Deactivate</a>
-            <a ng-if="!member.isActive" ng-click="$ctrl.changeStatus(member.id)" href="">Activate</a>
+            <a ng-if="member.firstName" ng-click="$ctrl.edit(member.id)" href="">Edit | </a>
+            <a ng-click="$ctrl.delete(member.id)" href="">Delete</a>
+            <a ng-if="member.firstName && member.isActive" ng-click="$ctrl.changeStatus(member.id)" href=""> | Deactivate</a>
+            <a ng-if="member.firstName && !member.isActive" ng-click="$ctrl.changeStatus(member.id)" href=""> | Activate</a>
           </span>
         </td>
       </tr>
