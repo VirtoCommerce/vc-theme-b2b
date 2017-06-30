@@ -1,17 +1,17 @@
 <form accept-charset="UTF8" name="memberDetailForm" novalidate="novalidate">
     <div class="form-fieldset" ng-init="$ctrl.setForm(memberDetailForm)">
 
-        <vc-labeled-input value="$ctrl.member.companyName" name="CompanyName" type="text" placeholder="{{ 'customer.register.company_name' | t }}" form="$ctrl.form" required="true" disabled="$ctrl.originalMember.companyName"></vc-labeled-input>
+        <vc-labeled-input value="$ctrl.member.companyName" name="CompanyName" type="text" placeholder="{{ 'customer.register.company_name' | t }}" form="$ctrl.form" required="$ctrl.requiredField('CompanyName')" ng-show="$ctrl.showField('CompanyName')" disabled="$ctrl.disableField('CompanyName')"></vc-labeled-input>
 
-        <vc-labeled-input value="$ctrl.member.email" name="Email" type="email" placeholder="{{ 'customer.register.email' | t }}" form="$ctrl.form" required="true" disabled="$ctrl.originalMember.email"></vc-labeled-input>
+        <vc-labeled-input value="$ctrl.member.email" name="Email" type="email" placeholder="{{ 'customer.register.email' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
 
-        <vc-labeled-input value="$ctrl.member.firstName" name="FirstName" type="text" placeholder="{{ 'customer.register.first_name' | t }}" form="$ctrl.form" required="true" disabled="$ctrl.originalMember.firstName"></vc-labeled-input>
+        <vc-labeled-input value="$ctrl.member.firstName" name="FirstName" type="text" placeholder="{{ 'customer.register.first_name' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
 
-        <vc-labeled-input value="$ctrl.member.lastName" name="LastName" type="text" placeholder="{{ 'customer.register.last_name' | t }}" form="$ctrl.form" disabled="$ctrl.originalMember.lastName"></vc-labeled-input>
+        <vc-labeled-input value="$ctrl.member.lastName" name="LastName" type="text" placeholder="{{ 'customer.register.last_name' | t }}" form="$ctrl.form"></vc-labeled-input>
 
-        <vc-labeled-input value="$ctrl.member.userName" name="UserName" type="text" placeholder="{{ 'customer.register.user_name' | t }}" form="$ctrl.form" disabled="$ctrl.originalMember.userName"></vc-labeled-input>
+        <vc-labeled-input value="$ctrl.member.userName" name="UserName" type="text" placeholder="{{ 'customer.register.user_name' | t }}" form="$ctrl.form" ng-show="$ctrl.showField('UserName')" disabled="$ctrl.disableField('UserName')"></vc-labeled-input>
 
-        <vc-labeled-input value="$ctrl.member.password" name="Password" type="password" placeholder="{{ 'customer.register.password' | t }}" form="$ctrl.form" disabled="$ctrl.originalMember.password"></vc-labeled-input>
+        <vc-labeled-input value="$ctrl.member.password" name="Password" type="password" placeholder="{{ 'customer.register.password' | t }}" form="$ctrl.form" ng-show="$ctrl.showField('Password')" disabled="$ctrl.disableField('Password')"></vc-labeled-input>
 
     </div>
 </form>

@@ -22,7 +22,7 @@
         <td ng-bind="member.isActive?'Active':'Not active'"></td>
         <td>
           <span>
-            <a ng-link="['MemberDetail', {member: member.id, pageNumber: $ctrl.pageSettings.currentPage}]">Edit</a> |
+            <a ng-click="$ctrl.edit(member.id)" href="">Edit</a> |
             <a ng-click="$ctrl.delete(member.id)" href="">Delete</a> | 
             <a ng-if="member.isActive" ng-click="$ctrl.changeStatus(member.id)" href="">Deactivate</a>
             <a ng-if="!member.isActive" ng-click="$ctrl.changeStatus(member.id)" href="">Activate</a>
@@ -65,7 +65,7 @@
   <div ng-if="$ctrl.newMember">
     <div class="one-whole">
       <h2>{{ 'customer.edit_company_member.add_new' | t }}</h2>
-      <vc-member member="$ctrl.newMember" member-component="$ctrl.newMemberComponent"></vc-member>
+      <vc-member-detail member="$ctrl.newMember" member-component="$ctrl.newMemberComponent" fields-config="$ctrl.addNewMemeberFieldsConfig"></vc-member-detail>
       <vc-roles logins="$ctrl.newLogins" roles-component="$ctrl.newRolesComponent"></vc-roles>
     </div>
     <div class="one-whole">
@@ -92,7 +92,9 @@
   <div class="one-whole">
     <h4>{{ 'customer.edit_company_member.title' | t }}</h4>
 
-    <vc-member member="$ctrl.member" member-component="$ctrl.memberComponent"></vc-member>
+    <div ng-show="$ctrl.member">
+        <vc-member-detail member="$ctrl.member" member-component="$ctrl.memberComponent" fields-config="$ctrl.fieldsConfig"></vc-member-detail>
+    </div>
 
     <button ng-click="$ctrl.submitMember()" ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }">
       <span class="btn-text">{{ 'customer.edit_company_member.btn_update' | t }}</span>

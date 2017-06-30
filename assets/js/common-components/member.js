@@ -16,7 +16,7 @@ storefrontApp.component('vcMember', {
             $ctrl.memberComponent = null;
         };
 
-        $ctrl.setForm = function (frm) { debugger; $ctrl.form = frm; };
+        $ctrl.setForm = function (frm) { $ctrl.form = frm; };
 
 
         $ctrl.validate = function () {

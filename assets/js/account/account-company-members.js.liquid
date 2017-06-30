@@ -12,7 +12,8 @@
 
 .component('vcAccountCompanyMembersList', {
     templateUrl: "account-company-members-list.tpl",
-    controller: ['storefrontApp.mainContext', 'storefront.corporateAccountApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, corporateAccountApi, loader, confirmService, $location, $translate) {
+    bindings: { $router: '<' },
+    controller: ['storefrontApp.mainContext', 'storefront.corporateAccountApi', 'storefront.corporateRegisterApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, corporateAccountApi, corporateRegisterApi, loader, confirmService, $location, $translate) {
         var $ctrl = this;
         $ctrl.newMemberComponent = null;
         $ctrl.newRolesComponent = null;
@@ -31,6 +32,25 @@
                 }).$promise;
             });
         };
+        
+        $ctrl.addNewMemeberFieldsConfig =[
+            {
+                field: 'CompanyName',
+                disabled: true,
+                visible: false,
+                required: false
+            },
+            {
+                field: 'UserName',
+                disabled: false,
+                visible: true
+            },
+            {
+                field: 'Password',
+                disabled: false,
+                visible:  true
+            }
+        ];
 
         this.$routerOnActivate = function (next) {
             $ctrl.pageSettings.currentPage = next.params.pageNumber || $ctrl.pageSettings.currentPage;
@@ -55,14 +75,21 @@
 
         $ctrl.addNewMember = function () {
             if ($ctrl.newMemberComponent.validate()) {
-                $ctrl.newMember.organizations = [];
-                $ctrl.newMember.organizations.push(mainContext.customer.companyId);
+                $ctrl.newMember.companyId = mainContext.customer.companyId;
+                $ctrl.newMember.roles = _.map(_.filter($ctrl.newRolesComponent.roles, function (role) { return role.assigned === true; }), function(role) { return role.name });
+                $ctrl.newMember.storeId = "{{shop.id}}";
 
-                $ctrl.updateCompanyMember($ctrl.newMember).then($ctrl.cancel).then(function () {
+                $ctrl.registerCompanyMember($ctrl.newMember).then($ctrl.cancel).then(function () {
                     $ctrl.pageSettings.currentPage = 1;
                     $ctrl.pageSettings.pageChanged();
                 });
             }
+        };
+
+        $ctrl.registerCompanyMember = function (registerData) {
+            return loader.wrapLoading(function () {
+                return corporateRegisterApi.registerMember(registerData).$promise;
+            });
         };
 
         $ctrl.updateCompanyMember = function (companyMember) {
@@ -90,6 +117,10 @@
                 }).$promise;
             });
         };
+
+        $ctrl.edit = function (memberId) {
+            this.$router.navigate(['MemberDetail', {member: memberId, pageNumber: $ctrl.pageSettings.currentPage}]);
+        }
 
         $ctrl.delete = function (memberId) {
             var showDialog = function (text) {
@@ -123,16 +154,38 @@
     controller: ['storefront.corporateAccountApi', '$rootScope', '$window', 'authService', 'loadingIndicatorService', 'confirmService', function (corporateAccountApi, $rootScope, $window, authService, loader, confirmService) {
         var $ctrl = this;
         $ctrl.loader = loader;
+        $ctrl.fieldsConfig =[
+            {
+                field: 'CompanyName',
+                disabled: true,
+                visible: false,
+                required: false
+            },
+            {
+                field: 'UserName',
+                disabled: true,
+                visible: false
+            },
+            {
+                field: 'Password',
+                disabled: true,
+                visible: false
+            }
+        ];
 
         $ctrl.memberComponent = null;
         $ctrl.rolesComponent = null;
 
-        var loadPromise;
-
         function refresh() {
             loader.wrapLoading(function () {
                 return corporateAccountApi.getCompanyMember({ id: $ctrl.memberNumber }, function (member) {
-                    $ctrl.member = member;
+                    $ctrl.member = {
+                        id: member.id,
+                        firstName: member.firstName,
+                        lastName: member.lastName,
+                        email: _.first(member.emails),
+                        organizations: member.organizations
+                    };
                     $ctrl.logins = _.map(_.filter(member.securityAccounts, function(account) { return account.storeId === "{{shop.id}}"; }), function(account) { return account.userName });
                 }).$promise;
             });
@@ -148,6 +201,8 @@
         $ctrl.submitMember = function () {
             if ($ctrl.memberComponent.validate()) {
                 loader.wrapLoading(function () {
+                    $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;
+                    $ctrl.member.emails = [ $ctrl.member.email ];
                     return corporateAccountApi.updateCompanyMember($ctrl.member).$promise;
                 });
             }

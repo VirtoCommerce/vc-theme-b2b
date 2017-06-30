@@ -3,17 +3,33 @@ storefrontApp.component('vcMemberDetail', {
     templateUrl: "themes/assets/memberDetail.tpl.html",
     bindings: {
         member: '=',
-        memberComponent: '='
+        memberComponent: '=',
+        fieldsConfig: '<'
     },
-    controller: ['$scope', 'loadingIndicatorService', function ($scope, loader) {
+    controller: ['$scope', function ($scope) {
         var $ctrl = this;
-        $ctrl.originalMember = { };
+        
+        $ctrl.config = [
+            {
+                field: 'CompanyName',
+                disabled: false,
+                visible: true,
+                required: true
+            },
+            {
+                field: 'UserName',
+                disabled: false,
+                visible: true
+            },
+            {
+                field: 'Password',
+                disabled: false,
+                visible: true
+            }
+        ];
 
-        $scope.$watch(function() {
-            return loader.isLoading;
-        }, function() {
-            angular.copy($ctrl.member, $ctrl.originalMember);
-        });
+        if ($ctrl.fieldsConfig)
+            Object.assign($ctrl.config, $ctrl.fieldsConfig);
 
         this.$onInit = function () {
             $ctrl.memberComponent = this;
@@ -34,5 +50,22 @@ storefrontApp.component('vcMemberDetail', {
             }
             return true;
         };
+
+        $ctrl.showField = function (field) {
+            return getFieldConfig(field).visible == true;
+        }
+
+        $ctrl.disableField = function (field) {
+            return getFieldConfig(field).disabled == true;
+        }
+
+        $ctrl.requiredField = function (field) {
+            return getFieldConfig(field).required == true;
+        }
+
+        function getFieldConfig(field) {
+            var configItem = _.first(_.filter($ctrl.config, function (configItem) { return configItem.field === field; }));
+            return configItem
+        }
     }]
 });
