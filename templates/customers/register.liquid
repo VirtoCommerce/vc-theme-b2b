@@ -27,7 +27,7 @@
         <div ng-show="!complete && error">
             <h5>{{ 'customer.register.registration_failed_text' | t }}</h5>
             
-            <p ng-bind-html="error"></p>
+            <p class="errors" ng-bind-html="error"></p>
         </div>
 
         <div ng-shop="!complete">
