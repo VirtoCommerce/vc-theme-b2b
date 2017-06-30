@@ -68,6 +68,7 @@
                 adminName: mainContext.customer.fullName,
                 adminEmail: mainContext.customer.email,
                 message: $ctrl.inviteInfo.message,
+                language: "{{current_language.culture_name}}",
                 callbackUrl: $location.protocol() + "://" + $location.host() + ":" + $location.port() + "{{ "/account/register" | absolute_url }}"
               }).$promise;
             }).then($ctrl.cancel()).then($ctrl.pageSettings.pageChanged);
