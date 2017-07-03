@@ -15,6 +15,7 @@
     bindings: { $router: '<' },
     controller: ['storefrontApp.mainContext', 'storefront.corporateAccountApi', 'storefront.corporateRegisterApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, corporateAccountApi, corporateRegisterApi, loader, confirmService, $location, $translate) {
         var $ctrl = this;
+        $ctrl.currentMemberId = mainContext.customer.id;
         $ctrl.newMemberComponent = null;
         $ctrl.newRolesComponent = null;
         $ctrl.loader = loader;
@@ -185,7 +186,8 @@
                         firstName: member.firstName,
                         lastName: member.lastName,
                         email: _.first(member.emails),
-                        organizations: member.organizations
+                        organizations: member.organizations,
+                        title: member.title
                     };
                     $ctrl.logins = _.map(_.filter(member.securityAccounts, function(account) { return account.storeId === "{{shop.id}}"; }), function(account) { return account.userName });
                 }).$promise;
