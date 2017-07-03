@@ -5,6 +5,27 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
     $scope.memberComponent = null;
     $scope.newMember = null;
 
+    $scope.registerMemberFieldsConfig =[
+        {
+            field: 'CompanyName',
+            disabled: false,
+            visible: true,
+            required: true
+        },
+        {
+            field: 'UserName',
+            disabled: false,
+            visible: true,
+            required: true
+        },
+        {
+            field: 'Password',
+            disabled: false,
+            visible:  true,
+            required: true
+        }
+    ];
+
     function getParams() {
         var params = window.location.search.substring(1).split("&"), result = {}, param, i;
         for (i in params) {
@@ -51,6 +72,8 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
     };
 
     $scope.register = function () {
+        $scope.error = null;
+
         if (this.memberComponent.validate()) {
             if ($scope.newMember.invite) {
                 $scope.loader.wrapLoading(function () {

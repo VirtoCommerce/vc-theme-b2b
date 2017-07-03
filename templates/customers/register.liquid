@@ -1,37 +1,42 @@
 {% layout settings.customer_layout %}
 
-<div class="grid vc-form" ng-controller="accountRegisterController">
+<div class="grid-item large--one-third push--large--one-third text-center" ng-controller="accountRegisterController">
+    <h1>{{ 'customer.register.title' | t }}</h1>
 
-    <div class="grid-item large--one-third push--large--one-third text-center" ng-init="init('{{ shop.id }}')">
+    <div ng-show="!complete && error" class="note form-error">
+        <p>{{ 'general.forms.post_error' | t }}</p>
 
-        <h1>{{ 'customer.register.title' | t }}</h1>
+        <ul class="disc">
+            <li ng-bind-html="error"></li>
+        </ul>
+    </div>
 
-        <div ng-show="!complete && !error">
-            <vc-member-detail ng-show="!loader.isLoading" member="newMember" member-component="memberComponent"></vc-member-detail>
+    <div class="grid vc-form">
 
-            <p>
-                <button ng-click="register()" ng-disabled="loader.isLoading" class="vc-btn" ng-class="{ 'btn--disabled': memberForm.$pristine, 'loading': loader.isLoading }">
-                    <span class="btn-text">{{ 'customer.register.submit' | t }}</span>
-                    <span class="btn-loading"></span>
-                </button>
-            </p>
-        </div>
+        <div ng-init="init('{{ shop.id }}')">
 
-        <div ng-show="complete && !error">
-            <h5>{{ 'customer.register.registration_success_text' | t }}</h5>
+            <div ng-show="!complete">
+                <vc-member-detail ng-show="!loader.isLoading" member="newMember" member-component="memberComponent" fields-config="registerMemberFieldsConfig"></vc-member-detail>
+
+                <p>
+                    <button ng-click="register()" ng-disabled="loader.isLoading" class="vc-btn" ng-class="{ 'btn--disabled': memberForm.$pristine, 'loading': loader.isLoading }">
+                        <span class="btn-text">{{ 'customer.register.submit' | t }}</span>
+                        <span class="btn-loading"></span>
+                    </button>
+                </p>
+            </div>
+
+            <div ng-show="complete && !error">
+                <h5>{{ 'customer.register.registration_success_text' | t }}</h5>
             
-            <p>
-                {{ 'customer.register.goto_text' | t }} <a href="account/login">{{ 'customer.register.login_page_text' | t }}</a>
-            </p>
-        </div>
-        <div ng-show="!complete && error">
-            <h5>{{ 'customer.register.registration_failed_text' | t }}</h5>
-            
-            <p class="errors" ng-bind-html="error"></p>
-        </div>
+                <p>
+                    {{ 'customer.register.goto_text' | t }} <a href="account/login">{{ 'customer.register.login_page_text' | t }}</a>
+                </p>
+            </div>
 
-        <div ng-shop="!complete">
-            <span ng-if="!complete && !error">{{ 'customer.register.or' | t }}</span> <a href="{{ shop.url }}">{{ 'customer.register.cancel' | t }}</a>
+            <div ng-shop="!complete">
+                <span ng-if="!complete && !error">{{ 'customer.register.or' | t }}</span> <a href="{{ shop.url }}">{{ 'customer.register.cancel' | t }}</a>
+            </div>
         </div>
     </div>
 </div>
