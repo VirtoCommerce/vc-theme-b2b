@@ -16,7 +16,7 @@
         <div ng-init="init('{{ shop.id }}')">
 
             <div ng-show="!complete">
-                <vc-member-detail ng-show="!loader.isLoading" member="newMember" member-component="memberComponent" fields-config="registerMemberFieldsConfig"></vc-member-detail>
+                <vc-member-detail member="newMember" member-component="memberComponent" fields-config="registerMemberFieldsConfig"></vc-member-detail>
 
                 <p>
                     <button ng-click="register()" ng-disabled="loader.isLoading" class="vc-btn" ng-class="{ 'btn--disabled': memberForm.$pristine, 'loading': loader.isLoading }">
@@ -28,14 +28,16 @@
 
             <div ng-show="complete && !error">
                 <h5>{{ 'customer.register.registration_success_text' | t }}</h5>
-            
+
+                <br />
+
                 <p>
                     {{ 'customer.register.goto_text' | t }} <a href="account/login">{{ 'customer.register.login_page_text' | t }}</a>
                 </p>
             </div>
 
-            <div ng-shop="!complete">
-                <span ng-if="!complete && !error">{{ 'customer.register.or' | t }}</span> <a href="{{ shop.url }}">{{ 'customer.register.cancel' | t }}</a>
+            <div ng-if="!complete && !error">
+                <span>{{ 'customer.register.or' | t }}</span> <a href="{{ shop.url }}">{{ 'customer.register.cancel' | t }}</a>
             </div>
         </div>
     </div>
