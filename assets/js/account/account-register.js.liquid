@@ -5,7 +5,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
     $scope.memberComponent = null;
     $scope.newMember = null;
 
-    $scope.registerMemberFieldsConfig =[
+    $scope.registerMemberFieldsConfig = [
         {
             field: 'CompanyName',
             disabled: false,
@@ -47,6 +47,13 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
 
         var invite = getParams().invite;
         if (invite) {
+            $scope.registerMemberFieldsConfig[0] = {
+                field: 'CompanyName',
+                disabled: false,
+                visible: false,
+                required: false
+            };
+            
             $scope.newMember.invite = invite;
             $scope.loader.wrapLoading(function() {
                 return corporateAccountApi.getCompanyMember({ id: invite }).$promise
