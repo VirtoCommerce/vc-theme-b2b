@@ -33,8 +33,7 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
          { path: '/addresses', name: 'Addresses', component: 'vcAccountAddresses' },
          { path: '/changePassword', name: 'PasswordChange', component: 'vcAccountPasswordChange' },
          { path: '/companyInfo', name: 'CompanyInfo', component: 'vcAccountCompanyInfo' },
-         { path: '/companyMembers/...', name: 'CompanyMembers', component: 'vcAccountCompanyMembers' },
-         { path: '/roles', name: 'Roles', component: 'vcAccountRoles' }
+         { path: '/companyMembers/...', name: 'CompanyMembers', component: 'vcAccountCompanyMembers' }
     ],
     controller: ['$scope', 'storefront.accountApi', 'storefrontApp.mainContext', 'authService', 'loadingIndicatorService', function ($scope, accountApi, mainContext, authService, loader) {
         var $ctrl = this;

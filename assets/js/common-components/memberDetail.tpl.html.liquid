@@ -15,5 +15,6 @@
 
         <vc-labeled-input value="$ctrl.member.password" name="Password" type="password" placeholder="{{ 'customer.register.password' | t }}" form="$ctrl.form" required="$ctrl.requiredField('Password')" ng-show="$ctrl.showField('Password')" disabled="$ctrl.disableField('Password')"></vc-labeled-input>
 
+        <vc-roles logins="$ctrl.member.logins" roles-component="$ctrl.rolesComponent" ng-show="$ctrl.showField('Roles')" disabled="$ctrl.disableField('Roles')"></vc-roles>
     </div>
 </form>

@@ -287,8 +287,7 @@
                 "addresses": "Addresses",
                 "change_password": "Change password",
                 "company_info": "Company info",
-                "company_members": "Company members",
-                "roles":  "Roles" 
+                "company_members": "Company members"
             }
         },
         "activate_account": {
@@ -337,11 +336,12 @@
             "guest_continue": "Let's go"
         },
         "roles": {
-            "title":  "My roles",
+            "placeholder": "Role",
             "none":  "No roles available",
             "descriptions": {
-                "employee":  "Basic functionality for employee", 
-                "manager": "Company info, members & roles management"
+                "corporate_administrator":  "Administrative role for corporate module", 
+                "corporate_manager": "Managerial for corporate module", 
+                "employee": "Role of the employee for corporate module"
             }
         },
         "orders": {
@@ -534,7 +534,6 @@
             "last_name": "Last name",
             "middle_name": "Middle name",
             "full_name": "Full name",
-            "roles": "User roles",
             "btn_update": "Update",
             "invite":  {
               "title": "Invite members",

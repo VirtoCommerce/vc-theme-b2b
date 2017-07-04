@@ -13,11 +13,10 @@
 .component('vcAccountCompanyMembersList', {
     templateUrl: "account-company-members-list.tpl",
     bindings: { $router: '<' },
-    controller: ['storefrontApp.mainContext', 'storefront.corporateAccountApi', 'storefront.corporateRegisterApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, corporateAccountApi, corporateRegisterApi, loader, confirmService, $location, $translate) {
+    controller: ['storefrontApp.mainContext', '$scope', 'storefront.corporateAccountApi', 'storefront.corporateRegisterApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, $scope, corporateAccountApi, corporateRegisterApi, loader, confirmService, $location, $translate) {
         var $ctrl = this;
         $ctrl.currentMemberId = mainContext.customer.id;
         $ctrl.newMemberComponent = null;
-        $ctrl.newRolesComponent = null;
         $ctrl.loader = loader;
         $ctrl.pageSettings = { currentPage: 1, itemsPerPageCount: 5, numPages: 10 };
         $ctrl.pageSettings.pageChanged = function () {
@@ -50,8 +49,19 @@
                 field: 'Password',
                 disabled: false,
                 visible:  true
+            },
+            {
+                field: 'Roles',
+                disabled: false,
+                visible:  true
             }
         ];
+        
+        $scope.init = function(storeId, cultureName, registrationUrl){
+            $ctrl.storeId = storeId;
+            $ctrl.cultureName = cultureName;
+            $ctrl.registrationUrl = registrationUrl;
+        };
 
         this.$routerOnActivate = function (next) {
             $ctrl.pageSettings.currentPage = next.params.pageNumber || $ctrl.pageSettings.currentPage;
@@ -63,14 +73,14 @@
             $ctrl.inviteInfo.emails = $ctrl.inviteInfo.rawEmails.split(/[,;]|\r|\r\n|\n/g);
             loader.wrapLoading(function(){
               return corporateAccountApi.invite({
-                storeId: "{{shop.id}}",
+                storeId: $ctrl.storeId,
                 companyId: mainContext.customer.companyId,
                 emails: $ctrl.inviteInfo.emails,
                 adminName: mainContext.customer.fullName,
                 adminEmail: mainContext.customer.email,
                 message: $ctrl.inviteInfo.message,
-                language: "{{current_language.culture_name}}",
-                callbackUrl: $location.protocol() + "://" + $location.host() + ":" + $location.port() + "{{ "/account/register" | absolute_url }}"
+                language: $ctrl.cultureName,
+                callbackUrl: $location.protocol() + "://" + $location.host() + ":" + $location.port() + $ctrl.registrationUrl
               }).$promise;
             }).then($ctrl.cancel()).then($ctrl.pageSettings.pageChanged);
         };
@@ -78,8 +88,8 @@
         $ctrl.addNewMember = function () {
             if ($ctrl.newMemberComponent.validate()) {
                 $ctrl.newMember.companyId = mainContext.customer.companyId;
-                $ctrl.newMember.roles = _.map(_.filter($ctrl.newRolesComponent.roles, function (role) { return role.assigned === true; }), function(role) { return role.name });
-                $ctrl.newMember.storeId = "{{shop.id}}";
+                $ctrl.newMember.roles = _.map(_.filter($ctrl.newMemberComponent.rolesComponent.roles, function (role) { return role.assigned === true; }), function(role) { return role.name });
+                $ctrl.newMember.storeId = $ctrl.storeId;
 
                 $ctrl.registerCompanyMember($ctrl.newMember).then($ctrl.cancel).then(function () {
                     $ctrl.pageSettings.currentPage = 1;
@@ -99,12 +109,6 @@
                 return corporateAccountApi.updateCompanyMember(companyMember).$promise;
             });
         };
-
-        //$ctrl.updateRoles = function() {
-        //    angular.forEach($ctrl.logins, function(login) {
-        //        authService.changeAuthData({ roles: $ctrl.rolesComponent.roles }, login);
-        //    });
-        //};
 
         $ctrl.cancel = function () {
             $ctrl.inviteInfo = null;
@@ -153,7 +157,7 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefront.corporateAccountApi', '$rootScope', '$window', 'authService', 'loadingIndicatorService', 'confirmService', function (corporateAccountApi, $rootScope, $window, authService, loader, confirmService) {
+    controller: ['storefront.corporateAccountApi', '$rootScope', '$scope', '$window', 'authService', 'loadingIndicatorService', 'confirmService', function (corporateAccountApi, $rootScope, $scope, $window, authService, loader, confirmService) {
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.fieldsConfig =[
@@ -172,11 +176,19 @@
                 field: 'Password',
                 disabled: true,
                 visible: false
+            },
+            {
+                field: 'Roles',
+                disabled: false,
+                visible:  true
             }
         ];
 
         $ctrl.memberComponent = null;
-        $ctrl.rolesComponent = null;
+        
+        $scope.init = function(storeId){
+            $ctrl.storeId = storeId;
+        };
 
         function refresh() {
             loader.wrapLoading(function () {
@@ -187,9 +199,9 @@
                         lastName: member.lastName,
                         email: _.first(member.emails),
                         organizations: member.organizations,
-                        title: member.title
+                        title: member.title,
+                        logins: _.map(_.filter(member.securityAccounts, function(account) { return account.storeId === $ctrl.storeId; }), function(account) { return account.userName })
                     };
-                    $ctrl.logins = _.map(_.filter(member.securityAccounts, function(account) { return account.storeId === "{{shop.id}}"; }), function(account) { return account.userName });
                 }).$promise;
             });
         }
@@ -208,13 +220,10 @@
                     $ctrl.member.emails = [ $ctrl.member.email ];
                     return corporateAccountApi.updateCompanyMember($ctrl.member).$promise;
                 });
-            }
-        };
-
-        $ctrl.submitRoles = function () {
-            angular.forEach($ctrl.logins, function(login) {
-                authService.changeAuthData({ roles: $ctrl.rolesComponent.roles }, login);
-            });
+                angular.forEach($ctrl.member.logins, function(login) {
+                    authService.changeAuthData({ roles: $ctrl.memberComponent.rolesComponent.roles }, login);
+                });
+            };
         };
     }]
 });

@@ -25,11 +25,18 @@ storefrontApp.component('vcMemberDetail', {
                 field: 'Password',
                 disabled: false,
                 visible: true
+            },
+            {
+                field: 'Roles',
+                disabled: false,
+                visible:  false
             }
         ];
 
         if ($ctrl.fieldsConfig)
             Object.assign($ctrl.config, $ctrl.fieldsConfig);
+
+        $ctrl.rolesComponent = null;
 
         this.$onInit = function () {
             $ctrl.memberComponent = this;

@@ -3,8 +3,9 @@
   "presets": {
     "Blue": {
       "available_roles": [
-        "Employee",
-        "Manager"
+        "Corporate administrator",
+        "Corporate manager",
+        "Employee"
       ]
     }
   }
