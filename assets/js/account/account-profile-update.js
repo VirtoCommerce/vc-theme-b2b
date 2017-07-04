@@ -4,7 +4,7 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefrontApp.mainContext', '$scope', 'loadingIndicatorService', 'storefront.corporateAccountApi', function (mainContext, $scope, loader, corporateAccountApi) {
+    controller: ['storefrontApp.mainContext', '$scope', 'authService', 'loadingIndicatorService', 'storefront.corporateAccountApi', function (mainContext, $scope, authService, loader, corporateAccountApi) {
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.currentMember = mainContext.customer;
@@ -24,6 +24,12 @@
                 }).$promise;
             });
         };
+
+        $ctrl.logins = authService.userLogin ? [authService.userLogin] : [];
+        $scope.$on('loginStatusChanged', function (e, authContext) {
+            if (!$ctrl.logins.length)
+                $ctrl.logins = [authContext.userLogin];
+        });
 
         $ctrl.submit = function () {
             $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;

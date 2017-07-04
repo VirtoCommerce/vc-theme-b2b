@@ -48,14 +48,11 @@
                 </div>
                 <ul class="nav nav-pills nav-justified nav-justified-fixed grid-item">
                     {% if customer.is_corporate_account %}
-                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyInfo'}" va-permission="storefront:companyInfo:access">
+                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyInfo'}" va-permission="storefront:companyInfo">
                         <a ng-link="['CompanyInfo']">{{ 'customer.account.menu_label.company_info' | t }}</a>
                     </li>
-                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyMembers'}" va-permission="storefront:companyMembers:access">
+                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyMembers'}" va-permission="storefront:companyMembers">
                         <a ng-link="['CompanyMembers']">{{ 'customer.account.menu_label.company_members' | t }}</a>
-                    </li>
-                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountRoles'}">
-                        <a ng-link="['Roles']">{{ 'customer.account.menu_label.roles' | t }}</a>
                     </li>
                     {% endif %}
                 </ul>
