@@ -149,6 +149,11 @@
             $ctrl.inviteForm.$setSubmitted();
             return $ctrl.inviteForm.valid;
         };
+
+        $ctrl.showActions = function (member) {
+            debugger;
+            return member.id != mainContext.customer.id;
+        }
     }]
 })
 

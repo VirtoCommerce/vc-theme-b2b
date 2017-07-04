@@ -20,11 +20,11 @@
 			<td ng-bind="member.title"></td>
 			<td ng-bind="member.isActive?'Active':'Not active'"></td>
 			<td>
-			  <span>
-				<a ng-if="member.firstName" ng-click="$ctrl.edit(member.id)" href="">Edit | </a>
-				<a ng-click="$ctrl.delete(member.id)" href="">Delete</a>
-				<a ng-if="member.firstName && member.isActive" ng-click="$ctrl.changeStatus(member.id)" href=""> | Deactivate</a>
-				<a ng-if="member.firstName && !member.isActive" ng-click="$ctrl.changeStatus(member.id)" href=""> | Activate</a>
+			  <span ng-show="$ctrl.showActions(member)">
+				  <a ng-if="member.firstName" ng-click="$ctrl.edit(member.id)" href="">Edit | </a>
+				  <a ng-click="$ctrl.delete(member.id)" href="">Delete</a>
+				  <a ng-if="member.firstName && member.isActive" ng-click="$ctrl.changeStatus(member.id)" href=""> | Deactivate</a>
+				  <a ng-if="member.firstName && !member.isActive" ng-click="$ctrl.changeStatus(member.id)" href=""> | Activate</a>
 			  </span>
 			</td>
 		  </tr>
