@@ -16,24 +16,29 @@ hr.hr--grid-border {
 }
 
 /*commmon-components.css additions*/
+.vc-form .form-select,
 .form-select {
     text-align: left;
 }
 
+.vc-form .form-select:disabled,
 .form-select:disabled {
     background: #fafafa;
     border-color: #bababa;    
     color: #bababa;
 }
 
+    .vc-form .form-select:disabled::before,
     .form-select:disabled::before {
         border-color: #ccc transparent transparent;
     }
 
+.vc-form .form-placeholder,
 .form-placeholder {
     color: #999;
 }
 
+.vc-form .form-description,
 .form-description {
     color: #737373;
     font-size: 12px;
