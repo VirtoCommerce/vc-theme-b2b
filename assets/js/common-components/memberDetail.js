@@ -17,6 +17,12 @@ storefrontApp.component('vcMemberDetail', {
                 required: true
             },
             {
+                field: 'Email',
+                disabled: false,
+                visible: true,
+                required: true
+            },
+            {
                 field: 'UserName',
                 disabled: false,
                 visible: true
@@ -75,4 +81,23 @@ storefrontApp.component('vcMemberDetail', {
             return configItem
         }
     }]
+});
+
+storefrontApp.directive('confirmPasswordValidation', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elem, attr, ngModel) {
+            ngModel.$parsers.unshift(function (value, scope) {
+                var isValid = true;
+                var password = ngModel.$$parentForm.Password.$viewValue;
+
+                if (password) {
+                    isValid = password === value;
+                }
+
+                ngModel.$setValidity('confirmPasswordValidation', isValid);
+                return value;
+            });
+        }
+    };
 });

@@ -1,7 +1,8 @@
 {
     "common": {
         "required": "Required",
-        "invalid": "Invalid"
+        "invalid": "Invalid",
+        "not_match": "Confirm password does not match the password"
     },
     "checkout": {
         "title": "Checkout",
@@ -477,6 +478,7 @@
             "email": "Email",
             "user_name": "User Name",
             "password": "Password",
+            "confirm_password": "Confirm Password",
             "submit": "Create",
             "or": "or",
             "cancel": "Return to Store",
@@ -520,6 +522,7 @@
             "name": "Name",
             "job_title": "Title",
             "email": "Email",
+            "role": "Role",
             "type": "Member type",
             "createdDate": "Created date",
             "createdBy": "Created by",

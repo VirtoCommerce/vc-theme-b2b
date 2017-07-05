@@ -27,7 +27,19 @@
                     take: $ctrl.pageSettings.itemsPerPageCount,
                     sortInfos: $ctrl.sortInfos
                 }, function (data) {
-                    $ctrl.entries = data.results;
+                    var membersCollection = _.map(data.results, function(item) {
+                        var member = item;
+                        var securityAccount = _.first(item.securityAccounts);
+                        if(securityAccount) {
+                            var role = _.first(securityAccount.roles);
+                            if(role) {
+                                member.role = role.name;
+                            }
+                        }
+                        return member;
+                    });
+
+                    $ctrl.entries = membersCollection;
                     $ctrl.pageSettings.totalItems = data.totalCount;
                 }).$promise;
             });
@@ -39,6 +51,12 @@
                 disabled: true,
                 visible: false,
                 required: false
+            },
+            {
+                field: 'Email',
+                disabled: false,
+                visible: true,
+                required: true
             },
             {
                 field: 'UserName',
@@ -170,6 +188,12 @@
                 disabled: true,
                 visible: false,
                 required: false
+            },
+            {
+                field: 'Email',
+                disabled: false,
+                visible: true,
+                required: true
             },
             {
                 field: 'UserName',

@@ -9,6 +9,7 @@
 			<th>{{ 'customer.edit_company_members.name' | t }}</th>
 			<th>{{ 'customer.edit_company_members.email' | t }}</th>
 			<th>{{ 'customer.edit_company_members.job_title' | t }}</th>
+      <th>{{ 'customer.edit_company_members.role' | t }}</th>
 			<th>{{ 'customer.edit_company_members.status' | t }}</th>
 			<th>{{ 'customer.edit_company_members.actions' | t }}</th>
 		  </tr>
@@ -18,6 +19,7 @@
 			<td ng-bind="member.fullName"></td>
 			<td ng-bind="member.emails"></td>
 			<td ng-bind="member.title"></td>
+      <td ng-bind="member.role"></td>
 			<td ng-bind="member.isActive?'Active':'Not active'"></td>
 			<td>
 			  <span ng-show="$ctrl.showActions(member)">
