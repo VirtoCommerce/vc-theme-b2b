@@ -3,7 +3,7 @@
 
         <vc-labeled-input value="$ctrl.member.companyName" name="CompanyName" type="text" placeholder="{{ 'customer.register.company_name' | t }}" form="$ctrl.form" required="$ctrl.requiredField('CompanyName')" ng-show="$ctrl.showField('CompanyName')" disabled="$ctrl.disableField('CompanyName')"></vc-labeled-input>
 
-        <vc-labeled-input value="$ctrl.member.email" name="Email" type="email" placeholder="{{ 'customer.register.email' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
+        <vc-labeled-input value="$ctrl.member.email" name="Email" type="email" placeholder="{{ 'customer.register.email' | t }}" form="$ctrl.form" required="$ctrl.requiredField('Email')" ng-show="$ctrl.showField('Email')" disabled="$ctrl.disableField('Email')"></vc-labeled-input>
 
         <vc-labeled-input value="$ctrl.member.firstName" name="FirstName" type="text" placeholder="{{ 'customer.register.first_name' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
 

@@ -13,6 +13,12 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
             required: true
         },
         {
+            field: 'Email',
+            disabled: false,
+            visible: true,
+            required: true
+        },
+        {
             field: 'UserName',
             disabled: false,
             visible: true,
@@ -53,7 +59,13 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                 visible: false,
                 required: false
             };
-            
+            $scope.registerMemberFieldsConfig[1] = {
+                field: 'Email',
+                disabled: true,
+                visible: true,
+                required: false
+            };
+
             $scope.newMember.invite = invite;
             $scope.loader.wrapLoading(function() {
                 return corporateAccountApi.getCompanyMember({ id: invite }).$promise

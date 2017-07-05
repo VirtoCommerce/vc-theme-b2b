@@ -41,6 +41,12 @@
                 required: false
             },
             {
+                field: 'Email',
+                disabled: false,
+                visible: true,
+                required: true
+            },
+            {
                 field: 'UserName',
                 disabled: false,
                 visible: true
@@ -151,7 +157,6 @@
         };
 
         $ctrl.showActions = function (member) {
-            debugger;
             return member.id != mainContext.customer.id;
         }
     }]
@@ -171,6 +176,12 @@
                 disabled: true,
                 visible: false,
                 required: false
+            },
+            {
+                field: 'Email',
+                disabled: false,
+                visible: true,
+                required: true
             },
             {
                 field: 'UserName',

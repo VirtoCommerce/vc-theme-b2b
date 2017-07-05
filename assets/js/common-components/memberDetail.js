@@ -17,6 +17,12 @@ storefrontApp.component('vcMemberDetail', {
                 required: true
             },
             {
+                field: 'Email',
+                disabled: false,
+                visible: true,
+                required: true
+            },
+            {
                 field: 'UserName',
                 disabled: false,
                 visible: true
