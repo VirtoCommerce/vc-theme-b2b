@@ -15,6 +15,21 @@
 
         <vc-labeled-input value="$ctrl.member.password" name="Password" type="password" placeholder="{{ 'customer.register.password' | t }}" form="$ctrl.form" required="$ctrl.requiredField('Password')" ng-show="$ctrl.showField('Password')" disabled="$ctrl.disableField('Password')"></vc-labeled-input>
 
+        <div class="form-group" ng-show="$ctrl.showField('Password')" ng-class="{'keyuped': $ctrl.form.ConfirmPassword.$viewValue.length, 'error': ($ctrl.form.ConfirmPassword.$dirty || $ctrl.form.$submitted) && $ctrl.form.ConfirmPassword.$invalid }">
+          <label for="ConfirmPassword" class="form-label">{{ 'customer.register.confirm_password' | t }}</label>
+          <input ng-model="$ctrl.member.confirmPassword"
+                 name="ConfirmPassword"
+                 id="ConfirmPassword"
+                 placeholder="{{ 'customer.register.confirm_password' | t }}"
+                 type="password"
+                 ng-required="$ctrl.requiredField('Password')" class="form-input"
+                 ng-disabled="$ctrl.disableField('Password')"
+                 confirm-password-validation
+             />
+          <span class="form-error" ng-if="($ctrl.form.ConfirmPassword.$dirty || $ctrl.form.$submitted) && $ctrl.form.ConfirmPassword.$error.required" ng-bind="$ctrl.requiredError || '{{ 'common.required' | t }}'"></span>
+          <span class="form-error" ng-if="($ctrl.form.ConfirmPassword.$dirty || $ctrl.form.$submitted) && !$ctrl.form.ConfirmPassword.$error.required && $ctrl.form.ConfirmPassword.$invalid && $ctrl.form.ConfirmPassword.$error.confirmPasswordValidation">{{ 'common.not_match' | t }}</span>
+        </div>
+
         <vc-roles logins="$ctrl.member.logins" roles-component="$ctrl.rolesComponent" ng-show="$ctrl.showField('Roles')" disabled="$ctrl.disableField('Roles')"></vc-roles>
     </div>
 </form>
