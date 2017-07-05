@@ -94,7 +94,7 @@
         $ctrl.addNewMember = function () {
             if ($ctrl.newMemberComponent.validate()) {
                 $ctrl.newMember.companyId = mainContext.customer.companyId;
-                $ctrl.newMember.roles = _.map(_.filter($ctrl.newMemberComponent.rolesComponent.roles, function (role) { return role.assigned === true; }), function(role) { return role.name });
+                $ctrl.newMember.role = $ctrl.newMemberComponent.rolesComponent.currentRole.name;
                 $ctrl.newMember.storeId = $ctrl.storeId;
 
                 $ctrl.registerCompanyMember($ctrl.newMember).then($ctrl.cancel).then(function () {
@@ -167,7 +167,7 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefront.corporateAccountApi', '$rootScope', '$scope', '$window', 'authService', 'loadingIndicatorService', 'confirmService', function (corporateAccountApi, $rootScope, $scope, $window, authService, loader, confirmService) {
+    controller: ['storefront.corporateAccountApi', '$q', '$rootScope', '$scope', '$window', 'roleService', 'loadingIndicatorService', 'confirmService', function (corporateAccountApi, $q, $rootScope, $scope, $window, roleService, loader, confirmService) {
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.fieldsConfig =[
@@ -216,7 +216,7 @@
                         email: _.first(member.emails),
                         organizations: member.organizations,
                         title: member.title,
-                        logins: _.map(_.filter(member.securityAccounts, function(account) { return account.storeId === $ctrl.storeId; }), function(account) { return account.userName })
+                        securityAccounts: member.securityAccounts
                     };
                 }).$promise;
             });
@@ -234,10 +234,10 @@
                 loader.wrapLoading(function () {
                     $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;
                     $ctrl.member.emails = [ $ctrl.member.email ];
-                    return corporateAccountApi.updateCompanyMember($ctrl.member).$promise;
-                });
-                angular.forEach($ctrl.member.logins, function(login) {
-                    authService.changeAuthData({ roles: $ctrl.memberComponent.rolesComponent.roles }, login);
+                    return $q.all([
+                        roleService.set($ctrl.member, $ctrl.memberComponent.rolesComponent.currentRole),
+                        corporateAccountApi.updateCompanyMember($ctrl.member).$promise
+                    ]);
                 });
             };
         };

@@ -5,7 +5,7 @@
         <vc-labeled-input value="$ctrl.member.lastName" name="last_name" placeholder="{{ 'customer.edit_profile.last_name' | t }}" form="detailForm"></vc-labeled-input>
         <vc-labeled-input value="$ctrl.member.title" name="title" type="text" placeholder="{{ 'customer.register.job_title' | t }}" form="detailForm"></vc-labeled-input>
         <vc-labeled-input value="$ctrl.member.email" name="email" placeholder="{{ 'customer.edit_profile.email' | t }}" form="detailForm" required="true" type="email"></vc-labeled-input>
-        <vc-roles logins="$ctrl.logins" readonly="true" roles-component="$ctrl.rolesComponent"></vc-roles>
+        <vc-roles member="$ctrl.member" readonly="true" roles-component="$ctrl.rolesComponent"></vc-roles>
 
         <button class="vc-btn" ng-disabled="$ctrl.loader.isLoading" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
             <span class="btn-text">{{ 'customer.edit_profile.submit' | t }}</span>
