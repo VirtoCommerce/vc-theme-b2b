@@ -3,10 +3,10 @@
     templateUrl: "themes/assets/roles.tpl.html.liquid",
     bindings: {
         rolesComponent: "=",
-        logins: "<",
+        member: "<",
         readonly: "@"
     },
-    controller: ['$scope', 'authService', 'loadingIndicatorService', function ($scope, authService, loader) {
+    controller: ['$scope', 'roleService', 'loadingIndicatorService', function ($scope, roleService, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
 
@@ -14,14 +14,16 @@
             $ctrl.rolesComponent = this;
         };
 
-        this.$onDestroy = function () {            
+        this.$onDestroy = function () {
             $ctrl.rolesComponent = null;
         };
 
-        $ctrl.roles = {{ settings.available_roles | json }};
-        $ctrl.roles = _.map($ctrl.roles, function(role){
-            return { name: role, description: 'customer.roles.descriptions.' + role.toLowerCase().replace(" ", "_") };
-        });
+        $scope.$watch(function(){
+            return roleService.available;
+        }, function(){
+            $ctrl.availableRoles = angular.copy(roleService.available);
+            getCurrentRole();
+        },);
 
         $ctrl.selectRole = function(role){
             if ($ctrl.currentRole)
@@ -31,17 +33,13 @@
         };
 
         $ctrl.$onChanges = function() {
-            if ($ctrl.logins && $ctrl.logins.length)
-            {
-                _.each($ctrl.logins, function(login){
-                    authService.fillAuthData(login).then(function(authContext) {
-                        _.each($ctrl.roles, function(availableRole) {
-                            availableRole.assigned = _.some(authContext.roles, function(assignedRole) { return availableRole.name === assignedRole.name });
-                        });
-                        $ctrl.currentRole = _.findWhere($ctrl.roles, { assigned: true });
-                    });
-                });
-            }
+			getCurrentRole();
         };
+
+		var getCurrentRole = function() {
+            if ($ctrl.member) {
+                $ctrl.currentRole = roleService.get($ctrl.member);
+            }		    
+		};
     }]
 });
