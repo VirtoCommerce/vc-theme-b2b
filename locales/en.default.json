@@ -522,6 +522,7 @@
             "name": "Name",
             "job_title": "Title",
             "email": "Email",
+            "role": "Role",
             "type": "Member type",
             "createdDate": "Created date",
             "createdBy": "Created by",
