@@ -4,7 +4,7 @@ var moduleName = "storefront.account";
 if (storefrontAppDependencies !== undefined) {
     storefrontAppDependencies.push(moduleName);
 }
-angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', 'pascalprecht.translate', 'ngSanitize', 'ui.indeterminate'])
+angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', 'pascalprecht.translate', 'ngSanitize', 'satellizer', 'ui.indeterminate'])
 
 .config(['$translateProvider', function ($translateProvider) {
     $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
