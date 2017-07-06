@@ -34,7 +34,8 @@
                         return roleService.available;
                     }, function() {
                         angular.forEach($ctrl.entries, function(member){
-                            member.role = roleService.get(member).name;
+                            var role = roleService.get(member);
+                            member.role = role ? role.name : null;
                         });
                     });
                 }).$promise;
