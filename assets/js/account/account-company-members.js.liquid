@@ -83,8 +83,16 @@
 
         this.$routerOnActivate = function (next) {
             $ctrl.pageSettings.currentPage = next.params.pageNumber || $ctrl.pageSettings.currentPage;
-            $ctrl.pageSettings.pageChanged();
         };
+
+        $scope.$watch(
+            function () { return mainContext.customer; },
+            function (customer) {
+                if (customer) {
+                    $ctrl.pageSettings.pageChanged();
+                }
+            }
+        );
 
         $ctrl.inviteEmailsValidationPattern = new RegExp(/((^|((?!^)([,;]|\r|\r\n|\n)))([a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*))+$/);
         $ctrl.invite = function () {

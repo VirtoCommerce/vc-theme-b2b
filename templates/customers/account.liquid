@@ -47,14 +47,12 @@
                     <h3 class="nav-title">{{ 'customer.account.corporate' | t }}</h3>
                 </div>
                 <ul class="nav nav-pills nav-justified nav-justified-fixed grid-item">
-                    {% if customer.is_corporate_account %}
                     <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyInfo'}" va-permission="storefront:companyInfo">
                         <a ng-link="['CompanyInfo']">{{ 'customer.account.menu_label.company_info' | t }}</a>
                     </li>
                     <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyMembers'}" va-permission="storefront:companyMembers">
                         <a ng-link="['CompanyMembers']">{{ 'customer.account.menu_label.company_members' | t }}</a>
                     </li>
-                    {% endif %}
                 </ul>
 			</div>
 		</aside>

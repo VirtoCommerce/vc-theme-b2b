@@ -7,6 +7,7 @@ angular.module('storefront.account')
 
     return $resource(urlPrefix + 'api/b2b/companyMembers:api_key', { api_key: api_key }, {
         getCompanyById: { url: urlPrefix + 'api/b2b/company/:id' },
+        getCompanyByCustomerId: { url: urlPrefix + 'api/b2b/companyByCustomerId/:id' },
         updateCompany: { url: urlPrefix + 'api/b2b/company', method: 'POST' },
 
         getCompanyMembers: { url: urlPrefix + 'api/b2b/companyMembers', method: 'POST' },
