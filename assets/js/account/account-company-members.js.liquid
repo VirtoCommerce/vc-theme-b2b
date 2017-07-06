@@ -86,9 +86,9 @@
         };
 
         $scope.$watch(
-            function () { return mainContext.customer; },
-            function (customer) {
-                if (customer) {
+            function () { return mainContext.customer.companyId; },
+            function (companyId) {
+                if (companyId) {
                     $ctrl.pageSettings.pageChanged();
                 }
             }

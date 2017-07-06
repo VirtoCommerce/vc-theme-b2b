@@ -1,7 +1,6 @@
 angular.module('storefront.account')
 .factory('storefront.corporateAccountApi', ['$resource', function ($resource) {
-    var urlPrefix = 'http://localhost/admin/';
-    //var urlPrefix = 'http://demovc-admin-dev.azurewebsites.net/';
+    var urlPrefix = '{{ application_settings.vc-base-url }}';
 
     return $resource(urlPrefix + 'api/b2b/companyMembers', {}, {
         getCompanyById: { url: urlPrefix + 'api/b2b/company/:id' },
@@ -18,8 +17,7 @@ angular.module('storefront.account')
 }])
 
 .factory('storefront.corporateRegisterApi', ['$resource', function ($resource) {
-    var urlPrefix = 'http://localhost/admin/';
-    //var urlPrefix = 'http://demovc-admin-dev.azurewebsites.net/';
+    var urlPrefix = '{{ application_settings.vc-base-url }}';
 
     return $resource(urlPrefix + 'api/b2b/register', {}, {
         register: { url: urlPrefix + 'api/b2b/register', method: 'POST' },
