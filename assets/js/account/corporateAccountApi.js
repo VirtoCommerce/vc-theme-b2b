@@ -3,9 +3,7 @@ angular.module('storefront.account')
     var urlPrefix = 'http://localhost/admin/';
     //var urlPrefix = 'http://demovc-admin-dev.azurewebsites.net/';
 
-    var api_key = '1b5ad880c3ce44089f8312c3cde88645';
-
-    return $resource(urlPrefix + 'api/b2b/companyMembers:api_key', { api_key: api_key }, {
+    return $resource(urlPrefix + 'api/b2b/companyMembers', {}, {
         getCompanyById: { url: urlPrefix + 'api/b2b/company/:id' },
         getCompanyByCustomerId: { url: urlPrefix + 'api/b2b/companyByCustomerId/:id' },
         updateCompany: { url: urlPrefix + 'api/b2b/company', method: 'POST' },
@@ -23,9 +21,7 @@ angular.module('storefront.account')
     var urlPrefix = 'http://localhost/admin/';
     //var urlPrefix = 'http://demovc-admin-dev.azurewebsites.net/';
 
-    var api_key = '1b5ad880c3ce44089f8312c3cde88645';
-
-    return $resource(urlPrefix + 'api/b2b/register:api_key', { api_key: api_key }, {
+    return $resource(urlPrefix + 'api/b2b/register', {}, {
         register: { url: urlPrefix + 'api/b2b/register', method: 'POST' },
         registerMember: { url: urlPrefix + 'api/b2b/registerMember', method: 'POST' },
         registerByInvite: { url: urlPrefix + 'api/b2b/register/:invite', method: 'POST' }

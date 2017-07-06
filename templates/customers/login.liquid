@@ -2,7 +2,7 @@
 
 <div class="grid">
 
-  <div class="grid-item large--one-third push--large--one-third text-center">
+  <div class="grid-item large--one-third push--large--one-third text-center" ng-controller="accountLoginController">
 
     {% form 'customer_login' %}
 
@@ -11,17 +11,17 @@
       {% include 'form-errors-custom' %}
 
       <label for="customer_email" class="hidden-label">{{ 'customer.login.email' | t }}</label>
-      <input type="text" value="" name="customer[user_name]" id="customer_user_name" placeholder="{{ 'customer.login.user_name' | t }}" {% if form.errors contains "user_name" %} class="error"{% endif %} autocorrect="off" autocapitalize="off" autofocus>
+      <input type="text" ng-model="userName" name="customer[user_name]" id="customer_user_name" placeholder="{{ 'customer.login.user_name' | t }}" {% if form.errors contains "user_name" %} class="error"{% endif %} autocorrect="off" autocapitalize="off" autofocus>
 
       <label for="customer_password" class="hidden-label">{{ 'customer.login.password' | t }}</label>
-      <input type="password" value="" name="customer[password]" id="customer_password" placeholder="{{ 'customer.login.password' | t }}" {% if form.errors contains "password" %} class="error"{% endif %}>
+      <input type="password" ng-model="password" name="customer[password]" id="customer_password" placeholder="{{ 'customer.login.password' | t }}" {% if form.errors contains "password" %} class="error"{% endif %}>
 
       <p>
         <a href="{{ '/account/forgotpassword' | absolute_url }}">{{ 'customer.login.forgot_password' | t }}</a>
       </p>
 
         <p>
-          <input type="submit" class="btn" value="{{ 'customer.login.sign_in' | t }}">
+          <input type="submit" class="btn" value="{{ 'customer.login.sign_in' | t }}" ng-click="login()">
         </p>
         {{ 'customer.login.or' | t }} <a href="{{ '/' | absolute_url }}">{{ 'customer.login.cancel' | t }}</a>
 
@@ -34,7 +34,7 @@
       <h2>{{ 'customer.login.guest_title' | t }}</h2>
 
       {% form 'guest_login' %}
-        <input  type="submit" class="btn" value="{{ 'customer.login.guest_continue' | t }}">
+        <input type="submit" class="btn" value="{{ 'customer.login.guest_continue' | t }}">
       {% endform %}
       
     {% endif %}

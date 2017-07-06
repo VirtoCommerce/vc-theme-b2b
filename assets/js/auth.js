@@ -1,8 +1,21 @@
 ﻿angular.module('storefront.account')
-.factory('authService', ['storefrontApp.mainContext', '$http', '$interpolate', '$rootScope', function (mainContext, $http, $interpolate, $rootScope) {
+.config(['$authProvider', function($auth) {
+    var urlPrefix = 'http://localhost/admin/';
+    //var urlPrefix = 'http://demovc-admin-dev.azurewebsites.net/';
+    $auth.loginUrl = urlPrefix + 'Token';
+    $auth.tokenName = 'access_token';
+    $auth.tokenPrefix = 'platform';
+    $auth.oauth2({
+      name: 'platform',
+      clientId: 'web',
+      authorizationEndpoint: urlPrefix + 'Account/Authorize'
+    });
+}])
+.factory('authService', ['storefrontApp.mainContext', '$auth', '$http', '$httpParamSerializerJQLike', '$interpolate', '$rootScope', function (mainContext, $auth, $http, $httpParamSerializerJQLike, $interpolate, $rootScope) {
     var serviceBase = 'http://localhost/admin';
     //var serviceBase = 'http://demovc-admin-dev.azurewebsites.net';
-    var api_key = '1b5ad880c3ce44089f8312c3cde88645';
+
+    // $auth.authenticate('platform');
 
     var authContext = {
         userId: null,
@@ -14,8 +27,18 @@
         isAuthenticated: false
     };
 
+    authContext.login = function (login, password) {
+        $auth.login($httpParamSerializerJQLike({
+                userName: login,
+                password: password,
+                grant_type: "password"
+            }),
+            { headers: { 'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+    };
+
     authContext.fillAuthData = function (userName) {
-        return $http.get(serviceBase + '/api/platform/security/users/' + (userName || mainContext.customer.userName) + '?api_key=' + api_key).then(
+        return $http.get(serviceBase + '/api/platform/security/users/' + (userName || mainContext.customer.userName)).then(
             function (results) {
                 changeAuth(results.data)
                 $rootScope.$broadcast('loginStatusChanged', authContext);
