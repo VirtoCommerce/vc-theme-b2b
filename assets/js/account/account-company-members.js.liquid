@@ -13,7 +13,7 @@
 .component('vcAccountCompanyMembersList', {
     templateUrl: "account-company-members-list.tpl",
     bindings: { $router: '<' },
-    controller: ['storefrontApp.mainContext', '$scope', 'storefront.corporateAccountApi', 'storefront.corporateRegisterApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, $scope, corporateAccountApi, corporateRegisterApi, loader, confirmService, $location, $translate) {
+    controller: ['storefrontApp.mainContext', '$scope', 'storefront.corporateAccountApi', 'storefront.corporateRegisterApi', 'roleService', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, $scope, corporateAccountApi, corporateRegisterApi, roleService, loader, confirmService, $location, $translate) {
         var $ctrl = this;
         $ctrl.currentMemberId = mainContext.customer.id;
         $ctrl.newMemberComponent = null;
@@ -27,20 +27,16 @@
                     take: $ctrl.pageSettings.itemsPerPageCount,
                     sortInfos: $ctrl.sortInfos
                 }, function (data) {
-                    var membersCollection = _.map(data.results, function(item) {
-                        var member = item;
-                        var securityAccount = _.first(item.securityAccounts);
-                        if(securityAccount) {
-                            var role = _.first(securityAccount.roles);
-                            if(role) {
-                                member.role = role.name;
-                            }
-                        }
-                        return member;
-                    });
-
-                    $ctrl.entries = membersCollection;
+                    $ctrl.entries = data.results;
                     $ctrl.pageSettings.totalItems = data.totalCount;
+
+                    $scope.$watch(function(){
+                        return roleService.available;
+                    }, function() {
+                        angular.forEach($ctrl.entries, function(member){
+                            member.role = roleService.get(member).name;
+                        });
+                    });
                 }).$promise;
             });
         };
