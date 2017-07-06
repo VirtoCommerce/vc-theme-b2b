@@ -8,7 +8,7 @@
       clientId: 'web'
     });
 }])
-.factory('authService', ['storefrontApp.mainContext', '$auth', '$http', '$httpParamSerializerJQLike', '$interpolate', '$rootScope', 'storefront.accountsApi', function (mainContext, $auth, $http, $httpParamSerializerJQLike, $interpolate, $rootScope, accountsApi) {
+.factory('authService', ['storefrontApp.mainContext', '$auth', '$http', '$httpParamSerializerJQLike', '$interpolate', '$rootScope', 'storefront.corporateAccountApi', function (mainContext, $auth, $http, $httpParamSerializerJQLike, $interpolate, $rootScope, corporateAccountApi) {
     var authContext = {
         userId: null,
         userLogin: null,
@@ -30,7 +30,7 @@
     };
 
     authContext.fillAuthData = function () {
-        return accountsApi.get({ id: mainContext.customer.userName },
+        return corporateAccountApi.getUser({ userName: mainContext.customer.userName },
             function (result) {
                 changeAuth(result)
                 $rootScope.$broadcast('loginStatusChanged', authContext);

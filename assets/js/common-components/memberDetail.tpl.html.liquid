@@ -30,6 +30,6 @@
           <span class="form-error" ng-if="($ctrl.form.ConfirmPassword.$dirty || $ctrl.form.$submitted) && !$ctrl.form.ConfirmPassword.$error.required && $ctrl.form.ConfirmPassword.$invalid && $ctrl.form.ConfirmPassword.$error.confirmPasswordValidation">{{ 'common.not_match' | t }}</span>
         </div>
 
-        <vc-roles member="$ctrl.member" roles-component="$ctrl.rolesComponent" ng-show="$ctrl.showField('Roles')" disabled="$ctrl.disableField('Roles')"></vc-roles>
+        <vc-roles member="$ctrl.member" roles-component="$ctrl.rolesComponent" ng-if="$ctrl.showField('Roles')" disabled="$ctrl.disableField('Roles')"></vc-roles>
     </div>
 </form>
