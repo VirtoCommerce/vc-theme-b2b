@@ -9,13 +9,15 @@
         $ctrl.loader = loader;
 
         $scope.$watch(
-            function () { return mainContext.customer; },
-            function (newValue) {
-                loader.wrapLoading(function () {
-                    return corporateAccountApi.getCompanyById({ id: newValue.companyId }, function (company) {
-                        $ctrl.company = company;
-                    }).$promise;
-                });
+            function () { return mainContext.customer.companyId; },
+            function (companyId) {
+                if (companyId) {
+                    loader.wrapLoading(function () {
+                        return corporateAccountApi.getCompanyById({ id: companyId }, function (company) {
+                            $ctrl.company = company;
+                        }).$promise;
+                    });
+                }
             }
         );
 

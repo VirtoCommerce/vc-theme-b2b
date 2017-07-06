@@ -1,10 +1,10 @@
-var apiUrlPrefix = 'http://localhost/admin/';
-//var apiUrlPrefix = 'http://demovc-admin-dev.azurewebsites.net/';
+var apiUrlPrefix = '{{ application_settings.vc-base-url }}';
 
 angular.module('storefront.account')
 .factory('storefront.corporateAccountApi', ['$resource', function ($resource) {
     return $resource(apiUrlPrefix + 'api/b2b/companyMembers', {}, {
         getCompanyById: { url: apiUrlPrefix + 'api/b2b/company/:id' },
+        getCompanyByCustomerId: { url: apiUrlPrefix + 'api/b2b/companyByCustomerId/:id' },
         updateCompany: { url: apiUrlPrefix + 'api/b2b/company', method: 'POST' },
 
         getCompanyMembers: { url: apiUrlPrefix + 'api/b2b/companyMembers', method: 'POST' },
