@@ -3,7 +3,7 @@
 <div class="grid-item large--one-third push--large--one-third text-center" ng-controller="accountRegisterController">
     <h1>{{ 'customer.register.title' | t }}</h1>
 
-    <div ng-show="!complete && error" class="note form-error">
+    <div ng-show="!complete && error" class="note form-error" ng-cloak>
         <p>{{ 'general.forms.post_error' | t }}</p>
 
         <ul class="disc">
