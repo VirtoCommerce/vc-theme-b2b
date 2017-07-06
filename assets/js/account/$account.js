@@ -73,8 +73,10 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
             return mainContext.customer;
         }, function (customer) {
             if (customer) {
-                corporateAccountApi.getCompanyByCustomerId({ id: customer.id }, function (result) {
-                    customer.companyId = result.id;
+                loader.wrapLoading(function () {
+                    return corporateAccountApi.getCompanyByCustomerId({ id: customer.id }, function (result) {
+                        customer.companyId = result.id;
+                    }).$promise;
                 });
                 authService.fillAuthData();
             }
