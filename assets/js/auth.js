@@ -3,6 +3,8 @@
     var urlPrefix = 'http://localhost/admin/';
     //var urlPrefix = 'http://demovc-admin-dev.azurewebsites.net/';
     $auth.loginUrl = urlPrefix + 'Token';
+    $auth.tokenName = 'access_token';
+    $auth.tokenPrefix = 'platform';
     $auth.oauth2({
       name: 'platform',
       clientId: 'web',
@@ -12,6 +14,8 @@
 .factory('authService', ['storefrontApp.mainContext', '$auth', '$http', '$httpParamSerializerJQLike', '$interpolate', '$rootScope', function (mainContext, $auth, $http, $httpParamSerializerJQLike, $interpolate, $rootScope) {
     var serviceBase = 'http://localhost/admin';
     //var serviceBase = 'http://demovc-admin-dev.azurewebsites.net';
+
+    // $auth.authenticate('platform');
 
     var authContext = {
         userId: null,
