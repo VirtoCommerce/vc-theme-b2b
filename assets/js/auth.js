@@ -1,22 +1,14 @@
 ﻿angular.module('storefront.account')
 .config(['$authProvider', function($auth) {
-    var urlPrefix = 'http://localhost/admin/';
-    //var urlPrefix = 'http://demovc-admin-dev.azurewebsites.net/';
-    $auth.loginUrl = urlPrefix + 'Token';
+    $auth.loginUrl = apiUrlPrefix + 'Token';
     $auth.tokenName = 'access_token';
     $auth.tokenPrefix = 'platform';
     $auth.oauth2({
       name: 'platform',
-      clientId: 'web',
-      authorizationEndpoint: urlPrefix + 'Account/Authorize'
+      clientId: 'web'
     });
 }])
-.factory('authService', ['storefrontApp.mainContext', '$auth', '$http', '$httpParamSerializerJQLike', '$interpolate', '$rootScope', function (mainContext, $auth, $http, $httpParamSerializerJQLike, $interpolate, $rootScope) {
-    var serviceBase = 'http://localhost/admin';
-    //var serviceBase = 'http://demovc-admin-dev.azurewebsites.net';
-
-    // $auth.authenticate('platform');
-
+.factory('authService', ['storefrontApp.mainContext', '$auth', '$http', '$httpParamSerializerJQLike', '$interpolate', '$rootScope', 'storefront.accountsApi', function (mainContext, $auth, $http, $httpParamSerializerJQLike, $interpolate, $rootScope, accountsApi) {
     var authContext = {
         userId: null,
         userLogin: null,
@@ -37,10 +29,10 @@
         });
     };
 
-    authContext.fillAuthData = function (userName) {
-        return $http.get(serviceBase + '/api/platform/security/users/' + (userName || mainContext.customer.userName)).then(
-            function (results) {
-                changeAuth(results.data)
+    authContext.fillAuthData = function () {
+        return accountsApi.get({ id: mainContext.customer.userName },
+            function (result) {
+                changeAuth(result)
                 $rootScope.$broadcast('loginStatusChanged', authContext);
             },
             function (error) { });

@@ -1,8 +1,5 @@
 angular.module('storefront.account')
-.factory('roleService', ['$q', '$http', function ($q, $http) {
-    var serviceBase = 'http://localhost/admin';
-    //var serviceBase = 'http://demovc-admin-dev.azurewebsites.net';
-
+.factory('roleService', ['$q', '$http', 'storefront.accountsApi', 'storefront.rolesApi', function ($q, $http, accountsApi, rolesApi) {
     var service = {
         available: null,
         get: null,
@@ -11,9 +8,9 @@ angular.module('storefront.account')
 
     // get all available roles from settings
     service._roles = {{ settings.available_roles | json }};
-    $http.post(serviceBase + '/api/platform/security/roles').then(function (rolesSearch) {
+    rolesApi.search(function (rolesSearch) {
         service.available = _.map(service._roles, function(role) {
-            var realRole = _.findWhere(rolesSearch.data.roles, { name: role });
+            var realRole = _.findWhere(rolesSearch.roles, { name: role });
             return angular.extend({}, realRole, { description: 'customer.roles.descriptions.' + role.toLowerCase().replace(" ", "_") });
         });
     });
@@ -37,7 +34,7 @@ angular.module('storefront.account')
         return $q.all(_.map(member.securityAccounts, function(account) {
             account.roles = _.without.apply(_, [account.roles].concat(_.filter(account.roles, function(role) { return _.contains(service._roles, role.name); })));
             account.roles.push(role);
-            return $http.put(serviceBase + '/api/platform/security/users', account);
+            return accountsApi.update(account).$promise;
         }));
     };
 
