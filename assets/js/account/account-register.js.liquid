@@ -1,6 +1,6 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateAccountApi', 'storefront.corporateRegisterApi', 'loadingIndicatorService', function ($q, $scope, mainContext, corporateAccountApi, corporateRegisterApi, loader) {
+storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateRegisterApi', 'loadingIndicatorService', function ($q, $scope, mainContext, corporateRegisterApi, loader) {
     $scope.loader = loader;
     $scope.memberComponent = null;
     $scope.newMember = null;
@@ -55,36 +55,27 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
         if (invite) {
             $scope.registerMemberFieldsConfig[0] = {
                 field: 'CompanyName',
-                disabled: false,
-                visible: false,
-                required: false
+                disabled: true,
+                visible: true,
+                required: true
             };
             $scope.registerMemberFieldsConfig[1] = {
                 field: 'Email',
                 disabled: true,
                 visible: true,
-                required: false
+                required: true
             };
 
             $scope.newMember.invite = invite;
             $scope.loader.wrapLoading(function() {
-                return corporateAccountApi.getCompanyMember({ id: invite }).$promise
+                return corporateRegisterApi.getRegisterInfoByInvite({ invite: invite }).$promise
                     .then(function(result) {
-                        if (!result.id) {
-                            $scope.error = "{{ 'customer.register.registration_invite_revoked_text' | t }}";
-                            return $q.reject("Invite revoked");
+                        if (result.message) {
+                            $scope.error = result.message;
+                            return $q.reject("Invite is invalid");
                         }
-                        if (result.securityAccounts && result.securityAccounts.length) {
-                            $scope.error = "{{ 'customer.register.registration_invite_already_used_text' | t }}";
-                            return $q.reject("Invite already used");
-                        }
-                        $scope.newMember.companyId = result.organizations[0];
-                        $scope.newMember.email = result.emails[0];
-                    })
-                    .then(function () {
-                        return corporateAccountApi.getCompanyById({ id: $scope.newMember.companyId }, function(result) {
-                            $scope.newMember.companyName = result.name;
-                        }).$promise;
+                        $scope.newMember.companyName = result.companyName;
+                        $scope.newMember.email = result.email;
                     });
             });
         }

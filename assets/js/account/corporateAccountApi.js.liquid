@@ -23,6 +23,7 @@ angular.module('storefront.account')
     return $resource(apiUrlPrefix + 'api/b2b/register', {}, {
         register: { url: apiUrlPrefix + 'api/b2b/register', method: 'POST' },
         registerMember: { url: apiUrlPrefix + 'api/b2b/registerMember', method: 'POST' },
+        getRegisterInfoByInvite: { url: apiUrlPrefix + 'api/b2b/register/:invite' },
         registerByInvite: { url: apiUrlPrefix + 'api/b2b/register/:invite', method: 'POST' }
     });
 }]);

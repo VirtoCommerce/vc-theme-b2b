@@ -78,7 +78,7 @@ storefrontApp.component('vcMemberDetail', {
 
         function getFieldConfig(field) {
             var configItem = _.first(_.filter($ctrl.config, function (configItem) { return configItem.field === field; }));
-            return configItem
+            return configItem;
         }
     }]
 });
