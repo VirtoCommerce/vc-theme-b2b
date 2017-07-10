@@ -17,7 +17,7 @@ angular.module('storefront.account')
         getRoles: { url: apiBaseUrl + 'api/b2b/roles', isArray: true }
     });
 }])
-.factory('storefront.corporateRegisterApi', ['$resource', function ($resource) {
+.factory('storefront.corporateRegisterApi', ['$resource', 'apiBaseUrl', function ($resource, apiBaseUrl) {
     return $resource(apiBaseUrl + 'api/b2b/register', {}, {
         register: { url: apiBaseUrl + 'api/b2b/register', method: 'POST' },
         registerMember: { url: apiBaseUrl + 'api/b2b/registerMember', method: 'POST' },
