@@ -1,14 +1,7 @@
-﻿angular.module('storefront.account')
-.config(['$authProvider', function($auth) {
-    $auth.loginUrl = apiUrlPrefix + 'Token';
-    $auth.tokenName = 'access_token';
-    $auth.tokenPrefix = 'platform';
-    $auth.oauth2({
-      name: 'platform',
-      clientId: 'web'
-    });
-}])
-.factory('authService', ['storefrontApp.mainContext', '$auth', '$http', '$httpParamSerializerJQLike', '$interpolate', '$rootScope', 'storefront.corporateAccountApi', function (mainContext, $auth, $http, $httpParamSerializerJQLike, $interpolate, $rootScope, corporateAccountApi) {
+﻿angular.module('storefrontApp')
+.factory('authService', ['storefrontApp.mainContext', '$auth', '$httpParamSerializerJQLike', '$interpolate', '$rootScope', 'storefront.corporateAccountApi',
+    function (mainContext, $auth, $httpParamSerializerJQLike, $interpolate, $rootScope, corporateAccountApi) {
+    
     var authContext = {
         userId: null,
         userLogin: null,
@@ -80,4 +73,36 @@
     };
 
     return authContext;
+}])
+.constant('tokenExpirationName', 'platform_access_token_expiration_time')
+.config(['$authProvider', '$provide', 'apiBaseUrl', function($authProvider, $provide, apiBaseUrl) {
+    $authProvider.loginUrl = apiBaseUrl + 'Token';
+    $authProvider.tokenName = 'access_token';
+    $authProvider.tokenPrefix = 'platform';
+    $authProvider.oauth2({
+      name: 'platform',
+      clientId: 'web'
+    });
+    $provide.decorator('SatellizerShared', ['$delegate', 'tokenExpirationName', function($delegate, tokenExpirationName){
+        var service = $delegate;
+        var originalSetToken = service.setToken;
+        service.setToken = function(response){
+            originalSetToken.apply($delegate, arguments);
+            var expirationTime = Date.parse(response.data['.expires']);
+            this.SatellizerStorage.set(tokenExpirationName, expirationTime);;
+        };
+        return $delegate;
+    }]);
+}])
+.run(['$auth', 'SatellizerConfig', 'SatellizerStorage', 'tokenExpirationName', '$timeout', '$window', '$location', function($auth, $authProvider, $authStorage, tokenExpirationName, $timeout, $window, $location) {
+    var logOut = function(){
+        $auth.logout();
+        $authStorage.remove(tokenExpirationName);
+        $window.location.href = $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/account/logout';
+    };
+
+    if ($auth.isAuthenticated()){
+        var t = parseFloat($authStorage.get(tokenExpirationName)) - Date.now();
+        $timeout(logOut, t);
+    }
 }]);

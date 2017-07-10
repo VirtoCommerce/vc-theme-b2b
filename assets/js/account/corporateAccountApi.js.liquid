@@ -1,29 +1,27 @@
-var apiUrlPrefix = '{{ application_settings.vc-base-url }}';
-
 angular.module('storefront.account')
-.factory('storefront.corporateAccountApi', ['$resource', function ($resource) {
-    return $resource(apiUrlPrefix + 'api/b2b/companyMembers', {}, {
-        getCompanyById: { url: apiUrlPrefix + 'api/b2b/company/:id' },
-        getOrganizationsByCustomerId: { url: apiUrlPrefix + 'api/b2b/organizationsByCustomerId/:id', isArray: true },
-        updateCompany: { url: apiUrlPrefix + 'api/b2b/company', method: 'POST' },
+.factory('storefront.corporateAccountApi', ['$resource', 'apiBaseUrl', function ($resource, apiBaseUrl) {
+    return $resource(apiBaseUrl + 'api/b2b/companyMembers', {}, {
+        getCompanyById: { url: apiBaseUrl + 'api/b2b/company/:id' },
+        getOrganizationsByCustomerId: { url: apiBaseUrl + 'api/b2b/organizationsByCustomerId/:id', isArray: true },
+        updateCompany: { url: apiBaseUrl + 'api/b2b/company', method: 'POST' },
 
-        getCompanyMembers: { url: apiUrlPrefix + 'api/b2b/companyMembers', method: 'POST' },
-        getCompanyMember: { url: apiUrlPrefix + 'api/b2b/companyMember/:id' },
-        updateCompanyMember: { url: apiUrlPrefix + 'api/b2b/companyMember', method: 'POST' },
-        deleteCompanyMember: { url: apiUrlPrefix + 'api/b2b/companyMembers', method: 'DELETE' },
+        getCompanyMembers: { url: apiBaseUrl + 'api/b2b/companyMembers', method: 'POST' },
+        getCompanyMember: { url: apiBaseUrl + 'api/b2b/companyMember/:id' },
+        updateCompanyMember: { url: apiBaseUrl + 'api/b2b/companyMember', method: 'POST' },
+        deleteCompanyMember: { url: apiBaseUrl + 'api/b2b/companyMembers', method: 'DELETE' },
 
-        invite: { url: apiUrlPrefix + 'api/b2b/invite', method: 'POST' },
+        invite: { url: apiBaseUrl + 'api/b2b/invite', method: 'POST' },
 
-        getUser: { url: apiUrlPrefix + 'api/b2b/users/:userName' },
-        updateUser: { url: apiUrlPrefix + 'api/b2b/users', method: 'PUT' },
-        getRoles: { url: apiUrlPrefix + 'api/b2b/roles', isArray: true }
+        getUser: { url: apiBaseUrl + 'api/b2b/users/:userName' },
+        updateUser: { url: apiBaseUrl + 'api/b2b/users', method: 'PUT' },
+        getRoles: { url: apiBaseUrl + 'api/b2b/roles', isArray: true }
     });
 }])
 .factory('storefront.corporateRegisterApi', ['$resource', function ($resource) {
-    return $resource(apiUrlPrefix + 'api/b2b/register', {}, {
-        register: { url: apiUrlPrefix + 'api/b2b/register', method: 'POST' },
-        registerMember: { url: apiUrlPrefix + 'api/b2b/registerMember', method: 'POST' },
-        getRegisterInfoByInvite: { url: apiUrlPrefix + 'api/b2b/register/:invite' },
-        registerByInvite: { url: apiUrlPrefix + 'api/b2b/register/:invite', method: 'POST' }
+    return $resource(apiBaseUrl + 'api/b2b/register', {}, {
+        register: { url: apiBaseUrl + 'api/b2b/register', method: 'POST' },
+        registerMember: { url: apiBaseUrl + 'api/b2b/registerMember', method: 'POST' },
+        getRegisterInfoByInvite: { url: apiBaseUrl + 'api/b2b/register/:invite' },
+        registerByInvite: { url: apiBaseUrl + 'api/b2b/register/:invite', method: 'POST' }
     });
 }]);
