@@ -6,7 +6,8 @@ var storefrontAppDependencies = [
 ]
 var storefrontApp = angular.module('storefrontApp', storefrontAppDependencies);
 
-storefrontApp.constant('apiBaseUrl', '{{ application_settings.vc-base-url }}')
+storefrontApp.constant('apiBaseUrl', '{{ application_settings.vc-base-url }}');
+
 storefrontApp.factory('httpErrorInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
     var httpErrorInterceptor = {};
 
