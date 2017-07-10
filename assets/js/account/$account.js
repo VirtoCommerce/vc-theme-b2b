@@ -35,7 +35,7 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
          { path: '/companyInfo', name: 'CompanyInfo', component: 'vcAccountCompanyInfo' },
          { path: '/companyMembers/...', name: 'CompanyMembers', component: 'vcAccountCompanyMembers' }
     ],
-    controller: ['$scope', 'storefront.accountApi', 'storefrontApp.mainContext', 'authService', 'storefront.corporateAccountApi', 'loadingIndicatorService', function ($scope, accountApi, mainContext, authService, corporateAccountApi, loader) {
+    controller: ['$scope', '$timeout', 'storefront.accountApi', 'storefrontApp.mainContext', 'authService', 'storefront.corporateAccountApi', 'loadingIndicatorService', function ($scope, $timeout, accountApi, mainContext, authService, corporateAccountApi, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
 
@@ -81,6 +81,12 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
                 authService.fillAuthData();
             }
         });
+        
+		$scope.$on('loginStatusChanged', function(){
+            $timeout(function(){
+			    $(".nav *:hidden").parent().prev().find(".nav-title").hide();
+            });
+		});
     }]
 })
 
