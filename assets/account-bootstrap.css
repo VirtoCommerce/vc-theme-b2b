@@ -504,7 +504,7 @@ input[type="radio"].input-radio {
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
     color: #fff;
-    background-color: #337ab7;
+    background-color: #686868;
 }
 .nav-stacked > li {
     float: none;
