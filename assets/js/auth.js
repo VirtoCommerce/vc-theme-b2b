@@ -102,7 +102,6 @@
     };
 
     if ($auth.isAuthenticated()){
-        var t = parseFloat($authStorage.get(tokenExpirationName)) - Date.now();
-        $timeout(logOut, t);
+        $timeout(logOut, parseFloat($authStorage.get(tokenExpirationName)) - Date.now());
     }
 }]);
