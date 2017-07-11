@@ -2,7 +2,6 @@ angular.module('storefront.account')
 .factory('storefront.corporateAccountApi', ['$resource', 'apiBaseUrl', function ($resource, apiBaseUrl) {
     return $resource(apiBaseUrl + 'api/b2b/companyMembers', {}, {
         getCompanyById: { url: apiBaseUrl + 'api/b2b/company/:id' },
-        getOrganizationsByCustomerId: { url: apiBaseUrl + 'api/b2b/organizationsByCustomerId/:id', isArray: true },
         updateCompany: { url: apiBaseUrl + 'api/b2b/company', method: 'POST' },
 
         getCompanyMembers: { url: apiBaseUrl + 'api/b2b/companyMembers', method: 'POST' },
