@@ -75,7 +75,8 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
             if (customer) {
                 loader.wrapLoading(function () {
                     return corporateAccountApi.getCompanyMember({ id: customer.id }, function (member) {
-                        customer.companyId = _.first(member.organizations)
+                        customer.companyId = _.first(member.organizations);
+                        customer.email = _.first(member.emails);
                     }).$promise;
                 });
                 authService.fillAuthData();
