@@ -1,14 +1,13 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'wishlistService', 'quoteRequestService', 'customerService',
-    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, wishlistService, quoteRequestService, customerService) {
+storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'customerService',
+    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, quoteRequestService, customerService) {
     //TODO: prevent add to cart not selected variation
     // display validator please select property
     // display price range
 
     var allVariations = [];
-    var listNames = [{title: "Shopping List"}, {title: "Wish List"}];
-
+  
     $scope.selectedVariation = {};
     $scope.allVariationPropsMap = {};
     $scope.productPrice = null;
@@ -33,10 +32,8 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
     }
 
     $scope.addProductToWishlist = function (product) {
-        _.extend(product, $scope.listContains);
-        $scope.addingToWishlist = true;
         var dialogData = toDialogDataModel(product, 1);
-        dialogService.showDialog(dialogData, 'recentlyAddedWishlistItemDialogController', 'storefront.recently-added-list-item-dialog.tpl');
+        dialogService.showDialog(dialogData, 'recentlyAddedListItemDialogController', 'storefront.recently-added-list-item-dialog.tpl');
     }
 
     $scope.addProductToActualQuoteRequest = function (product, quantity) {
@@ -49,7 +46,6 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
 
     function toDialogDataModel(product, quantity) {
         return {
-            availibleList: product.containsList ? product.containsList: null,
             imageUrl: product.primaryImage ? product.primaryImage.url : null,
             listPrice: product.price.listPrice,
             id:product.id,
@@ -79,8 +75,6 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
                 $scope.checkProperty(propertyMap[x][0])
             });
 
-            wishlistContains(product.id);
-            
             $scope.selectedVariation = product;
         });
     };
@@ -139,24 +133,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
 
             //try to find the best variation match for selected properties
             $scope.selectedVariation = findVariationBySelectedProps(allVariations, getSelectedPropsMap($scope.allVariationPropsMap));
-    };
-
-    function wishlistContains(productId) {
-        $scope.listContains = [];
-        $scope.buttonValid = false;
-        angular.forEach(listNames, function (listName) {
-            wishlistService.contains(productId, listName.title).then(function (result) {
-                if (result && (result.data.contains = false)) {
-                        $scope.buttonValid = true;
-                        var x = _.invert(listName);
-                        _.extend($scope.listContains, x);
-                        $scope.listContains[listName.title] = {};
-                        _.extend($scope.listContains[listName.title], { contains: result.data.contains });
-                }
-                   
-            });
-        })
-    };
+    };  
 
     initialize();
 }]);

@@ -1,11 +1,12 @@
 ﻿<script id="storefront.recently-added-list-item-dialog.tpl" type="text/ng-template">
-  <div class="ajaxify-modal is-visible" id="ajaxifyModal" style="opacity: 1;">
+  <div class="ajaxify-modal is-visible" id="ajaxifyModal" style="opacity: 1;" ng-init='initialize({{ settings.available_lists | json }})'>
     <button class="ajaxifyCart--close" title="{{ 'cart.general.close_cart' | t }}" ng-click="close()">{{ 'cart.general.close_cart' | t }}</button>
     <div class="ajaxifyCart--content" id="ajaxifyCart">
-      <h1 class="h2">Add to your list</h1>
-      <div ng-if="!productAdded" class="product-list-modal-wrapper">
-        <div ng-disabled="dialogData.availibleList" ng-repeat="typeOfList in availableLists">
-          <div ng-class="{'activeList': typeOfList.active}" class="cart-row selectedTypeOfList">
+      <div ng-if="!itemAdded" class="product-list-modal-wrapper">
+        <h1 ng-bind="selectedList.title"></h1>
+        <h1 ng-if="!selectedList.title">Please select list</h1>
+        <div ng-repeat="list in lists">
+          <div ng-class="{'activeList': list.name == selectedList.name}" class="cart-row selectedTypeOfList">
             <div  class="grid">
               <div class="grid-item large--seven-twelfths">
                 <div class="grid product-list-modal-titleShift">
@@ -14,9 +15,10 @@
                       <span class="add-to-favorite-icon"></span>
                     </span>
                   </div>
-                  <div ng-click="select(typeOfList)" class="list-container">
-                    <span  class="list-text-title" ng-bind="typeOfList.title"></span>
-                    <span class="list-text-descr" ng-bind="typeOfList.description"></span>
+                  <div ng-click="selectList(list)" class="list-container">
+                    <span  class="list-text-title" ng-bind="list.title"></span>
+                    <span class="list-text-descr" ng-bind="list.description"></span>
+                    <span ng-if="list.contains" class="list-text-descr">Item already in the list</span>
                   </div>
                 </div>
               </div>
@@ -29,15 +31,16 @@
               <button class="btn" >
                 <span ng-click="close()">Cancel</span>
               </button>
-              <button ng-disabled="!dialogData.listName" class="btn" ng-click="addProductToList()">
+              <button ng-class="{ 'btn-secondary': inProgress }" ng-disabled="selectedList.contains || inProgress" class="btn" ng-click="addProductToList()">
                 <span>Add to list</span>
+                <span ng-if="inProgress">Adding to list...</span>
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <div ng-if="productAdded" class="product-list-modal-wrapper">
+      <div ng-if="itemAdded" class="product-list-modal-wrapper">
         <div class="cart-row">
           <div class="grid">
 
@@ -47,7 +50,7 @@
                  
                 </div>
                 <div class="product-list-modal-added-toList grid-item two-thirds large--three-quarters">
-                   <a ng-bind="'1 Item added to ' + dialogData.listName"></a>
+                   <a ng-bind="'1 Item added to ' + selectedList.title"></a>
                 </div>
               </div>
             </div>
@@ -89,7 +92,7 @@
           <div class="grid">
             <div class="grid-item text-right">
               <button ng-click="redirect('{{ 'account#/wishlist' | absolute_url }}')" class="btn" >
-                <span ng-show="productAdded" >View Your List</span>
+                <span>View Your List</span>
               </button>
               <button ng-click="close()" class="btn" >
                 <span>Continue Shopping</span>
@@ -98,7 +101,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
   <div id="ajaxifyCart-overlay"></div>
