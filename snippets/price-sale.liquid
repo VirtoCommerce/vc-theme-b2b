@@ -1,4 +1,4 @@
-{% if customer != null %}
+{% if customer %}
     {% capture saved_amount %}{{ compare_price | minus: product_price | money }}{% endcapture %}
 
     {% comment %}

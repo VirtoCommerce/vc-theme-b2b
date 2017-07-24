@@ -42,7 +42,7 @@
             <p class="product-meta" itemprop="brand">{{ product.vendor }}</p>
             {% endif %}
 
-            {% if customer != null %}
+            {% if customer %}
             <ul class="inline-list product-meta">
                 <li ng-if="!selectedVariation.id">
                     {% if product.compare_at_price > product.price %}
@@ -105,9 +105,7 @@
                 {% endif %}
             </ul>
             {% else %}
-            <span class="h3 medium--left">
-                <small>Login to see the price</small>
-            </span>
+            <a class="btn" href="{{ '/account/login' | absolute_url }}">{{ 'products.product.sign_in_to_see_price' | t }}</a>
             {% endif %}
 
             <hr id="variantBreak" class="hr--clear hr--small">

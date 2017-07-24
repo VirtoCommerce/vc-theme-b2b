@@ -41,10 +41,10 @@
                 <strong>Price</strong>
             </div>
             <div class="grid-item one-fifth compare-list-cell value" style="border-top: 1px solid #dcdcdc;" ng-repeat="product in products">
-                {% if customer != null %}
+                {% if customer %}
                 <strong style="margin: 0 auto;" ng-bind="product.price.actualPrice.formattedAmount"></strong>
                 {% else %}
-                <strong style="margin: 0 auto;">Login to see the price</strong>
+                <strong style="margin: 0 auto;">{{ 'products.product.sign_in_to_see_price' | t }}</strong>
                 {% endif %}
             </div>
         </div>

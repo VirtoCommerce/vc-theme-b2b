@@ -1,5 +1,4 @@
-{% assign formatted_price = "Login to see the price" %}
-{% if customer != null %}
+{% if customer %}
     {% assign formatted_price = price | money %}
     {% if settings.remove_dollar_symbol %}
       {% assign formatted_price = formatted_price | remove: '$' %}
@@ -19,6 +18,7 @@
         {% endif %}
       {% endif %}
     {% endunless %}
-{% endif %}
-
 <small>{{ formatted_price }}</small>
+{% else %}
+<a class="btn" href="{{ '/account/login' | absolute_url }}">{{ 'products.product.sign_in_to_see_price' | t }}</a>
+{% endif %}
