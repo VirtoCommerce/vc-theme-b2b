@@ -1,5 +1,6 @@
 ﻿<div class="one-half">
     <h4>{{ 'customer.edit_company_info.title' | t }}</h4>
+    <vc-errors message="errorMessage" errors="errors"></vc-errors>
     <form ng-submit="$ctrl.submit()" name="detailForm">
         <vc-labeled-input value="$ctrl.company.name" name="company_name" placeholder="{{ 'customer.edit_company_info.company_name' | t }}" form="detailForm" required="true" autofocus="true"></vc-labeled-input>
 

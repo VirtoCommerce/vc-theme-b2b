@@ -33,5 +33,4 @@ storefrontApp.factory('httpErrorInterceptor', ['$q', '$rootScope', function ($q,
 
 storefrontApp.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('httpErrorInterceptor');
-
 }]);

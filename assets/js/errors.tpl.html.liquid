@@ -1,0 +1,8 @@
+  <div class="note form-error" ng-if="$ctrl.message || $ctrl.errors">
+    <p>{{ 'general.forms.post_error' | t }}</p>
+    
+    <p ng-if="!$ctrl.errors" ng-bind-html="$ctrl.message"></p>
+    <ul class="disc" ng-if="$ctrl.errors">
+        <li ng-repeat="error in $ctrl.errors" ng-bind-html="error"></li>
+    </ul>
+  </div>

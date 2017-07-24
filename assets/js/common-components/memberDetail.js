@@ -40,7 +40,7 @@ storefrontApp.component('vcMemberDetail', {
         ];
 
         if ($ctrl.fieldsConfig)
-            angular.copy($ctrl.config, $ctrl.fieldsConfig);
+            angular.copy($ctrl.fieldsConfig, $ctrl.config);
 
         $ctrl.rolesComponent = null;
 

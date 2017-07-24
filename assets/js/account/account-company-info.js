@@ -4,7 +4,7 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefrontApp.mainContext', '$scope', 'loadingIndicatorService', 'confirmService', '$translate', 'storefront.corporateAccountApi', function (mainContext, $scope, loader, confirmService, $translate, corporateAccountApi) {
+    controller: ['storefrontApp.mainContext', '$scope', '$translate', 'storefront.corporateAccountApi', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService', 'confirmService', function (mainContext, $scope, $translate, corporateAccountApi, corporateApiErrorHelper, loader, confirmService) {
         var $ctrl = this;
         $ctrl.loader = loader;
 
@@ -23,7 +23,11 @@
 
         $ctrl.updateCompanyInfo = function (company) {
             return loader.wrapLoading(function () {
-                return corporateAccountApi.updateCompany(company).$promise;
+                return corporateAccountApi.updateCompany(company, function(response) {
+                    corporateApiErrorHelper.clearErrors($scope);
+                }, function (rejection){
+                    corporateApiErrorHelper.handleErrors($scope, rejection);
+                }).$promise;
             });
         };
 

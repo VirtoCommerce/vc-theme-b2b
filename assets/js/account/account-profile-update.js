@@ -4,7 +4,7 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefrontApp.mainContext', '$q', '$scope', 'roleService', 'loadingIndicatorService', 'storefront.corporateAccountApi', function (mainContext, $q, $scope, roleService, loader, corporateAccountApi) {
+    controller: ['storefrontApp.mainContext', '$q', '$scope', 'roleService', 'storefront.corporateAccountApi', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService', function (mainContext, $q, $scope, roleService, corporateAccountApi, corporateApiErrorHelper, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.currentMember = mainContext.customer;
@@ -33,7 +33,11 @@
             return loader.wrapLoading(function () {
                 return $q.all([
                     roleService.set($ctrl.member, $ctrl.rolesComponent.currentRole),
-                    corporateAccountApi.updateCompanyMember($ctrl.member).$promise
+                    corporateAccountApi.updateCompanyMember($ctrl.member, function(response) {
+                        corporateApiErrorHelper.clearErrors($scope);
+                    }, function (rejection){
+                        corporateApiErrorHelper.handleErrors($scope, rejection);
+                    }).$promise
                 ]);
             });
         };

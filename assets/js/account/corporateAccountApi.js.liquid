@@ -20,7 +20,22 @@ angular.module('storefront.account')
     return $resource(apiBaseUrl + 'api/b2b/register', {}, {
         register: { url: apiBaseUrl + 'api/b2b/register', method: 'POST' },
         registerMember: { url: apiBaseUrl + 'api/b2b/registerMember', method: 'POST' },
-        getRegisterInfoByInvite: { url: apiBaseUrl + 'api/b2b/register/:invite' },
-        registerByInvite: { url: apiBaseUrl + 'api/b2b/register/:invite', method: 'POST' }
+        getRegisterInfoByInvite: { url: apiBaseUrl + 'api/b2b/registerMember/:invite' },
+        registerByInvite: { url: apiBaseUrl + 'api/b2b/registerMember/:invite', method: 'POST' }
     });
+}])
+.factory('storefront.corporateApiErrorHelper', ['$rootScope', function ($rootScope) {
+    return {
+        clearErrors: function($scope) {
+            $scope.errorMessage = null;
+            $scope.errors = null;
+        },
+        handleErrors: function ($scope, rejection) {
+            if (rejection.status == 400) {
+                $scope.errorMessage = rejection.data.message;
+                $scope.errors = rejection.data.modelState;
+                $rootScope.closeNotification();
+            }
+        }
+    };
 }]);

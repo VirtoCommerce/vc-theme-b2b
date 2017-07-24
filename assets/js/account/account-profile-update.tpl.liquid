@@ -1,5 +1,6 @@
 ﻿<div class="one-half">
     <h4>{{ 'customer.edit_profile.title' | t }}</h4>
+    <vc-errors message="errorMessage" errors="errors"></vc-errors>
     <form ng-submit="$ctrl.submit()" name="detailForm">
         <vc-labeled-input value="$ctrl.member.firstName" name="first_name" placeholder="{{ 'customer.edit_profile.first_name' | t }}" form="detailForm" required="true" autofocus="true"></vc-labeled-input>
         <vc-labeled-input value="$ctrl.member.lastName" name="last_name" placeholder="{{ 'customer.edit_profile.last_name' | t }}" form="detailForm"></vc-labeled-input>

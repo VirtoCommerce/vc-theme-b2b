@@ -1,6 +1,8 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateRegisterApi', 'loadingIndicatorService', function ($q, $scope, mainContext, corporateRegisterApi, loader) {
+storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateRegisterApi', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService',
+    function ($q, $scope, mainContext, corporateRegisterApi, corporateApiErrorHelper, loader) {
+
     $scope.loader = loader;
     $scope.memberComponent = null;
     $scope.newMember = null;
@@ -88,21 +90,19 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
             if ($scope.newMember.invite) {
                 $scope.loader.wrapLoading(function () {
                     return corporateRegisterApi.registerByInvite({ invite: $scope.newMember.invite }, $scope.newMember, function (result) {
-                        if (result.message) {
-                            $scope.error = result.message;
-                        } else {
-                            $scope.complete = true;
-                        }
+                        $scope.complete = true;
+                        corporateApiErrorHelper.clearErrors($scope);
+                    }, function (rejection){
+                        corporateApiErrorHelper.handleErrors($scope, rejection);
                     }).$promise;
                 });
             } else {
                 $scope.loader.wrapLoading(function() {
-                    return corporateRegisterApi.register($scope.newMember, function(result) {
-                        if (result.message) {
-                            $scope.error = result.message;
-                        } else {
-                            $scope.complete = true;
-                        }
+                    return corporateRegisterApi.register($scope.newMember, function (result) {
+                        $scope.complete = true;
+                        corporateApiErrorHelper.clearErrors($scope);
+                    }, function (rejection){
+                        corporateApiErrorHelper.handleErrors($scope, rejection);
                     }).$promise;
                 });
             }

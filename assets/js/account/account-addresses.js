@@ -28,7 +28,7 @@
         $ctrl.submit = function () {
             if (components[$ctrl.editIdx].validate()) {
                 angular.copy($ctrl.editItem, $ctrl.currentMember.addresses[$ctrl.editIdx]);
-                $ctrl.updateCompanyMember($ctrl.currentMember).then($ctrl.cancel);
+                $ctrl.updateCompanyMember($ctrl.currentMember, $ctrl.cancel);
             }
         };
 
@@ -55,9 +55,9 @@
             $translate('customer.addresses.delete_confirm').then(showDialog, showDialog);
         };
 
-        $ctrl.updateCompanyMember = function (companyMember) {
+        $ctrl.updateCompanyMember = function (companyMember, handler) {
             return loader.wrapLoading(function () {
-                return corporateAccountApi.updateCompanyMember(companyMember).$promise;
+                return corporateAccountApi.updateCompanyMember(companyMember, handler).$promise;
             });
         };
 
