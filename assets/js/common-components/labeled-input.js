@@ -1,7 +1,7 @@
 ﻿angular.module('storefrontApp')
 
 .component('vcLabeledInput', {
-    templateUrl: "themes/assets/js/common-components/labeled-input.tpl.html",
+    templateUrl: "themes/assets/labeled-input.tpl.html",
     bindings: {
         value: '=',
         form: '=',

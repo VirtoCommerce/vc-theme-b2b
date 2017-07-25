@@ -4,7 +4,7 @@ var moduleName = "storefront.account";
 if (storefrontAppDependencies !== undefined) {
     storefrontAppDependencies.push(moduleName);
 }
-angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', 'pascalprecht.translate', 'ngSanitize', 'satellizer', 'ui.indeterminate'])
+angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', 'pascalprecht.translate', 'ngSanitize', 'storefrontApp', 'satellizer'])
 
 .config(['$translateProvider', function ($translateProvider) {
     $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
@@ -83,11 +83,11 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
             }
         });
         
-		$scope.$on('loginStatusChanged', function(){
+        $scope.$on('loginStatusChanged', function(){
             $timeout(function(){
-			    $(".nav *:hidden").parent().prev().find(".nav-title").hide();
+                $(".nav *:hidden").parent().prev().find(".nav-title").hide();
             });
-		});
+        });
     }]
 })
 

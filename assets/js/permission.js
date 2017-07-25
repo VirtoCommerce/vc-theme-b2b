@@ -15,9 +15,9 @@
                 function toggleVisibilityBasedOnPermission(securityScopes) {
                     var hasPermission = authService.checkPermission(permissionValue, securityScopes);
                     if (hasPermission)
-                        element.show();
+                        angular.element(element).show();
                     else
-                        element.hide();
+                        angular.element(element).hide();
                 }
 
                 toggleVisibilityBasedOnPermission();

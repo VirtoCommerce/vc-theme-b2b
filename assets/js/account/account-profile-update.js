@@ -1,30 +1,33 @@
 ﻿angular.module('storefront.account')
 .component('vcAccountProfileUpdate', {
-    templateUrl: "themes/assets/account-profile-update.tpl.liquid",
+    templateUrl: "themes/assets/js/account/account-profile-update.tpl.liquid",
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefrontApp.mainContext', '$q', '$scope', 'roleService', 'storefront.corporateAccountApi', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService', function (mainContext, $q, $scope, roleService, corporateAccountApi, corporateApiErrorHelper, loader) {
+    controller: ['$q', '$scope', 'storefrontApp.mainContext', 'roleService', 'storefront.corporateAccountApi', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService', function ($q, $scope, mainContext, roleService, corporateAccountApi, corporateApiErrorHelper, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
-        $ctrl.currentMember = mainContext.customer;
 
-        this.$routerOnActivate = function (next) {
-            loader.wrapLoading(function () {
-                return corporateAccountApi.getCompanyMember({ id: $ctrl.currentMember.id }, function (member) {
-                    $ctrl.member = {
-                        id: member.id,
-                        firstName: member.firstName,
-                        lastName: member.lastName,
-                        email: _.first(member.emails),
-                        organizations: member.organizations,
-                        title: member.title,
-                        addresses: member.addresses,
-                        securityAccounts: member.securityAccounts
-                    };
-                }).$promise;
+        $scope.$watch(
+            function () { return mainContext.customer; },
+            function (customer) {
+                if (customer) {
+                    loader.wrapLoading(function() {
+                        return corporateAccountApi.getCompanyMember({ id: customer.id }, function(member) {
+                            $ctrl.member = {
+                                id: member.id,
+                                firstName: member.firstName,
+                                lastName: member.lastName,
+                                email: _.first(member.emails),
+                                organizations: member.organizations,
+                                title: member.title,
+                                addresses: member.addresses,
+                                securityAccounts: member.securityAccounts
+                            };
+                        }).$promise;
+                    });
+                }
             });
-        };
 
         $ctrl.submit = function () {
             $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;

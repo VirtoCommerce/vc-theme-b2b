@@ -6,25 +6,26 @@
 
     {% form 'customer_login' %}
 
-      <h1>{{ 'customer.login.title' | t }}</h1>
+      <div ng-keypress="login()">
+        <h1>{{ 'customer.login.title' | t }}</h1>
 
-      {% include 'form-errors-custom' %}
+        {% include 'form-errors-custom' %}
 
-      <label for="customer_email" class="hidden-label">{{ 'customer.login.email' | t }}</label>
-      <input type="text" ng-model="userName" name="customer[user_name]" id="customer_user_name" placeholder="{{ 'customer.login.user_name' | t }}" {% if form.errors contains "user_name" %} class="error"{% endif %} autocorrect="off" autocapitalize="off" autofocus>
+        <label for="customer_email" class="hidden-label">{{ 'customer.login.email' | t }}</label>
+        <input type="text" ng-model="userName" name="customer[user_name]" id="customer_user_name" placeholder="{{ 'customer.login.user_name' | t }}" {% if form.errors contains "user_name" %} class="error"{% endif %} autocorrect="off" autocapitalize="off" autofocus>
 
-      <label for="customer_password" class="hidden-label">{{ 'customer.login.password' | t }}</label>
-      <input type="password" ng-model="password" name="customer[password]" id="customer_password" placeholder="{{ 'customer.login.password' | t }}" {% if form.errors contains "password" %} class="error"{% endif %}>
-
-      <p>
-        <a href="{{ '/account/forgotpassword' | absolute_url }}">{{ 'customer.login.forgot_password' | t }}</a>
-      </p>
+        <label for="customer_password" class="hidden-label">{{ 'customer.login.password' | t }}</label>
+        <input type="password" ng-model="password" name="customer[password]" id="customer_password" placeholder="{{ 'customer.login.password' | t }}" {% if form.errors contains "password" %} class="error"{% endif %}>
 
         <p>
-          <input type="submit" class="btn" value="{{ 'customer.login.sign_in' | t }}" ng-click="login()">
+          <a href="{{ '/account/forgotpassword' | absolute_url }}">{{ 'customer.login.forgot_password' | t }}</a>
+        </p>
+
+        <p>
+          <input class="btn" value="{{ 'customer.login.sign_in' | t }}" ng-click="login()">
         </p>
         {{ 'customer.login.or' | t }} <a href="{{ '/' | absolute_url }}">{{ 'customer.login.cancel' | t }}</a>
-
+      </div>
     {% endform %}
 
 

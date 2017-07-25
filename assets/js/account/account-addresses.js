@@ -4,18 +4,21 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefrontApp.mainContext', 'confirmService', '$translate', '$scope', 'loadingIndicatorService', 'storefront.corporateAccountApi', function (mainContext, confirmService, $translate, $scope, loader, corporateAccountApi) {
+    controller: ['storefrontApp.mainContext', 'confirmService', '$translate', '$scope', 'storefront.corporateAccountApi', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService', function (mainContext, confirmService, $translate, $scope, corporateAccountApi, corporateApiErrorHelper, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
-        $ctrl.currentMemberId = mainContext.customer.id;
-
-        this.$routerOnActivate = function (next) {
-            loader.wrapLoading(function () {
-                return corporateAccountApi.getCompanyMember({ id: $ctrl.currentMemberId }, function (member) {
-                    $ctrl.currentMember = member;
-                }).$promise;
+        
+        $scope.$watch(
+            function () { return mainContext.customer; },
+            function (customer) {
+                if (customer) {
+                    loader.wrapLoading(function() {
+                        return corporateAccountApi.getCompanyMember({ id: customer.id }, function (member) {
+                            $ctrl.currentMember = member;
+                        }).$promise;
+                    });
+                }
             });
-        };
 
         $ctrl.addNewAddress = function () {
             if (_.last(components).validate()) {
@@ -57,7 +60,9 @@
 
         $ctrl.updateCompanyMember = function (companyMember, handler) {
             return loader.wrapLoading(function () {
-                return corporateAccountApi.updateCompanyMember(companyMember, handler).$promise;
+                return corporateAccountApi.updateCompanyMember(companyMember, handler, function (response) {
+                    corporateApiErrorHelper.clearErrors($scope);
+                }).$promise;
             });
         };
 

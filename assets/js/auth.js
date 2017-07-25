@@ -13,7 +13,7 @@
     };
 
     authContext.login = function (login, password) {
-        $auth.login($httpParamSerializerJQLike({
+        return $auth.login($httpParamSerializerJQLike({
                 userName: login,
                 password: password,
                 grant_type: "password"
@@ -83,15 +83,15 @@
       name: 'platform',
       clientId: 'web'
     });
-    $provide.decorator('SatellizerShared', ['$delegate', 'tokenExpirationName', function($delegate, tokenExpirationName){
+    $provide.decorator('SatellizerShared', ['$delegate', 'tokenExpirationName', function($delegate, tokenExpirationName) {
         var service = $delegate;
         var originalSetToken = service.setToken;
         service.setToken = function(response){
-            originalSetToken.apply($delegate, arguments);
+            originalSetToken.apply(service, arguments);
             var expirationTime = Date.parse(response.data['.expires']);
             this.SatellizerStorage.set(tokenExpirationName, expirationTime);;
         };
-        return $delegate;
+        return service;
     }]);
 }])
 .run(['$auth', 'SatellizerConfig', 'SatellizerStorage', 'tokenExpirationName', '$timeout', '$window', '$location', function($auth, $authProvider, $authStorage, tokenExpirationName, $timeout, $window, $location) {

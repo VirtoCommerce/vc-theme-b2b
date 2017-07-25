@@ -7,7 +7,7 @@
         "Corporate manager",
         "Employee"
       ],
-      "suggestions_limit":  10,
+      "suggestions_limit": 10,
       "bulk_order_enabled": true,
       "product_compare_enabled": true,
       "product_compare_list_capacity": 4,
