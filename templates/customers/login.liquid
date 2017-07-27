@@ -6,7 +6,7 @@
 
     {% form 'customer_login' %}
 
-      <div ng-keypress="login()">
+      <div ng-keypress="login($event)">
         <h1>{{ 'customer.login.title' | t }}</h1>
 
         {% include 'form-errors-custom' %}
