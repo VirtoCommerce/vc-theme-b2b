@@ -15,11 +15,11 @@ angular.module('storefront.account')
         });
     });
 
-    service.get = function(member){
+    service.get = function(accounts){
         var availableRoles = angular.copy(service.available);
         _.each(availableRoles, function(availableRole) {            
             // role is assigned to member if any of member's security accounts has this role assigned
-            var roles = _.chain(member.securityAccounts).map(function(account) { return account.roles; }).flatten().value();
+            var roles = _.chain(accounts).map(function(account) { return account.roles; }).flatten().value();
             availableRole.assigned = _.some(roles,
             function(assignedRole) {
                 return availableRole.name === assignedRole.name;
@@ -29,9 +29,9 @@ angular.module('storefront.account')
         return _.last(_.where(availableRoles, { assigned: true }));
     };
 
-    service.set = function(member, role) {
+    service.set = function(accounts, role) {
         // assign current role to all member's security accounts
-        return $q.all(_.map(member.securityAccounts, function(account) {
+        return $q.all(_.map(accounts, function(account) {
             account.roles = _.without.apply(_, [account.roles].concat(_.filter(account.roles, function(role) { return _.contains(service._roles, role.name); })));
             account.roles.push(role);
             return corporateAccountApi.updateUser(account).$promise;

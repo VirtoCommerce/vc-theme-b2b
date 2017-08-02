@@ -34,14 +34,11 @@
             $ctrl.member.emails = [$ctrl.member.email];
 
             return loader.wrapLoading(function () {
-                return $q.all([
-                    roleService.set($ctrl.member, $ctrl.rolesComponent.currentRole),
-                    corporateAccountApi.updateCompanyMember($ctrl.member, function(response) {
-                        corporateApiErrorHelper.clearErrors($scope);
-                    }, function (rejection){
-                        corporateApiErrorHelper.handleErrors($scope, rejection);
-                    }).$promise
-                ]);
+                return corporateAccountApi.updateCompanyMember($ctrl.member, function(response) {
+                    corporateApiErrorHelper.clearErrors($scope);
+                }, function (rejection){
+                    corporateApiErrorHelper.handleErrors($scope, rejection);
+                }).$promise;
             });
         };
     }]

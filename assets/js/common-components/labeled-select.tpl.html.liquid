@@ -1,0 +1,27 @@
+<div class="form-group" ng-class="{'keyuped': $ctrl.form[$ctrl.name].$viewValue, 'error': ($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && $ctrl.form[$ctrl.name].$invalid }">
+    <div uib-dropdown>
+        <button uib-dropdown-toggle
+                id="{% raw %}{{ $ctrl.name }}{% endraw %}"
+                name="{% raw %}{{ $ctrl.name }}{% endraw %}"
+                autofocus="{% raw %}{{ $ctrl.autofocus }}{% endraw %}"
+                ng-required="$ctrl.required"
+                ng-disabled="$ctrl.disabled"
+                class="form-input form-select">
+            <span ng-if="!$ctrl.value" class="form-placeholder">{% raw %}{{ $ctrl.placeholder }}{% endraw %}</span>
+            <span ng-if="$ctrl.value">{% raw %}{{ $ctrl.value.name || $ctrl.value | translate }}{% endraw %}</span>
+        </button>
+        <ul uib-dropdown-menu>
+            <li ng-repeat="option in $ctrl.options">
+                <a href="" ng-click="$ctrl.select(option)">
+                    <span>{% raw %}{{ option.name || option }}{% endraw %}</span>
+                    <div class="form-description" ng-if="option.description">
+                        {% raw %}{{ option.description | translate }}{% endraw %}
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <label for="{% raw %}{{ $ctrl.name }}{% endraw %}" class="form-label" ng-bind="$ctrl.placeholder"></label>
+    <span class="form-error" ng-if="($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && $ctrl.form[$ctrl.name].$error.required" ng-bind="$ctrl.requiredError || '{{ 'common.required' | t }}'"></span>
+    <span class="form-error" ng-if="($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && !$ctrl.form[$ctrl.name].$error.required && $ctrl.form[$ctrl.name].$invalid">{{ 'common.invalid' | t }}</span>
+</div>

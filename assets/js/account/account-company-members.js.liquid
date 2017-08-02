@@ -34,7 +34,7 @@
                         return roleService.available;
                     }, function() {
                         angular.forEach($ctrl.entries, function(member){
-                            var role = roleService.get(member);
+                            var role = roleService.get(member.securityAccounts);
                             member.role = role ? role.name : null;
                         });
                     });
@@ -68,7 +68,8 @@
             {
                 field: 'Roles',
                 disabled: false,
-                visible:  true
+                visible:  true,
+                required: true
             }
         ];
         
@@ -117,7 +118,7 @@
         $ctrl.addNewMember = function () {
             if ($ctrl.newMemberComponent.validate()) {
                 $ctrl.newMember.companyId = mainContext.customer.companyId;
-                $ctrl.newMember.role = $ctrl.newMemberComponent.rolesComponent.currentRole.name;
+                $ctrl.newMember.role = $ctrl.newMember.role.name;
                 $ctrl.newMember.storeId = $ctrl.storeId;
 
                 loader.wrapLoading(function () {
@@ -261,7 +262,7 @@
                     $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;
                     $ctrl.member.emails = [ $ctrl.member.email ];
                     return $q.all([
-                        roleService.set($ctrl.member, $ctrl.memberComponent.rolesComponent.currentRole),
+                        roleService.set($ctrl.member.securityAccounts, $ctrl.member.role),
                         corporateAccountApi.updateCompanyMember($ctrl.member, function(response) {
                             corporateApiErrorHelper.clearErrors($scope);
                         }, function (rejection){

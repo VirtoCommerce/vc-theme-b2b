@@ -2,44 +2,40 @@
 .component('vcRoles', {
     templateUrl: "themes/assets/roles.tpl.html.liquid",
     bindings: {
-        rolesComponent: "=",
-        member: "<",
-        readonly: "@"
+        value: '=',
+        accounts: "<",
+        form: '=',
+        name: "@",
+        required: "<",
+        disabled: "<"
     },
     controller: ['$scope', 'roleService', 'loadingIndicatorService', function ($scope, roleService, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
 
-        this.$onInit = function () {            
-            $ctrl.rolesComponent = this;
-        };
-
-        this.$onDestroy = function () {
-            $ctrl.rolesComponent = null;
-        };
-
         $scope.$watch(function(){
             return roleService.available;
         }, function(){
-            $ctrl.availableRoles = angular.copy(roleService.available);
-            getCurrentRole();
-        },);
-
-        $ctrl.selectRole = function(role){
-            if ($ctrl.currentRole)
-                $ctrl.currentRole.assigned = false;
-            role.assigned = true;
-            $ctrl.currentRole = role;
-        };
+            $ctrl.availableRoles = _.map(roleService.available, function(availableRole) {
+                return availableRole;
+            });
+            $ctrl.getRole();
+        });
 
         $ctrl.$onChanges = function() {
-			getCurrentRole();
+            $ctrl.getRole();
+        };
+        
+        $ctrl.getRole = function() {
+            if ($ctrl.accounts) {
+                $ctrl.value = roleService.get($ctrl.accounts);
+            }
         };
 
-		var getCurrentRole = function() {
-            if ($ctrl.member) {
-                $ctrl.currentRole = roleService.get($ctrl.member);
-            }		    
-		};
+        $ctrl.selectRole = function(role){
+            if ($ctrl.value)
+                $ctrl.value.assigned = false;
+            role.assigned = true;
+        };
     }]
 });
