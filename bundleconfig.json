@@ -1,56 +1,56 @@
 ﻿[
     {
-        "outputFileName": "App_Data/Themes/default/assets/static/bundle/scripts.js",
+        "outputFileName": "assets/static/bundle/scripts.js",
         "inputFiles": [
-            "App_Data/Themes/default/assets/modernizr.min.js",
-            "App_Data/Themes/default/assets/interactor.js",
-            "App_Data/Themes/default/assets/ideal-image-slider.min.js",
-            "App_Data/Themes/default/assets/ideal-image-slider-bullet-nav.js",
-            "App_Data/Themes/default/assets/ideal-image-slider-captions.js",
-            "App_Data/Themes/default/assets/js/*.js"
+            "assets/modernizr.min.js",
+            "assets/interactor.js",
+            "assets/ideal-image-slider.min.js",
+            "assets/ideal-image-slider-bullet-nav.js",
+            "assets/ideal-image-slider-captions.js",
+            "assets/js/*.js"
         ]
     },
     {
-        "outputFileName": "App_Data/Themes/default/assets/static/bundle/checkout-scripts.js",
+        "outputFileName": "assets/static/bundle/checkout-scripts.js",
         "inputFiles": [
-            "App_Data/Themes/default/assets/js/app.js",
-            "App_Data/Themes/default/assets/js/services.js",
-            "App_Data/Themes/default/assets/js/directives.js",
-            "App_Data/Themes/default/assets/js/filters.js",
-            "App_Data/Themes/default/assets/js/main.js",
-            "App_Data/Themes/default/assets/js/common-components/*.js",
-            "App_Data/Themes/default/assets/js/checkout/*.js"
+            "assets/js/app.js",
+            "assets/js/services.js",
+            "assets/js/directives.js",
+            "assets/js/filters.js",
+            "assets/js/main.js",
+            "assets/js/common-components/*.js",
+            "assets/js/checkout/*.js"
         ]
     },
     {
-        "outputFileName": "App_Data/Themes/default/assets/static/bundle/account-scripts.js",
+        "outputFileName": "assets/static/bundle/account-scripts.js",
         "inputFiles": [
-            "App_Data/Themes/default/assets/modernizr.min.js",
-            "App_Data/Themes/default/assets/js/app.js",
-            "App_Data/Themes/default/assets/js/services.js",
-            "App_Data/Themes/default/assets/js/main.js",
-            "App_Data/Themes/default/assets/js/cart.js",
-            "App_Data/Themes/default/assets/js/quote-request.js",
-            "App_Data/Themes/default/assets/js/product-compare.js",
-            "App_Data/Themes/default/assets/js/searchBar.js",
-            "App_Data/Themes/default/assets/js/common-components/*.js",
-            "App_Data/Themes/default/assets/js/account/*.js"
+            "assets/modernizr.min.js",
+            "assets/js/app.js",
+            "assets/js/services.js",
+            "assets/js/main.js",
+            "assets/js/cart.js",
+            "assets/js/quote-request.js",
+            "assets/js/product-compare.js",
+            "assets/js/searchBar.js",
+            "assets/js/common-components/*.js",
+            "assets/js/account/*.js"
         ]
     },
     {
-        "outputFileName": "App_Data/Themes/default/assets/static/bundle/styles.css",
+        "outputFileName": "assets/static/bundle/styles.css",
         "inputFiles": [
-            "App_Data/Themes/default/assets/storefront.css",
-            "App_Data/Themes/default/assets/common-components.css",
-            "App_Data/Themes/default/assets/ideal-image-slider.css",
-            "App_Data/Themes/default/assets/ideal-image-slider-default-theme.css"
+            "assets/storefront.css",
+            "assets/common-components.css",
+            "assets/ideal-image-slider.css",
+            "assets/ideal-image-slider-default-theme.css"
         ]
     },
     {
-        "outputFileName": "App_Data/Themes/default/assets/static/bundle/account-styles.css",
+        "outputFileName": "assets/static/bundle/account-styles.css",
         "inputFiles": [
-            "App_Data/Themes/default/assets/account-bootstrap.css",
-            "App_Data/Themes/default/assets/common-components.css"
+            "assets/account-bootstrap.css",
+            "assets/common-components.css"
         ]
     }
 ]

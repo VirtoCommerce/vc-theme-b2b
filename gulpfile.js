@@ -35,8 +35,6 @@ var regex = {
     ext: /\.([^\.]+)$/
 };
 
-var rootPath = 'App_Data/Themes/default/';
-
 function getPackage() {
     delete require.cache[require.resolve('./package.json')];
     return require('./package.json');
@@ -175,12 +173,12 @@ gulp.task('snippet:js', function () {
     var package = getPackage();
     var tasks = getBundles(regex.js).map(function(bundle) {
         return gulp.src('bundle.liquid')
-            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Debug', 'script_tag', null, rootPath + 'assets/static/')))
-            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Release', 'script_tag', null, rootPath + 'assets/static/')))
+            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Debug', 'script_tag', null, 'assets/static/')))
+            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Release', 'script_tag', null, 'assets/static/')))
             .pipe(replace('?ver=DebugBuildVersion\'', '?ver=\' + ("now" | date: "%s")'))
             .pipe(replace('?ver=ReleaseBuildVersion', '?ver=' + package.version))
             .pipe(rename(bundle.outputFileName))
-            .pipe(rename({ dirname: rootPath + 'snippets/bundle', extname: '.liquid' }))
+            .pipe(rename({ dirname: 'snippets/bundle', extname: '.liquid' }))
             .pipe(gulp.dest('.'));
     });
     return merge(tasks);
@@ -190,12 +188,12 @@ gulp.task('snippet:css', function () {
     var package = getPackage();
     var tasks = getBundles(regex.css).map(function(bundle) {
         return gulp.src('bundle.liquid')
-            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Debug', 'stylesheet_tag', null, rootPath + 'assets/static/')))
-            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Release', 'stylesheet_tag', null, rootPath + 'assets/static/')))
+            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Debug', 'stylesheet_tag', null, 'assets/static/')))
+            .pipe(inject(gulp.src([bundle.outputFileName], { read: false }), defaultOptions('Release', 'stylesheet_tag', null, 'assets/static/')))
             .pipe(replace('?ver=DebugBuildVersion\'', '?ver=\' + ("now" | date: "%s")'))
             .pipe(replace('?ver=ReleaseBuildVersion', '?ver=' + package.version))
             .pipe(rename(bundle.outputFileName))
-            .pipe(rename({ dirname: rootPath + 'snippets/bundle', extname: '.liquid' }))
+            .pipe(rename({ dirname: 'snippets/bundle', extname: '.liquid' }))
             .pipe(gulp.dest('.'));
     });
     return merge(tasks);
@@ -204,7 +202,7 @@ gulp.task('snippet:css', function () {
 gulp.task('release', ['min', 'snippet'], function () {
     util.log("execured release");
     var package = getPackage();
-    return gulp.src([].concat([rootPath + '/**'], [].concat.apply([], getBundleConfig().map(function (bundle) { return bundle.inputFiles.map(function (inputFile) { return '!' + inputFile; }) }))))
+    return gulp.src([].concat(['/**'], [].concat.apply([], getBundleConfig().map(function (bundle) { return bundle.inputFiles.map(function (inputFile) { return '!' + inputFile; }) }))))
         .pipe(zip(package.name + '-' + package.version + '.zip'))
         .pipe(gulp.dest('.'));
 });
