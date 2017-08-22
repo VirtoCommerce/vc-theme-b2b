@@ -26,7 +26,8 @@
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-translate/2.12.1/angular-translate-loader-url/angular-translate-loader-url.min.js' | script_tag }}
     {{ '//cdn.jsdelivr.net/satellizer/0.15.5/satellizer.js' | script_tag }}
 	
-	{{ '~/default-theme/checkout/scripts' | script_bundle_tag }}
+    {{ 'app.js' | asset_url | script_tag }}
+	{% include 'bundle/checkout-scripts' %}
 
     {{ content_for_header }}
     <script>

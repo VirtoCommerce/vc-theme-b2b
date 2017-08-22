@@ -63,6 +63,7 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
                     address.id = addressId;
                     addressId++;
                 });
+                response.data.isContact = response.data.memberType === 'Contact';
                 mainContext.customer = $scope.customer = response.data;
             });
         };

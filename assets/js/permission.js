@@ -1,4 +1,4 @@
-﻿angular.module('storefront.account')
+﻿angular.module('storefrontApp')
 .directive('vaPermission', ['authService', function (authService) {
     return {
         link: function (scope, element, attrs) {

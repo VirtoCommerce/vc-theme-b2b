@@ -1,0 +1,58 @@
+﻿[
+    {
+        "outputFileName": "assets/static/bundle/scripts.js",
+        "inputFiles": [
+            "assets/modernizr.min.js",
+            "assets/interactor.js",
+            "assets/ideal-image-slider.min.js",
+            "assets/ideal-image-slider-bullet-nav.js",
+            "assets/ideal-image-slider-captions.js",
+            "assets/js/*.js"
+        ]
+    },
+    {
+        "outputFileName": "assets/static/bundle/checkout-scripts.js",
+        "inputFiles": [
+            "assets/js/services.js",
+            "assets/js/directives.js",
+            "assets/js/filters.js",
+            "assets/js/main.js",
+            "assets/js/common-components/!(roles).js",
+            "assets/js/checkout/*.js",
+            "assets/js/permission.js"
+        ]
+    },
+    {
+        "outputFileName": "assets/static/bundle/account-scripts.js",
+        "inputFiles": [
+            "assets/modernizr.min.js",
+            "assets/js/errors.js",
+            "assets/js/auth.js",
+            "assets/js/services.js",
+            "assets/js/main.js",
+            "assets/js/cart.js",
+            "assets/js/quote-request.js",
+            "assets/js/product-compare.js",
+            "assets/js/searchBar.js",
+            "assets/js/common-components/*.js",
+            "assets/js/account/*.js",
+            "assets/js/permission.js"
+        ]
+    },
+    {
+        "outputFileName": "assets/static/bundle/styles.css",
+        "inputFiles": [
+            "assets/storefront.css",
+            "assets/common-components.css",
+            "assets/ideal-image-slider.css",
+            "assets/ideal-image-slider-default-theme.css"
+        ]
+    },
+    {
+        "outputFileName": "assets/static/bundle/account-styles.css",
+        "inputFiles": [
+            "assets/account-bootstrap.css",
+            "assets/common-components.css"
+        ]
+    }
+]

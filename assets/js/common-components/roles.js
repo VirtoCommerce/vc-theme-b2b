@@ -1,5 +1,5 @@
-﻿angular.module('storefront.account')
-.component('vcRoles', {
+﻿var storefrontApp = angular.module('storefrontApp');
+storefrontApp.component('vcRoles', {
     templateUrl: "themes/assets/roles.tpl.html.liquid",
     bindings: {
         value: '=',
