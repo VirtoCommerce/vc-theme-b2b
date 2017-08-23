@@ -1,4 +1,4 @@
-﻿# Default theme for VirtoCommerce Storefront
+# Default theme for VirtoCommerce Storefront
 
 _Default theme_ for VirtoCommerce Storefront used by _Electronics_ sample store. It includes the largest number of features and support latest updates of Storefront so it always stay actual.
 
@@ -14,7 +14,7 @@ If you have Visual Studio 2015 with Update 3 and above, you don't need install a
 
 Task Runner Explorer, Node.js and Gulp already included in your Visual Studio installation. However, you need update your Node.js to at least 4.0.0.
 1. Update Node.js to v4.0.0 at least (we recommend [latest LTS version](https://nodejs.org/en/)). Use `C:\Program Files\nodejs` installation path (change `Program Files` to `Program Files (x86)` on 64-bit machine).
-2. Add Node.js installation path to External Web Tools: ![External Web Tools](https://user-images.githubusercontent.com/6369252/29498917-038ce010-861f-11e7-9a23-3c4f9e96d6b7.png)
+2. Add Node.js installation path to External Web Tools or move $(PATH) to top: ![External Web Tools](https://user-images.githubusercontent.com/6369252/29498917-038ce010-861f-11e7-9a23-3c4f9e96d6b7.png)
 
 ### Visual Studio from 2013.3 up to 2013.5
 
@@ -23,7 +23,7 @@ You need install:
 2. Install Node.js v4.0.0 or above (we recommend [latest LTS version](https://nodejs.org/en/))
 3. `npm install gulp -g`
 
-### Visual Studio Code, Sublime and other editors
+### Visual Studio Code and other editors
 
 1. Install Node.js v4.0.0 or above (we recommend [latest LTS version](https://nodejs.org/en/))
 2. `npm install gulp -g`
@@ -32,22 +32,28 @@ You need install:
 
 **Attention:** while theme including `bundlesconfig.json` file, you *must not* use [Bundler & Minifier](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.BundlerMinifier) Visual Studio extension with theme. See `Appendix: bundling & minification process workflow` for details about why.
 
-Tip: you may need to wait a few minutes at first time on project open, because Node.js and Gulp dependencies will automatically downloaded.
-
-
 ### Visual Studio 2017 and Visual Studio Code
 
-Open theme folder as a folder. `File → Open → Folder...` in Visual Studio 2017, `File → Open Folder...` in Visual Studio Code.
+Open theme folder as a folder. `File → Open → Folder...` in Visual Studio 2017, `File → Open Folder...` in Visual Studio Code. You may need to wait a few minutes at first time on project open, because Node.js and Gulp dependencies will automatically downloaded and installed.
 
 ### Visual Studio 2013 and 2015
 
-Open theme folder as a website (`File → Open → Web Site...`). ASP.NET website project will be created. Never save it and just ignore.
+Open theme folder as a website (`File → Open → Web Site...`). ASP.NET website project will be created. Never save it and just ignore. You may need to wait a few minutes at first time on project open, because Node.js and Gulp dependencies will automatically downloaded and installed.
 
-### How to connect theme with storefront
+### Other editors
 
-1. Specify correct `VirtoCommerceBaseUrl` (usually `http://localhost/admin` or your admin site name) and `ContentConnectionString` (usually `PATH_TO_PLATFORM\VirtoCommerce.Platform.Web\App_Data\cms-content\` or path to CMS content folder or Azure blob storage) connection strings on storefront. Restart storefront app pool or full IIS.
-2. For development purpose, make a link from store theme folder (`App_Data\cms-content\Themes\Electronics` for example) to cloned theme repo (`mklink /d STORE_THEME_FOLDER_PATH CLONED_REPO_PATH`).
-3. In production, upload zip package of theme (use gulp `release` task to create) to needed store on admin site or manually upload theme files to CMS content folder or Azure blob.
+You need to manually install dependencies by running `npm install`.
+
+### Apply theme to store
+
+*Main article: [Storefront Source Code Getting Started](https://virtocommerce.com/docs/vc2devguide/deployment/storefront-deployment/storefront-source-code-getting-started)*
+
+1. Specify correct `VirtoCommerceBaseUrl` (your admin site url, usually `http://localhost/admin` for development) and `ContentConnectionString` (CMS content path [folder or Azure blob storage], usually `PATH_TO_PLATFORM_REPO\VirtoCommerce.Platform.Web\App_Data\cms-content\` for development) connection strings on storefront. Restart storefront app pool or full IIS.
+2. Make a link from store theme folder (`PATH_TO_PLATFORM_REPO\VirtoCommerce.Platform.Web\App_Data\cms-content\Themes\Electronics` usually) to cloned theme repo (`mklink /d PATH_TO_STORE_THEME_FOLDER PATH_TO_CLONED_REPO`).
+
+### Add bundle to layout
+
+Just include bundle as static content using `static_asset_url` and `script_tag` or `stylesheet_tag`. To correctly invalidate browser cache for bundles, use `append_version` tag after `static_content_url`.
 
 ## Bundling & minification
 
@@ -73,9 +79,8 @@ Run `gulp watch` on command line if you want to bundle & minify files on save or
 2. `clean`: removes bundled & minified files.
 3. `lint`: runs `eslint` to check for warnings & errors in javascript files. Look at [eslint site](https://eslint.org/) for details.
 4. `min` and `min:js`, `min:css`, `min:html`: minify all or specified types of files.
-5. `snippet` and `snipped:js`, `snippet:css`: create liquid snippets to easily include bundles into liquid templates.
 6. `watch`: watching to any changes on bundled & configuration files and update bundles when any change occurs.
-7. `release`: creates zip package with all needed files to deploy theme on storefront.
+7. `compress`: creates zip package with all needed files to deploy theme on storefront.
 
 ## Appendix: Bundling & minification process workflow
 
@@ -86,9 +91,6 @@ When you run the `default` task to bundle & minify theme, the following happens:
 2. Javascript minifies and source maps generates.
 3. CSS processes by [Autoprefixer](https://github.com/postcss/autoprefixer) with [the following browsers support](https://virtocommerce.com/docs/vc2userguide/what-is-commerce-manager/minimum-requirements) (documentation may be sometimes outdated; browser versions specified in gulpfile then specified in docs, not vice versa).
 4. CSS minifies and source maps generates.
-5. Liquid snippets forms.
-
-Bundles has two working modes: when app setting `VirtoCommerce:Storefront:OptimizeStaticContent` is on (set to true) and off. We use minified bundles and source maps in both modes, but when static content optimization is off, when they provided with timestamp, so developers is always see actual version of bundles, while in off mode they provided with theme version (i.e. `bundle.js?ver=2.0.0`) so bundles may be cached in client's browsers until next version of theme will be uploaded to storefront.
 
 # License
 Copyright (c) Virtosoftware Ltd.  All rights reserved.
