@@ -1,5 +1,0 @@
-{%- if application_settings['VirtoCommerce:Storefront:OptimizeStaticContent'] == 'true' -%}
-        {{ 'bundle/styles.css?ver=1.0.1' | static_asset_url | stylesheet_tag }}
-{%- else -%}
-        {{ 'bundle/styles.css?ver=' + ("now" | date: "%s") | static_asset_url | stylesheet_tag }}
-{%- endif -%}
