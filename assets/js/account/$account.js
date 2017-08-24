@@ -1,4 +1,4 @@
-﻿//Call this to register our module to main application
+//Call this to register our module to main application
 var moduleName = "storefront.account";
 
 if (storefrontAppDependencies !== undefined) {
@@ -33,7 +33,8 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
          { path: '/addresses', name: 'Addresses', component: 'vcAccountAddresses' },
          { path: '/changePassword', name: 'PasswordChange', component: 'vcAccountPasswordChange' },
          { path: '/companyInfo', name: 'CompanyInfo', component: 'vcAccountCompanyInfo' },
-         { path: '/companyMembers/...', name: 'CompanyMembers', component: 'vcAccountCompanyMembers' }
+         { path: '/companyMembers/...', name: 'CompanyMembers', component: 'vcAccountCompanyMembers' },
+         { path: '/wishlist', name: 'WishList', component: 'vcAccountLists' }
     ],
     controller: ['$scope', '$timeout', 'storefront.accountApi', 'storefrontApp.mainContext', 'authService', 'storefront.corporateAccountApi', 'loadingIndicatorService', function ($scope, $timeout, accountApi, mainContext, authService, corporateAccountApi, loader) {
         var $ctrl = this;
@@ -82,7 +83,7 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', 'credit-cards', '
                 authService.fillAuthData();
             }
         });
-        
+
         $scope.$on('loginStatusChanged', function(){
             $timeout(function(){
                 $(".nav *:hidden").parent().prev().find(".nav-title").hide();

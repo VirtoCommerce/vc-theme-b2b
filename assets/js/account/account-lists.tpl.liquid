@@ -1,8 +1,8 @@
-﻿<div id="account-lists.tpl.liquid" type="text/ng-template" ng-init='$ctrl.initialize({{ settings.available_lists | json }})'>
+<div id="account-lists.tpl.liquid" type="text/ng-template" ng-init='$ctrl.initialize({{ settings.available_lists | json }})'>
   <h4>Your Lists</h4>
   <p ng-if="!$ctrl.lists">No lists defined</p>
   <div style="margin-top: 25px;" ng-if="$ctrl.lists" class="grid grid-border">
-    <div class="grid-item large--one-fifth">
+    <div class="grid-item large--one-quarter">
       <ul class="sidebar product-list-container list __items">
         <li ng-repeat="list in $ctrl.lists"
             ng-class="{'activeList': $ctrl.selectedList.name == list.name}"
@@ -12,7 +12,7 @@
         </li>
       </ul>
     </div>
-    <div class ="grid-item large--four-fifths grid-border--left" ng-cloak="">
+    <div class ="grid-item large--three-quarters grid-border--left" ng-cloak="">
       <span class="hide-if-lowWidth list-item-header grid-item" ng-bind="$ctrl.selectedList.title"></span>
       <span ng-if="$ctrl.selectedList.items.length == 0" ng-cloak="">
         <h2>{{ 'wishlist.general.empty' | t }}</h2>

@@ -21,28 +21,31 @@
 				</div>
 				<ul class="nav nav-pills nav-justified nav-justified-fixed grid-item">
 					<li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountProfileUpdate'}">
-						<a ng-link="['Profile']">{{ 'customer.account.menu_label.profile' | t }}</a>
-					</li>
-					<li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountAddresses'}">
-						<a ng-link="['Addresses']">{{ 'customer.account.menu_label.addresses' | t }}</a>
-					</li>
-					<li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountPasswordChange'}">
-						<a ng-link="['PasswordChange']">{{ 'customer.account.menu_label.change_password' | t }}</a>
-					</li>
-					<li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountOrders'}">
-						<a ng-link="['Orders']">{{ 'customer.account.menu_label.orders' | t }}</a>
-					</li>
-					{% if shop.subscription_enabled %}
-					<li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountSubscriptions'}">
-						<a ng-link="['Subscriptions']">{{ 'customer.account.menu_label.subscriptions' | t }}</a>
-					</li>
-					{% endif %}
-					{% if shop.quotes_enabled %}
-					<li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountQuotes'}">
-						<a ng-link="['Quotes']">{{ 'customer.account.menu_label.quotes' | t }}</a>
-					</li>
-					{% endif %}          
-				</ul>
+                        <a ng-link="['Profile']">{{ 'customer.account.menu_label.profile' | t }}</a>
+                    </li>
+                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountAddresses'}">
+                        <a ng-link="['Addresses']">{{ 'customer.account.menu_label.addresses' | t }}</a>
+                    </li>
+                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountPasswordChange'}">
+                        <a ng-link="['PasswordChange']">{{ 'customer.account.menu_label.change_password' | t }}</a>
+                    </li>
+                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountOrders'}">
+                        <a ng-link="['Orders']">{{ 'customer.account.menu_label.orders' | t }}</a>
+                    </li>
+                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountLists'}">
+                        <a ng-link="['WishList']">{{ 'customer.account.menu_label.wishlist' | t }}</a>
+                    </li>
+                    {% if shop.subscription_enabled %}
+                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountSubscriptions'}">
+                        <a ng-link="['Subscriptions']">{{ 'customer.account.menu_label.subscriptions' | t }}</a>
+                    </li>
+                    {% endif %}
+                    {% if shop.quotes_enabled %}
+                    <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountQuotes'}">
+                        <a ng-link="['Quotes']">{{ 'customer.account.menu_label.quotes' | t }}</a>
+                    </li>
+                    {% endif %}          
+                </ul>
                 <div class="grid-item">
                     <h3 class="nav-title">{{ 'customer.account.corporate' | t }}</h3>
                 </div>

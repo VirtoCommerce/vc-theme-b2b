@@ -1,4 +1,4 @@
-﻿{% include 'breadcrumb' %}
+{% include 'breadcrumb' %}
 <div class="grid" itemscope itemtype="http://schema.org/Product" ng-controller="productController">
     <meta itemprop="url" content="{{ product.url | absolute_url}}">
     <meta itemprop="image" content="{{ product.featured_image.src | img_url }}">
@@ -41,7 +41,7 @@
             {% if settings.product_vendor_enable %}
             <p class="product-meta" itemprop="brand">{{ product.vendor }}</p>
             {% endif %}
-
+            
             {% if customer %}
             <ul class="inline-list product-meta">
                 <li ng-if="!selectedVariation.id">
@@ -135,23 +135,30 @@
                 <input type="number" id="quantity" name="quantity" value="1" min="1" class="quantity-selector">
                 {% endif %}
                 {% if customer != null %}
-                <button type="button" name="add" id="addToCart" class="btn AddShopCart" ng-disabled="!selectedVariation.id || !selectedVariation.isAvailable" ng-click="addProductToCart(selectedVariation, 1)" interactor-arg="{{ product.id }}">
+                <button type="button" name="add" id="addToCart" class="btn btn-clearfix AddShopCart" ng-disabled="!selectedVariation.id || !selectedVariation.isAvailable" ng-click="addProductToCart(selectedVariation, 1)" interactor-arg="{{ product.id }}">
                     <span class="icon icon-cart"></span>
                     <span id="addToCartText">{{ 'products.product.add_to_cart' | t }}</span>
                 </button>
                 {% endif %}
                 {% if shop.quotes_enabled %}
-                <button class="btn" id="addToQuote" type="button" ng-if="selectedVariation.isQuotable" ng-disabled="!selectedVariation.id" ng-click="addProductToActualQuoteRequest(selectedVariation, 1)">
+                <button class="btn btn-clearfix" id="addToQuote" type="button" ng-if="selectedVariation.isQuotable" ng-disabled="!selectedVariation.id" ng-click="addProductToActualQuoteRequest(selectedVariation, 1)">
                     <span class="fa fa-calculator"></span>
                     {{ 'products.general.add_to_quote' | t }}
                 </button>
                 {% endif%}
                 {% if customer != null and settings.product_compare_enabled %}
-                    <button class="btn" type="button" ng-click="addProductToCompareList('{{ product.id }}', $event)" ng-controller="productCompareListController">
+                    <button class="btn btn-clearfix" type="button" ng-click="addProductToCompareList('{{ product.id }}', $event)" ng-controller="productCompareListController">
                         <span class="fa fa-bar-chart"></span>
                         <span>{{ 'products.compare_list.add_to_compare' | t }}</span>
                     </button>
                 {% endif %}
+                 <button id="addToWishlist" class="btn btn-clearfix list-btn-alignment" type="button" 
+                         ng-show="customer.isRegisteredUser"
+                         ng-disabled="buttonInvalid"
+                         ng-click="addProductToWishlist(selectedVariation,$scope.listContains)">
+                      <span class="fa fa-file-text list-icon-clearfix"></span>
+                      <span>{{ 'products.list.add_to_myList' | t }}</span>                      
+                 </button>                
                 <span id="variantQuantity" class="variant-quantity"></span>
             </form>
             <hr>
