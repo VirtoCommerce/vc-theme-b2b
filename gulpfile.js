@@ -1,4 +1,4 @@
-﻿/// <binding BeforeBuild='default' Clean='clean' ProjectOpened='watch' />
+/// <binding BeforeBuild='default' Clean='clean' ProjectOpened='watch' />
 
 var gulp = require('gulp'),
 
@@ -55,7 +55,8 @@ function mapSources() {
     return sourcemaps.mapSources(function (sourcePath, file) {
         var sourceRootPathEndIndex = sourcePath.indexOf('assets');
         var sourceRootPath = sourcePath.substring(0, sourceRootPathEndIndex);
-        var relativeRootPath = '../'.repeat((sourceRootPath.match(new RegExp('/', "g")) || []).length) + sourcePath.substring(sourceRootPathEndIndex);
+        // ../../../ for assets/static/bundle + ../ count of parent folders in real path
+        var relativeRootPath = '../'.repeat((sourceRootPath.match(new RegExp('/', "g")) || []).length + 3) + sourcePath.substring(sourceRootPathEndIndex);
         return relativeRootPath;
     });
 }
