@@ -21,9 +21,12 @@
     <link rel="canonical" href="{{ canonical_url }}" />
 
     {{ '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css' | stylesheet_tag }}
-    <!--{{ '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css' | stylesheet_tag }}-->
-    {{ 'default.scss.css' | asset_url | stylesheet_tag }}
-    {% include 'bundle/account-styles' %}
+    <!--{{ '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css' | stylesheet_tag }}-->    
+	{{ 'default.scss.css' | asset_url | stylesheet_tag }}
+
+    {{ 'bundle/account-styles.css' | static_asset_url | append_version | stylesheet_tag }}
+
+     {{ 'default.scss.css' | asset_url | stylesheet_tag }}
 
     {% include 'google-fonts' %}
 
@@ -43,7 +46,7 @@
     {{ '//cdn.jsdelivr.net/satellizer/0.15.5/satellizer.min.js' | script_tag }}
     
     {{ 'app.js' | asset_url | script_tag }}
-    {% include 'bundle/account-scripts' %}
+    {{ 'bundle/account-scripts.js' | static_asset_url | append_version | script_tag }}
     {{ 'shop.js' | asset_url | script_tag }}
     {{ 'role.js' | asset_url | script_tag }}
 

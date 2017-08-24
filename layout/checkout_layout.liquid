@@ -27,7 +27,7 @@
     {{ '//cdn.jsdelivr.net/satellizer/0.15.5/satellizer.js' | script_tag }}
 	
     {{ 'app.js' | asset_url | script_tag }}
-	{% include 'bundle/checkout-scripts' %}
+	{{ 'bundle/checkout-scripts.js' | static_asset_url | append_version | script_tag }}
 
     {{ content_for_header }}
     <script>

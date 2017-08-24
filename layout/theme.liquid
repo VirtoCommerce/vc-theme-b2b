@@ -26,7 +26,7 @@
     {{ '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css' | stylesheet_tag }}
     {{ 'ajaxify.scss.css' | asset_url | stylesheet_tag }}
     {{ 'default.scss.css' | asset_url | stylesheet_tag }}
-    {% include 'bundle/styles' %}
+    {{ 'bundle/styles.css' | static_asset_url | append_version | stylesheet_tag }}
     
     {% include 'google-fonts' %}
 
@@ -45,7 +45,7 @@
     {{ '//cdnjs.cloudflare.com/ajax/libs/angular-translate/2.12.1/angular-translate-loader-url/angular-translate-loader-url.min.js' | script_tag }}
     {{ '//cdn.jsdelivr.net/satellizer/0.15.5/satellizer.js' | script_tag }}
     {{ 'app.js' | asset_url | script_tag }}
-    {% include 'bundle/scripts' %}
+    {{ 'bundle/scripts.js' | static_asset_url | append_version | script_tag }}
     
     {{ 'auth.js' | asset_url | script_tag }}
     {{ 'shop.js' | asset_url | script_tag }}
