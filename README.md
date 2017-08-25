@@ -10,12 +10,13 @@ _Default theme_ for VirtoCommerce Storefront used by _Electronics_ sample store.
 2. Clone repo.
     1. In Visual Studio, go to `Team Explorer` → `Clone` → Enter https://github.com/VirtoCommerce/vc-default-theme.git as URL and `D:\vc-default-theme` (for example) as path.
     2. Or execute command `git clone https://github.com/VirtoCommerce/vc-default-theme.git "D:\vc-default-theme"` (where `D:\vc-default-theme` is path to folder where you want to clone repo).
-3. Link you theme repo to store. Execute `mklink /d "C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content\Electronics\default" "D:\vc-default-theme"` (where `C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content` is path to cms-content folder, which you configured on storefront installation in prerequisites step, `Electronics` is your store name and `D:\vc-default-theme` is path to your theme repo). Restart IIS or storefront IIS application pool after that.
-4. Open theme folder in your IDE
+3. Link you theme repo to store. Execute `mklink /d "C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content\Electronics\default" "D:\vc-default-theme"` (where `C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content` is path to cms-content folder, which you configured on storefront installation in prerequisites step, `Electronics` is your store name, `default` is your theme name and `D:\vc-default-theme` is path to your theme repo).
+4. Make sure what your linked theme is set as default for your store. Go to platform, in menu select `More` → `Content`, select `Themes` for your store. If your theme does not appear here, create new theme with the same name as your theme. Now, right click on your theme and click `Set Active`.
+5. Open theme folder in your IDE
     1. In Visual Studio (including 2017) go to  `File` → `Open` → `Website`
     2. In Visual Studio Code, go to `File` → `Open` → `Folder`
     3. Select `D:\vc-default-theme` (where `D:\vc-default-theme` is path to folder where you want to clone repo) and open it.
- 5. Install node.js dependencies.
+6. Install node.js dependencies.
     1. In Visual Studio all dependencies will be installed automatically. Just wait a few minutes.
     2. In Visual Studio Code and other editors, you need to run `npm install`to install Node.js dependencies.
 
