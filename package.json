@@ -14,7 +14,7 @@
         "theme",
         "b2b"
     ],
-    "dependencies": {},
+    "dependencies": { },
     "devDependencies": {
         "autoprefixer": "^7.1.2",
         "babel-eslint": "^7.2.3",
@@ -54,13 +54,17 @@
         "node-sass": "^4.5.3",
         "run-sequence": "2.1.0"
     },
-    "homepage": "https://github.com/VirtoCommerce/vc-default-theme/",
+    "engineStrict": true,
+    "engines": {
+        "node": ">4.0.0"
+    },
+    "homepage": "https://github.com/VirtoCommerce/vc-b2b-theme/",
     "repository": {
         "type": "git",
-        "url": "https://github.com/VirtoCommerce/vc-default-theme.git"
+        "url": "https://github.com/VirtoCommerce/vc-b2b-theme.git"
     },
     "bugs": {
-        "url": "https://github.com/VirtoCommerce/vc-default-theme/issues"
+        "url": "https://github.com/VirtoCommerce/vc-b2b-theme/issues"
     },
     "scripts": {
     }

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr" class="multi-step windows chrome desktop page--no-banner page--logo-main page--show js flexbox flexboxlegacy rgba multiplebgs boxshadow opacity cssanimations csstransitions generatedcontent svg inlinesvg cors boxsizing display-table pointerevents placeholder mediaqueries floating-labels" ng-app="storefrontApp" ng-controller="mainController">
 <head>
     <meta charset="utf-8" />
@@ -9,7 +9,7 @@
     {% include 'google-tag-manager-head' %}
 
     {{ '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css' | stylesheet_tag }}
-    {{ 'checkout.css' | global_asset_url | stylesheet_tag }}
+    {{ 'checkout.css' | asset_url | stylesheet_tag }}
     {{ 'common-components.css' | asset_url | stylesheet_tag }}
 
     <base href="{{ '/' | absolute_url }}" />

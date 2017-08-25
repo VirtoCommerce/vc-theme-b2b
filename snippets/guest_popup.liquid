@@ -13,7 +13,7 @@
                                         <button name="context[authentication_type]" type="submit" value="{{ login_provider.authentication_type }}" style="background: transparent; border: 0; margin-right: 5px; padding: 0;" title="Sign in with {{ login_provider.caption }} account">
                                             {% assign icon_filename = 'assets/icon_' | append: login_provider.authentication_type | downcase %}
                                             {% assign icon_fullname = icon_filename | append: '_32.png' %}
-                                            {{ icon_fullname | shopify_asset_url | img_tag }}
+                                            {{ icon_fullname | asset_url | img_tag }}
                                         </button>
                                     {% endfor %}
                                 </p>
