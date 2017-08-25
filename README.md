@@ -10,15 +10,15 @@ _B2B theme_ for VirtoCommerce Storefront used by _B2B-Store_ sample store. It is
 2. Clone repo.
     1. In Visual Studio, go to `Team Explorer` → `Clone` → Enter https://github.com/VirtoCommerce/vc-b2b-theme.git as URL and `D:\vc-b2b-theme` (for example) as path.
     2. Or execute command `git clone https://github.com/VirtoCommerce/vc-b2b-theme.git "D:\vc-b2b-theme"` (where `D:\vc-b2b-theme` is path to folder where you want to clone repo).
-3. Link you theme repo to store. Execute `mklink /d "C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content\B2B-Store\default" "D:\vc-b2b-theme"` (where `C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content` is path to cms-content folder, which you configured on storefront installation in prerequisites step, `Electronics` is your store name and `D:\vc-b2b-theme` is path to your theme repo). Restart IIS or storefront IIS application pool after that.
-4. Open theme folder in your IDE
-    1. In Visual Studio 2017 or Visual Studio Code, go to `File` → `Open` → `Folder`
-    2. In Visual Studio 2013 and 2015 go to  `File` → `Open` → `Website`
+3. Link you theme repo to store. Execute `mklink /d "C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content\B2B-Store\default" "D:\vc-b2b-theme"` (where `C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content` is path to cms-content folder, which you configured on storefront installation in prerequisites step, `B2B-Store` is your store name, `default` is your theme name and `D:\vc-b2b-theme` is path to your theme repo).
+4. Make sure what your linked theme is set as default for your store. Go to platform, in menu select `More` → `Content`, select `Themes` for your store. If your theme does not appear here, create new theme with the same name as your theme. Now, right click on your theme and click `Set Active`.
+5. Open theme folder in your IDE
+    1. In Visual Studio (including 2017) go to  `File` → `Open` → `Website`
+    2. In Visual Studio Code, go to `File` → `Open` → `Folder`
     3. Select `D:\vc-b2b-theme` (where `D:\vc-b2b-theme` is path to folder where you want to clone repo) and open it.
- 5. Install node.js dependencies.
-    1. Visual Studio 2017 has [a bug](https://developercommunity.visualstudio.com/content/problem/100645/visual-studio-2017-does-not-restore-nodejs-modules.html), which prevent it from correctly restoring Node.js packages on project open. To fix that, you may make any changes in `package.json` (write  a whitespace) and save it, after that node.js dependencies will be installed in a few minutes. Or you may execute `cd "D:\vc-b2b-theme"` and then `C:\Program Files (x86)\nodejs\node.exe install` (on Windows 64-bit) or `C:\Program Files\nodejs\node.exe install` (on 32-bit Windows).
-    2. In Visual Studio 2013, 2015 all dependencies will be installed automatically. Just wait a few minutes.
-    3. In Visual Studio Code and other editors, you need to run `npm install`to install Node.js dependencies.
+6. Install node.js dependencies.
+    1. In Visual Studio all dependencies will be installed automatically. Just wait a few minutes.
+    2. In Visual Studio Code and other editors, you need to run `npm install`to install Node.js dependencies.
 
 ## Prerequisites
 
@@ -51,7 +51,6 @@ You need install:
 2. `npm install gulp -g`
 
 ## Bundling & minification
-
 
 **Attention:** while theme including `bundlesconfig.json` file, you *must not* use [Bundler & Minifier](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.BundlerMinifier) Visual Studio extension with theme. See `Appendix: bundling & minification process workflow` for details about why.
 
