@@ -58,13 +58,13 @@
     "engines": {
         "node": ">4.0.0"
     },
-    "homepage": "https://github.com/VirtoCommerce/vc-storefront/",
+    "homepage": "https://github.com/VirtoCommerce/vc-default-theme/",
     "repository": {
         "type": "git",
-        "url": "https://github.com/VirtoCommerce/vc-storefront.git"
+        "url": "https://github.com/VirtoCommerce/vc-default-theme.git"
     },
     "bugs": {
-        "url": "https://github.com/VirtoCommerce/vc-storefront/issues"
+        "url": "https://github.com/VirtoCommerce/vc-default-theme/issues"
     },
     "scripts": {
     }
