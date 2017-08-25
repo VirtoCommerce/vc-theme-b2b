@@ -12,8 +12,8 @@ _Default theme_ for VirtoCommerce Storefront used by _Electronics_ sample store.
     2. Or execute command `git clone https://github.com/VirtoCommerce/vc-default-theme.git "D:\vc-default-theme"` (where `D:\vc-default-theme` is path to folder where you want to clone repo).
 3. Link you theme repo to store. Execute `mklink /d "C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content\Electronics\default" "D:\vc-default-theme"` (where `C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content` is path to cms-content folder, which you configured on storefront installation in prerequisites step, `Electronics` is your store name and `D:\vc-default-theme` is path to your theme repo). Restart IIS or storefront IIS application pool after that.
 4. Open theme folder in your IDE
-    2. In Visual Studio (including 2017) go to  `File` → `Open` → `Website`
-    1. In Visual Studio Code, go to `File` → `Open` → `Folder`
+    1. In Visual Studio (including 2017) go to  `File` → `Open` → `Website`
+    2. In Visual Studio Code, go to `File` → `Open` → `Folder`
     3. Select `D:\vc-default-theme` (where `D:\vc-default-theme` is path to folder where you want to clone repo) and open it.
  5. Install node.js dependencies.
     1. In Visual Studio all dependencies will be installed automatically. Just wait a few minutes.
