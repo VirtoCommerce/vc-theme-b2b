@@ -39,9 +39,8 @@
               {%- if additional_tag -%}
                 <span>+</span>
               {%- endif -%}
-              <span>
-                {{ cat_item.label }}
-              </span>
+              {%- include 'tag-label', tag: cat_item -%}
+              <span>{{ tag_label | escape }}</span>
             {%- endif -%}
           {%- endunless -%}
         {%- endfor -%}
