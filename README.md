@@ -2,7 +2,7 @@
 
 _Default theme_ for VirtoCommerce Storefront used by _Electronics_ sample store. It includes the largest number of features and support latest updates of Storefront so it always stay actual.
 
-![Default theme UI](https://user-images.githubusercontent.com/6369252/29491392-ef411564-8573-11e7-813c-7c56394ac19e.png)
+![Default theme UI](https://user-images.githubusercontent.com/6369252/29847173-c7be93e6-8d33-11e7-915f-181c764a580d.png)
 
 ## Getting started
 
@@ -21,7 +21,7 @@ _Default theme_ for VirtoCommerce Storefront used by _Electronics_ sample store.
     2. In Visual Studio Code and other editors, you need to run `npm install`to install Node.js dependencies.
 
 ## Appendix: CMS Content folder structure
-<a href="https://user-images.githubusercontent.com/6369252/29843136-65effb0a-8d24-11e7-98d2-a7f882647673.png"><img src="https://user-images.githubusercontent.com/6369252/29843382-34adad2a-8d25-11e7-898c-0a87653756a3.png" alt="CMS Content folder structure" width="768"></a>
+<a href="https://user-images.githubusercontent.com/6369252/29847174-c7bff8c6-8d33-11e7-901a-c3a04789959e.png"><img src="https://user-images.githubusercontent.com/6369252/29847175-c7c03f16-8d33-11e7-92f2-384228f6202e.png" alt="CMS Content folder structure" width="768"></a>
 
 ## Prerequisites
 
