@@ -162,7 +162,7 @@ gulp.task('compress', ['min'], function() {
             path.dirname = 'default/' + path.dirname;
         }))
         .pipe(zip(package.name + '-' + package.version + '.zip'))
-        .pipe(gulp.dest('.'));
+        .pipe(gulp.dest('artifacts'));
 });
 
 // DEFAULT Tasks
