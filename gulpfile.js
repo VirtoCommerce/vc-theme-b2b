@@ -123,8 +123,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('watch', function () {
-    gulp.watch('./bundleconfig.json', ['min', 'snippet']);
-    gulp.watch('./package.json', ['snippet']);
+    gulp.watch('./bundleconfig.json', ['min']);
 
     getBundles(regex.js).forEach(function (bundle) {
         gulp.watch(bundle.inputFiles, ['min:js']);
@@ -154,9 +153,14 @@ gulp.task('lint', function () {
     return merge(tasks);
 });
 
-gulp.task('compress', ['min'], function () {
+gulp.task('compress', ['min'], function() {
     var package = getPackage();
-    return gulp.src([].concat(['./*/**', '!./node_modules', '!./node_modules/**'], [].concat.apply([], getBundleConfig().map(function (bundle) { return bundle.inputFiles.map(function (inputFile) { return '!' + inputFile; }) }))))
+    return gulp.src([].concat(['./*/**', '!./node_modules', '!./node_modules/**'], [].concat.apply([], getBundleConfig().map(function(bundle) {
+            return bundle.inputFiles.map(function(inputFile) { return '!' + inputFile; })
+        }))))
+        .pipe(rename(function(path) {
+            path.dirname = 'default/' + path.dirname;
+        }))
         .pipe(zip(package.name + '-' + package.version + '.zip'))
         .pipe(gulp.dest('.'));
 });
