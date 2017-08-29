@@ -156,7 +156,7 @@ gulp.task('lint', function () {
 
 gulp.task('compress', ['min'], function () {
     var package = getPackage();
-    return gulp.src([].concat(['/**'], [].concat.apply([], getBundleConfig().map(function (bundle) { return bundle.inputFiles.map(function (inputFile) { return '!' + inputFile; }) }))))
+    return gulp.src([].concat(['./*/**', '!./node_modules', '!./node_modules/**'], [].concat.apply([], getBundleConfig().map(function (bundle) { return bundle.inputFiles.map(function (inputFile) { return '!' + inputFile; }) }))))
         .pipe(zip(package.name + '-' + package.version + '.zip'))
         .pipe(gulp.dest('.'));
 });
