@@ -2,7 +2,7 @@
 
 _B2B theme_ for VirtoCommerce Storefront used by _B2B-Store_ sample store. It is a showcase for b2b features support of VirtoCommerce.
 
-![B2B theme UI](https://user-images.githubusercontent.com/6369252/29589685-9908c1b8-87af-11e7-9fe2-c6fb7f458e8f.png)
+![B2B theme UI](https://user-images.githubusercontent.com/6369252/29848754-2b16fa0c-8d3c-11e7-8839-2e335e518838.png)
 
 ## Getting started
 
@@ -10,15 +10,20 @@ _B2B theme_ for VirtoCommerce Storefront used by _B2B-Store_ sample store. It is
 2. Clone repo.
     1. In Visual Studio, go to `Team Explorer` → `Clone` → Enter https://github.com/VirtoCommerce/vc-b2b-theme.git as URL and `D:\vc-b2b-theme` (for example) as path.
     2. Or execute command `git clone https://github.com/VirtoCommerce/vc-b2b-theme.git "D:\vc-b2b-theme"` (where `D:\vc-b2b-theme` is path to folder where you want to clone repo).
-3. Link you theme repo to store. Execute `mklink /d "C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content\B2B-Store\default" "D:\vc-b2b-theme"` (where `C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content` is path to cms-content folder, which you configured on storefront installation in prerequisites step, `B2B-Store` is your store name, `default` is your theme name and `D:\vc-b2b-theme` is path to your theme repo).
-4. Make sure what your linked theme is set as default for your store. Go to platform, in menu select `More` → `Content`, select `Themes` for your store. If your theme does not appear here, create new theme with the same name as your theme. Now, right click on your theme and click `Set Active`.
-5. Open theme folder in your IDE
+3. Link you theme repo to store. Execute:<br/>
+`mklink /d "C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content\Themes\B2B-Store\default" "D:\vc-b2b-theme"`<br/>
+`mklink /d "C:\vc-storefront-master\VirtoCommerce.Storefront\App_Data\cms-content\Themes\B2B-Store\default" "D:\vc-b2b-theme"`<br/>
+(where `C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content` and `C:\vc-storefront-master\VirtoCommerce.Storefront\App_Data\cms-content` are paths to `cms-content` folders on platform and storefront, `B2B-Store` is your store name and `D:\vc-b2b-theme` is path to your theme repo).
+4. Open theme folder in your IDE
     1. In Visual Studio (including 2017) go to  `File` → `Open` → `Website`
     2. In Visual Studio Code, go to `File` → `Open` → `Folder`
     3. Select `D:\vc-b2b-theme` (where `D:\vc-b2b-theme` is path to folder where you want to clone repo) and open it.
-6. Install node.js dependencies.
+5. Install node.js dependencies.
     1. In Visual Studio all dependencies will be installed automatically. Just wait a few minutes.
     2. In Visual Studio Code and other editors, you need to run `npm install`to install Node.js dependencies.
+
+## Appendix: CMS Content folder structure
+<a href="https://user-images.githubusercontent.com/6369252/29847174-c7bff8c6-8d33-11e7-901a-c3a04789959e.png"><img src="https://user-images.githubusercontent.com/6369252/29847175-c7c03f16-8d33-11e7-92f2-384228f6202e.png" alt="CMS Content folder structure" width="768"></a>
 
 ## Prerequisites
 
