@@ -158,7 +158,9 @@ gulp.task('compress', ['min'], function() {
     return gulp.src([].concat(['./*/**', '!./node_modules', '!./node_modules/**'], [].concat.apply([], getBundleConfig().map(function(bundle) {
             return bundle.inputFiles.map(function(inputFile) { return '!' + inputFile; })
         }))))
-        .pipe(rename({ dirname: 'default' }))
+        .pipe(rename(function(path) {
+            path.dirname = 'default/' + path.dirname;
+        }))
         .pipe(zip(package.name + '-' + package.version + '.zip'))
         .pipe(gulp.dest('.'));
 });
