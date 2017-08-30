@@ -10,7 +10,7 @@
 
     {{ '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css' | stylesheet_tag }}
     {{ 'checkout.css' | asset_url | stylesheet_tag }}
-    {{ 'common-components.css' | asset_url | stylesheet_tag }}
+    {{ 'bundle/checkout-styles.css' | static_asset_url | append_version | stylesheet_tag }}
 
     <base href="{{ '/' | absolute_url }}" />
 

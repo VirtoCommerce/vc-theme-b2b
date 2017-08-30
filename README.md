@@ -77,7 +77,10 @@ Run `gulp watch` on command line if you want to bundle & minify files on save or
 
 ### How to add bundle to layout
 
-Just include bundle as static content using `static_asset_url` and `script_tag` or `stylesheet_tag`. To correctly invalidate browser cache for bundles, use `append_version` tag after `static_content_url`.
+`{{ 'bundle/scripts.js' | static_asset_url | append_version | script_tag }}` <br/>
+  * `static_asset_url` means that this file is static content of site;
+  * `script_tag` or `stylesheet_tag` will generate `<script ... >` or  `<link rel="stylesheet" ... >` tags;
+  * `append_version` is used to correctly invalidate browser cache for bundles, make sure that it's added after `static_content_url` (or other url filter), not at the end, for example.
 
 ## Appendix: List of available tasks
 
