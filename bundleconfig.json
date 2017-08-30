@@ -1,4 +1,4 @@
-﻿[
+[
     {
         "outputFileName": "assets/static/bundle/scripts.js",
         "inputFiles": [
@@ -44,6 +44,12 @@
             "assets/common-components.css",
             "assets/ideal-image-slider.css",
             "assets/ideal-image-slider-default-theme.css"
+        ]
+    },
+    {
+        "outputFileName": "assets/static/bundle/checkout-styles.css",
+        "inputFiles": [
+            "assets/common-components.css"
         ]
     },
     {
