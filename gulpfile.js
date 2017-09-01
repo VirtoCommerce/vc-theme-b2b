@@ -26,7 +26,8 @@ var gulp = require('gulp'),
 
     eslint = require('gulp-eslint'),
         
-    zip = require('gulp-zip');
+    zip = require('gulp-zip'),
+    gitignore = require('gulp-exclude-gitignore');
 
 var regex = {
     css: /\.css$/,
@@ -155,9 +156,10 @@ gulp.task('lint', function () {
 
 gulp.task('compress', ['min'], function() {
     var package = getPackage();
-    return gulp.src([].concat(['./*/**', '!./artifacts*', '!./artifacts*/**', '!./node_modules', '!./node_modules/**'], [].concat.apply([], getBundleConfig().map(function(bundle) {
+    return gulp.src([].concat(['./*/**'], [].concat.apply([], getBundleConfig().map(function(bundle) {
             return bundle.inputFiles.map(function(inputFile) { return '!' + inputFile; })
-        }))))
+    }))))
+        .pipe(gitignore())
         .pipe(rename(function(path) {
             path.dirname = 'default/' + path.dirname;
         }))
