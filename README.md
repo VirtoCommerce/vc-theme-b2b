@@ -4,7 +4,7 @@ _Default theme_ for VirtoCommerce Storefront used by _Electronics_ sample store.
 
 ![Default theme UI](https://user-images.githubusercontent.com/6369252/29847173-c7be93e6-8d33-11e7-915f-181c764a580d.png)
 
-*Main article: [theme development on virtocommerce.com/docs](http://localhost/docs/vc2devguide/working-with-storefront/theme-development)*
+*Main article: [theme development on virtocommerce.com/docs](http://virtocommerce.com/docs/vc2devguide/working-with-storefront/theme-development)*
 
 ## CMS Content folder structure
 <a href="https://user-images.githubusercontent.com/6369252/29847174-c7bff8c6-8d33-11e7-901a-c3a04789959e.png"><img src="https://user-images.githubusercontent.com/6369252/29847175-c7c03f16-8d33-11e7-92f2-384228f6202e.png" alt="CMS Content folder structure" width="768"></a>
@@ -13,24 +13,34 @@ _Default theme_ for VirtoCommerce Storefront used by _Electronics_ sample store.
 
 1. Install [prerequisites](#prerequisites).
 2. Clone repo.
-    1. In Visual Studio, go to `Team Explorer` → `Clone` → Enter https://github.com/VirtoCommerce/vc-default-theme.git as URL and `D:\vc-default-theme` (for example) as path.
-    2. Or execute command `git clone https://github.com/VirtoCommerce/vc-default-theme.git "D:\vc-default-theme"` (where `D:\vc-default-theme` is path to folder where you want to clone repo).
-3. Link you theme repo to store. Execute:<br/>
-`mklink /d "C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content\Themes\Electronics\default" "D:\vc-default-theme"`<br/>
-(where `C:\vc-platform-master\VirtoCommerce.Platform.Web\App_Data\cms-content` is path to your CMS content folder, `Electronics` is your store name and `D:\vc-default-theme` is path to your theme repo).
+    1. In Visual Studio, go to **Team Explorer** → **Clone** → Enter https://github.com/VirtoCommerce/vc-theme-default.git as URL and **C:\vc-theme-default** (for example) as path.
+    2. Or execute command
+        ```
+        git clone https://github.com/VirtoCommerce/vc-theme-default.git "C:\vc-theme-default"
+        ```
+        (where **C:\vc-theme-default** is path to folder where you want to clone repo).
+3. Link you theme repo to store. Execute:
+    ```
+    mklink /d "C:\vc-platform\VirtoCommerce.Platform.Web\App_Data\cms-content\Themes\Electronics\default" "C:\vc-theme-default"
+    ```
+    (where **C:\vc-platform\VirtoCommerce.Platform.Web\App_Data\cms-content** is path to CMS content storage configured at platform & storefront deployment steps, **'Electronics'** is your store name and **'C:\vc-theme-default'** is path to your theme repo).
 4. Open theme folder in your IDE
-    1. In Visual Studio (including 2017) go to  `File` → `Open` → `Website`
-    2. In Visual Studio Code, go to `File` → `Open` → `Folder`
-    3. Select `D:\vc-default-theme` (where `D:\vc-default-theme` is path to folder where you want to clone repo) and open it.
-5. Install node.js dependencies.
+    1. In Visual Studio (including 2017) go to  **File** → **Open** → **Website**
+    2. In Visual Studio Code, go to **File** → **Open** → **Folder**
+    3. Select **C:\vc-theme-default** (where **C:\vc-theme-default** is path to folder where you want to clone repo) and open it.
+5. Install Node.js dependencies.
     1. In Visual Studio all dependencies will be installed automatically. Just wait a few minutes.
-    2. In Visual Studio Code and other editors, you need to run `npm install`to install Node.js dependencies.
+    2. In Visual Studio Code and other editors, you need to run
+    ```
+    npm install
+    ```
+    to install Node.js dependencies.
 
 ## Prerequisites
 
 ### Storefront
 
-You need to have local installation of storefront. Follow [this article](https://virtocommerce.com/docs/vc2devguide/deployment/storefront-deployment/storefront-source-code-getting-started) step-by-step to install storefront from binaries or source code.
+You need to have local installation of storefront. Follow [this article](https://virtocommerce.com/docs/vc2devguide/deployment/storefront-deployment) step-by-step to install storefront from binaries or source code.
 
 ### Visual Studio 2015.3 and above (up to Visual Studio 2017.3 at least)
 
@@ -39,20 +49,31 @@ If you have Visual Studio 2015 with Update 3 and above, you don't need install a
 ### Visual Studio from 2015 up to 2015.2
 
 Task Runner Explorer, Node.js and Gulp already included in your Visual Studio installation. However, you need update your Node.js to at least 4.0.0.
-1. Update Node.js to v4.0.0 at least (we recommend [latest LTS version](https://nodejs.org/en/)). Use `C:\Program Files\nodejs` installation path (change `Program Files` to `Program Files (x86)` on 64-bit machine).
-2. Add Node.js installation path to External Web Tools or move $(PATH) to top: ![External Web Tools](https://user-images.githubusercontent.com/6369252/29498917-038ce010-861f-11e7-9a23-3c4f9e96d6b7.png)
+1. Update Node.js to v4.0.0 at least (we recommend [latest LTS version](https://nodejs.org/en/)). Use **C:\Program Files\nodejs** installation path (change **Program Files** to **Program Files (x86)** on 64-bit machine).
+2. Add Node.js installation path to External Web Tools or move **$(PATH)** to top: ![External Web Tools](https://user-images.githubusercontent.com/6369252/30007184-a14aefe6-9122-11e7-81e2-c1ba792991cf.png)
 
 ### Visual Studio from 2013.3 up to 2013.5
 
 You need install:
 1. [Task Runner Explorer](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.TaskRunnerExplorer) Visual Studio extension
 2. Install Node.js v4.0.0 or above (we recommend [latest LTS version](https://nodejs.org/en/))
-3. `npm install gulp -g`
+3.
+    ```
+    npm install gulp -g
+    ```
 
 ### Visual Studio Code and other editors
 
 1. Install Node.js v4.0.0 or above (we recommend [latest LTS version](https://nodejs.org/en/))
-2. `npm install gulp -g`
+2.
+    ```
+    npm install gulp -g
+    ```
+
+## Liquid reference
+
+Liquid is the templating engine that powers Virto Commerce templates. Go to [Liquid documentation](https://virtocommerce.com/docs/vc2devguide/working-with-storefront/theme-development/liquid-reference).
+
 
 ## Bundling & minification
 
@@ -87,8 +108,6 @@ When you run the **default** task to bundle & minify theme, the following happen
 4. CSS minifies and source maps generates.
 
 ![Bundling and minification flowchart](https://user-images.githubusercontent.com/6369252/29952970-3b946cba-8ee6-11e7-8f15-55e4123c0da7.png "Bundling and minification flowchart")
-
-## IDE configuration
 
 ## IDE configuration
 
