@@ -159,7 +159,7 @@ $RECYCLE.BIN/
 
 *.zip
 
-artifacts/*
+artifacts*
 
 node_modules
 bower_components
