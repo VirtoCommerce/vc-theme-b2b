@@ -42,6 +42,12 @@ _B2B theme_ for VirtoCommerce Storefront used by _B2B-Store_ sample store. It is
 
 You need to have local installation of storefront. Follow [this article](https://virtocommerce.com/docs/vc2devguide/deployment/storefront-deployment) step-by-step to install storefront from binaries or source code.
 
+Add app setting **VirtoCommerce:B2B:ApiEndpoint** and set its value to URL of B2B module API endpoint (usually the same url as for admin site) with slash as last symbol.
+
+### Platform
+
+[B2B Extensions module](https://github.com/VirtoCommerce/vc-module-b2b-extensions) must be installed.
+
 ### Visual Studio 2015.3 and above (up to Visual Studio 2017.3 at least)
 
 If you have Visual Studio 2015 with Update 3 and above, you don't need install any prerequisites. Latest versions of Node.js and Gulp already included in your Visual Studio installation and supported in built-in Task Runner Explorer.
