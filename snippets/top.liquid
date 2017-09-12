@@ -1,0 +1,32 @@
+<div class="top-links">
+    <ul>
+        <li>
+            <span ng-if="customer && customer.isRegisteredUser" ng-cloak>
+                <a href="{{ 'account' | absolute_url }}">{{ 'customer.account.title' | t }}</a>
+            </span>
+            <span ng-if="customer && !customer.isRegisteredUser" ng-cloak>
+                {{ 'customer.account.title' | t | customer_login_link }}
+            </span>
+        </li>
+        <!-- TODO: Add links to orders, lists and specials in account via ui-router -->
+        <li>
+            <a href="#">{{ 'customer.orders.title' | t }}</a>
+        </li>
+        <li>
+            <a href="#">{{ 'customer.lists.title' | t }}</a>
+        </li>
+        <li>
+            <a href="#">{{ 'customer.account.specials' | t }}</a>
+        </li>
+    </ul>
+</div>
+<div class="top-auth">
+    <ul>
+        <li class="sign-in">
+            {{ 'layout.customer.sign_in' | t | customer_login_link }}
+        </li>
+        <li>
+            {{ 'layout.customer.register_now' | t | customer_register_link }}
+        </li>
+    </ul>
+</div>
