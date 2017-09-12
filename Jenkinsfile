@@ -1,4 +1,4 @@
 #!groovy
 virtoTheme {
-    sampleStore = "B2B-Store"
+    sampleStore = "B2B-store"
 }
