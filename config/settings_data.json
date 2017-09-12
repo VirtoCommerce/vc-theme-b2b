@@ -1,7 +1,7 @@
 {
-    "current": "Monochrome",
+    "current": "B2B",
     "presets": {
-        "Monochrome": {
+        "B2B": {
             "available_roles": [
                 "Corporate administrator",
                 "Corporate manager",

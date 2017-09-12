@@ -1,8 +1,8 @@
 var storefrontAppDependencies = [
-    'ui.bootstrap',
     'ngStorage',
     'pascalprecht.translate',
     'ngSanitize',
+    'ui.router',
     'satellizer'
 ]
 var storefrontApp = angular.module('storefrontApp', storefrontAppDependencies);
@@ -36,7 +36,7 @@ storefrontApp.factory('httpErrorInterceptor', ['$q', '$rootScope', function ($q,
     return httpErrorInterceptor;
 }])
 
-storefrontApp.config(['$httpProvider', '$translateProvider', function ($httpProvider, $translateProvider) {
+storefrontApp.config(['$httpProvider', '$stateProvider', '$translateProvider', function ($httpProvider, $stateProvider, $translateProvider) {
     $httpProvider.interceptors.push('httpErrorInterceptor');
 
     $translateProvider.useSanitizeValueStrategy('sanitizeParameters');

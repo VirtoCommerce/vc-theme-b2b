@@ -1,0 +1,49 @@
+<div class="header-links">
+    <div class="links">
+        <ul>
+            {% for link in linklists.service-menu.links %}
+                <li>
+                    <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="links">
+        <ul>
+            {% for link in linklists.main-menu.links %}
+                {% assign child_list_handle = link.title | handleize %}
+                {% if linklists[child_list_handle].links != blank %}
+                    <li class="dropdown" aria-haspopup="true">
+                        <a data-toggle="dropdown" href="{{ link.url }}" id="{{ link.name }}">{{ link.title }}&nbsp;<i class="dropdown-ico fa fa-angle-down"></i></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="{{ link.name }}">
+                            {% for childlink in linklists[child_list_handle].links %}
+                                <li>
+                                    <a role="menuitem" tabindex="-1" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ link.url }}">{{ link.title }}</a>
+                    </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="header-links-mobile">
+    <ul>
+        <li>
+            {% assign login_link_title = 'layout.customer.sign_in' | t %}
+            {% assign login_link_content = '<i class="fa fa-user"></i> ' | append: login_link_title %}
+            {{ login_link_title | customer_login_link | replace: login_link_title, login_link_content }}
+        </li>
+        <li>
+            <a href="{{ 'cart' | absolute_url }}" ng-controller="cartBarController">
+                <i class="fa fa-shopping-cart"></i> {{ 'layout.cart.cart' | t }}
+                <span class="count" ng-bind="cartItemsCount"></span>
+            </a>
+        </li>
+    </ul>
+</div>

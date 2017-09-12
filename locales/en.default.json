@@ -267,7 +267,7 @@
     },
     "bulk_order": {
         "general": {
-            "title": "Bulk Order",
+            "title": "Bulk Order Pad",
             "description": "Quickly add items to your cart by entering item SKUs and quantities.",
             "sku_field_header": "Product SKU",
             "quantity_field_header": "Quantity",
@@ -324,6 +324,7 @@
             "corporate": "Corporate",
             "details": "Account Details",
             "return": "Return to Account Details",
+            "specials": "Special order quotes",
             "menu_label": {
                 "orders": "Orders",
                 "subscriptions": "Subscriptions",
@@ -594,6 +595,9 @@
             "add_new": "Add new member",
             "add": "Add",
             "cancel": "Cancel"
+        },
+        "lists": {
+            "title": "Lists" 
         }
     },
     "homepage": {
@@ -615,6 +619,11 @@
         }
     },
     "layout": {
+        "header": {
+            "newsletter": "Sign up for email",
+            "feedback": "Feedback",
+            "help": "Help"
+        },
         "cart": {
             "cart": "Cart"
         },
@@ -629,7 +638,7 @@
             "logged_in_on_behalf_of_label": "Logged in on behalf of",
             "log_out": "Log out",
             "sign_in": "Sign in",
-            "create_account": "Create an Account",
+            "register_now": "Register now",
             "or": "or"
         },
         "navigation": {
@@ -637,7 +646,7 @@
             "mobile_menu": "Menu"
         },
         "search_bar": {
-            "placeholder": "Search all products...",
+            "placeholder": "Enter keyword, item, model or replacement part number.",
             "submit": "Search"
         },
         "footer": {

@@ -1,13 +1,37 @@
 [
     {
+        "outputFileName": "assets/static/bundle/dependencies.js",
+        "inputFiles": [
+            "bower_components/jquery/dist/jquery.js",
+            "bower_components/underscore/underscore.js",
+            "bower_components/angularjs/angular.js",
+            "bower_components/ngstorage/ngStorage.js",
+            "bower_components/bootstrap-sass/assets/javascripts/bootstrap.js",
+            "bower_components/angular-sanitize/angular-sanitize.js",
+            "bower_components/angular-translate/angular-translate.js",
+            "bower_components/angular-translate-loader-url/angular-translate-loader-url.js",
+            "bower_components/angular-ui-router/release/angular-ui-router.js",
+            "bower_components/satellizer/dist/satellizer.js"
+        ]
+    },
+    {
+        "outputFileName": "assets/static/fonts",
+        "inputFiles": [
+            "bower_components/font-awesome/fonts/**"
+        ]
+    },
+    {
         "outputFileName": "assets/static/bundle/scripts.js",
         "inputFiles": [
-            "assets/modernizr.min.js",
             "assets/interactor.js",
-            "assets/ideal-image-slider.min.js",
-            "assets/ideal-image-slider-bullet-nav.js",
-            "assets/ideal-image-slider-captions.js",
             "assets/js/*.js"
+        ]
+    },
+    {
+        "outputFileName": "assets/static/bundle/styles.scss.css",
+        "inputFiles": [
+            "bower_components/font-awesome/scss/font-awesome.scss",
+            "assets/scss/main.scss"
         ]
     },
     {
@@ -40,24 +64,8 @@
         ]
     },
     {
-        "outputFileName": "assets/static/bundle/styles.css",
-        "inputFiles": [
-            "assets/storefront.css",
-            "assets/common-components.css",
-            "assets/ideal-image-slider.css",
-            "assets/ideal-image-slider-default-theme.css"
-        ]
-    },
-    {
         "outputFileName": "assets/static/bundle/checkout-styles.css",
         "inputFiles": [
-            "assets/common-components.css"
-        ]
-    },
-    {
-        "outputFileName": "assets/static/bundle/account-styles.css",
-        "inputFiles": [
-            "assets/account-bootstrap.css",
             "assets/common-components.css"
         ]
     }

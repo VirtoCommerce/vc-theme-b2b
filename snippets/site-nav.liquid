@@ -1,4 +1,80 @@
-﻿<ul class="site-nav" id="accessibleNav">
+<div class="dropdown navbar-all">
+    <a data-toggle="dropdown" href="#" id="dropdownAll">
+        All products <i class="dropdown-ico fa fa-angle-down"></i>
+    </a>
+    <div class="dropdown-menu" role="menu" aria-labelledby="dropdownAll">
+        <div class="dropdown-head clearfix">
+            <ul>
+                {% for link in linklists.all-products-menu.links %}
+                    <li>
+                        <a href="{{ link.url }}">
+                            {%- if link.icon != blank -%}
+                                {%- if link.icon.contains('/') -%}
+                                    <img alt="{{- link.name -}}" src="{{- link.icon | asset_url -}}" />
+                                {%- else -%}
+                                    <i class="head-ico {{- link.icon -}}"></i>
+                                {%- endif -%}
+                            {%- endif -%}
+                            &nbsp;{{- link.title -}}</a>
+                    </li>
+                {% endfor %}
+			</ul>
+		</div>
+        <div class="dropdown-body clearfix">
+            <!--
+                Get top-level collections
+                Because of liquid limitations for array, filter collections array with convertion to string with hidden delemiters (Unicode symbol)
+                Then split string to array twice (per collections list and per collection properties) and use it (0 - url, 1 - title)
+            -->
+            {% assign index = 0 %}
+            {%- capture top_level_collections_list -%}
+                {%- paginate collections by 50 -%}
+                    {%- for collection in collections -%}
+                        {%- assign parent_count = collection.parents | size -%}
+                        {%- if parent_count == 1 -%}
+                            {%- if index > 0 -%}&#x2063;&#x2063;{%- endif-%}{{ collection.url }}&#x2063;{{ collection.title }}
+                            {%- assign index = index | plus: 1 -%}
+                        {%- endif -%}
+                    {%- endfor -%}
+                {%- endpaginate -%}
+            {%- endcapture -%}
+            {% assign top_level_collections_array = top_level_collections_list | split: '&#x2063;&#x2063;' %}
+            {% paginate top_level_collections_array by 10 %}
+                <ul class="col-md-4">
+                    {% assign top_level_collections_count = top_level_collections_array | size %}
+                    {% assign top_level_collections_count = top_level_collections_count | minus: 1 %}
+                    {% for top_level_collection_string in top_level_collections_array %}
+                        <li>
+                            {% assign top_level_collection = top_level_collection_string | split: '&#x2063;' %}
+                            <a href="{{ top_level_collection[0] | absolute_url }}">{{ top_level_collection[1] | escape }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endpaginate %}
+        </div>
+    </div>
+</div>
+{% include 'search-bar' %}
+<div class="navbar-links">
+    <ul>
+        <li class="dropdown">
+            <a data-toggle="dropdown" id="dropdownBulk" href="#">
+                {{ 'bulk_order.general.title' | t }}&nbsp;<i class="dropdown-ico fa fa-angle-down"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labellledby="dropdownBulk">
+                <!-- TODO -->
+            </div>
+        </li>
+        <li>
+            <a href="{{ 'cart' | absolute_url }}" ng-controller="cartBarController">
+                <i class="cart-ico fa fa-shopping-cart"></i>
+                {{ 'layout.cart.cart' | t }}&nbsp;<span ng-if="cartItemsCount > 0">(<span ng-bind="cartItemsCount"></span>)</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!--ul class="site-nav" id="accessibleNav">
     {% unless linklists.main-menu.links.first.url == '/' %}
         <li class="large--hide">
             <a href="{{ '/' | absolute_url }}">{{ 'general.breadcrumbs.home' | t }}</a>
@@ -48,4 +124,4 @@
             {{ 'layout.customer.create_account' | t | customer_register_link }}
         </li>
     {% endif %}
-</ul>
+</-ul-->

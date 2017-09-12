@@ -74,7 +74,7 @@ timber.init = function () {
   timber.initBreakpoints();
 
   // Wait until fonts load to attempt creating 'more' link in nav
-  $(window).load(function() {
+  $(window).on('load', function() {
     timber.responsiveNav();
   });
 
@@ -395,7 +395,7 @@ timber.socialSharing = function () {
 }
 
 timber.equalHeights = function () {
-  $(window).load(function() {
+  $(window).on('load', function() {
     resizeElements();
   });
 
