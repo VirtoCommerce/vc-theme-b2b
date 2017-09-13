@@ -54,7 +54,7 @@
         </div>
     </div>
 </div>
-{% include 'search-bar' %}
+{% include 'main/search-bar' %}
 <div class="navbar-links">
     <ul>
         {% if template != 'bulk-order' %}
@@ -63,7 +63,7 @@
                     {{ 'bulk_order.general.title' | t }}&nbsp;<i class="dropdown-ico fa fa-angle-down"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labellledby="dropdownBulk">
-                    {% include 'bulk-order-form' %}
+                    {% include 'main/bulk-order-form' %}
                 </div>
             </li>
         {% endif %}

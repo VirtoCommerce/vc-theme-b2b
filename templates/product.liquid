@@ -1,4 +1,4 @@
-{% include 'breadcrumb' %}
+{% include 'shared/breadcrumb' %}
 <div class="grid" itemscope itemtype="http://schema.org/Product" ng-controller="productController">
     <meta itemprop="url" content="{{ product.url | absolute_url}}">
     <meta itemprop="image" content="{{ product.featured_image.src | img_url }}">

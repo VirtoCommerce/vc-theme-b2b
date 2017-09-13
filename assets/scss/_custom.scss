@@ -58,7 +58,7 @@ button {
 .btn.btn-alt[disabled],
 .btn.btn-alt[disabled]:focus,
 .btn.btn-alt[disabled]:hover {
-  background-color: #f2f2f2;
+  background-color: $grayLightSecondaryColor;
   border: 2px solid $grayColor;
   color: #ccc;
   cursor: default;
@@ -103,11 +103,15 @@ img {
 }
 
 /* Lists */
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
 ol:not(.list-styled),
 ul:not(.list-styled) {
   list-style: none;
-  margin: 0;
-  padding: 0;
 }
 
 ul.inline {
@@ -118,7 +122,7 @@ ul.inline {
 }
 
 dd *:only-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 /* Helpers */
@@ -326,7 +330,7 @@ hr {
   border-width: 1px 0;
   font-family: "Roboto Condensed";
 
-  a {      
+  a {
     font-weight: 700;
   }
 
@@ -367,7 +371,7 @@ hr {
       }
 
       a:hover {
-        background: #f2f2f2;
+        background: $grayLightSecondaryColor;
       }
     }
 
@@ -487,10 +491,6 @@ hr {
     .dropdown-body {
       padding: 10px 20px;
 
-      .form-group {
-        margin-bottom: 5px;
-      }
-
       label {
         font-weight: normal;
         line-height: 40px;
@@ -592,7 +592,7 @@ hr {
 }
 
 .panel-default > .panel-heading {
-  background: #f2f2f2;
+  background: $grayLightSecondaryColor;
   margin: 0 0 2px;
   position: relative;
   padding: 0;
@@ -874,6 +874,82 @@ hr {
   ul {
     list-style: inside disc;
     line-height: 18px;
+  }
+}
+
+/* Add to cart list */
+.add-cart-list {
+  [class*="col-md-"] {
+    padding: 0;
+  }
+
+  .cart-item {
+    border-bottom: 1px solid $grayColor;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    overflow: hidden;
+  }
+
+  .cart-img {
+    float: left;
+    margin: 0 10px 0 0;
+
+    img {
+      max-width: 50px;
+    }
+  }
+
+  .cart-descr {
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .cart-qty,
+  .cart-total {
+    color: $graySecondaryColor;
+    font-family: "Roboto Condensed";
+    font-size: 12px;
+    padding: 0 0 0 10px;
+  }
+
+  .cart-qty {
+    .value {
+      color: #333;
+      font-weight: 700;
+    }
+  }
+
+  .value,
+  .price-value {
+    margin: 0 0 0 5px;
+  }
+
+  .cart-total {
+    margin: 17px 0 0;
+  }
+}
+
+.recommended {
+  .recommend-head {
+    margin: 0 0 10px;
+  }
+
+  h2 {
+    float: left;
+    margin: 0;
+  }
+
+  p,
+  .pagination {
+    display: inline-block;
+    margin: 0;
+    vertical-align: middle;
+  }
+
+  p {
+    font-size: 12px;
+    font-weight: 700;
+    margin: 0 10px 0 0;
   }
 }
 

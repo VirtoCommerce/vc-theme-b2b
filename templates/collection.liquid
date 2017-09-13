@@ -1,5 +1,5 @@
 {% paginate collection.products by 20 %}
-{% include 'breadcrumb' %}
+{% include 'shared/breadcrumb' %}
 
 {% assign has_sidebar = false %}
 {% if collection.all_tags.size > 0 %}

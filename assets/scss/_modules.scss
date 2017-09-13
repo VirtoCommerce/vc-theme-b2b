@@ -22,6 +22,12 @@
   width: 35px;
 }
 
+.form-list {
+  .form-group {
+    margin-bottom: 5px;
+  }
+}
+
 .radio,
 .checkbox {
   margin: 0;
@@ -142,9 +148,20 @@
     text-transform: uppercase;
   }
 
+  .account-links {
+    background: $grayLightSecondaryColor;
+    margin: 0 -15px;
+    padding: 20px 15px;
+
+    a {
+      font-family: "Roboto Condensed";
+    }
+  }
+
   .aside-links {
     font-size: 12px;
     font-weight: 700;
+    margin: 10px 0 0;
 
     > * {
       margin: 0 10px 0 0;
@@ -153,6 +170,10 @@
 
   .aside-actions {
     margin-top: 15px;
+
+    a {
+      font-weight: 700;
+    }
 
     .btn {
       width: 100%;
@@ -476,4 +497,21 @@
     margin: 0 10px 10px 0;
     padding: 10px;
   }
+}
+
+/* Modals */
+.modal-header .close {
+  font-family: Arial;
+}
+
+.modal-footer p {
+  color: #666;
+  font-family: "Roboto Condensed";
+  font-weight: 700;
+  line-height: 38px;
+}
+
+/* Alert */
+.alert {
+  font-family: "Roboto Condensed";
 }
