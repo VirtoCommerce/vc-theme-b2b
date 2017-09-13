@@ -268,13 +268,17 @@
     "bulk_order": {
         "general": {
             "title": "Bulk Order Pad",
-            "description": "Quickly add items to your cart by entering item SKUs and quantities.",
+            "description": "Quickly add items to your <a href=\"{{url}}\">{{text}}</a> by entering item SKUs and quantities.",
+            "subtitle": "Manually",
             "sku_field_header": "Product SKU",
             "quantity_field_header": "Quantity",
             "add_new_record": "Add a new record",
             "add_to_cart": "Add to cart",
-            "csv_description": "Want to save time and order faster? Simply copy and paste item records from your CSV file into the field below using the following format: SKU,Quantity. Each record should starts from a new line.",
-            "csv_field_placeholder": "Formatting example: 6AF8SM0VPFV6,10",
+            "csv_title": "Copy & paste",
+            "csv_subtitle": "Want to save time and order faster?",
+            "csv_subdescription": "Simply copy and paste item records from your CSV file into the field below using the following format: <strong>SKU,Quantity</strong>. Each record should starts from a new line.",
+            "csv_description": "SKU [COMMA] Quantity<br>SKU [COMMA] Quantity",
+            "csv_field_placeholder": "Formatting example:\r\n6AF8SM0VPFV6,10\r\n3RO1GEQI34E8,20",
             "items_not_found_message": "Products with following SKUs was not added to cart:"
         }
     },

@@ -21,11 +21,11 @@
 			</ul>
 		</div>
         <div class="dropdown-body clearfix">
-            <!--
+            {% comment %}
                 Get top-level collections
-                Because of liquid limitations for array, filter collections array with convertion to string with hidden delemiters (Unicode symbol)
+                Because of liquid limitations for array, filter collections array with convertion to string with hidden delemiters (&#x2063; Unicode symbol)
                 Then split string to array twice (per collections list and per collection properties) and use it (0 - url, 1 - title)
-            -->
+            {% endcomment %}
             {% assign index = 0 %}
             {%- capture top_level_collections_list -%}
                 {%- paginate collections by 50 -%}
@@ -57,14 +57,16 @@
 {% include 'search-bar' %}
 <div class="navbar-links">
     <ul>
-        <li class="dropdown">
-            <a data-toggle="dropdown" id="dropdownBulk" href="#">
-                {{ 'bulk_order.general.title' | t }}&nbsp;<i class="dropdown-ico fa fa-angle-down"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labellledby="dropdownBulk">
-                <!-- TODO -->
-            </div>
-        </li>
+        {% if template != 'bulk-order' %}
+            <li class="dropdown">
+                <a data-toggle="dropdown" id="dropdownBulk" href="#">
+                    {{ 'bulk_order.general.title' | t }}&nbsp;<i class="dropdown-ico fa fa-angle-down"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labellledby="dropdownBulk">
+                    {% include 'bulk-order-form' %}
+                </div>
+            </li>
+        {% endif %}
         <li>
             <a href="{{ 'cart' | absolute_url }}" ng-controller="cartBarController">
                 <i class="cart-ico fa fa-shopping-cart"></i>
@@ -73,55 +75,3 @@
         </li>
     </ul>
 </div>
-
-<!--ul class="site-nav" id="accessibleNav">
-    {% unless linklists.main-menu.links.first.url == '/' %}
-        <li class="large--hide">
-            <a href="{{ '/' | absolute_url }}">{{ 'general.breadcrumbs.home' | t }}</a>
-        </li>
-    {% endunless %}
-    {% for link in linklists.main-menu.links %}
-        {% assign child_list_handle = link.title | handleize %}
-        {% if linklists[child_list_handle].links != blank %}
-            <li class="site-nav--has-dropdown{% if link.active %} site-nav--active{% endif %}" aria-haspopup="true">
-                <a href="{{ link.url }}">
-                    {{ link.title }}
-                    <span class="icon-fallback-text">
-                        <span class="icon icon-arrow-down" aria-hidden="true"></span>
-                    </span>
-                </a>
-                <ul class="site-nav--dropdown">
-                    {% for childlink in linklists[child_list_handle].links %}
-                        <li {% if childlink.active %}class="site-nav--active"{% endif %}><a href="{{ childlink.url }}">{{ childlink.title | escape }}</a></li>
-                    {% endfor %}
-                </ul>
-            </li>
-        {% else %}
-            <li {% if link.active %}class="site-nav--active"{% endif %}>
-                <a href="{{ link.url }}">{{ link.title }}</a>
-            </li>
-        {% endif %}
-    {% endfor %}
-    {% if settings.bulk_order_enabled %}
-        <li{% if link.active %} class="site-nav--active"{% endif %}>
-            <a href="{{ '/bulkorder' | absolute_url }}">{{ 'bulk_order.general.title' | t }}</a>
-        </li>
-    {% endif %}
-    {% if shop.customer_accounts_enabled %}
-        <li class="customer-navlink large--hide" ng-if="customer && customer.isRegisteredUser && customer.operatorUserName" ng-cloak>
-            {{ 'layout.customer.logged_in_on_behalf_of_label' | t }} <a href="{{ 'account' | absolute_url }}" ng-bind="customer.firstName || customer.userName"></a>
-        </li>
-        <li class="customer-navlink large--hide" ng-if="customer && customer.isRegisteredUser && !customer.operatorUserName" ng-cloak>
-            {{ 'layout.customer.logged_in_as_label' | t }} <a href="{{ 'account' | absolute_url }}" ng-bind="customer.firstName || customer.userName"></a>
-        </li>
-        <li class="customer-navlink large--hide" ng-if="customer && customer.isRegisteredUser" ng-cloak>
-            {{ 'layout.customer.log_out' | t | customer_logout_link }}
-        </li>
-        <li class="customer-navlink large--hide" ng-if="customer && !customer.isRegisteredUser" ng-cloak>
-            {{ 'layout.customer.sign_in' | t | customer_login_link }}
-        </li>
-        <li class="customer-navlink large--hide" ng-if="customer && !customer.isRegisteredUser">
-            {{ 'layout.customer.create_account' | t | customer_register_link }}
-        </li>
-    {% endif %}
-</-ul-->

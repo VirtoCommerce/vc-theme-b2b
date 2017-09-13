@@ -103,8 +103,8 @@ img {
 }
 
 /* Lists */
-ol,
-ul {
+ol:not(.list-styled),
+ul:not(.list-styled) {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -115,6 +115,10 @@ ul.inline {
     display: inline-block;
     margin: 0 10px 0 0;
   }
+}
+
+dd *:only-child {
+    margin-bottom: 0;
 }
 
 /* Helpers */
@@ -321,7 +325,10 @@ hr {
 .navbar {
   border-width: 1px 0;
   font-family: "Roboto Condensed";
-  font-weight: 700;
+
+  a {      
+    font-weight: 700;
+  }
 
   .dropdown-ico {
     margin-left: 5px;

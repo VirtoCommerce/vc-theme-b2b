@@ -1,0 +1,28 @@
+<ng-init ng-init="state = 'manual'"></ng-init>
+<div class="dropdown-head">
+    <span ng-show="state == 'manual'">{{ 'bulk_order.general.subtitle' | t }}</span>
+    <span ng-show="state == 'csv'">{{ 'bulk_order.general.csv_title' | t }}</span>
+    <a href="#" ng-show="state == 'csv'" ng-click="state = 'manual'">{{ 'bulk_order.general.subtitle' | t }}</a>
+    <a href="#" ng-show="state == 'manual'" ng-click="state = 'csv'">{{ 'bulk_order.general.csv_title' | t }}</a>
+</div>
+<div class="dropdown-body">
+    <form ng-show="state == 'manual'" action="{{ '/bulkorder/addfielditems' | absolute_url }}" method="POST">
+        {% assign column_count = 1 %}
+        {% assign rows_count = 5 %}
+        {% assign sku_grid_column_count = 8 %}
+        {% assign quantity_grid_column_count = 4 %}
+        {% include 'bulk-order-fields' %}
+        <p><a class="show-more" href="{{ 'bulkorder' | absolute_url }}">Show More Entry Fields</a></p>
+        <button class="btn btn-primary" type="submit">{{ 'bulk_order.general.add_to_cart' | t }}</button>
+    </form>
+    <dl ng-show="state == 'csv'">
+        <dt>{{ 'bulk_order.general.csv_subtitle' | t }}</dt>
+        <dd>{{ 'bulk_order.general.csv_subdescription' | t }}</dd>
+    </dl>
+    <form ng-show="state == 'csv'" action="{{ '/bulkorder/addcsvitems' | absolute_url }}" method="POST">
+        <div class="form-group">
+            <textarea name="csv" placeholder="{{ 'bulk_order.general.csv_field_placeholder' | t }}" rows="10" class="form-control"></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">{{ 'bulk_order.general.add_to_cart' | t }}</button>
+    </form>
+</div>
