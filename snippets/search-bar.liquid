@@ -1,7 +1,7 @@
 <form method="get" action="{{ '/search' | absolute_url }}" name="formSearch" class="navbar-form" role="search" autocomplete="off" ng-controller="searchBarController">
     <div class="form-group dropdown">
         <input type="hidden" name="type" value="product" />
-        <input id="searchBar" type="search" name="q" ng-model="query" value="{{ search.terms | escape }}" class="form-control" placeholder="{{ 'layout.search_bar.placeholder' | t }}" aria-label="{{ 'layout.search_bar.placeholder' | t }}"  data-toggle="dropdown" ng-change="getSuggestions()" />
+        <input id="searchBar" type="search" name="q" ng-model="query" value="{{ search.terms | escape }}" class="form-control" placeholder="{{ 'layout.search_bar.placeholder' | t }}" aria-label="{{ 'layout.search_bar.placeholder' | t }}"  data-toggle="dropdown" data-toggle-trigger="click" ng-change="getSuggestions()" />
         <ul class="dropdown-menu list-styled" role="menu" aria-labellledby="searchBar" ng-if="(categorySuggestions || productSuggestions) && query">
             <li ng-if="searching" class="disabled">
                 <a href="">{{ 'cart.general.product_search_progress' | t }}</a>
