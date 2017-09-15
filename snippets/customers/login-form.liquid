@@ -1,0 +1,37 @@
+{% capture form %}{% form 'customer_login' %}{% include 'shared/form-errors-custom' %}{% endform %}{% endcapture %}
+{{ form | replace: 'id="customer_login"', 'id="customer_login" name="customer_login"' | remove: "</form>" }}
+    <div ng-keypress="login($event)">
+
+        <fieldset class="form-group">
+            <vc-labeled-input value="userName" form="customer_login" name="customer[user_name]" placeholder="{{ 'customer.sign-in.user_name' | t }}" required="true"></vc-labeled-input>
+            <vc-labeled-input value="password" form="customer_login" name="customer[password]" placeholder="{{ 'customer.sign-in.password' | t }}" type="password" required="true"></vc-labeled-input>
+        </fieldset>
+
+        {% if template != 'customers/login' %}
+            <fieldset class="aside-links">
+                {% include 'customers/forgot-links' %}
+            </fieldset>
+        {% endif %}
+
+        {% if template != 'customers/login' %}
+            <fieldset class="aside-actions row">
+                <div class="col-md-8">
+        {% else %}
+            <fieldset class="form-group">
+        {% endif %}
+            <button class="btn btn-primary" ng-click="login()">{{ 'customer.sign-in.sign_in' | t }}</button>
+            {% if template != 'customers/login' %}
+                </div>
+				<div class="col-md-4">
+                    {{ 'layout.customer.register' | t | customer_register_link | replace: 'a href', 'a class="register" href' }}
+				</div>
+            {% endif %}
+        </fieldset>
+
+        {% if template == 'customers/login' %}
+            <fieldset>
+                {% include 'customers/forgot-links' %}
+            </fieldset>
+        {% endif %}
+    </div>
+</form>

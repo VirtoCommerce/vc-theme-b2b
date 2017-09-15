@@ -1,28 +1,26 @@
-<div class="form-group">
-    <div class="row form-group">
-        {% assign end_col_index = column_count | minus: 1 %}
-        {% for col_index in (0..end_col_index) %}
-            <div class="col-md-{{- sku_grid_column_count -}}">
-                <label class="form-label">{{ 'bulk_order.general.sku_field_header' | t }}</label>
-            </div>
-            <div class="col-md-{{- quantity_grid_column_count -}}">
-                <label class="form-label">{{ 'bulk_order.general.quantity_field_header' | t }}</label>
-            </div>
-        {% endfor %}
-    </div>
-    {% assign tens = column_index | times: rows_count %}
-    {% for i in (1..rows_count) %}
-        <div class="form-group row">
-            {% assign end_col_index = column_count | minus: 1 %}
-            {% for col_index in (0..end_col_index) %}
-                {% assign item_index = i | plus: tens | minus: 1 %}
-                <div class="col-md-{{- sku_grid_column_count -}}">
-                    <input class="form-control" name="[{{ item_index }}].Sku" type="text" value="" />
-                </div>
-                <div class="col-md-{{- quantity_grid_column_count -}}">
-                    <input class="form-control" name="[{{ item_index }}].Quantity" min="1" type="number" value="1" />
-                </div>
-            {% endfor %}
+<div class="row form-group">
+    {% assign end_col_index = column_count | minus: 1 %}
+    {% for col_index in (0..end_col_index) %}
+        <div class="col-md-{{- sku_grid_column_count -}}">
+            <label class="form-label">{{ 'bulk_order.general.sku_field_header' | t }}</label>
+        </div>
+        <div class="col-md-{{- quantity_grid_column_count -}}">
+            <label class="form-label">{{ 'bulk_order.general.quantity_field_header' | t }}</label>
         </div>
     {% endfor %}
 </div>
+{% assign tens = column_index | times: rows_count %}
+{% for i in (1..rows_count) %}
+    <div class="form-group row">
+        {% assign end_col_index = column_count | minus: 1 %}
+        {% for col_index in (0..end_col_index) %}
+            {% assign item_index = i | plus: tens | minus: 1 %}
+            <div class="col-md-{{- sku_grid_column_count -}}">
+                <input class="form-control" name="[{{ item_index }}].Sku" type="text" value="" />
+            </div>
+            <div class="col-md-{{- quantity_grid_column_count -}}">
+                <input class="form-control" name="[{{ item_index }}].Quantity" min="1" type="number" value="1" />
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}

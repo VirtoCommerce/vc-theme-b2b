@@ -14,8 +14,13 @@
   }
 }
 
+vc-labeled-input:last-child .form-group,
 .form-group:last-child {
-  margin-bottom: 0;
+    margin-bottom: 0;
+}
+
+.form-group:only-child {
+    margin-bottom: $form-group-margin-bottom;
 }
 
 .form-control.qty {

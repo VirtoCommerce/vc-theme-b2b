@@ -10,23 +10,38 @@
         </li>
         <!-- TODO: Add links to orders, lists and specials in account via ui-router -->
         <li>
-            <a href="#">{{ 'customer.orders.title' | t }}</a>
+            <a href="account#/orders">{{ 'customer.orders.title' | t }}</a>
         </li>
         <li>
-            <a href="#">{{ 'customer.lists.title' | t }}</a>
+            <a href="account#/lists">{{ 'customer.lists.title' | t }}</a>
         </li>
         <li>
             <a href="#">{{ 'customer.account.specials' | t }}</a>
         </li>
     </ul>
 </div>
-<div class="top-auth">
+<div class="top-auth" ng-if="customer && !customer.isRegisteredUser">
     <ul>
         <li class="sign-in">
             {{ 'layout.customer.sign_in' | t | customer_login_link }}
         </li>
         <li>
             {{ 'layout.customer.register_now' | t | customer_register_link }}
+        </li>
+    </ul>
+</div>
+<div class="top-auth" ng-if="customer && customer.isRegisteredUser">
+    <ul>
+        <li>
+            {% raw %}{{ customer.firstName }} {{ customer.lastName }}{% endraw %}
+        </li>
+        <li class="dropdown" aria-haspopup="true">
+            <a data-toggle="dropdown" href="{{ 'account' | absolute_url }}" id="account">{{ 'layout.customer.account' | t }}&nbsp;<i class="dropdown-ico fa fa-angle-down"></i></a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="account">
+                <li>
+                    {{ 'layout.customer.log_out' | t | customer_logout_link | replace: 'href', 'role="menuitem" tabindex="-1" href' }}
+                </li>
+            </ul>
         </li>
     </ul>
 </div>

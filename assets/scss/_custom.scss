@@ -237,8 +237,26 @@ hr {
     margin: 0 6px;
   }
 
+  .dropdown {
+    .dropdown-ico {
+      vertical-align: middle;
+    }
+  }
+
+  .dropdown-menu {
+    margin-left: 10px;
+
+    li {
+      float: none;
+      padding: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+  }
+
   .sign-in {
-    font-size: 12px;
     text-transform: uppercase;
 
     a {
@@ -861,8 +879,6 @@ hr {
 }
 
 .sign-in {
-  font-size: 12px;
-
   h1 {
     margin-bottom: 30px;
   }

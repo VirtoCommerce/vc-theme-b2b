@@ -5,12 +5,13 @@
             "bower_components/jquery/dist/jquery.js",
             "bower_components/underscore/underscore.js",
             "bower_components/angularjs/angular.js",
+            "bower_components/angular-resource/angular-resource.js",
             "bower_components/ngstorage/ngStorage.js",
             "bower_components/bootstrap-sass/assets/javascripts/bootstrap.js",
             "bower_components/angular-sanitize/angular-sanitize.js",
             "bower_components/angular-translate/angular-translate.js",
             "bower_components/angular-translate-loader-url/angular-translate-loader-url.js",
-            "bower_components/angular-ui-router/release/angular-ui-router.js",
+            "bower_components/angular-component-router/angular_1_router.js",
             "bower_components/satellizer/dist/satellizer.js"
         ]
     },
@@ -24,7 +25,9 @@
         "outputFileName": "assets/static/bundle/scripts.js",
         "inputFiles": [
             "assets/interactor.js",
-            "assets/js/*.js"
+            "assets/js/*.js",
+            "assets/js/common-components/*.js",
+            "assets/js/account/*.js"
         ]
     },
     {

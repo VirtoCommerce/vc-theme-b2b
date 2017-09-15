@@ -2,14 +2,13 @@
   We want control over our error text, so we'll loop through them.
 
   Alternatively, you can use the default layout to generate a
-  <ul> wrapped with <div class="errors">
-    - {{ form.errors | default_errors }}
+  <ul> wrapped with <div class="errors"> - {{ form.errors | default_errors }}
 {% endcomment %}
 {% if form.errors %}
-  <div class="note form-error">
+  <div class="alert alert-danger">
     <p>{{ 'general.forms.post_error' | t }}</p>
 
-    <ul class="disc">
+    <ul class="list-styled">
       {% assign message = 'contact.form.message' | t %}
       {% for field in form.errors %}
 
