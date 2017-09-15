@@ -8,7 +8,9 @@ $(function () {
     $(document).on('mouseenter.bs.dropdown.data-api', mouseOverDropdownSelector + ':not([aria-expanded="true"])', $.fn.dropdown.Constructor.prototype.toggle);
     $(document).on('mouseleave.bs.dropdown.data-api', '.dropdown', function (e) {
         var dropdownSelector = mouseOverDropdownSelector + ':not([aria-expanded="false"])';
-        var dropdownToggle = $(e.target).parents('.dropdown').find(dropdownSelector);
+        var nestedDropdownToggle = $(e.target).parents('.dropdown').find(dropdownSelector);
+        var selfDropdownToggle = $(e.target).filter('.dropdown').find(dropdownSelector);
+        var dropdownToggle = nestedDropdownToggle.add(selfDropdownToggle);
         if (dropdownToggle.length) {
             // hide dropdown menu when mouse leave dropdown or dropdown menu
             $.fn.dropdown.Constructor.prototype.toggle(e);
