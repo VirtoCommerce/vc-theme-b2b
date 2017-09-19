@@ -1,7 +1,7 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'customerService', 'listService',
-    function ($rootScope, $scope, $window, dialogService, catalogService, cartService, quoteRequestService, customerService, listService) {
+storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', '$timeout', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'customerService', 'listService',
+    function ($rootScope, $scope, $window, $timeout, dialogService, catalogService, cartService, quoteRequestService, customerService, listService) {
     //TODO: prevent add to cart not selected variation
     // display validator please select property
     // display price range
@@ -19,6 +19,76 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         cartService.addLineItem(product.id, quantity).then(function (response) {
             $rootScope.$broadcast('cartItemsChanged');
         });
+    }
+
+    // TODO: Replace mock with real function
+    $scope.addProductsToCartMock = function () {
+        var rejection = {
+            data: {
+                message: "The 1 product(s) below was not added to cart:",
+                modelState: {
+                    "Test": "Test"
+                }
+            }
+        };
+        var items = [
+            {
+                id: "9cbd8f316e254a679ba34a900fccb076",
+                name: "3DR Solo Quadcopter (No Gimbal)",
+                imageUrl: "//localhost/admin/assets/catalog/1428965138000_1133723.jpg",
+                price: {
+                    actualPrice: {
+                        formattedAmount: "$896.39"
+                    },
+                    actualPriceWithTax: {
+                        formattedAmount: "$1,075.67"
+                    },
+                    listPrice: {
+                        formattedAmount: "$995.99"
+                    },
+                    listPriceWithTax: {
+                        formattedAmount: "$1,195.19"
+                    },
+                    extendedPrice: {
+                        formattedAmount: "$1,792.78"
+                    },
+                    extendedPriceWithTax: {
+                        formattedAmount: "$2,151.34"
+                    }
+                },
+                quantity: 2,
+                url: "~/camcorders/aerial-imaging-drones/3dr-solo-quadcopter-no-gimbal"
+            },
+            {
+                id: "ad4ae79ffdbc4c97959139a0c387c72e",
+                name: "Samsung Galaxy Note 4 SM-N910C 32GB",
+                imageUrl: "//localhost/admin/assets/catalog/1416164841000_1097106.jpg",
+                price: {
+                    actualPrice: {
+                        formattedAmount: "$530.99"
+                    },
+                    actualPriceWithTax: {
+                        formattedAmount: "$637.19"
+                    },
+                    listPrice: {
+                        formattedAmount: "$589.99"
+                    },
+                    listPriceWithTax: {
+                        formattedAmount: "$707.99"
+                    },
+                    extendedPrice: {
+                        formattedAmount: "$1,592.97"
+                    },
+                    extendedPriceWithTax: {
+                        formattedAmount: "$1,911.57"
+                    }
+                },
+                quantity: 5,
+                url: "~/cell-phones/samsung-galaxy-note-4-sm-n910c-32gb"
+            }
+        ];
+        var dialogData = toDialogDataModelMock(items, rejection);
+        dialogService.showDialog(dialogData, 'recentlyAddedCartItemDialogController', 'storefront.recently-added-cart-item-dialog.tpl');
     }
 
     $scope.addProductToCartById = function (productId, quantity, event) {
@@ -44,18 +114,28 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         });
     }
 
-    function toDialogDataModel(product, quantity) {
+    function toDialogDataModel(items, quantity) {
         return {
+            id: product.id,
+            name: product.name,
             imageUrl: product.primaryImage ? product.primaryImage.url : null,
             listPrice: product.price.listPrice,
-            id:product.id,
 			listPriceWithTax: product.price.listPriceWithTax,
-            name: product.name,
             placedPrice: product.price.actualPrice,
             placedPriceWithTax: product.price.actualPriceWithTax,
             quantity: quantity,
             updated: false
         }
+    }
+
+    function toDialogDataModelMock(items, rejection) {
+        var dialogDataModel = {};
+        if (rejection) {
+            dialogDataModel.errorMessage = rejection.data.message;
+            dialogDataModel.errors = rejection.data.modelState;
+        }
+        dialogDataModel.items = items;
+        return dialogDataModel;
     }
 
     function initialize() {

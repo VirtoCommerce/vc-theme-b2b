@@ -1,10 +1,10 @@
 <div class="header-brand" itemscope itemtype="http://schema.org/Organization">
-    {% if settings.logo_use_image %}
         <a href="{{ '/' | absolute_url }}" itemprop="url">
-            <img alt="{{ shop.name }}" src="{{ 'logo.png' | asset_url }}" itemprop="logo" />
+            {% if settings.logo_use_image %}
+                <img alt="{{ shop.name }}" src="{{ 'logo.png' | asset_url }}" itemprop="logo" />
+            {% else %}
+                {{ shop.name }}
+            {% endif %}
         </a>
-    {% else %}
-        <a href="{{ '/' | absolute_url }}" itemprop="url">{{ shop.name }}</a>
-    {% endif %}
 </div>
 {% include 'main/header-links' %}

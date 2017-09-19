@@ -106,12 +106,12 @@ img {
 ol,
 ul {
   margin: 0;
-  padding: 0;
 }
 
 ol:not(.list-styled),
 ul:not(.list-styled) {
   list-style: none;
+  padding: 0;
 }
 
 ul.inline {
@@ -144,7 +144,8 @@ dd *:only-child {
 .dropdown-ico {
   color: #10acd2;
   font-size: 20px;
-  vertical-align: top;
+  line-height: 10px;
+  vertical-align: -2px;
 }
 
 hr {
@@ -209,6 +210,19 @@ hr {
   box-sizing: border-box;
   height: 35px;
 
+  .dropdown-menu {
+    margin-left: 10px;
+
+    li {
+      float: none;
+      padding: 0;
+    }
+
+    a {
+      color: inherit;
+    }
+  }
+
   .top-links {
     float: left;
   }
@@ -235,25 +249,6 @@ hr {
     content: "|";
     float: left;
     margin: 0 6px;
-  }
-
-  .dropdown {
-    .dropdown-ico {
-      vertical-align: middle;
-    }
-  }
-
-  .dropdown-menu {
-    margin-left: 10px;
-
-    li {
-      float: none;
-      padding: 0;
-    }
-
-    a {
-      color: inherit;
-    }
   }
 
   .sign-in {
@@ -879,6 +874,8 @@ hr {
 }
 
 .sign-in {
+  font-size: 12px;
+
   h1 {
     margin-bottom: 30px;
   }

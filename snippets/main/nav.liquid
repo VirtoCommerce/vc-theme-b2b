@@ -1,8 +1,8 @@
-<div class="dropdown navbar-all">
-    <a data-toggle="dropdown" href="#" id="dropdownAll">
-        All products <i class="dropdown-ico fa fa-angle-down"></i>
+<div class="dropdown navbar-all" uib-dropdown auto-close="mouseleave"aria-haspopup="true">
+    <a id="all-products-dropdown" href="#" uib-dropdown-toggle toggle-on-mouse-enter>
+        {{ 'layout.products.products' | t }} <i class="dropdown-ico fa fa-angle-down"></i>
     </a>
-    <div class="dropdown-menu" role="menu" aria-labelledby="dropdownAll">
+    <div class="dropdown-menu" role="menu" aria-labelledby="all-products-dropdown">
         <div class="dropdown-head clearfix">
             <ul>
                 {% for link in linklists.all-products-menu.links %}
@@ -58,11 +58,11 @@
 <div class="navbar-links">
     <ul>
         {% if template != 'bulk-order' %}
-            <li class="dropdown">
-                <a data-toggle="dropdown" data-toggle-trigger="click" id="dropdownBulk" href="#">
+            <li class="dropdown" uib-dropdown auto-close="outsideClick" aria-haspopup="true">
+                <a id="bulk-order-dropdown" href="#" uib-dropdown-toggle>
                     {{ 'bulk_order.general.title' | t }}&nbsp;<i class="dropdown-ico fa fa-angle-down"></i>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labellledby="dropdownBulk">
+                <div class="dropdown-menu dropdown-menu-right" role="menu" uib-dropdown-menu aria-labellledby="bulk-order-dropdown">
                     {% include 'main/bulk-order-form' %}
                 </div>
             </li>

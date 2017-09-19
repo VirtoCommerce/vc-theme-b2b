@@ -1,10 +1,12 @@
 <div class="form-group" ng-class="{'keyuped': $ctrl.form[$ctrl.name].$viewValue.length, 'has-error': ($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && $ctrl.form[$ctrl.name].$invalid }">
-    <label for="{% raw %}{{ $ctrl.name }}{% endraw %}" class="control-label" ng-bind="$ctrl.placeholder"></label>
+    <label for="{% raw %}{{ $ctrl.name }}{% endraw %}" class="control-label" ng-class="{'focused': $ctrl.focused}" ng-bind="$ctrl.placeholder"></label>
     <input ng-model="$ctrl.value"
            name="{% raw %}{{ $ctrl.name }}{% endraw %}"
            id="{% raw %}{{ $ctrl.name }}{% endraw %}"
            placeholder="{% raw %}{{ $ctrl.placeholder }}{% endraw %}"
-           autofocus="{% raw %}{{ $ctrl.autofocus }}{% endraw %}"
+           ng-attr-autofocus="{% raw %}{{ $ctrl.autofocus || undefined }}{% endraw %}"
+           ng-focus="$ctrl.focused = true"
+           ng-blur="$ctrl.focused = false"
            type="{% raw %}{{ $ctrl.type }}{% endraw %}"
            ng-required="$ctrl.required"
            ng-disabled="$ctrl.disabled"

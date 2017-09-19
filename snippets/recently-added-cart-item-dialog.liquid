@@ -1,55 +1,101 @@
-﻿<script id="storefront.recently-added-cart-item-dialog.tpl" type="text/ng-template">
-    <div class="ajaxify-modal is-visible" id="ajaxifyModal" style="opacity: 1;">
-        <button class="ajaxifyCart--close" title="{{ 'cart.general.close_cart' | t }}" ng-click="close()">{{ 'cart.general.close_cart' | t }}</button>
-        <div class="ajaxifyCart--content" id="ajaxifyCart">
-            <h1 class="h2">Product is added to cart</h1>
-            <div class="cart-row">
-                <div class="grid">
-                    <div class="grid-item large--seven-twelfths">
-                        <div class="grid">
-                            <div class="grid-item one-third large--one-quarter">
-                                <span class="cart-image">
-                                    <img ng-src="{% raw %}{{ dialogData.imageUrl }}{% endraw %}" ng-if="dialogData.imageUrl" />
-                                    <div class="no-product-image" ng-if="!dialogData.imageUrl">
-                                        <img src="{{ 'no-image.svg' | asset_url }}" />
-                                    </div>
-                                </span>
-                            </div>
-                            <div class="grid-item two-thirds large--three-quarters">
-                                <a ng-bind="dialogData.name"></a>
-                            </div>
-                        </div>
+<script id="storefront.recently-added-cart-item-dialog.tpl" type="text/ng-template">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()" title="{{ 'cart.general.close_cart' | t }}" aria-label="{{ 'cart.general.close_cart' | t }}"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{% raw %}{{ dialogData.items.length }}{% endraw %}&nbsp;{{ 'cart.general.added_to_cart' | t }}</h4>
+    </div>
+    <div class="modal-body">
+        <vc-errors level="'warning'" message="dialogData.errorMessage" errors="dialogData.errors"></vc-errors>
+        <div class="add-cart-list">
+            <div class="cart-item" ng-repeat="item in dialogData.items">
+                <div class="col-md-8">
+                    <div class="cart-img">
+                        <img ng-if="item.imageUrl" ng-src="{% raw %}{{ item.imageUrl }}{% endraw %}">
+                        <img ng-if="!item.imageUrl" src="{{ 'no-image.svg' | asset_url }}" />
                     </div>
-                    <div class="grid-item large--five-twelfths medium--two-thirds push--medium--one-third">
-                        <div class="grid">
-                            <div class="grid-item one-half medium-down--one-third text-right">
-                                <div class="ajaxifyCart--qty" ng-bind="dialogData.quantity"></div>
-                            </div>
-                            <div class="grid-item one-third medium-down--one-third medium-down--text-left text-right">
-                                {% if settings.show_prices_with_taxes %}
-                                    <span class="h2" ng-bind="dialogData.placedPriceWithTax.formattedAmount"></span>
-                                    <span style="text-decoration: line-through;" ng-if="dialogData.listPriceWithTax.amount != dialogData.placedPriceWithTax.amount" ng-bind="dialogData.listPriceWithTax.formattedAmount"></span>
-                                {% else %}
-                                    <span class="h2" ng-bind="dialogData.placedPrice.formattedAmount"></span>
-                                    <span style="text-decoration: line-through;" ng-if="dialogData.listPrice.amount != dialogData.placedPrice.amount" ng-bind="dialogData.listPrice.formattedAmount"></span>
-                                {% endif %}
-                             </div>
-                        </div>
+                    <div class="cart-descr">
+                        <a href="item.url" ng-bind="item.name"></a>
                     </div>
                 </div>
-            </div>
-            <div class="cart-row">
-                <div class="grid">
-                    <div class="grid-item text-right">
-                        <button class="btn" ng-class="{ 'btn-secondary': !dialogData.updated }" ng-disabled="!dialogData.updated" ng-click="redirect('{{ 'cart' | absolute_url }}')">
-                            <span ng-if="dialogData.updated">Go to cart</span>
-                            <span ng-if="!dialogData.updated">Updating cart...</span>
-                        </button>
-                        <button class="btn" ng-click="close()">Continue shopping</button>
+                <div class="col-md-4">
+                    <div class="col-md-6 cart-qty">
+                        <div class="qty">{{ 'cart.general.quantity' | t }}&nbsp;<span class="value" ng-bind="item.quantity"></span></div>
+                        {% if settings.show_prices_with_taxes %}
+                            <div class="price">{{ 'cart.general.price' | t }}&nbsp;<span class="value" ng-bind="item.price.actualPriceWithTax.formattedAmount"></span></div>
+                        {% else %}
+                            <div class="price">{{ 'cart.general.price' | t }}&nbsp;<span class="value" ng-bind="item.price.actualPrice.formattedAmount"></span></div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6 cart-total">
+                        <span class="price-label">{{ 'cart.general.total' | t }}</span>
+                        {% if settings.show_prices_with_taxes %}
+                            <span class="price-value" ng-bind="item.price.extendedPriceWithTax.formattedAmount"></span>
+                        {% else %}
+                            <span class="price-value" ng-bind="item.price.extendedPrice.formattedAmount"></span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Add you may also like -->
     </div>
-    <div id="ajaxifyCart-overlay"></div>
+    <div class="modal-footer">
+        <p class="pull-left" ng-controller="cartBarController">{{ 'cart.general.products_in_cart' | t: cartItemsCount: cartItemsCount }}</p>
+        <button type="button" class="btn btn-default" ng-click="close()">{{ 'cart.general.continue_shopping' | t }}</button>
+        <button type="button" class="btn btn-primary" ng-click="redirect('{{ 'cart' | absolute_url }}')">{{ 'cart.general.view_cart' | t }}</button>
+    </div>
+
+        {% comment %}
+        <div class="ajaxify-modal is-visible" id="ajaxifyModal" style="opacity: 1;">
+            <button class="ajaxifyCart--close">{{ 'cart.general.close_cart' | t }}</button>
+            <div class="ajaxifyCart--content" id="ajaxifyCart">
+                <div class="cart-row">
+                    <div class="grid">
+                        <div class="grid-item large--seven-twelfths">
+                            <div class="grid">
+                                <div class="grid-item one-third large--one-quarter">
+                                    <span class="cart-image">
+                                        <img ng-src="{% raw %}{{ dialogData.imageUrl }}{% endraw %}" ng-if="dialogData.imageUrl" />
+                                        <div class="no-product-image">
+                                            
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="grid-item two-thirds large--three-quarters">
+                                    <a ng-bind="dialogData.name"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid-item large--five-twelfths medium--two-thirds push--medium--one-third">
+                            <div class="grid">
+                                <div class="grid-item one-half medium-down--one-third text-right">
+                                    <div class="ajaxifyCart--qty" ng-bind="dialogData.quantity"></div>
+                                </div>
+                                <div class="grid-item one-third medium-down--one-third medium-down--text-left text-right">
+                                    {% if settings.show_prices_with_taxes %}
+                                    <span class="h2" ng-bind="dialogData.placedPriceWithTax.formattedAmount"></span>
+                                    <span style="text-decoration: line-through;" ng-if="dialogData.listPriceWithTax.amount != dialogData.placedPriceWithTax.amount" ng-bind="dialogData.listPriceWithTax.formattedAmount"></span>
+                                    {% else %}
+                                    <span class="h2" ng-bind="dialogData.placedPrice.formattedAmount"></span>
+                                    <span style="text-decoration: line-through;" ng-if="dialogData.listPrice.amount != dialogData.placedPrice.amount" ng-bind="dialogData.listPrice.formattedAmount"></span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-row">
+                    <div class="grid">
+                        <div class="grid-item text-right">
+                            <button class="btn" ng-class="{ 'btn-secondary': !dialogData.updated }" ng-disabled="!dialogData.updated" ng-click="redirect('{{ 'cart' | absolute_url }}')">
+                                <span ng-if="dialogData.updated">Go to cart</span>
+                                <span ng-if="!dialogData.updated">Updating cart...</span>
+                            </button>
+                            <button class="btn" ng-click="close()">Continue shopping</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ajaxifyCart-overlay"></div>
+        {% endcomment %}
 </script>

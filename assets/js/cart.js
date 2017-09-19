@@ -1,4 +1,4 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 'cartService', 'catalogService', function ($rootScope, $scope, $timeout, cartService, catalogService) {
     var timer;
@@ -142,10 +142,6 @@ storefrontApp.controller('cartBarController', ['$scope', 'cartService', function
 }]);
 
 storefrontApp.controller('recentlyAddedCartItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', function ($scope, $window, $uibModalInstance, dialogData) {
-    $scope.$on('cartItemsChanged', function (event, data) {
-        dialogData.updated = true;
-    });
-
     $scope.dialogData = dialogData;
 
     $scope.close = function () {

@@ -10,11 +10,11 @@
                 {{ 'customer.sign-in.registration_advantages_title' | t: shop: shop }}
                 <ul>
                     {% for i in (0..10) %}
-                    {% assign registration_advantage_path = 'customer.sign-in.registration_advantages[' | append: i | append: ']' %}
-                    {% assign registration_advantage = registration_advantage_path | t %}
-                    {% if registration_advantage != registration_advantage_path %}
-                    <li>{{ registration_advantage }}</li>
-                    {% endif %}
+                        {% assign registration_advantage_path = 'customer.sign-in.registration_advantages[' | append: i | append: ']' %}
+                        {% assign registration_advantage = registration_advantage_path | t %}
+                        {% if registration_advantage != registration_advantage_path %}
+                            <li>{{ registration_advantage }}</li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </p>

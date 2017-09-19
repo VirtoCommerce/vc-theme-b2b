@@ -16,11 +16,11 @@
 
 vc-labeled-input:last-child .form-group,
 .form-group:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .form-group:only-child {
-    margin-bottom: $form-group-margin-bottom;
+  margin-bottom: $form-group-margin-bottom;
 }
 
 .form-control.qty {
@@ -31,6 +31,49 @@ vc-labeled-input:last-child .form-group,
   .form-group {
     margin-bottom: 5px;
   }
+}
+
+vc-labeled-input {
+  display: block;
+  margin: 10px 0 20px;
+
+  .form-group {
+    position: relative;
+  }
+
+  label {
+    background: #fff;
+    color: $graySecondaryColor;
+    font-size: 14px;
+    font-weight: normal;
+    left: 8px;
+    margin: 0;
+    padding: 0 5px;
+    position: absolute;
+    top: 10px;
+    transition: top 0.25s ease;
+  }
+
+  label.focused {
+    color: $link-color;
+  }
+
+  label.focused ~ input {
+    border-width: 2px;
+    border-color: $link-color;
+  }
+}
+
+vc-labeled-input .form-group.keyuped {
+  label {
+    font-size: 12px;
+    line-height: 1.7;
+    top: -13px;
+  }
+}
+
+vc-labeled-input:last-child {
+  margin-bottom: 0;
 }
 
 .radio,
@@ -519,4 +562,172 @@ vc-labeled-input:last-child .form-group,
 /* Alert */
 .alert {
   font-family: "Roboto Condensed";
+}
+
+/* Table items */
+.table-items {
+  font-family: "Roboto Condensed";
+  font-size: 12px;
+  margin: 50px 0 0;
+
+  .table-controls {
+    border-bottom: 1px solid $grayColor;
+    border-top: 1px solid $grayColor;
+    padding: 10px 0;
+  }
+
+  .compare-controls {
+    margin: 10px 0 0;
+  }
+
+  .purchase,
+  .product-controls {
+    display: inline-block;
+  }
+
+  .product-controls {
+    border-left: 1px solid $grayColor;
+    margin: 0 0 0 15px;
+    padding: 0 0 0 15px;
+
+    a {
+      font-weight: 700;
+    }
+
+    .btn {
+      margin: 0 0 0 10px;
+    }
+  }
+
+  .table-row {
+    border-bottom: 1px solid $grayColor;
+    padding: 10px 0;
+
+    [class*="col-md"] {
+      display: flex;
+      padding: 0;
+    }
+
+    .table-item {
+      padding: 0 0 0 10px;
+      width: 100%;
+    }
+  }
+
+  .table-head {
+    .table-row {
+      background: $grayLightColor;
+    }
+  }
+
+  .table-pic {
+    border: 1px solid $grayColor;
+    margin: 0 0 10px;
+    max-width: 80px;
+  }
+}
+
+.table-items.fixed {
+  padding: 115px 0 0;
+
+  .table-head {
+    background: #fff;
+    position: fixed;
+    top: 0;
+    z-index: 50;
+  }
+}
+
+/* Modal compare */
+.modal-compare {
+  bottom: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-family: "Roboto Condensed";
+  left: 50%;
+  position: fixed;
+  width: 910px;
+  z-index: 50;
+  transform: translateX(-50%);
+
+  .compare-head {
+    background: $navbar-default-bg;
+    color: #fff;
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .compare-add {
+    position: relative;
+
+    .form-group {
+      display: none;
+      left: 5px;
+      position: absolute;
+      right: 5px;
+      top: 5px;
+    }
+
+    .form-control {
+      width: 50%;
+    }
+  }
+
+  .compare-add.opened {
+    font-size: 0;
+
+    .form-group {
+      display: flex;
+    }
+  }
+
+  .compare-add,
+  .compare-clear,
+  .compare-hide {
+    border-left: 1px solid $navbar-default-border;
+    text-align: center;
+  }
+
+  .compare-body {
+    background: #fff;
+    overflow: hidden;
+    padding: 10px;
+
+    .list {
+      word-spacing: -6px;
+    }
+
+    .list-item {
+      box-sizing: border-box;
+      display: inline-block;
+      padding: 0 10px 0 0;
+      vertical-align: top;
+      width: 20%;
+      word-spacing: 0;
+    }
+
+    .list-link {
+      float: left;
+      margin: 0 5px 0 0;
+      position: relative;
+    }
+
+    .list-pic {
+      border: 1px solid $grayColor;
+      max-width: 50px;
+    }
+
+    .list-remove {
+      background: #fff;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    .placeholder {
+      background: $grayLightColor;
+      border: 1px solid #ccc;
+      height: 50px;
+      width: 50px;
+    }
+  }
 }
