@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='default' Clean='clean' ProjectOpened='watch' />
+﻿/// <binding BeforeBuild='default' Clean='clean' ProjectOpened='watch' />
 
 var gulp = require('gulp'),
     
@@ -53,6 +53,8 @@ function getBundleConfig() {
 function merge(streams) {
     return streams.length ? mergestream(streams) : mergestream().end();
 }
+
+var defaultTasks = ['min', 'copy'];
 
 gulp.task('min', ['min:js', 'min:scss', 'min:css', 'min:html']);
 
@@ -112,11 +114,11 @@ gulp.task('min:scss', function () {
             //    autoprefix()
             //], { syntax: scss }))
             .pipe(sass({
-                outputStyle: "compressed",
+                outputStyle: "nested",
                 precision: 5
             }))
             .pipe(concat(bundle.outputFileName))
-            .pipe(postcss([autoprefix()]))
+            .pipe(postcss([autoprefix(), cssnano()]))
             //.pipe(rename({ extname: '.css' }))
             .pipe(mapSources(true))
             .pipe(sourcemaps.write("."))
@@ -171,7 +173,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('watch', function () {
-    gulp.watch('./bundleconfig.json', ['min']);
+    gulp.watch('./bundleconfig.json', defaultTasks);
 
     getBundles(regex.js).forEach(function (bundle) {
         gulp.watch(bundle.inputFiles, ['min:js']);
@@ -230,5 +232,5 @@ gulp.task('compress', ['min'], function() {
 
 // DEFAULT Tasks
 gulp.task('default', function(callback) {
-    sequence('lint', ['min', 'copy'], callback);
+    sequence('lint', defaultTasks, callback);
 });

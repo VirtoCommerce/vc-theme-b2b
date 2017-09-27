@@ -15,6 +15,7 @@
     "main": "gulpfile.js",
     "dependencies": {
         "angularjs": "~1.5.7",
+        "angular-animate": "~1.5.7",
         "angular-bootstrap": "^2.5.0",
         "angular-component-router": "0.2.0",
         "angular-resource": "~1.5.7",

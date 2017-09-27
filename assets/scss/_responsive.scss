@@ -1,4 +1,4 @@
-@media (min-width: 768px) and (max-width: 1019px) {
+﻿@media (min-width: 768px) and (max-width: 1019px) {
   img {
     width: 100%;
   }
@@ -78,7 +78,7 @@
       }
 
       a {
-        color: $grayColor;
+        color: $gray;
         font-size: 11px;
 
         .count {
@@ -103,7 +103,7 @@
     }
 
     .header-search-mobile {
-      background: $grayColor;
+      background: $gray;
       display: block;
       padding: 10px;
     }

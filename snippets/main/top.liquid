@@ -1,4 +1,4 @@
-<div class="top-links">
+﻿<nav class="top-links">
     <ul>
         <li>
             <span ng-if="customer && customer.isRegisteredUser">
@@ -19,8 +19,8 @@
             <a href="#">{{ 'customer.account.specials' | t }}</a>
         </li>
     </ul>
-</div>
-<div class="top-auth" ng-if="customer && !customer.isRegisteredUser">
+</nav>
+<nav class="top-auth" ng-if="customer && !customer.isRegisteredUser">
     <ul>
         <li class="sign-in">
             {{ 'layout.customer.sign_in' | t | customer_login_link }}
@@ -29,8 +29,8 @@
             {{ 'layout.customer.register_now' | t | customer_register_link }}
         </li>
     </ul>
-</div>
-<div class="top-auth" ng-if="customer && customer.isRegisteredUser">
+</nav>
+<nav class="top-auth" ng-if="customer && customer.isRegisteredUser">
     <ul>
         <li>
             {% raw %}{{ customer.firstName }} {{ customer.lastName }}{% endraw %}
@@ -44,4 +44,4 @@
             </ul>
         </li>
     </ul>
-</div>
+</nav>

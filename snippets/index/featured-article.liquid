@@ -1,0 +1,19 @@
+﻿{% paginate blogs by 5 %}
+    {% for blog in blogs %}
+        {% paginate blog.articles by 5 %}
+            {% for article in blog.articles %}
+                {% if article.is_sticked %}
+                    <aside class="aside-box featured-article text-center">
+                        <div class="aside-img">
+                            <img src="{{ article.image_url }}" class="aside-pic">
+                        </div>
+                        <div class="aside-t text-center">{{ article.title }}</div>
+                        <div class="learn-more">
+                            <a href="{{ article.url }}" class="btn btn-alt btn-lg">{{ 'blogs.featured.learn_more' | t }}</a>
+                        </div>
+                    </aside>
+                {% endif %}
+            {% endfor %}
+        {% endpaginate %}
+    {% endfor %}
+{% endpaginate %}

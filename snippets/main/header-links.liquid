@@ -1,7 +1,7 @@
-<div class="header-links">
+﻿<nav class="header-links">
     <div class="links">
         <ul>
-            {% for link in linklists.service-menu.links %}
+            {% for link in linklists[settings.header_servicemenu_linklist].links %}
                 <li>
                     <a href="{{ link.url }}">{{ link.title }}</a>
                 </li>
@@ -11,7 +11,7 @@
     <div class="links">
         <ul>
             {% assign index = 0 %}
-            {% for link in linklists.main-menu.links %}
+            {% for link in linklists[settings.header_mainmenu_linklist].links %}
                 {% assign child_list_handle = link.title | handleize %}
                 {% if linklists[child_list_handle].links != blank %}
                     {% assign id = 'header-link-' | append: index %}
@@ -34,8 +34,8 @@
             {% endfor %}
         </ul>
     </div>
-</div>
-<div class="header-links-mobile">
+</nav>
+<nav class="header-links-mobile">
     <ul>
         <li>
             {% assign login_link_title = 'layout.customer.sign_in' | t %}
@@ -49,4 +49,4 @@
             </a>
         </li>
     </ul>
-</div>
+</nav>

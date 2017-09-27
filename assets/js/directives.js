@@ -1,11 +1,11 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.directive('vcContentPlace', ['marketingService', function (marketingService) {
+storefrontApp.directive('vcContentPlace', ['$compile', 'marketingService', function ($compile, marketingService) {
     return {
         restrict: 'E',
         link: function (scope, element, attrs) {
             marketingService.getDynamicContent(attrs.id).then(function (response) {
-                element.html(response.data);
+                element.html($compile(response.data)(scope));
             });
         },
         replace: true

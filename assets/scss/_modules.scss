@@ -1,4 +1,4 @@
-/* Forms */
+﻿/* Forms */
 .form-t {
   font-size: 14px;
   font-family: "Roboto Condensed";
@@ -43,7 +43,7 @@ vc-labeled-input {
 
   label {
     background: #fff;
-    color: $graySecondaryColor;
+    color: $gray-dark;
     font-size: 14px;
     font-weight: normal;
     left: 8px;
@@ -120,7 +120,7 @@ vc-labeled-input:last-child {
 .checkbox {
   .switch {
     background: #fff;
-    border: 2px solid $grayColor;
+    border: 2px solid $gray;
     display: inline-block;
     height: 20px;
     margin: 0 10px 0 0;
@@ -181,12 +181,22 @@ vc-labeled-input:last-child {
 
 /* Aside box */
 .aside-box {
-  border-color: $asideAccentBrdColor $asideBrdColor $asideBrdColor;
+  border-color: $asideBrdColor;
   border-style: solid;
-  border-width: 3px 1px 1px;
+  border-width: 1px;
   font-family: "Roboto Condensed";
   padding: $asidePadding;
   margin-top: $asideMargin;
+
+  &:first-of-type {
+    border-color: $asideAccentBrdColor $asideBrdColor $asideBrdColor;
+    border-width: 3px 1px 1px;
+  }
+
+  &:last-of-type {
+    border-color: $asideBrdColor $asideBrdColor $asideAccentBrdColor;
+    border-width: 1px 1px 3px;
+  }
 
   .aside-t {
     font-size: 20px;
@@ -197,7 +207,8 @@ vc-labeled-input:last-child {
   }
 
   .account-links {
-    background: $grayLightSecondaryColor;
+    background: $gray-lighter;
+    list-style: none;
     margin: 0 -15px;
     padding: 20px 15px;
 
@@ -210,6 +221,10 @@ vc-labeled-input:last-child {
     font-size: 12px;
     font-weight: 700;
     margin: 10px 0 0;
+
+    > ul {
+      @include list-unstyled;
+    }
 
     > * {
       margin: 0 10px 0 0;
@@ -248,18 +263,13 @@ vc-labeled-input:last-child {
   }
 }
 
-.aside-box.border-bottom {
-  border-color: $asideBrdColor $asideBrdColor $asideAccentBrdColor;
-  border-width: 1px 1px 3px;
-}
-
-.aside-box.industry-trends {
-  .learn-more {
-    margin: 15px 0 0;
-  }
-
+.aside-box.featured-article {
   .btn {
     width: 80%;
+  }
+
+  .learn-more {
+    margin: 15px 0 0;
   }
 }
 
@@ -288,7 +298,7 @@ vc-labeled-input:last-child {
   text-align: center;
 
   .cvp-point + .cvp-point {
-    border-left: 1px solid $grayColor;
+    border-left: 1px solid $gray;
   }
 
   .cvp-t {
@@ -308,7 +318,7 @@ vc-labeled-input:last-child {
 .popular-categories {
   ul,
   li {
-    border-color: $grayColor;
+    border-color: $gray;
     border-style: solid;
   }
 
@@ -354,7 +364,7 @@ vc-labeled-input:last-child {
   }
 
   .list-inner {
-    border-color: $grayColor;
+    border-color: $gray;
     border-style: solid;
     border-width: 1px 1px 4px;
     padding: 15px 10px;
@@ -393,6 +403,8 @@ vc-labeled-input:last-child {
 .list-filters {
   margin: 5px 0;
 
+  @include list-unstyled;
+
   .list-item + .list-item {
     margin: 5px 0 0;
   }
@@ -411,7 +423,7 @@ vc-labeled-input:last-child {
   }
 
   .list-item + .list-item {
-    border-top: 1px solid $grayColor;
+    border-top: 1px solid $gray;
   }
 
   [class*="col-md-"] {
@@ -427,7 +439,7 @@ vc-labeled-input:last-child {
   }
 
   .list-brand {
-    color: $graySecondaryColor;
+    color: $gray-dark;
   }
 
   .list-name {
@@ -448,7 +460,7 @@ vc-labeled-input:last-child {
   }
 
   .list-cart {
-    border-color: $grayColor;
+    border-color: $gray;
     border-style: solid;
     border-width: 1px 1px 3px;
     font-size: 12px;
@@ -467,7 +479,7 @@ vc-labeled-input:last-child {
     }
 
     .ship-pickup {
-      border-bottom: 1px solid $grayColor;
+      border-bottom: 1px solid $gray;
       margin: 10px 0;
       padding: 10px 0 5px;
 
@@ -492,7 +504,7 @@ vc-labeled-input:last-child {
       }
 
       .dropdown-foot {
-        background: $grayLightColor;
+        background: $gray-lighter;
         text-align: right;
         padding: 10px;
 
@@ -506,7 +518,7 @@ vc-labeled-input:last-child {
 
 /* Tech spec */
 .tech-spec {
-  background: $grayLightColor;
+  background: $gray-lighter;
   margin: 20px 0;
 
   h2 {
@@ -518,7 +530,7 @@ vc-labeled-input:last-child {
   }
 
   li {
-    border-top: 1px solid $grayColor;
+    border-top: 1px solid $gray;
     color: #666;
     font-size: 12px;
     overflow: hidden;
@@ -537,6 +549,8 @@ vc-labeled-input:last-child {
 
 /* Search items */
 .search-terms {
+  @include list-unstyled;
+
   .list-item {
     border: 1px solid $link-color;
     border-radius: 5px;
@@ -571,8 +585,8 @@ vc-labeled-input:last-child {
   margin: 50px 0 0;
 
   .table-controls {
-    border-bottom: 1px solid $grayColor;
-    border-top: 1px solid $grayColor;
+    border-bottom: 1px solid $gray;
+    border-top: 1px solid $gray;
     padding: 10px 0;
   }
 
@@ -586,7 +600,7 @@ vc-labeled-input:last-child {
   }
 
   .product-controls {
-    border-left: 1px solid $grayColor;
+    border-left: 1px solid $gray;
     margin: 0 0 0 15px;
     padding: 0 0 0 15px;
 
@@ -600,7 +614,7 @@ vc-labeled-input:last-child {
   }
 
   .table-row {
-    border-bottom: 1px solid $grayColor;
+    border-bottom: 1px solid $gray;
     padding: 10px 0;
 
     [class*="col-md"] {
@@ -616,12 +630,12 @@ vc-labeled-input:last-child {
 
   .table-head {
     .table-row {
-      background: $grayLightColor;
+      background: $gray-lighter;
     }
   }
 
   .table-pic {
-    border: 1px solid $grayColor;
+    border: 1px solid $gray;
     margin: 0 0 10px;
     max-width: 80px;
   }
@@ -712,7 +726,7 @@ vc-labeled-input:last-child {
     }
 
     .list-pic {
-      border: 1px solid $grayColor;
+      border: 1px solid $gray;
       max-width: 50px;
     }
 
@@ -724,7 +738,7 @@ vc-labeled-input:last-child {
     }
 
     .placeholder {
-      background: $grayLightColor;
+      background: $gray-lighter;
       border: 1px solid #ccc;
       height: 50px;
       width: 50px;

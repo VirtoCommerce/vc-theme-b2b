@@ -1,20 +1,21 @@
+﻿//== Forms
+$input-font-family: "Roboto Condensed";
+
+//== Buttons
+$btn-font-family: "Roboto Condensed";
+$btn-disabled-bg: $gray-lighter;
+$btn-disabled-border: $gray;
+$btn-disabled-color: #ccc;
+
 /* ---- Base ---- */
 $redColor: #bb0d02;
-$grayColor: #d8d8d8;
-$graySecondaryColor: #abb0b6;
-$grayLightColor: #eee;
-$grayLightSecondaryColor: #f2f2f2;
-
-/* ---- Buttons ---- */
-$btnAltBgOver: #4c5c6a;
-$btnAltBrdOver: #4c5c6a;
 
 /* ---- Header ---- */
 $headerBg: #151b1e;
 
 /* ---- Aside ---- */
 $asidePadding: 15px;
-$asideBrdColor: $grayColor;
+$asideBrdColor: $gray;
 $asideAccentBrdColor: $headerBg;
 $asideMargin: 10px;
 

@@ -1,70 +1,34 @@
-/* Forms */
-input,
-button {
-  font-family: "Roboto Condensed";
+﻿//== Grid
+//
+//##
+
+.row.flexible {
+  display: flex;
 }
 
-/* Buttons */
-.btn {
-  font-weight: 700;
-  line-height: 16px;
-  padding: 10px 18px;
-  text-transform: uppercase;
+.row.center {
+  text-align: center;
+
+  > *[class*="col-"] {
+    float: none;
+    display: inline-block;
+    text-align: initial;
+    vertical-align: top;
+  }
 }
 
-.btn.btn-alt {
-  background: none;
-  border-color: $headerBg;
-  border-width: 2px;
-  color: $headerBg;
+.row.vertical-divider > *[class*="col-"] {
+  border-left: 1px solid $gray;
 }
 
-.btn.btn-alt:hover {
-  background: $btnAltBgOver;
-  border-color: $btnAltBrdOver;
-  color: #fff;
+.row.vertical-divider > *[class*="col-"]:first-child {
+  border-left: none;
 }
 
-.btn.btn-default:hover {
-  background: $btnAltBgOver;
-  border-color: $btnAltBrdOver;
-}
+//== Headings
+//
+//##
 
-.btn.btn-primary.btn-alt {
-  border-color: #be2122;
-  color: #be2122;
-}
-
-.btn.btn-primary.btn-alt:hover {
-  background: #be2122;
-  border-color: #be2122;
-  color: #fff;
-}
-
-.btn.btn-lg {
-  padding: 14px 35px;
-}
-
-.btn.disabled,
-.btn.disabled:focus,
-.btn.disabled:hover,
-.btn.btn-alt.disabled,
-.btn.btn-alt.disabled:focus,
-.btn.btn-alt.disabled:hover {}
-
-.btn[disabled],
-.btn[disabled]:focus,
-.btn[disabled]:hover,
-.btn.btn-alt[disabled],
-.btn.btn-alt[disabled]:focus,
-.btn.btn-alt[disabled]:hover {
-  background-color: $grayLightSecondaryColor;
-  border: 2px solid $grayColor;
-  color: #ccc;
-  cursor: default;
-}
-
-/* Headings */
 h1,
 h2,
 h3,
@@ -73,12 +37,11 @@ h4 {
 }
 
 h1 {
-  font-size: 34px;
   font-weight: 300;
   text-transform: none;
 }
 
-h1 + p {
+/*h1 + p {
   color: #29333b;
   font-family: "Roboto Condensed";
   font-size: 16px;
@@ -91,9 +54,51 @@ h1 a {
   font-family: Arial;
   font-size: 12px;
   margin: 10px 0 0;
+}*/
+
+//== Forms
+//
+//##
+
+input,
+button {
+  font-family: $input-font-family;
 }
 
-/* Images */
+//== Buttons
+//
+//##
+
+.btn {
+  border-width: 2px;
+  font-family: $btn-font-family;
+  line-height: 16px;
+  padding: 10px 18px;
+  text-transform: uppercase;
+
+  @include button-variant-disabled;
+}
+
+.btn-default {
+  @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border, 'lighten', 2);
+}
+
+.btn-alt {
+  @include button-variant-alt($btn-default-color, $btn-default-bg, $btn-default-border, 'lighten', 2);
+}
+
+.btn-primary.btn-alt {
+  @include button-variant-alt($btn-primary-color, $btn-primary-bg, $btn-primary-border, 'darken');
+}
+
+.btn.btn-lg {
+  padding: 14px 35px;
+}
+
+//== Images
+//
+//##
+
 img {
   max-width: 100%;
 }
@@ -102,23 +107,21 @@ img {
   max-width: 100%;
 }
 
-/* Lists */
-ol,
-ul {
-  margin: 0;
-}
-
-ol:not(.list-styled),
-ul:not(.list-styled) {
-  list-style: none;
-  padding: 0;
-}
+//== Lists
+//
+//##
 
 ul.inline {
   li {
     display: inline-block;
     margin: 0 10px 0 0;
   }
+}
+
+.row:last-child > *[class*="col-"] > dl,
+.row:last-child > dl[class*="col-"]
+{
+  margin-bottom: 0;
 }
 
 dd *:only-child {
@@ -149,12 +152,12 @@ dd *:only-child {
 }
 
 hr {
-  border-top: 3px solid $grayColor;
+  border-top: 3px solid $gray;
   margin: 17px 0 20px;
 }
 
 .count {
-  color: $graySecondaryColor;
+  color: $gray-dark;
 }
 
 .list-price {
@@ -184,13 +187,13 @@ hr {
 }
 
 .feedback {
-  border-top: 1px solid $grayColor;
+  border-top: 1px solid $gray;
   font-size: 12px;
   margin: 0 0 10px;
   padding: 10px 0;
 
   .fa {
-    color: $graySecondaryColor;
+    color: $gray-dark;
     font-size: 16px;
     margin: 0 5px 0 0;
   }
@@ -225,10 +228,18 @@ hr {
 
   .top-links {
     float: left;
+
+    ul {
+      @include list-unstyled;
+    }
   }
 
   .top-auth {
     float: right;
+
+    ul {
+      @include list-unstyled;
+    }
   }
 
   ul li {
@@ -245,7 +256,7 @@ hr {
   }
 
   ul li + li::before {
-    color: $grayColor;
+    color: $gray;
     content: "|";
     float: left;
     margin: 0 6px;
@@ -295,6 +306,10 @@ hr {
     flex-grow: 1;
     flex-direction: column;
 
+    ul {
+      @include list-unstyled;
+    }
+
     li {
       float: left;
       padding: 0 10px;
@@ -326,7 +341,7 @@ hr {
       margin: 0 0 5px;
 
       a {
-        color: $graySecondaryColor;
+        color: $gray-dark;
         font-size: 12px;
       }
     }
@@ -335,6 +350,10 @@ hr {
   .header-links-mobile,
   .header-search-mobile {
     display: none;
+
+    ul {
+      @include list-unstyled;
+    }
   }
 }
 
@@ -384,7 +403,7 @@ hr {
       }
 
       a:hover {
-        background: $grayLightSecondaryColor;
+        background: $gray-lighter;
       }
     }
 
@@ -397,6 +416,10 @@ hr {
         font-size: 18px;
       }
 
+      ul {
+        @include list-unstyled;
+      }
+
       li {
         float: left;
       }
@@ -406,13 +429,19 @@ hr {
       }
     }
 
-    .dropdown-body ul + ul {
-      border-left: 1px solid #ccc;
+    .dropdown-body {
+      ul {
+        list-style: none;
+      }
+
+      ul + ul {
+        border-left: 1px solid #ccc;
+      }
     }
   }
 
   .navbar-all.open {
-    background: $grayLightColor;
+    background: $gray-light;
 
     a {
       color: #292929;
@@ -454,6 +483,10 @@ hr {
   }
 
   .navbar-links {
+    ul {
+      @include list-unstyled;
+    }
+
     ul,
     li {
       display: flex;
@@ -475,7 +508,7 @@ hr {
 
     .dropdown.open {
       > a {
-        background: $grayLightColor;
+        background: $gray-light;
         color: #292929;
       }
 
@@ -489,7 +522,7 @@ hr {
     }
 
     .dropdown-head {
-      background: $grayLightColor;
+      background: $gray-light;
       font-family: "Roboto Condensed";
       font-weight: 700;
       margin: (-5px) 0;
@@ -532,7 +565,7 @@ hr {
 }
 
 .section {
-  margin: 0 0 20px;
+  margin: 10px 0;
 }
 
 .carousel-caption {
@@ -542,7 +575,7 @@ hr {
 }
 
 .toolbar {
-  border-bottom: 1px solid $graySecondaryColor;
+  border-bottom: 1px solid $gray-dark;
   margin: 0 0 15px;
   padding: 0 0 5px;
 
@@ -551,7 +584,7 @@ hr {
   }
 
   .toolbar-actions {
-    color: $graySecondaryColor;
+    color: $gray-dark;
     font-family: "Roboto Condensed";
     font-weight: 300;
     margin: 15px 0 0;
@@ -568,7 +601,7 @@ hr {
     }
 
     a {
-      color: $graySecondaryColor;
+      color: $gray-dark;
     }
   }
 }
@@ -587,7 +620,7 @@ hr {
 }
 
 .breadcrumb .fa {
-  color: $graySecondaryColor;
+  color: $gray-dark;
   cursor: pointer;
   font-size: 11px;
   margin: 0 0 0 6px;
@@ -605,7 +638,7 @@ hr {
 }
 
 .panel-default > .panel-heading {
-  background: $grayLightSecondaryColor;
+  background: $gray-lighter;
   margin: 0 0 2px;
   position: relative;
   padding: 0;
@@ -655,7 +688,7 @@ hr {
 }
 
 .panel-collapse {
-  border: 1px solid $grayLightColor;
+  border: 1px solid $gray-light;
   margin: (-2px) 0 0;
 }
 
@@ -688,7 +721,7 @@ hr {
 }
 
 .search-sort {
-  border-color: $grayColor;
+  border-color: $gray;
   border-style: solid;
   border-width: 1px 0;
   margin: 0 0 -1px;
@@ -706,7 +739,7 @@ hr {
 }
 
 .search-controls {
-  border-color: $grayColor;
+  border-color: $gray;
   border-style: solid;
   border-width: 1px 0;
   padding: 10px 0;
@@ -736,13 +769,13 @@ hr {
 /* Product page */
 .product-page {
   .product-content {
-    border-right: 1px solid $grayColor;
+    border-right: 1px solid $gray;
     float: left;
     padding: 0 20px 0 0;
     width: 84%;
 
     .product-sku li {
-      color: $graySecondaryColor;
+      color: $gray-dark;
       display: inline-block;
       font-size: 12px;
       margin: 0 10px 0 0;
@@ -765,7 +798,7 @@ hr {
       padding: 10px 10px 0;
 
       .product-price {
-        border-color: $grayColor;
+        border-color: $gray;
         border-style: solid;
         border-width: 1px 0;
         padding: 10px 0;
@@ -801,7 +834,7 @@ hr {
       }
 
       .product-review {
-        border-bottom: 1px solid $grayColor;
+        border-bottom: 1px solid $gray;
         padding: 10px 0;
 
         .product-rating,
@@ -848,7 +881,7 @@ hr {
     }
 
     .list-item + .list-item {
-      border-top: 1px solid $grayColor;
+      border-top: 1px solid $gray;
     }
 
     .list-img {
@@ -881,7 +914,7 @@ hr {
   }
 
   [class*="col-md-"]:first-child {
-    border-right: 1px solid $grayColor;
+    border-right: 1px solid $gray;
   }
 
   ul {
@@ -897,7 +930,7 @@ hr {
   }
 
   .cart-item {
-    border-bottom: 1px solid $grayColor;
+    border-bottom: 1px solid $gray;
     margin-bottom: 15px;
     padding-bottom: 15px;
     overflow: hidden;
@@ -919,7 +952,7 @@ hr {
 
   .cart-qty,
   .cart-total {
-    color: $graySecondaryColor;
+    color: $gray-dark;
     font-family: "Roboto Condensed";
     font-size: 12px;
     padding: 0 0 0 10px;
@@ -968,24 +1001,23 @@ hr {
 
 /* Footer */
 .footer {
-  border-top: 3px solid $grayColor;
+  border-top: 3px solid $gray;
   padding: 20px 0 0;
 
-  .footer-col {
-    box-sizing: border-box;
-    float: left;
-    padding: 0 10px;
-    width: 20%;
+  .footer-line:nth-child(2) {
+    border-top: 3px solid $gray;
+    margin-top: 15px;
+    padding: 15px 0 0;
+  }
+
+  .footer-links {
+    ul {
+      @include list-unstyled;
+    }
 
     a {
       color: #29333b;
     }
-  }
-
-  .footer-line:nth-child(2) {
-    border-top: 3px solid $grayColor;
-    margin-top: 15px;
-    padding: 15px 0 0;
   }
 
   .footer-legal {
@@ -1020,10 +1052,6 @@ hr {
 }
 
 .styleguide {
-  h3 {
-    color: #999;
-    font-size: 14px;
-  }
 
   .color-block {
     color: inherit;
@@ -1042,7 +1070,7 @@ hr {
   }
 
   .gray {
-    background: $grayColor;
+    background: $gray;
   }
 
   .link {
@@ -1066,11 +1094,11 @@ hr {
   }
 
   .gray-secondary {
-    background: $graySecondaryColor;
+    background: $gray-dark;
     color: #fff;
   }
 
   .gray-light {
-    background: $grayLightColor;
+    background: $gray-light;
   }
 }

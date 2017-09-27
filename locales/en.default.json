@@ -1,4 +1,4 @@
-{
+﻿{
     "tags": {
         "price": {
             "label": "Price"
@@ -163,6 +163,9 @@
         }
     },
     "blogs": {
+        "featured": {
+            "learn_more": "Learn more"
+        },
         "article": {
             "author_on_date_html": "Posted by {{ author }} on {{ date }}",
             "older_post": "Older Post",
@@ -190,7 +193,12 @@
         "sidebar": {
             "recent_articles": "Recent Articles",
             "categories": "Categories"
-        }
+        },
+        "newsletter": {
+            "message": "Your connection to what's new at {{ shop.name }}. <br><strong>Sign Up Now!</strong>",
+            "sign_up": "Sign Up",
+            "email_placeholder": "Email Address"
+        } 
     },
     "cart": {
         "general": {
@@ -681,9 +689,15 @@
             "quick_links": "Quick Links",
             "get_in_touch": "Get In Touch",
             "store_on_social_network": "{{ store_name }} on {{ social_network }}",
-            "newsletter_title": "Newsletter",
-            "newsletter_sign_up": "Sign Up",
-            "newsletter_email_placeholder": "Email Address"
+            "company_information": "Company information",
+            "customer_support": "Customer support",
+            "order_support": "Customer support",
+            "resources": "Online resources",
+            "services": "Services",
+            "mobile_apps_title": "Check it out! We're mobile!",
+            "mobile_apps_message": "<strong>Anytime. Anywhere.</strong> <br>{{ store.name }} helps you get it done.",
+            "newsletter_title": "Let's Stick Together",
+            "call_us": "Questions? Call us<br>"
         }
     },
     "products": {

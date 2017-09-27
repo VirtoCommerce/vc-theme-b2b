@@ -1,0 +1,75 @@
+﻿<!-- TODO: Icons! -->
+<ul class="inline-list social-icons">
+    {% if settings.social_google_plus_link != blank %}
+        <li>
+            <a class="icon-fallback-text" href="{{ settings.social_google_plus_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Google' | escape }}">
+                <span class="icon icon-google" aria-hidden="true"></span>
+                <span class="fallback-text">Google</span>
+            </a>
+        </li>
+    {% endif %}
+    {% if settings.social_facebook_link != blank %}
+        <li>
+            <a class="icon-fallback-text" href="{{ settings.social_facebook_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Facebook' | escape }}">
+                <span class="icon icon-facebook" aria-hidden="true"></span>
+                <span class="fallback-text">Facebook</span>
+            </a>
+        </li>
+    {% endif %}
+    {% if settings.social_twitter_link != blank %}
+        <li>
+            <a class="icon-fallback-text" href="{{ settings.social_twitter_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Twitter' | escape }}">
+                <span class="icon icon-twitter" aria-hidden="true"></span>
+                <span class="fallback-text">Twitter</span>
+            </a>
+        </li>
+    {% endif %}
+    {% if settings.social_instagram_link != blank %}
+        <li>
+            <a class="icon-fallback-text" href="{{ settings.social_instagram_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Instagram' | escape }}">
+                <span class="icon icon-instagram" aria-hidden="true"></span>
+                <span class="fallback-text">Instagram</span>
+            </a>
+        </li>
+    {% endif %}
+    {% if settings.social_youtube_link != blank %}
+        <li>
+            <a class="icon-fallback-text" href="{{ settings.social_youtube_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'YouTube' | escape }}">
+                <span class="icon icon-youtube" aria-hidden="true"></span>
+                <span class="fallback-text">YouTube</span>
+            </a>
+        </li>
+    {% endif %}
+    {% if settings.social_vimeo_link != blank %}
+        <li>
+            <a class="icon-fallback-text" href="{{ settings.social_vimeo_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Vimeo' | escape }}">
+                <span class="icon icon-vimeo" aria-hidden="true"></span>
+                <span class="fallback-text">Vimeo</span>
+            </a>
+        </li>
+    {% endif %}
+    {% if settings.social_tumblr_link != blank %}
+        <li>
+            <a class="icon-fallback-text" href="{{ settings.social_tumblr_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Tumblr' | escape }}">
+                <span class="icon icon-tumblr" aria-hidden="true"></span>
+                <span class="fallback-text">Tumblr</span>
+            </a>
+        </li>
+    {% endif %}
+    {% if settings.social_pinterest_link != blank %}
+        <li>
+            <a class="icon-fallback-text" href="{{ settings.social_pinterest_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Pinterest' | escape }}">
+                <span class="icon icon-pinterest" aria-hidden="true"></span>
+                <span class="fallback-text">Pinterest</span>
+            </a>
+        </li>
+    {% endif %}
+    {% if settings.social_fancy_link != blank %}
+        <li>
+            <a class="icon-fallback-text" href="{{ settings.social_fancy_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Fancy' | escape }}">
+                <span class="icon icon-fancy" aria-hidden="true"></span>
+                <span class="fallback-text">Fancy</span>
+            </a>
+        </li>
+    {% endif %}
+</ul>

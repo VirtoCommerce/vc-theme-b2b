@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html ng-app="storefrontApp">
     <head>
         <meta charset="utf-8" />
@@ -40,12 +40,22 @@
                     {% include 'main/nav' %}
                 </div>
             </nav>
-            <article class="container main" role="main">
+            <main class="container main" role="main">
                 {{ content_for_layout }}
-            </article>
+            </main>
         </div>
         {% include 'scripts' %}
-    </body>
+        <footer class="footer">
+            <div class="container footer-inner">
+                {% include 'main/footer' %}
+            </div>
+            <div class="footer-legal">
+                <div class="container">
+                    {% include 'main/footer-legal' %}
+                </div>
+            </div>
+        </footer>
+</body>
 
     {% comment %}
         <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" ng-controller="mainController" ng-init="baseUrl='{{ '/' | absolute_url }}'">

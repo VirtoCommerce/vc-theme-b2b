@@ -1,11 +1,11 @@
-<div class="dropdown navbar-all" uib-dropdown auto-close="mouseleave"aria-haspopup="true">
+﻿<div class="dropdown navbar-all" uib-dropdown auto-close="mouseleave"aria-haspopup="true">
     <a id="all-products-dropdown" href="#" uib-dropdown-toggle toggle-on-mouse-enter>
         {{ 'layout.products.products' | t }} <i class="dropdown-ico fa fa-angle-down"></i>
     </a>
     <div class="dropdown-menu" role="menu" aria-labelledby="all-products-dropdown">
         <div class="dropdown-head clearfix">
             <ul>
-                {% for link in linklists.all-products-menu.links %}
+                {% for link in linklists[settings.nav_allproducts_linklist].links %}
                     <li>
                         <a href="{{ link.url }}">
                             {%- if link.icon != blank -%}

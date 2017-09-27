@@ -1,0 +1,69 @@
+﻿{% include 'main/footer-links' %}
+<div class="row center footer-line">
+    {% if settings.footer_mobile_apps_enable %}
+        <div class="col-md-3 col-md-offset-{{ column_offset }}">
+            <h4>
+                <a href="#">{{ 'layout.footer.mobile_apps_title' | t }}</a>
+            </h4>
+            <p>{{ 'layout.footer.mobile_apps_message' | t }}</p>
+            <!-- TODO: Modile app icons -->
+        </div>
+    {% endif %}
+    {% if settings.footer_newsletter_enable %}
+        <div class="col-md-3 col-md-offset-{{ column_offset }}">
+            <h4>{{ 'layout.footer.newsletter_title' | t }}</h4>
+            <p>{{ 'blogs.newsletter.message' | t }}</p>
+            <!-- Show popup? -->
+            <a href="#" class="btn btn-primary btn-block">{{ 'blogs.newsletter.sign_up' | t }}</a>
+        </div>
+    {% endif %}
+    {% if settings.footer_social_enable %}
+        <div class="col-md-3 col-md-offset-{{ column_offset }}">
+            {% include 'social/links' %}
+        </div>
+    {% endif %}
+    {% if settings.footer_support_number_enable %}
+        <div class="col-md-3 col-md-offset-{{ column_offset }}">
+            <p>{{ 'layout.footer.call_us' | t | append: settings.support_number }}</p>
+        </div>
+    {% endif %}
+</div>
+
+
+{% comment %}
+<footer class="site-footer small--text-center" role="contentinfo">
+
+  <div class="wrapper">
+
+    <div class="grid">
+
+      {% if settings.footer_quicklinks_enable %}
+        <div class="grid-item medium--one-half large--three-twelfths">
+          <h3>{{ 'layout.footer.quick_links' | t }}</h3>
+          <ul>
+            {% for link in linklists[settings.footer_quicklinks_linklist].links %}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% else %}
+              {% capture theme_settings_footer_linklist_path %}<strong>Footer</strong> > <strong>Quick links link list</strong>{% endcapture %}
+              {{ 'layout.footer.instructions_for_linklist_html' | t: theme_settings_link: theme_settings_link, theme_settings_footer_linklist_path: theme_settings_footer_linklist_path }}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if settings.footer_content_enable %}
+      <div class="grid-item medium--one-half large--five-twelfths">
+        <h3>{{ 'layout.footer.get_in_touch' | t }}</h3>
+        <p>
+            {{ settings.footer_content_text }}       
+        </p>
+                 
+      </div>
+      {% endif %}
+
+    </div>
+
+  </div>
+
+</footer>
+{% endcomment %}

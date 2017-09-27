@@ -7,6 +7,7 @@
             "bower_components/angularjs/angular.js",
             "bower_components/angular-resource/angular-resource.js",
             "bower_components/ngstorage/ngStorage.js",
+            "bower_components/angular-animate/angular-animate.js",
             "bower_components/angular-bootstrap/ui-bootstrap.js",
             "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
             "bower_components/angular-sanitize/angular-sanitize.js",
@@ -20,6 +21,12 @@
         "outputFileName": "assets/static/fonts",
         "inputFiles": [
             "bower_components/font-awesome/fonts/**"
+        ]
+    },
+    {
+        "outputFileName": "assets/static/fonts/bootstrap",
+        "inputFiles": [
+            "bower_components/bootstrap-sass/assets/fonts/bootstrap/**"
         ]
     },
     {

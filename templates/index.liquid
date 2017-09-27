@@ -1,21 +1,7 @@
-<div class="sidebar col-md-4">
+﻿<div class="sidebar col-md-4">
     <aside class="aside-box" ng-if="customer && customer.isRegisteredUser">
 		<div class="aside-t">{% raw %}{{ customer.firstName }} {{ customer.lastName }}{% endraw %}</div>
-		<p>{{ 'layout.customer.account' | t }} <strong>{% raw %}{{ customer.userName }}{% endraw %}</strong></p>
-		<ul class="account-links">
-			<li>
-				<a href="account#/orders">{{ 'customer.orders.title' | t }}</a>
-			</li>
-			<li>
-				<a href="account#/">{{ 'customer.invoices.title' | t }}</a>
-			</li>
-			<li>
-				<a href="#">{{ 'customer.lists.title' | t }}</a>
-			</li>
-		</ul>
-		<div class="aside-actions">
-			<a href="{{ 'account' | absolute_url }}">{{ 'layout.customer.view_account' | t }}</a>
-		</div>
+        {% include 'customers/badge' %}
 	</aside>
     <aside class="aside-box" ng-if="customer && !customer.isRegisteredUser">
         <div class="aside-t">{{ 'customer.sign-in.title' | t }}</div>
@@ -23,6 +9,21 @@
             {% include 'customers/login-form' %}
         </div>
     </aside>
+    {% include 'index/featured-article' %}
+    {% if settings.footer_newsletter_enable %}
+        <aside class="aside-box email-offers">
+            {% include 'shared/newsletter-form' %}
+        </aside>
+    {% endif %}
+    <!-- TODO: Products you have recently viewed -->
+</div>
+<div class="content col-md-8">
+    <section class="section">
+        <vc-content-place id="HomePageSlider"></vc-content-place>
+    </section>
+    <section class="section">
+        <vc-content-place id="BenefitsBanner"></vc-content-place>
+    </section>
 </div>
 
 {% comment %}
