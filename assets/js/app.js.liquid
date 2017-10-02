@@ -1,4 +1,4 @@
-var storefrontAppDependencies = [
+﻿var storefrontAppDependencies = [
     'ngStorage',
     'pascalprecht.translate',
     'ngSanitize',
@@ -37,7 +37,8 @@ storefrontApp.factory('httpErrorInterceptor', ['$q', '$rootScope', function ($q,
     return httpErrorInterceptor;
 }])
 
-storefrontApp.config(['$httpProvider', '$translateProvider', function ($httpProvider, $translateProvider) {
+storefrontApp.config(['$locationProvider', '$httpProvider', '$translateProvider', function ($locationProvider, $httpProvider, $translateProvider) {
+    $locationProvider.html5Mode({ enabled: true, rewriteLinks: false });
     $httpProvider.interceptors.push('httpErrorInterceptor');
 
     $translateProvider.useSanitizeValueStrategy('sanitizeParameters');

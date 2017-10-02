@@ -1,0 +1,9 @@
+﻿{% comment %}
+  Change product per page in collection with the 'page_size' query parameter.
+{% endcomment %}
+<div class="search-t">{{ 'collections.general.products_per_page' | t }}</div>
+<ul class="pagination" ng-init="$ctrl.generatePageSizes({{ settings.product_list_capacity }}, {{ settings.product_list_capacity_steps }})">
+	<li ng-repeat="pageSize in $ctrl.pageSizes" ng-class="{'active': $ctrl.pageSize == pageSize}">
+        <a href="" ng-bind="pageSize" ng-click="$ctrl.setSearchParam('page_size', pageSize)"></a>
+    </li>
+</ul>

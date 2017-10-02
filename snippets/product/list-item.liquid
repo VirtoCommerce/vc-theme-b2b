@@ -1,3 +1,91 @@
+﻿{% unless current_collection %}
+    {% assign current_collection = collection %}
+{% endunless %}
+
+<!-- TODO: Badges -->
+
+<div class="list-item clearfix">
+    {% assign product_url = product.url | within: current_collection %}
+    <div class="list-img col-md-3">
+        <a href="{{ product_url }}">
+            {% if product.featured_image %}
+                <img ng-src="{{ product.featured_image.src | img_url: "168x168" }}" fallback-src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
+            {% else %}
+                <img src="{{ 'no-image.svg' | asset_url }}" class="no-image" />
+            {% endif %}
+        </a>
+        <!-- TODO: Compare -->
+        <!--<div class="list-compare">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox">
+                    <span class="switch"></span>
+                    <span class="name">Compare</span>
+                </label>
+            </div>
+        </div>-->
+    </div>
+    <div class="list-info col-md-4">
+        <div class="list-brand">{{ product.metafields.properties['Brand'] }}</div>
+        <a class="list-name" href="{{ product_url }}">
+            {{ product.title }}
+        </a>
+        <div class="list-sku">
+            {{ 'products.product.sku' | t }}&nbsp;<a href="{{ product_url }}">{{ product.selected_variant.sku }}</a>
+        </div>
+        <div class="list-model">
+            {{ 'products.product.mmn' | t }}&nbsp;{{ product.metafields.properties['MMN'] }}
+        </div>
+        <div class="list-descr" ng-init="isDescriptionTruncated['{{ product.id }}'] = true">
+            {% for description in product.descriptions %}
+                {% if description.type == 'QuickReview' %}
+                    {% assign quick_review = description.content %}
+                    {% break %}
+                {% endif %}
+            {% endfor %}
+            <div ng-if="isDescriptionTruncated['{{ product.id }}']">{{ quick_review | strip_html | truncatewords: 30 }}</div><a href="" ng-show="isDescriptionTruncated['{{ product.id }}']" ng-click="isDescriptionTruncated['{{ product.id }}'] = false">{{ 'common.more' | t }}</a>
+            <div ng-if="!isDescriptionTruncated['{{ product.id }}']">{{ quick_review }}</div>
+        </div>
+    </div>
+    <div class="list-other col-md-5">
+        <div class="list-price col-md-4">
+            <div class="price-label">Web Price</div>
+            <div class="price-value">$357.00</div>
+            <div class="price-unit">/ each</div>
+        </div>
+        <div class="col-md-8">
+            <div class="list-cart">
+                <label>Qty:</label>
+                <div class="form-group group-flex">
+                    <input type="text" class="form-control qty">
+                    <button class="btn btn-alt btn-primary">Add to cart</button>
+                </div>
+                <a class="add-to-list" href="#"><i class="fa fa-plus"></i> Add to list</a>
+                <div class="ship-pickup dropdown">
+                    <a class="dropdown" id="pickup" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Ship or Pickup
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="pickup">
+                        <div class="dropdown-head">
+                            <p>Confirm ZIP Code to determine availability.</p>
+                        </div>
+                        <div class="dropdown-body">
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="dropdown-foot">
+                            <a href="#">Cancel</a>
+                            <a class="btn btn-default" href="#">Save</a>
+                        </div>
+                    </div>
+                </div>
+                <p>Catalog Page # NA </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% comment %}
 {% unless current_collection %}
     {% assign current_collection = collection %}
 {% endunless %}
@@ -89,3 +177,4 @@
         </div>
     </a>
 </div>
+{% endcomment %}

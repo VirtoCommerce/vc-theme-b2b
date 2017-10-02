@@ -1,4 +1,4 @@
-{%- unless template == 'index' or template == 'cart' -%}
+﻿{%- unless template == 'index' or template == 'cart' -%}
     <ol class="breadcrumb pull-left" role="navigation" aria-label="breadcrumbs">
         <li>
             <a href="{{ "/" | absolute_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
@@ -71,7 +71,7 @@
                 <li>{{ blog.title | link_to: blog_url }}</li>
                 <li class="active">{{ current_tags | join: "&nbsp;+&nbsp;" }}</li>
             {%- else -%}
-            <li class="active">{{ blog.title }}</li>
+                <li class="active">{{ blog.title }}</li>
             {%- endif -%}
         {%- elsif template == 'article' -%}
             {%- assign blog_url = blog.url | absolute_url -%}

@@ -321,7 +321,7 @@ $dropdown-border: #d8d8d8;
 //## Define your custom responsive grid.
 
 //** Number of columns in the grid.
-// $grid-columns:              12
+   $grid-columns:              12;
 //** Padding between columns. Gets divided in half for the left and right.
 // $grid-gutter-width:         30px
 // Navbar collapse
@@ -340,12 +340,12 @@ $dropdown-border: #d8d8d8;
 // $container-sm:                 $container-tablet
 
 // Medium screen / desktop
-// $container-desktop:            (940px + $grid-gutter-width)
+   $container-desktop:            floor(1024px / $grid-columns) * $grid-columns; // (940px + $grid-gutter-width)
 //** For `$screen-md-min` and up.
 // $container-md:                 $container-desktop
 
 // Large screen / wide desktop
-// $container-large-desktop:      (1140px + $grid-gutter-width)
+   $container-large-desktop:      floor(1366px / $grid-columns) * $grid-columns; // (1140px + $grid-gutter-width)
 //** For `$screen-lg-min` and up.
 // $container-lg:                 $container-large-desktop
 
@@ -416,7 +416,7 @@ $navbar-default-border: #4c5c6a;
 
 //=== Shared nav styles
 // $nav-link-padding:                          10px 15px
-   $nav-link-hover-bg:                         $gray-darker; // $gray-light
+   $nav-link-hover-bg:                         $gray-light; // $gray-light
 
    $nav-disabled-link-color:                   $gray-darker; // $gray-light
    $nav-disabled-link-hover-color:             $gray-darker; // $gray-light
@@ -447,7 +447,7 @@ $navbar-default-border: #4c5c6a;
 // $pagination-border:                    #ddd
 
 // $pagination-hover-color:               $link-hover-color
-   $pagination-hover-bg:                  $gray-darker; // $gray-light
+   $pagination-hover-bg:                  $gray-light; // $gray-light
 // $pagination-hover-border:              #ddd
 
 // $pagination-active-color:              #fff

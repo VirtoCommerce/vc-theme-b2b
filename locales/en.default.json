@@ -17,6 +17,7 @@
     "common": {
         "required": "Required",
         "invalid": "Invalid",
+        "more": "More", 
         "not_match": "Confirm password does not match the password"
     },
     "checkout": {
@@ -297,6 +298,11 @@
     },
     "collections": {
         "general": {
+            "about_category": "About this category",
+            "products_count": "{{ all_results_count }} results found. {{ displayed_results_count }} displayed that include {{ products_count }} products.",
+            "grid_view": "Grid",
+            "list_view": "List",
+            "products_per_page": "Results per page:",
             "no_matches": "Sorry, there are no products matching your search.",
             "link_title": "Browse our {{ title }} collection",
             "items_with_count": {
@@ -314,7 +320,7 @@
             "no_tags": "Add tags to your products for this list to build itself."
         },
         "sorting": {
-            "title": "Sort by",
+            "title": "Sort results by:",
             "featured": "Featured",
             "best_selling": "Best Selling",
             "az": "Alphabetically, A-Z",
@@ -647,13 +653,16 @@
         }
     },
     "layout": {
+        "general": {
+            "close": "Close"
+        }, 
         "header": {
             "newsletter": "Sign up for email",
             "feedback": "Feedback",
             "help": "Help"
         },
         "products": {
-            "products":  "All products" 
+            "products": "All products"
         },
         "cart": {
             "cart": "Cart"
@@ -707,13 +716,14 @@
             "share_on_pinterest": "Pin it",
             "share_on_fancy": "Fancy",
             "related_products": "We Also Recommend",
-            "save_html": "Save {{ saved_amount }}",
             "add_to_cart": "Add to cart",
             "add_to_quote": "Add to quote"
         },
         "product": {
             "sold_out": "Sold Out",
             "unavailable": "Unavailable",
+            "sku": "Item #",
+            "mmn": "Mfr. model #",
             "only_left": "Only {{ count }} left!",
             "quantity": "Quantity",
             "add_to_cart": "Add to Cart",

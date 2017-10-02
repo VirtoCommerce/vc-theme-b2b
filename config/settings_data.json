@@ -35,6 +35,9 @@
             "support_number": "<strong>1-800-555-CENT</strong>&nbsp;(1-800-555-2368)",
             "copyright": "VirtoCommerce. All Rights Reserved.",
 
+            "product_list_capacity": "16",
+            "product_list_capacity_steps":  "3",
+
             "available_roles": [
                 "Corporate administrator",
                 "Corporate manager",

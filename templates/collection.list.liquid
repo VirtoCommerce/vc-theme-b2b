@@ -1,3 +1,6 @@
+﻿{% include 'collection/main', product_item: 'product/list-item' %}
+
+{% comment %}
 {% paginate collection.products by 20 %}
 
 {% include 'shared/breadcrumb' %}
@@ -71,3 +74,4 @@
         });
     {% endfor %}
 </script>
+{% endcomment %}
