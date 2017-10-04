@@ -4,11 +4,11 @@
 <div class="search-sort">
     <div class="search-t">{{ 'collections.sorting.title' | t }}</div>
     <ul class="nav nav-pills">
-        <li class="dropdown" uib-dropdown ng-init="$ctrl.sortMode = '{{ collection.sort_by | default: collection.default_sort_by | escape }}'">
-            <a id="sort" href="" class="dropdown-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="false">{% raw %}{{ $ctrl.sortModes[$ctrl.sortMode] | translate }}{% endraw %}&nbsp;<span class="fa fa-angle-down"></span></a>
+        <li class="dropdown" uib-dropdown ng-init="$collection.sortMode = '{{ collection.sort_by | default: collection.default_sort_by | escape }}'">
+            <a id="sort" href="" class="dropdown-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="false">{% raw %}{{ $collection.sortModes[$collection.sortMode] | translate }}{% endraw %}&nbsp;<span class="fa fa-angle-down"></span></a>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="sort">
-                <li ng-repeat="(mode, title) in $ctrl.sortModes">
-                    <a href="" ng-bind="title | translate" ng-click="$ctrl.setSearchParam('sort_by', mode)"></a>
+                <li ng-repeat="(mode, title) in $collection.sortModes">
+                    <a vc-query="{ sort_by: mode }" ng-bind="title | translate"></a>
                 </li>
             </ul>
         </li>

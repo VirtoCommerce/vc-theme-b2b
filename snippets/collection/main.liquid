@@ -3,7 +3,7 @@
         {% include 'shared/breadcrumb' %}
     </div>
 
-    <ng-controller ng-controller="collectionController as $ctrl">
+    <ng-controller ng-controller="collectionController as $collection">
         <h1>{{ collection.title }}
             {% if collection.description != blank %}
                 <a href="" ng-click="isAboutOpen = !isAboutOpen">

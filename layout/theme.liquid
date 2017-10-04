@@ -11,7 +11,7 @@
         {% include 'meta/open-graph-tags' %}
 
         <link rel="canonical" href="{{ canonical_url }}" />
-        <base href="{{ '/' | absolute_url }}" />
+        <base href="{{ request_url }}" />
 
         {% include 'main/dependencies' %}
 

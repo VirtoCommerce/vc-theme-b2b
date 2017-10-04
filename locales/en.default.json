@@ -17,7 +17,8 @@
     "common": {
         "required": "Required",
         "invalid": "Invalid",
-        "more": "More", 
+        "more": "More",
+        "go": "Go", 
         "not_match": "Confirm password does not match the password"
     },
     "checkout": {
@@ -314,6 +315,8 @@
         "sidebar": {
             "dashboard": "Dashboard",
             "filters": "Filters",
+            "filter_by": "Filter results by",
+            "search_within": "Search within these results",
             "shop_by": "Shop By",
             "all": "All",
             "all_collection": "All {{ collection_title }}",
@@ -729,6 +732,10 @@
             "add_to_cart": "Add to Cart",
             "details_tab": "Product details",
             "sign_in_to_see_price": "Sign in to see the price"
+        },
+        "price": {
+            "public": "Web price",
+            "private": "Your price"
         },
         "compare_list": {
             "add_to_compare": "Add to compare",

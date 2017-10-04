@@ -48,19 +48,42 @@
         </div>
     </div>
     <div class="list-other col-md-5">
-        <div class="list-price col-md-4">
-            <div class="price-label">Web Price</div>
-            <div class="price-value">$357.00</div>
+        <div class="list-price col-md-4" ng-if="!productListPricesLoaded">
+            {% if customer %}
+                <div class="price-label">{{ 'products.price.private' | t }}</div>
+            {% else %}
+                <div class="price-label">{{ 'products.price.public' | t }}</div>
+            {% endif %}
+            <div class="price-value">
+                {% if settings.show_prices_with_taxes %}
+                    {% include 'product/price' with product.price_with_tax %}
+                {% else %}
+                    {% include 'product/price' with product.price %}
+                {% endif %}
+            </div>
+            <!-- TODO: Replace with product unit -->
+            <div class="price-unit">/ each</div>
+        </div>
+        <div class="list-price col-md-4" ng-if="productListPricesLoaded">
+            <div class="price-label" ng-if="customer">{{ 'products.price.private' | t }}</div>
+            <div class="price-label" ng-if="!customer">{{ 'products.price.public' | t }}</div>
+            <div class="price-value">
+                {% if settings.show_prices_with_taxes %}
+                    {% raw %}{{ productListPrices['{{ product.id }}'].actualPriceWithTax.formattedAmount }}{% endraw %}
+                {% else %}
+                    {% raw %}{{ productListPrices['{{ product.id }}'].actualPrice.formattedAmount }}{% endraw %}
+                {% endif %}
+            </div>
             <div class="price-unit">/ each</div>
         </div>
         <div class="col-md-8">
             <div class="list-cart">
-                <label>Qty:</label>
+                <label>{{ 'products.product.quantity' | t }}</label>
                 <div class="form-group group-flex">
-                    <input type="text" class="form-control qty">
-                    <button class="btn btn-alt btn-primary">Add to cart</button>
+                    <input type="text" class="form-control qty" value="1">
+                    <button class="btn btn-alt btn-primary">{{ 'products.product.add_to_cart' | t }}</button>
                 </div>
-                <a class="add-to-list" href="#"><i class="fa fa-plus"></i> Add to list</a>
+                <a class="add-to-list" href="#"><i class="fa fa-plus"></i> {{ 'products.list.add_to_myList' | t }}</a>
                 <div class="ship-pickup dropdown">
                     <a class="dropdown" id="pickup" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Ship or Pickup
