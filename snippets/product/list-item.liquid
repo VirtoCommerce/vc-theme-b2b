@@ -36,19 +36,19 @@
         <div class="list-model">
             {{ 'products.product.mmn' | t }}&nbsp;{{ product.metafields.properties['MMN'] }}
         </div>
-        <div class="list-descr" ng-init="isDescriptionTruncated['{{ product.id }}'] = true">
+        <div class="list-descr" ng-init="product['{{product.id}}'].isDescriptionTruncated = true">
             {% for description in product.descriptions %}
                 {% if description.type == 'QuickReview' %}
                     {% assign quick_review = description.content %}
                     {% break %}
                 {% endif %}
             {% endfor %}
-            <div ng-if="isDescriptionTruncated['{{ product.id }}']">{{ quick_review | strip_html | truncatewords: 30 }}</div><a href="" ng-show="isDescriptionTruncated['{{ product.id }}']" ng-click="isDescriptionTruncated['{{ product.id }}'] = false">{{ 'common.more' | t }}</a>
-            <div ng-if="!isDescriptionTruncated['{{ product.id }}']">{{ quick_review }}</div>
+            <div ng-if="product['{{product.id}}'].isDescriptionTruncated">{{ quick_review | strip_html | truncatewords: 30 }}</div><a href="" ng-show="product['{{product.id}}'].isDescriptionTruncated" ng-click="product['{{product.id}}'].isDescriptionTruncated = false">{{ 'common.more' | t }}</a>
+            <div ng-if="!product['{{product.id}}'].isDescriptionTruncated">{{ quick_review }}</div>
         </div>
     </div>
     <div class="list-other col-md-5">
-        <div class="list-price col-md-4" ng-if="!productListPricesLoaded">
+        <div class="list-price col-md-4" ng-if="!$productList.loaded">
             {% if customer %}
                 <div class="price-label">{{ 'products.price.private' | t }}</div>
             {% else %}
@@ -56,22 +56,22 @@
             {% endif %}
             <div class="price-value">
                 {% if settings.show_prices_with_taxes %}
-                    {% include 'product/price' with product.price_with_tax %}
+                    {% include 'product/price', price: product.price_with_tax %}
                 {% else %}
-                    {% include 'product/price' with product.price %}
+                    {% include 'product/price', price: product.price %}
                 {% endif %}
             </div>
             <!-- TODO: Replace with product unit -->
             <div class="price-unit">/ each</div>
         </div>
-        <div class="list-price col-md-4" ng-if="productListPricesLoaded">
+        <div class="list-price col-md-4" ng-if="$productList.loaded">
             <div class="price-label" ng-if="customer">{{ 'products.price.private' | t }}</div>
             <div class="price-label" ng-if="!customer">{{ 'products.price.public' | t }}</div>
             <div class="price-value">
                 {% if settings.show_prices_with_taxes %}
-                    {% raw %}{{ productListPrices['{{ product.id }}'].actualPriceWithTax.formattedAmount }}{% endraw %}
+                    <span ng-bind="$productList.prices['{{ product.id }}'].actualPriceWithTax.formattedAmount"></span>
                 {% else %}
-                    {% raw %}{{ productListPrices['{{ product.id }}'].actualPrice.formattedAmount }}{% endraw %}
+                    <span ng-bind="$productList.prices['{{ product.id }}'].actualPrice.formattedAmount"></span>
                 {% endif %}
             </div>
             <div class="price-unit">/ each</div>
@@ -80,8 +80,8 @@
             <div class="list-cart">
                 <label>{{ 'products.product.quantity' | t }}</label>
                 <div class="form-group group-flex">
-                    <input type="text" class="form-control qty" value="1">
-                    <button class="btn btn-alt btn-primary">{{ 'products.product.add_to_cart' | t }}</button>
+                    <input type="text" class="form-control qty" ng-init="product['{{product.id}}'].quantity = 1" ng-model="product['{{product.id}}'].quantity">
+                    <button class="btn btn-alt btn-primary" title="{{ 'products.general.add_to_cart' | t }}" ng-click="addProductToCartById('{{ product.id }}', product['{{product.id}}'].quantity, $event)" ng-controller="productController">{{ 'products.general.add_to_cart' | t }}</button>
                 </div>
                 <a class="add-to-list" href="#"><i class="fa fa-plus"></i> {{ 'products.list.add_to_myList' | t }}</a>
                 <div class="ship-pickup dropdown">

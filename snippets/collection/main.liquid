@@ -32,12 +32,36 @@
                     {% include 'collection/views' %}
 					{% include 'collection/pagination' %}
 				</div>
-                <div class="list-items">
+                <div class="list-items" ng-controller="productListController as $productList">
                     {% for product in collection.products %}
                         {% include product_item, product: product %}
                     {% endfor %}
                 </div>
+                <script>
+                    window.productList = [];
+                    {% for product in collection.products %}
+                        window.productList.push({
+                            id: "{{ product.id }}",
+                            catalogId: "{{ product.catalog_id }}",
+                            outline: "{{ product.outline }}",
+                            categoryId: "{{ product.category_id }}",
+                            taxType: "{{ product.tax_type }}"
+                        });
+                    {% endfor %}
+                </script>
             </div>
-        </div>
+        </div>    
     </ng-controller>
+    <script>
+        window.productList = [];
+        {% for product in collection.products %}
+            window.productList.push({
+                id: "{{ product.id }}",
+                catalogId: "{{ product.catalog_id }}",
+                outline: "{{ product.outline }}",
+                categoryId: "{{ product.category_id }}",
+                taxType: "{{ product.tax_type }}"
+            });
+        {% endfor %}
+    </script>
 {% endpaginate %}

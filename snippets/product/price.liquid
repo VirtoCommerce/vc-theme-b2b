@@ -11,11 +11,11 @@
 
 {% unless shop.money_format contains 'money' %}
     {% if settings.superscript_decimals %}
-    {% if shop.money_format contains '{{amount}}' %}
-        {% capture formatted_price %}{{ formatted_price | replace: '.','<sup>' }}</sup>{% endcapture %}
-    {% elsif shop.money_format contains '{{amount_with_comma_separator}}' %}
-        {% capture formatted_price %}{{ formatted_price | replace: ',','<sup>' }}</sup>{% endcapture %}
-    {% endif %}
+        {% if shop.money_format contains '{{amount}}' %}
+            {% capture formatted_price %}{{ formatted_price | replace: '.','<sup>' }}</sup>{% endcapture %}
+        {% elsif shop.money_format contains '{{amount_with_comma_separator}}' %}
+            {% capture formatted_price %}{{ formatted_price | replace: ',','<sup>' }}</sup>{% endcapture %}
+        {% endif %}
     {% endif %}
 {% endunless %}
-<small>{{ formatted_price }}</small>
+{{ formatted_price }}

@@ -12,8 +12,37 @@ storefrontApp.directive('vcContentPlace', ['$compile', 'marketingService', funct
     }
 }]);
 
+storefrontApp.directive('vcEnterSource', ['$timeout', function ($timeout) {
+    return {
+        restrict: "A",
+        controller: function() { },
+        link: function (scope, element, attrs, ctrl) {
+            var onKeyPress = function (event) {
+                if (event.keyCode === 13) { // Enter
+                    ctrl.element[0].click();
+                }
+            };
+            element.on('keypress', onKeyPress);
+            scope.$on('$destroy', function () {
+                element.off('keypress', onKeyPress);
+            });
+        }
+    };
+}]);
+
+storefrontApp.directive('vcEnterTarget', [function () {
+    return {
+        restrict: "A",
+        require: "^vcEnterSource",
+        link: function (scope, element, attrs, ctrl) {
+            ctrl.element = element;
+        }
+    };
+}]);
+
 storefrontApp.directive('vcQuery', ['$parse', '$location', '$httpParamSerializer', function ($parse, $location, $httpParamSerializer) {
     return {
+        restrict: "A",
         compile: function (tElem, tAttr) {
             if (!tAttr.href && !tAttr.xlinkHref) {
                 return function(scope, element, attrs) {

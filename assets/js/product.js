@@ -1,4 +1,4 @@
-var storefrontApp = angular.module('storefrontApp');
+﻿var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', '$timeout', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'customerService', 'listService',
     function ($rootScope, $scope, $window, $timeout, dialogService, catalogService, cartService, quoteRequestService, customerService, listService) {
@@ -114,18 +114,19 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         });
     }
 
-    function toDialogDataModel(items, quantity) {
-        return {
-            id: product.id,
-            name: product.name,
-            imageUrl: product.primaryImage ? product.primaryImage.url : null,
-            listPrice: product.price.listPrice,
-			listPriceWithTax: product.price.listPriceWithTax,
-            placedPrice: product.price.actualPrice,
-            placedPriceWithTax: product.price.actualPriceWithTax,
-            quantity: quantity,
-            updated: false
-        }
+    function toDialogDataModel(product, quantity) {
+        return { items: [angular.extend({ }, product, { quantity: quantity })] };
+        //     return {
+        //         id: product.id,
+        //         name: product.name,
+        //         imageUrl: product.primaryImage ? product.primaryImage.url : null,
+        //         listPrice: product.price.listPrice,
+        //listPriceWithTax: product.price.listPriceWithTax,
+        //         placedPrice: product.price.actualPrice,
+        //         placedPriceWithTax: product.price.actualPriceWithTax,
+        //         quantity: quantity,
+        //         updated: false
+        //     }
     }
 
     function toDialogDataModelMock(items, rejection) {

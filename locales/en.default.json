@@ -729,7 +729,6 @@
             "mmn": "Mfr. model #",
             "only_left": "Only {{ count }} left!",
             "quantity": "Quantity",
-            "add_to_cart": "Add to Cart",
             "details_tab": "Product details",
             "sign_in_to_see_price": "Sign in to see the price"
         },
