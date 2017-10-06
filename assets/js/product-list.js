@@ -4,16 +4,13 @@ storefrontApp.controller('productListController', ['$scope', '$window', 'pricing
     var $ctrl = this;
 
     $ctrl.loaded = false;
-    $ctrl.prices = [];
+    $ctrl.prices = {};
 
     pricingService.getActualProductPrices($window.productList).then(function (response) {
         var prices = response.data;
-        if (prices.length) {
-            for (var i = 0; i < prices.length; i++) {
-                $ctrl.prices[prices[i].productId] = prices[i];
-            }
-        }
-        var productListPricesSize = $scope.getObjectSize($ctrl.prices);
-        $ctrl.loaded = productListPricesSize > 0;
+        $ctrl.prices = _.object(_.map(prices, function(price) {
+            return [price.productId, price];
+        }));
+        $ctrl.loaded = !!prices.length;
     });
 }]);

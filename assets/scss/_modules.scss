@@ -129,7 +129,8 @@ vc-labeled-input:last-child {
     width: 20px;
   }
 
-  input:checked ~ .switch {
+  input:checked ~ .switch,
+  input:checked ~ * .switch {
     background: $link-color;
     border-color: darken($link-color, 5%);
 

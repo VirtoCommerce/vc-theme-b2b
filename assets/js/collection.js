@@ -18,5 +18,5 @@ storefrontApp.controller('collectionController', ['$scope', '$location', functio
         $ctrl.pageSize = $location.search().page_size || capacity;
         $ctrl.pageSizes = _.range(capacity, capacity * steps + 1, capacity);
     }
-    $ctrl.filterKeyword = $location.search().keyword;
+    $ctrl.keyword = $location.search().keyword;
 }]);
