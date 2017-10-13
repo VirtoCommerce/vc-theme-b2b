@@ -358,35 +358,39 @@ vc-labeled-input:last-child {
   }
 }
 
-/* Product list */
-.product-list {
-  .list-item {
+/* Product grid */
+.grid-items {
+
+  @include list-unstyled;
+
+  .grid-item {
     font-family: "Roboto Condensed";
   }
 
-  .list-inner {
+  .grid-inner {
     border-color: $gray;
     border-style: solid;
     border-width: 1px 1px 4px;
     padding: 15px 10px;
+    height: 100%;
 
     > div {
       margin: 0 0 10px;
     }
   }
 
-  .list-pic {
+  .grid-pic {
     display: block;
     margin: auto;
     width: 120px;
   }
 
-  .list-name,
-  .list-sku a {
+  .grid-name,
+  .grid-sku a {
     font-weight: 700;
   }
 
-  .list-other {
+  .grid-other {
     display: flex;
 
     .btn {

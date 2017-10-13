@@ -1,4 +1,4 @@
-{% capture form %}{% form 'customer_login' %}{% include 'shared/form-errors-custom' %}{% endform %}{% endcapture %}
+﻿{% capture form %}{% form 'customer_login' %}{% include 'shared/form-errors-custom' %}{% endform %}{% endcapture %}
 {{ form | replace: 'id="customer_login"', 'id="customer_login" name="customer_login"' | remove: "</form>" }}
     <div ng-keypress="login($event)">
 
@@ -21,7 +21,6 @@
         {% endif %}
             <button class="btn btn-primary" ng-click="login()">{{ 'customer.sign-in.sign_in' | t }}</button>
             {% if template != 'customers/login' %}
-                </div>
 				<div class="col-md-4">
                     {{ 'layout.customer.register' | t | customer_register_link | replace: 'a href', 'a class="register" href' }}
 				</div>

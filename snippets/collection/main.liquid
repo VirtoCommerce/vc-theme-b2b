@@ -23,7 +23,7 @@
         <p>{{ 'collections.general.products_count' | t, all_results_count: all_results_count, displayed_results_count: displayed_results_count, products_count: variants_count }}</p>
         <p ng-show="isAboutOpen">{{ collection.description }}</p>
         <div class="sidebar col-md-4">
-            {% include 'collection/sidebar' %}
+            {% include 'collection/sidebar', collection: collection %}
         </div>
         <div class="content col-md-8">
 		    <div class="product-search">
@@ -32,11 +32,7 @@
                     {% include 'collection/views' %}
 					{% include 'collection/pagination' %}
 				</div>
-                <div class="list-items" ng-controller="productListController as $productList">
-                    {% for product in collection.products %}
-                        {% include product_item, product: product %}
-                    {% endfor %}
-                </div>
+                {% include product_items %}
                 <script>
                     window.productList = [];
                     {% for product in collection.products %}

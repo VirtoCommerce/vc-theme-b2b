@@ -1,0 +1,5 @@
+﻿<div class="list-items" ng-controller="productListController as $productList">
+    {% for product in collection.products %}
+        {% include product_item, product: product %}
+    {% endfor %}
+</div>

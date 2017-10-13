@@ -4,6 +4,11 @@
 
 .row.flexible {
   display: flex;
+
+  & > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .row.center {
@@ -642,7 +647,7 @@ hr {
   position: relative;
   padding: 0;
 
-  a {
+  .action {
     font-family: Arial;
     font-size: 12px;
     font-weight: 700;
@@ -656,35 +661,41 @@ hr {
 
 .panel-title {
   display: block;
+  cursor: default;
   font-family: "Roboto Condensed";
   font-size: 14px;
   font-weight: 700;
-  padding: 10px;
   text-transform: uppercase;
 }
 
-.panel-title:not(div) {
-  cursor: pointer;
-  position: relative;
+.panel-default.panel-static .panel-title {
+  padding: 10px;
+}
 
-  &::after {
-    color: $link-color;
-    content: "";
-    font-family: "FontAwesome";
-    font-size: 20px;
-    margin: (-2px) 0 0;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+.panel-default:not(.panel-static) .panel-title {
+  a {
+    display: block;
+    padding: 10px;
+
+    &::after {
+      color: $link-color;
+      content: "";
+      font-family: "FontAwesome";
+      font-size: 20px;
+      margin: (-2px) 0 0;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &.collapsed::after {
+      content: "";
+    }
   }
 }
 
-.panel-group .panel-heading.collapsed {
-  .panel-title:not(span)::after {
-    content: "";
-  }
-}
+
 
 .panel-collapse {
   border: 1px solid $gray-light;
@@ -716,6 +727,10 @@ hr {
     display: inline-block;
     margin: 0;
     vertical-align: middle;
+  }
+
+  .grid-items {
+    margin-top: 10px;
   }
 }
 

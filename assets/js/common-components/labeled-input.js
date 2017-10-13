@@ -1,4 +1,4 @@
-angular.module('storefrontApp')
+﻿angular.module('storefrontApp')
 
 .component('vcLabeledInput', {
     templateUrl: "themes/assets/labeled-input.tpl.html",

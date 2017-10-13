@@ -57,7 +57,9 @@ storefrontApp.directive('vcQuery', ['$parse', '$location', '$httpParamSerializer
                     scope.$watch($parse(attrs.vcQuery), function (value) {
                         var query = $location.search();
                         query = angular.extend({}, query, value);
-                        element.attr(href, "?" + $httpParamSerializer(query));
+                        var url = new URL($location.absUrl());
+                        url.search = $httpParamSerializer(query);
+                        element.attr(href, url.href);
                     });
                 }
             }

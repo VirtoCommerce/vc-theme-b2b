@@ -1,0 +1,13 @@
+﻿{% for product in collection.products %}
+    {% comment %}
+        Grid item take 4 columns. We have 12 columns, so 12 / 4 = 3 products can be disaplyed in row.
+    {% endcomment %}
+    {% assign product_index = forloop.index0 | modulo: 3 %}
+    {% if product_index == 0 %}
+        <ul class="row flexible grid-items" ng-controller="productListController as $productList">
+    {% endif %}
+    {% include product_item, product: product %}
+    {% if product_index == 2 %}
+        </ul>
+    {% endif %}
+{% endfor %}

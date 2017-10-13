@@ -1,290 +1,272 @@
-﻿
-    <div class="panel-group" id="accordeon" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    Applied filters
-                </div>
-                <a href="#">Clear all</a>
-            </div>
-            <div class="panel-collapse collapse in" role="tabpanel">
-                <div class="panel-body">
-                    <strong>Type:</strong>
-                    <ul class="list-filters">
-                        <li class="list-item">
-                            <a class="list-ico fa fa-times-circle"></a>
-                            Handheld
-                        </li>
-                        <li class="list-item">
-                            <a class="list-ico fa fa-times-circle"></a>
-                            Semi-portable
-                        </li>
-                    </ul>
-                    <strong>Price:</strong>
-                    <ul class="list-filters">
-                        <li class="list-item">
-                            <a class="list-ico fa fa-times-circle"></a>
-                            $100-$200
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    {{ 'collections.sidebar.filter_by' | t }}
-                </div>
-            </div>
-            <div class="panel-collapse collapse in" role="tabpanel">
-                <div class="panel-body">
-                    <form>
-                        <div class="form-t">{{ 'collections.sidebar.search_within' | t }}</div>
-                        <div class="form-group group-flex" vc-enter-source>
-                            <input type="text" class="form-control" ng-model="$collection.keyword">
-                            <a class="btn btn-default" vc-query="{'keyword': $collection.keyword}" vc-enter-target>{{ 'common.go' | t }}</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    Previously Purchased
-                </div>
-            </div>
-            <div class="panel-collapse collapse in" role="tabpanel">
-                <div class="panel-body">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox">
-                            <a>
-                                <span class="switch"></span>
-                                <span class="name">View Previously Purchased Products</span>
-                            </a>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+﻿<uib-accordion close-others="false">
+    {% raw %}
+        <script type="text/ng-template" id="collection-sidebar-always-visible-group.html">
+            <div id="{{::headingId}}" role="tab" class="panel-heading" ng-keypress="toggleOpen($event)">
                 <h4 class="panel-title">
-                    Branch Availability
+                    <span tabindex="0" uib-accordion-transclude="heading" ng-disabled="isDisabled" uib-tabindex-toggle>
+                        <span uib-accordion-header ng-class="{'text-muted': isDisabled}">{{heading}}</span>
+                    </span>
                 </h4>
             </div>
-            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                <div class="panel-body">
-                    <p><a href="#">Select a pickup branch</a> to see products in stock now.</p>
-                </div>
+            <div id="{{::panelId}}" aria-labelledby="{{::headingId}}" role="tabpanel" class="panel-collapse collapse in">
+                <div class="panel-body" ng-transclude></div>
             </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingTwo" data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        </script>
+        <script type="text/ng-template" id="collection-sidebar-default-group.html">
+            <div role="tab" id="{{::headingId}}" aria-selected="{{isOpen}}" class="panel-heading" ng-keypress="toggleOpen($event)">
                 <h4 class="panel-title">
-                    Type
+                    <a role="button" data-toggle="collapse" href="" aria-expanded="{{isOpen}}" aria-controls="{{::panelId}}" tabindex="0" class="accordion-toggle" ng-class="{'collapsed': !isOpen }" ng-click="toggleOpen()" uib-accordion-transclude="heading" ng-disabled="isDisabled" uib-tabindex-toggle><span uib-accordion-header ng-class="{'text-muted': isDisabled}">{{heading}}</span></a>
                 </h4>
             </div>
-            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                <div class="panel-body">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox">
-                            <span class="switch"></span>
-                            <span class="name">Bench <span class="count">(1)</span></span>
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox">
-                            <span class="switch"></span>
-                            <span class="name">Handheld <span class="count">(3)</span></span>
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox">
-                            <span class="switch"></span>
-                            <span class="name">Semi-portable <span class="count">(1)</span></span>
-                        </label>
-                    </div>
-                </div>
+            <div id="{{::panelId}}" aria-labelledby="{{::headingId}}" aria-hidden="{{!isOpen}}" role="tabpanel" class="panel-collapse collapse" uib-collapse="!isOpen">
+                <div class="panel-body" ng-transclude></div>
             </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingThree" data-toggle="collapse" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                <h4 class="panel-title">
-                    Price
-                </h4>
+        </script>
+    {% endraw %}
+    <div class="panel-default panel-static" uib-accordion-group template-url="collection-sidebar-always-visible-group.html" is-open="always">
+        <uib-accordion-heading>
+            Applied filters
+            <a href="#" class="action">Clear all</a>
+        </uib-accordion-heading>
+        <strong>Type:</strong>
+        <ul class="list-filters">
+            <li class="list-item">
+                <a class="list-ico fa fa-times-circle"></a>
+                Handheld
+            </li>
+            <li class="list-item">
+                <a class="list-ico fa fa-times-circle"></a>
+                Semi-portable
+            </li>
+        </ul>
+        <strong>Price:</strong>
+        <ul class="list-filters">
+            <li class="list-item">
+                <a class="list-ico fa fa-times-circle"></a>
+                $100-$200
+            </li>
+        </ul>
+    </div>
+    <div class="panel-default panel-static" uib-accordion-group template-url="collection-sidebar-always-visible-group.html" is-open="always">
+        <uib-accordion-heading>
+            {{ 'collections.sidebar.filter_by' | t }}
+        </uib-accordion-heading>
+        <form>
+            <div class="form-t">{{ 'collections.sidebar.search_within' | t }}</div>
+            <div class="form-group group-flex" vc-enter-source>
+                <input type="text" class="form-control" ng-model="$collection.keyword">
+                <a class="btn btn-default" vc-query="{'keyword': $collection.keyword}" vc-enter-target>{{ 'common.go' | t }}</a>
             </div>
-            <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
-                <div class="panel-body">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox">
-                            <span class="switch"></span>
-                            <span class="name">$100-$200 <span class="count">(2)</span></span>
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox">
-                            <span class="switch"></span>
-                            <span class="name">$300-$400 <span class="count">(1)</span></span>
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox">
-                            <span class="switch"></span>
-                            <span class="name">$400-$500 <span class="count">(1)</span></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
+        </form>
+    </div>
+    <div class="panel-default panel-static" uib-accordion-group template-url="collection-sidebar-always-visible-group.html" is-open="always">
+        <uib-accordion-heading>
+            Previously Purchased
+        </uib-accordion-heading>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox">
+                <a>
+                    <span class="switch"></span>
+                    <span class="name">View Previously Purchased Products</span>
+                </a>
+            </label>
         </div>
     </div>
-
-{% comment %}
-{%- if settings.collection_sidebar_filters == 'facets' -%}
-  {%- if collection.all_tags.size > 0 -%}
-    <div class="grid-uniform">
-      {%- comment -%}
-        Loop through tag categories
-      {%- endcomment -%}
-      {%- for cat_item in collection.all_tags.groups -%}
-        {%- comment -%}
-          Ignore if tag category is empty
-        {%- endcomment -%}
-        {%- unless cat_item == '' -%}
-        <div class="grid-item small--one-half medium--one-third">
-          {%- capture group_label %}{% if cat_item == 'price' %}{{ 'tags.price.label' | t }}{% else %}{{ cat_item }}{% endif %}{%- endcapture -%}
-          <h3>{{ group_label | escape }}</h3>
-          <ul class="advanced-filters">
+    <div class="panel-default panel-static" uib-accordion-group template-url="collection-sidebar-always-visible-group.html" is-open="always">
+        <uib-accordion-heading>
+            Branch Availability
+        </uib-accordion-heading>
+        <p><a href="#">Select a pickup branch</a> to see products in stock now.</p>
+    </div>
+    {%- if settings.collection_sidebar_filters == 'facets' -%}
+        {%- if collection.all_tags.size > 0 -%}            
             {%- comment -%}
-              Loop through collection tags
+                Loop through tag categories
             {%- endcomment -%}
-            {%- for custom_tag in collection.all_tags -%}
-              {%- if custom_tag.group_label == cat_item -%}
+            {%- for cat_item in collection.all_tags.groups -%}
                 {%- comment -%}
-                  Strip out tag category prefix and add/remove link for tag filtering
+                    Ignore if tag category is empty
                 {%- endcomment -%}
-                {%- include 'tag-label', tag: custom_tag -%}
-                {%- if current_tags contains custom_tag -%}
-                  <li class="advanced-filter active-filter" data-group="{{ cat_item }}" data-handle="{{ custom_tag.id | handleize }}">{{ tag_label | link_to_remove_tag: custom_tag }}</li>
-                {%- else -%}
-                  <li class="advanced-filter" data-group="{{ cat_item }}">{{ tag_label | link_to_add_tag: custom_tag }}</li>
-                {%- endif -%}
-              {%- endif -%}
+                {%- unless cat_item == '' -%}
+                    {%- capture group_label %}{% if cat_item == 'price' %}{{ 'tags.price.label' | t }}{% else %}{{ cat_item }}{% endif %}{%- endcapture -%}
+                    <div class="panel-default" uib-accordion-group heading="{{ group_label | escape }}" template-url="collection-sidebar-default-group.html" is-open="true">
+                        <ol class="list-unstyled">
+                            {%- comment -%}
+                                Loop through collection tags
+                            {%- endcomment -%}
+                            {%- for custom_tag in collection.all_tags -%}
+                                {%- if custom_tag.group_label == cat_item -%}
+                                    {%- comment -%}
+                                        Strip out tag category prefix and add/remove link for tag filtering
+                                    {%- endcomment -%}
+                                    {%- include 'tag-label', tag: custom_tag -%}
+                                    {% if current_tags contains custom_tag %}
+                                        {% assign is_active = true %}
+                                    {% else %}
+                                        {% assign is_active = false %}
+                                    {% endif %}
+                                    {%- if is_active -%}
+                                        <li class="checkbox advanced-filter active-filter" data-group="{{ cat_item }}" data-handle="{{ custom_tag.id | handleize }}">
+                                    {%- else -%}
+                                        <li class="checkbox advanced-filter" data-group="{{ cat_item }}">
+                                    {%- endif -%}
+                                        <label>
+                                            <input type="checkbox" ng-checked="{{ is_active }}">
+                                            {% capture tag_link_text %}{{ tag_label }} ({{custom_tag.count}}){% endcapture %}
+                                            {% capture tag_link_elements %}
+                                                <span class="switch"></span>
+                                                <span class="name">{{ tag_label }} <span class="count">({{ custom_tag.count }})</span></span>
+                                            {% endcapture %}
+                                            {% if is_active %}
+                                                {{ tag_label | link_to_remove_tag: custom_tag | replace: tag_link_text, tag_link_elements }}
+                                            {% else %}
+                                                {{ tag_label | link_to_add_tag: custom_tag | replace: tag_link_text, tag_link_elements }}                                            
+                                            {% endif %}
+                                        </label>
+                                    </li>
+                                {%- endif -%}
+                            {%- endfor -%}
+                        </ol>
+                    </div>
+                {%- endunless -%}
             {%- endfor -%}
-          </ul>
-        </div>
-        {%- endunless -%}
-      {%- endfor -%}
-    </div>
-    <script>
-    $(function() {
-      var currentTags = '{{ current_tags }}',
-          filters = $('.advanced-filter'),
-          activeTag,
-          activeHandle;
+            <script>
+            $(function() {
+                var currentTags = '{{ current_tags }}',
+                        filters = $('.advanced-filter'),
+                        activeTag,
+                        activeHandle;
 
-      filters.each(function() {
-        var el = $(this),
-            group = el.data('group'),
-            isActive = el.hasClass('active-filter');
-      });
+                filters.each(function() {
+                    var el = $(this),
+                            group = el.data('group'),
+                            isActive = el.hasClass('active-filter');
+                });
 
-      filters.on('click', function(e) {
-        var el = $(this),
-            group = el.data('group'),
-            url = el.find('a').attr('href');
+                filters.on('click', function(e) {
+                    var el = $(this),
+                            group = el.data('group'),
+                            url = el.find('a').attr('href');
 
-        // Continue as normal if we're clicking on the active link
-        if ( el.hasClass('active-filter') ) {
-          return;
-        }
+                    // Continue as normal if we're clicking on the active link
+                    if ( el.hasClass('active-filter') ) {
+                        return;
+                    }
 
-        // Get active group link (unidentified if there isn't one)
-        activeTag = $('.active-filter[data-group="'+ group +'"]');
+                    // Get active group link (unidentified if there isn't one)
+                    activeTag = $('.active-filter[data-group="'+ group +'"]');
 
-        // If a tag from this group is already selected, remove it from the new tag's URL and continue
-        if ( activeTag && activeTag.data('group') === group ) {
-          e.preventDefault();
-          activeHandle = activeTag.data('handle') + '+';
+                    // If a tag from this group is already selected, remove it from the new tag's URL and continue
+                    if ( activeTag && activeTag.data('group') === group ) {
+                        e.preventDefault();
+                        activeHandle = activeTag.data('handle') + '+';
 
-          // Create new URL without the currently active handle
-          url = url.replace(activeHandle, '');
+                        // Create new URL without the currently active handle
+                        url = url.replace(activeHandle, '');
 
-          window.location = url;
-        }
-      });
-    });
-    </script>
-  {%- endif -%}
-{%- else -%}
-  <h3>{{ 'collections.sidebar.shop_by' | t }}</h3>
-  {%- if template contains 'collection' and collection.all_tags.size > 0 -%}
-    {%- comment -%}
-      Provide a 'catch-all' link at the top of the list,
-      we'd check against the collection.handle, product type, and vendor.
-    {%- endcomment -%}
-    <ul>
-      {%- if current_tags -%}
-        <li class="active-filter">
-          {%- comment -%}
-            Good for /collections/all collection and regular collections
-          {%- endcomment -%}
-          {%- if collection.handle -%}
-            <a href="{{ '/collections/' + collection.handle | absolute_url }}">
-              {{ 'collections.sidebar.all' | t }}
-              {%- unless collection.title == 'Products' -%}
-              {{ collection.title }}
-              {%- endunless -%}
-            </a>
-          {%- comment -%}
-            Good for automatic type collections
-          {%- endcomment -%}
-          {%- elsif collection.current_type -%}
-            <a href="{{ collection.current_type | url_for_type }}">{{ 'collections.sidebar.all_collection' | t: collection_title: collection.title }}</a>
-          {%- comment -%}
-            Good for automatic vendor collections
-          {%- endcomment -%}
-          {%- elsif collection.current_vendor -%}
-            <a href="{{ collection.current_vendor | url_for_vendor }}">{{ 'collections.sidebar.all_collection' | t: collection_title: collection.title }}</a>
-          {%- endif -%}
-        </li>
-      {%- endif -%}
-      {%- comment -%}
-        And for the good stuff, loop through the tags themselves.
-        Strip the prepended categories if they happen to exist.
-      {%- endcomment -%}
-      {%- for tag in collection.all_tags -%}
-        {%- assign is_advanced_tag = false -%}
-        {%- for cat_item in cat_array -%}
-          {%- unless cat_item == '' -%}
-            {%- if tag contains cat_item -%}
-              {%- assign is_advanced_tag = true -%}
-              {%- if current_tags contains tag -%}
-                <li class="active-filter">{{ tag | remove: cat_item | remove: '_' }}</li>
-              {%- else -%}
-                <li>{{ tag | remove: cat_item | remove: '_' | link_to_tag: tag }}</li>
-              {%- endif -%}
-            {%- endif -%}
-          {%- endunless -%}
-        {%- endfor -%}
-        {%- if is_advanced_tag == false -%}
-          {%- if current_tags contains tag -%}
-            <li class="active-filter">{{ tag }}</li>
-          {%- else -%}
-            <li>{{ tag | link_to_tag: tag }}</li>
-          {%- endif -%}
+                        window.location = url;
+                    }
+                });
+            });
+            </script>
         {%- endif -%}
-      {%- endfor -%}
-    </ul>
-  {%- else -%}
-    <p>{{ 'collections.sidebar.no_tags' | t }}</p>
-  {%- endif -%}
-{%- endif -%}
-{% endcomment %}
+    {%- else -%}
+        <h3>{{ 'collections.sidebar.shop_by' | t }}</h3>
+        {%- if template contains 'collection' and collection.all_tags.size > 0 -%}
+            {%- comment -%}
+                Provide a 'catch-all' link at the top of the list,
+                we'd check against the collection.handle, product type, and vendor.
+            {%- endcomment -%}
+            <ul>
+                {%- if current_tags -%}
+                    <li class="active-filter">
+                        {%- comment -%}
+                            Good for /collections/all collection and regular collections
+                        {%- endcomment -%}
+                        {%- if collection.handle -%}
+                            <a href="{{ '/collections/' + collection.handle | absolute_url }}">
+                                {{ 'collections.sidebar.all' | t }}
+                                {%- unless collection.title == 'Products' -%}
+                                {{ collection.title }}
+                                {%- endunless -%}
+                            </a>
+                        {%- comment -%}
+                            Good for automatic type collections
+                        {%- endcomment -%}
+                        {%- elsif collection.current_type -%}
+                            <a href="{{ collection.current_type | url_for_type }}">{{ 'collections.sidebar.all_collection' | t: collection_title: collection.title }}</a>
+                        {%- comment -%}
+                            Good for automatic vendor collections
+                        {%- endcomment -%}
+                        {%- elsif collection.current_vendor -%}
+                            <a href="{{ collection.current_vendor | url_for_vendor }}">{{ 'collections.sidebar.all_collection' | t: collection_title: collection.title }}</a>
+                        {%- endif -%}
+                    </li>
+                {%- endif -%}
+                {%- comment -%}
+                    And for the good stuff, loop through the tags themselves.
+                    Strip the prepended categories if they happen to exist.
+                {%- endcomment -%}
+                {%- for tag in collection.all_tags -%}
+                    {%- assign is_advanced_tag = false -%}
+                    {%- for cat_item in cat_array -%}
+                        {%- unless cat_item == '' -%}
+                            {%- if tag contains cat_item -%}
+                                {%- assign is_advanced_tag = true -%}
+                                {%- if current_tags contains tag -%}
+                                    <li class="active-filter">{{ tag | remove: cat_item | remove: '_' }}</li>
+                                {%- else -%}
+                                    <li>{{ tag | remove: cat_item | remove: '_' | link_to_tag: tag }}</li>
+                                {%- endif -%}
+                            {%- endif -%}
+                        {%- endunless -%}
+                    {%- endfor -%}
+                    {%- if is_advanced_tag == false -%}
+                        {%- if current_tags contains tag -%}
+                            <li class="active-filter">{{ tag }}</li>
+                        {%- else -%}
+                            <li>{{ tag | link_to_tag: tag }}</li>
+                        {%- endif -%}
+                    {%- endif -%}
+                {%- endfor -%}
+            </ul>
+        {%- else -%}
+            <p>{{ 'collections.sidebar.no_tags' | t }}</p>
+        {%- endif -%}
+    {%- endif -%}
+    {% comment %}
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree" data-toggle="collapse" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+            <h4 class="panel-title">
+                Price
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+            <div class="panel-body">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox">
+                        <span class="switch"></span>
+                        <span class="name">$100-$200 <span class="count">(2)</span></span>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox">
+                        <span class="switch"></span>
+                        <span class="name">$300-$400 <span class="count">(1)</span></span>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox">
+                        <span class="switch"></span>
+                        <span class="name">$400-$500 <span class="count">(1)</span></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endcomment %}
+</uib-accordion>

@@ -29,6 +29,7 @@
         "font-awesome": "^4.7.0",
         "jquery": "^1.11.0",
         "ngstorage": "^0.3.11",
+        "polyfills": "0.1.36", 
         "satellizer": "^0.15.5",
         "underscore": "^1.8.3"
     },
