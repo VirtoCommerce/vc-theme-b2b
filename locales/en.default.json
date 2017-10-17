@@ -312,7 +312,7 @@
             "grid_view": "Grid",
             "list_view": "List",
             "products_per_page": "Results per page:",
-            "availability": "Availability per fullfilment center",
+            "availability": "Branch availability",
             "select_branch_title": "Select a pickup branch",
             "select_branch_description": "to see products in stock now.",
             "no_matches": "Sorry, there are no products matching your search.",
