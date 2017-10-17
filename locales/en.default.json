@@ -164,6 +164,14 @@
             "title": "Search for products on our site"
         }
     },
+    "inventory": {
+        "select_branch": {
+            "title": "Select branch",
+            "enter_search_phrase": "Enter a full address, city, state, country, ZIP code or branch name:",
+            "phone":  "Phone:", 
+            "close": "Close branch selection"
+        },
+    },
     "blogs": {
         "featured": {
             "learn_more": "Learn more"
@@ -304,6 +312,9 @@
             "grid_view": "Grid",
             "list_view": "List",
             "products_per_page": "Results per page:",
+            "availability": "Availability per fullfilment center",
+            "select_branch_title": "Select a pickup branch",
+            "select_branch_description": "to see products in stock now.",
             "no_matches": "Sorry, there are no products matching your search.",
             "link_title": "Browse our {{ title }} collection",
             "items_with_count": {
