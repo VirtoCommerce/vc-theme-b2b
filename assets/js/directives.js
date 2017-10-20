@@ -55,14 +55,16 @@ storefrontApp.directive('vcQuery', ['$parse', '$location', '$httpParamSerializer
                     var type = attrs.queryType || 'pair';
 
                     function stringToObject(str) {
-                        var pairStrs = str.split(';');
-                        var result = {};
-                        _.each(pairStrs, function (pairStr) {
-                            var pair = pairStr.split(':');
-                            var key = pair[0];
-                            var values = pair[1].split(',');
-                            result[key] = values;
-                        });
+                        var result = { };
+                        if (str) {
+                            var pairStrs = str.split(';');
+                            _.each(pairStrs, function(pairStr) {
+                                var pair = pairStr.split(':');
+                                var key = pair[0];
+                                var values = pair[1].split(',');
+                                result[key] = values;
+                            });
+                        }
                         return result;
                     }
 

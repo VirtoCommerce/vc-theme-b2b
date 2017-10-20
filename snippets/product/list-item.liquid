@@ -72,21 +72,30 @@
                     <button class="btn btn-alt btn-primary" title="{{ 'products.general.add_to_cart' | t }}" ng-click="addProductToCartById('{{ product.id }}', product['{{product.id}}'].quantity, $event)" ng-controller="productController">{{ 'products.general.add_to_cart' | t }}</button>
                 </div>
                 <a class="add-to-list" href="#"><i class="fa fa-plus"></i> {{ 'products.list.add_to_myList' | t }}</a>
-                <div class="ship-pickup dropdown" uib-dropdown>
+                <div class="ship-pickup dropdown" uib-dropdown is-open="product['{{product.id}}'].isShipOrPickupOpen" auto-close="outsideClick">
                     <a class="dropdown" href="" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
                         Ship or Pickup
                         <i class="fa fa-angle-down"></i>
                     </a>
-                    <div class="dropdown-menu" uib-dropdown-menu aria-labelledby="pickup">
+                    <div class="dropdown-menu" uib-dropdown-menu aria-labelledby="pickup" ng-init="shippingType = 'shipping'">
                         <div class="dropdown-head">
-                            <p>Confirm ZIP Code to determine availability.</p>
+                            <span ng-show="shippingType == 'shipping'">Ship to</span>
+                            <span ng-show="shippingType == 'pickup'">Pickup</span>
+                            <a href="" ng-show="shippingType == 'pickup'" ng-click="shippingType = 'shipping'">Shipping to</a>
+                            <a href="" ng-show="shippingType == 'shipping'" ng-click="shippingType = 'pickup'">Pickup</a>
                         </div>
-                        <div class="dropdown-body">
-                            <input type="text" class="form-control">
-                        </div>
+                        {% raw %}
+                            <div class="dropdown-body" ng-init="changeShipping = false; postalCode = customer.defaultShippingAddress.postalCode">
+                                <input type="text" class="form-control" ng-show="!customer.defaultShippingAddress.postalCode || changeShipping" ng-model="postalCode">
+                                <p ng-show="customer.defaultShippingAddress.postalCode && !changeShipping">
+                                    Ship to <strong>{{ customer.defaultShippingAddress.postalCode }}</strong>
+                                    <a href="" ng-click="changeShipping = true">change</a>
+                                </p>
+                            </div>
+                        {% endraw %}
                         <div class="dropdown-foot">
-                            <a href="#">Cancel</a>
-                            <a class="btn btn-default" href="#">Save</a>
+                            <a href="" ng-click="product['{{product.id}}'].isShipOrPickupOpen = false">Cancel</a>
+                            <a class="btn btn-default" href="" ng-click="customer.defaultShippingAddress.postalCode = postalCode">Save</a>
                         </div>
                     </div>
                 </div>
