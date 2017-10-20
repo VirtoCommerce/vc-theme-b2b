@@ -72,12 +72,12 @@
                     <button class="btn btn-alt btn-primary" title="{{ 'products.general.add_to_cart' | t }}" ng-click="addProductToCartById('{{ product.id }}', product['{{product.id}}'].quantity, $event)" ng-controller="productController">{{ 'products.general.add_to_cart' | t }}</button>
                 </div>
                 <a class="add-to-list" href="#"><i class="fa fa-plus"></i> {{ 'products.list.add_to_myList' | t }}</a>
-                <div class="ship-pickup dropdown">
-                    <a class="dropdown" id="pickup" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <div class="ship-pickup dropdown" uib-dropdown>
+                    <a class="dropdown" href="" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
                         Ship or Pickup
                         <i class="fa fa-angle-down"></i>
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="pickup">
+                    <div class="dropdown-menu" uib-dropdown-menu aria-labelledby="pickup">
                         <div class="dropdown-head">
                             <p>Confirm ZIP Code to determine availability.</p>
                         </div>

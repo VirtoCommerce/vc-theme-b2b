@@ -1,6 +1,6 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('inventoryController', ['dialogService', 'commerceService', function (dialogService, commerceService) {
+storefrontApp.controller('inventoryController', ['dialogService', 'fulfillmentCenterService', function (dialogService, fulfillmentCenterService) {
     var $ctrl = this;
 
     $ctrl.selectFulfillmentCenter = function() {
@@ -8,7 +8,7 @@ storefrontApp.controller('inventoryController', ['dialogService', 'commerceServi
     };
 
     $ctrl.searchFulfillmentCenters = function() {
-        commerceService.searchFulfillmentCenters({ searchPhrase: $ctrl.searchPhrase }).then(function(response) {
+        fulfillmentCenterService.searchFulfillmentCenters({ searchPhrase: $ctrl.searchPhrase }).then(function(response) {
             $ctrl.fulfillmentCenters = response.data.results;
         });
     };

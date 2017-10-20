@@ -3,14 +3,14 @@
         <button type="button" class="close" ng-click="close()" title="{{ 'inventory.select_branch.close' | t }}" aria-label="{{ 'inventory.select_branch.close' | t }}"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">{{ 'inventory.select_branch.title' | t }}</h4>
     </div>
-    <div class="modal-body" ng-controller="inventoryController as $inventory">
+    <div class="modal-body" ng-controller="inventoryController as $inventory" ng-init="$inventory.searchFulfillmentCenters()">
         <p>{{ 'inventory.select_branch.enter_search_phrase' | t }}</p>
         <div class="form-group group-flex" vc-enter-source>
             <input type="text" class="form-control" ng-model="$inventory.searchPhrase">
             <a class="btn btn-default" href="" ng-click="$inventory.searchFulfillmentCenters()" vc-enter-target>{{ 'common.go' | t }}</a>
         </div>
         <div class="row" ng-repeat="fulfillmentCenter in $inventory.fulfillmentCenters">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 {% raw %}
                     <address>
                         <h5>{{ fulfillmentCenter.name }}</h5>
@@ -23,8 +23,8 @@
             </div>
             <div class="col-md-2"><srong>1.3 mi</srong></div>
             <div class="col-md-2">1000 items available</div>
-            <div class="col-md-2">
-                <button class="btn btn-default">Select</button>
+            <div class="col-md-3 form-group">
+                <a class="btn btn-default form-control" vc-query="{% raw %}{ terms: { available_in: [fulfillmentCenter.id] } }{% endraw %}" query-type="array">Select</a>
             </div>
         </div>
     </div>

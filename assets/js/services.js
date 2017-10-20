@@ -32,10 +32,10 @@ storefrontApp.service('customerService', ['$http', function ($http) {
     }
 }]);
 
-storefrontApp.service('commerceService', ['$http', 'apiBaseUrl', function($http, apiBaseUrl) {
+storefrontApp.service('fulfillmentCenterService', ['$http', 'apiBaseUrl', function($http, apiBaseUrl) {
     return {
         searchFulfillmentCenters: function (criteria) {
-            return $http.post(apiBaseUrl + 'api/b2b/fulfillment/centers/search', { searchCriteria: criteria });
+            return $http.post(apiBaseUrl + 'api/fulfillment/search/centers', criteria);
         }
     }
 }]);

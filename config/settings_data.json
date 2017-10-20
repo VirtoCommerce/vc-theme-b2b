@@ -51,7 +51,6 @@
             "ajax_cart_method": "Modal",
             "cart_notes_enable": false,
             "collection_prod_image_sizes": "large",
-            "collection_sidebar_filters": "facets",
             "color_accent": "#686868",
             "color_body_bg": "#fff",
             "color_body_text": "#585858",
