@@ -1,5 +1,13 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
+storefrontApp.config(['$provide', function ($provide) {
+    $provide.decorator('uibDropdownMenuDirective', ['$delegate', function ($delegate) {
+        var directive = $delegate[0];
+        directive.require = '?^^uibDropdown';
+        return $delegate;
+    }]);
+}]);
+
 storefrontApp.directive('vcContentPlace', ['$compile', 'marketingService', function ($compile, marketingService) {
     return {
         restrict: 'E',

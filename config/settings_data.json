@@ -36,7 +36,8 @@
             "copyright": "VirtoCommerce. All Rights Reserved.",
 
             "product_list_capacity": "16",
-            "product_list_capacity_steps":  "3",
+            "product_list_capacity_steps": "3",
+            "pickup_shipping_method": "FixedRate",
 
             "available_roles": [
                 "Corporate administrator",

@@ -8,8 +8,10 @@
             "bower_components/jquery/dist/jquery.js",
             "bower_components/underscore/underscore.js",
             "bower_components/angularjs/angular.js",
+            "bower_components/angular-filter/dist/angular-filter.js",
             "bower_components/angular-resource/angular-resource.js",
             "bower_components/ngstorage/ngStorage.js",
+            "bower_components/angular-credit-cards/release/angular-credit-cards.js",
             "bower_components/angular-animate/angular-animate.js",
             "bower_components/angular-bootstrap/ui-bootstrap.js",
             "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
@@ -38,6 +40,7 @@
             "assets/interactor.js",
             "assets/js/*.js",
             "assets/js/common-components/*.js",
+            "assets/js/checkout/*.js",
             "assets/js/account/*.js"
         ]
     },
