@@ -4,7 +4,7 @@ storefrontApp.controller('inventoryController', ['dialogService', 'fulfillmentCe
     var $ctrl = this;
 
     $ctrl.selectFulfillmentCenter = function() {
-        dialogService.showDialog(null, 'inventoryController', 'select-fulfillment-center-dialog.tpl');
+        dialogService.showDialog({ isFilter: true }, 'universalDialogController', 'storefront.select-fulfillment-center-dialog.tpl');
     };
 
     $ctrl.searchFulfillmentCenters = function() {

@@ -3,41 +3,46 @@
 storefrontApp.component('vcShippingType', {
     templateUrl: "themes/assets/js/common-components/shippingType.tpl.html",
     bindings: {
-        customer: '=',
-        shipment: '=',
-        pickupMethodCode: "@",
-        getAvailShippingMethods: '&',
-        selectShippingMethod: '&'
+        isDropdown: '<',
+        pickupMethodCode: "@"
     },
-    controller: ['$scope', function($scope) {
+    controller: ['$scope', '$localStorage', 'storefrontApp.mainContext', 'dialogService', function($scope, $localStorage, mainContext, dialogService) {
         var $ctrl = this;
-        $ctrl.type = $ctrl.shipment.shipmentMethodCode === $ctrl.pickupMethodCode ? 'shipping' : 'pickup';
-        $ctrl.pickupShippingMethod = _.findWhere($ctrl.getAvailShippingMethods(), { code: $ctrl.pickupMethodCode });
-        $ctrl.shipment.deliveryAddress = {
-            countryName: 'N/A',
-            city: 'N/A',
-            postalCode: $ctrl.customer.defaultShippingAddress ? $ctrl.customer.defaultShippingAddress.postalCode : 'N/A',
-            firstName: $ctrl.customer.firstName,
-            lastName: $ctrl.customer.lastName
+        $ctrl.shipmentType = $localStorage['shipmentType'];
+        if (!$ctrl.shipmentType) {
+            $ctrl.shipmentType = 'shipping';
+            $ctrl.isChanging = true;
         }
-        $ctrl.save = function() {
-            if ($ctrl.type === 'shipping') {
-                $ctrl.selectShippingMethod();
-            } else {
-                $ctrl.shipment.fulfillmentCenterId = $ctrl.fulfillmentCenter.id;
-                $ctrl.shipment.fulfillmentCenterName = $ctrl.fulfillmentCenter.name;
-                $ctrl.shipment.deliveryAddress = {
-                    postalCode: $ctrl.fulfillmentCenter.postalCode,
-                    countryName: $ctrl.fulfillmentCenter.countryName,
-                    countryCode: $ctrl.fulfillmentCenter.countryCode,
-                    stateProvince: $ctrl.fulfillmentCenter.stateProvince,
-                    city: $ctrl.fulfillmentCenter.city,
-                    line1: $ctrl.fulfillmentCenter.line1,
-                    line2: $ctrl.fulfillmentCenter.line2,
-                    firstName: customer.firstName,
-                    lastName: customer.lastName
+        $ctrl.shipmentAddress = $localStorage['shipmentAddress'];
+        $ctrl.shipmentFulfillmentCenter = $localStorage['shipmentFulfillmentCenter'];
+        $scope.$watch(
+            function() { return mainContext.customer; },
+            function (customer) {
+                if (customer) {
+                    $ctrl.customer = customer;
+                    if (!$ctrl.shipmentAddress && $ctrl.customer.defaultShippingAddress) {
+                        $ctrl.shipmentAddress = { postalCode: $ctrl.customer.defaultShippingAddress.postalCode };
+                    }
                 }
-                $ctrl.selectShippingMethod(pickupShippingMethod);
+            }
+        );
+        $ctrl.selectFulfillmentCenter = function () {
+            var modalInstance = dialogService.showDialog(null, 'universalDialogController', 'storefront.select-fulfillment-center-dialog.tpl');
+            modalInstance.result.then(function(fulfillmentCenter) {
+                $ctrl.shipmentFulfillmentCenter = fulfillmentCenter;
+                if (!$ctrl.isDropdown) {
+                    $ctrl.save();
+                }
+            });
+        };
+        $ctrl.save = function (isDefined) {
+            if (isDefined) {
+                $localStorage['shipmentType'] = $ctrl.shipmentType;
+                if ($ctrl.shipmentType === 'shipping') {
+                    $localStorage['shipmentAddress'] = $ctrl.shipmentAddress;
+                } else {
+                    $localStorage['shipmentFulfillmentCenter'] = $ctrl.shipmentFulfillmentCenter;
+                }
             }
         }
     }]

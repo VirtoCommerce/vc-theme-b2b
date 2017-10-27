@@ -135,9 +135,44 @@
                     "name": "week"
                 },
                 {
+                    "intervalCount": 2,
+                    "interval": "weeks",
+                    "name": "weeks"
+                },
+                {
+                    "intervalCount": 3,
+                    "interval": "weeks",
+                    "name": "weeks"
+                },
+                {
                     "intervalCount": 1,
                     "interval": "months",
                     "name": "month"
+                },
+                {
+                    "intervalCount": 2,
+                    "interval": "months",
+                    "name": "months"
+                },
+                {
+                    "intervalCount": 3,
+                    "interval": "months",
+                    "name": "months"
+                },
+                {
+                    "intervalCount": 4,
+                    "interval": "months",
+                    "name": "months"
+                },
+                {
+                    "intervalCount": 5,
+                    "interval": "months",
+                    "name": "months"
+                },
+                {
+                    "intervalCount": 6,
+                    "interval": "months",
+                    "name": "months"
                 },
                 {
                     "intervalCount": 1,

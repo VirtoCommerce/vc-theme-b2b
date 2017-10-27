@@ -12,6 +12,15 @@ storefrontApp.service('dialogService', ['$uibModal', function ($uibModal) {
                     }
                 }
             });
+            return modalInstance;
+        }
+    }
+}]);
+
+storefrontApp.service('mailingService', ['$http', 'apiBaseUrl', function ($http, apiBaseUrl) {
+    return {
+        sendProduct: function(id, data) {
+            return $http.post(apiBaseUrl + 'api/b2b/send/product/' + id, data);
         }
     }
 }]);

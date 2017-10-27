@@ -1,0 +1,13 @@
+﻿<script id="storefront.send-product-to-email.tpl" type="text/ng-template">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="close()" title="{{ 'cart.general.close_cart' | t }}" aria-label="{{ 'cart.general.close_cart' | t }}"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Send product to...</h4>
+    </div>
+    <div class="modal-body">
+        <input ng-model="email" type="email">
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="close()">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="send(email)">Send</button>
+    </div>
+</script>

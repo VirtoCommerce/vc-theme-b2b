@@ -488,15 +488,19 @@ storefrontApp.controller('collectionController', ['$scope', '$location', functio
     $ctrl.keyword = $location.search().keyword;
 }]);
 
-var storefrontApp = angular.module('storefrontApp');
+storefrontApp.controller('universalDialogController', ['$scope', '$uibModalInstance', 'dialogData', function ($scope, $uibModalInstance, dialogData) {
+    $scope.dialogData = dialogData;
 
-storefrontApp.config(['$provide', function ($provide) {
-    $provide.decorator('uibDropdownMenuDirective', ['$delegate', function ($delegate) {
-        var directive = $delegate[0];
-        directive.require = '?^^uibDropdown';
-        return $delegate;
-    }]);
+    $scope.close = function (result) {
+        if (result) {
+            $uibModalInstance.close(result);
+        } else {
+            $uibModalInstance.dismiss('cancel');
+        }
+    }
 }]);
+
+var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.directive('vcContentPlace', ['$compile', 'marketingService', function ($compile, marketingService) {
     return {
@@ -635,7 +639,7 @@ storefrontApp.controller('inventoryController', ['dialogService', 'fulfillmentCe
     var $ctrl = this;
 
     $ctrl.selectFulfillmentCenter = function() {
-        dialogService.showDialog(null, 'inventoryController', 'select-fulfillment-center-dialog.tpl');
+        dialogService.showDialog({ isFilter: true }, 'universalDialogController', 'storefront.select-fulfillment-center-dialog.tpl');
     };
 
     $ctrl.searchFulfillmentCenters = function() {
@@ -1165,7 +1169,24 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             $scope.selectedVariation = findVariationBySelectedProps(allVariations, getSelectedPropsMap($scope.allVariationPropsMap));
     };  
 
+    $scope.sendToEmail = function (storeId, productId, language) {
+        dialogService.showDialog({ storeId: storeId, productId: productId, language: language }, 'recentlyAddedCartItemDialogController', 'storefront.send-product-to-email.tpl');
+    };
+
     initialize();
+}]);
+
+storefrontApp.controller('recentlyAddedCartItemDialogController', ['$scope', '$window', '$uibModalInstance', 'mailingService', 'dialogData', function ($scope, $window, $uibModalInstance, mailingService, dialogData) {
+    $scope.dialogData = dialogData;
+
+    $scope.close = function() {
+        $uibModalInstance.dismiss('cancel');
+    }
+
+    $scope.send = function(email) {
+        mailingService.sendProduct(dialogData.productId, { email: email, storeId: dialogData.storeId, language: dialogData.language });
+        $uibModalInstance.close();
+    }
 }]);
 
 var storefrontApp = angular.module('storefrontApp');
@@ -1568,6 +1589,15 @@ storefrontApp.service('dialogService', ['$uibModal', function ($uibModal) {
                     }
                 }
             });
+            return modalInstance;
+        }
+    }
+}]);
+
+storefrontApp.service('mailingService', ['$http', 'apiBaseUrl', function ($http, apiBaseUrl) {
+    return {
+        sendProduct: function(id, data) {
+            return $http.post(apiBaseUrl + 'api/b2b/send/product/' + id, data);
         }
     }
 }]);
@@ -1905,6 +1935,74 @@ storefrontApp.component('vcCreditCard', {
 
 var storefrontApp = angular.module('storefrontApp');
 
+storefrontApp.config(['$provide', function ($provide) {
+    $provide.decorator('uibDropdownDirective', ['$delegate', function ($delegate) {
+        var directive = $delegate[0];
+        var compile = directive.compile;
+        directive.compile = function () {
+            var link = compile.apply(this, arguments);
+            return function (scope, element, attrs, dropdownCtrl) {
+                if (attrs.autoClose === 'mouseleave') {
+                    dropdownCtrl.toggle(false);
+                }
+
+                var closeDropdown = function() {
+                    scope.$apply(function () {
+                        if (attrs.autoClose === 'mouseleave') {
+                            dropdownCtrl.toggle(false);
+                        }
+                    });
+                };
+
+                element.on('mouseleave', closeDropdown);
+
+                link.apply(this, arguments);
+
+                scope.$on('$destroy', function() {
+                    element.off('mouseleave', closeDropdown);
+                });
+            };
+        };
+        return $delegate;
+    }]);
+
+    $provide.decorator('uibDropdownToggleDirective', ['$delegate', function($delegate) {
+        var directive = $delegate[0];
+        directive.controller = function () { };
+        $delegate[0] = directive;
+        return $delegate;
+    }]);
+}]);
+
+storefrontApp.directive('toggleOnMouseEnter', function() {
+    return {
+        require: ['?^uibDropdown', '?uibDropdownToggle'],
+        link: function (scope, element, attrs, ctrls) {
+            var dropdownCtrl = ctrls[0];
+            var dropdownToggleCtrl = ctrls[1];
+            if (!(dropdownCtrl && dropdownToggleCtrl)) {
+                return;
+            }
+
+            element.addClass('toggle-on-mouse-enter');
+
+            var openDropdown = function () {
+                if (!element.hasClass('disabled') && !attrs.disabled) {
+                    scope.$apply(function () {
+                        dropdownCtrl.toggle(true);
+                    });
+                }
+            };
+
+            element.on('mouseenter', openDropdown);
+
+            scope.$on('$destroy', function () {
+                element.off('mouseenter', openDropdown);
+            });
+        }
+    };
+});
+
 storefrontApp.directive('dropdownClose', function () {
     return {
         require: ['?^uibDropdown'],
@@ -2234,6 +2332,36 @@ storefrontApp.component('vcPaymentMethods', {
 });
 
 var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.component('vcPaymentPlan', {
+    templateUrl: "themes/assets/js/common-components/paymentPlan.tpl.html",
+    bindings: {
+    },
+    controller: ['$scope', '$localStorage', function($scope, $localStorage) {
+        var $ctrl = this;
+
+        $scope.$watch(function() {
+            return $ctrl.availablePaymentPlans;
+        }, function (availablePaymentPlans) {
+            if (availablePaymentPlans) {
+                $ctrl.paymentPlan = $localStorage['paymentPlan'];
+                $ctrl.type = $ctrl.paymentPlan ? 'auto-reorder' : 'one-time';
+                $ctrl.paymentPlan = ($ctrl.paymentPlan ? _.findWhere($ctrl.availablePaymentPlans, { intervalCount: $ctrl.paymentPlan.intervalCount, interval: $ctrl.paymentPlan.interval }) : undefined) ||
+                    _.findWhere($ctrl.availablePaymentPlans, { intervalCount: 1, interval: 'months' });
+            }
+        });
+
+        $ctrl.save = function() {
+            if ($ctrl.type === 'auto-reorder') {
+                $localStorage['paymentPlan'] = $ctrl.paymentPlan;
+            } else {
+                $localStorage['paymentPlan'] = undefined;
+            }
+        }
+    }]
+});
+
+var storefrontApp = angular.module('storefrontApp');
 storefrontApp.component('vcRoles', {
     templateUrl: "themes/assets/roles.tpl.html.liquid",
     bindings: {
@@ -2279,114 +2407,49 @@ var storefrontApp = angular.module('storefrontApp');
 storefrontApp.component('vcShippingType', {
     templateUrl: "themes/assets/js/common-components/shippingType.tpl.html",
     bindings: {
-        customer: '=',
-        shipment: '=',
-        pickupMethodCode: "@",
-        getAvailShippingMethods: '&',
-        selectShippingMethod: '&'
+        isDropdown: '<',
+        pickupMethodCode: "@"
     },
-    controller: ['$scope', function($scope) {
+    controller: ['$scope', '$localStorage', 'storefrontApp.mainContext', 'dialogService', function($scope, $localStorage, mainContext, dialogService) {
         var $ctrl = this;
-        $ctrl.type = $ctrl.shipment.shipmentMethodCode === $ctrl.pickupMethodCode ? 'shipping' : 'pickup';
-        $ctrl.pickupShippingMethod = _.findWhere($ctrl.getAvailShippingMethods(), { code: $ctrl.pickupMethodCode });
-        $ctrl.shipment.deliveryAddress = {
-            countryName: 'N/A',
-            city: 'N/A',
-            postalCode: $ctrl.customer.defaultShippingAddress ? $ctrl.customer.defaultShippingAddress.postalCode : 'N/A',
-            firstName: $ctrl.customer.firstName,
-            lastName: $ctrl.customer.lastName
+        $ctrl.shipmentType = $localStorage['shipmentType'];
+        if (!$ctrl.shipmentType) {
+            $ctrl.shipmentType = 'shipping';
+            $ctrl.isChanging = true;
         }
-        $ctrl.save = function() {
-            if ($ctrl.type === 'shipping') {
-                $ctrl.selectShippingMethod();
-            } else {
-                $ctrl.shipment.fulfillmentCenterId = $ctrl.fulfillmentCenter.id;
-                $ctrl.shipment.fulfillmentCenterName = $ctrl.fulfillmentCenter.name;
-                $ctrl.shipment.deliveryAddress = {
-                    postalCode: $ctrl.fulfillmentCenter.postalCode,
-                    countryName: $ctrl.fulfillmentCenter.countryName,
-                    countryCode: $ctrl.fulfillmentCenter.countryCode,
-                    stateProvince: $ctrl.fulfillmentCenter.stateProvince,
-                    city: $ctrl.fulfillmentCenter.city,
-                    line1: $ctrl.fulfillmentCenter.line1,
-                    line2: $ctrl.fulfillmentCenter.line2,
-                    firstName: customer.firstName,
-                    lastName: customer.lastName
+        $ctrl.shipmentAddress = $localStorage['shipmentAddress'];
+        $ctrl.shipmentFulfillmentCenter = $localStorage['shipmentFulfillmentCenter'];
+        $scope.$watch(
+            function() { return mainContext.customer; },
+            function (customer) {
+                if (customer) {
+                    $ctrl.customer = customer;
+                    if (!$ctrl.shipmentAddress && $ctrl.customer.defaultShippingAddress) {
+                        $ctrl.shipmentAddress = { postalCode: $ctrl.customer.defaultShippingAddress.postalCode };
+                    }
                 }
-                $ctrl.selectShippingMethod(pickupShippingMethod);
+            }
+        );
+        $ctrl.selectFulfillmentCenter = function () {
+            var modalInstance = dialogService.showDialog(null, 'universalDialogController', 'storefront.select-fulfillment-center-dialog.tpl');
+            modalInstance.result.then(function(fulfillmentCenter) {
+                $ctrl.shipmentFulfillmentCenter = fulfillmentCenter;
+                if (!$ctrl.isDropdown) {
+                    $ctrl.save();
+                }
+            });
+        };
+        $ctrl.save = function (isDefined) {
+            if (isDefined) {
+                $localStorage['shipmentType'] = $ctrl.shipmentType;
+                if ($ctrl.shipmentType === 'shipping') {
+                    $localStorage['shipmentAddress'] = $ctrl.shipmentAddress;
+                } else {
+                    $localStorage['shipmentFulfillmentCenter'] = $ctrl.shipmentFulfillmentCenter;
+                }
             }
         }
     }]
-});
-
-var storefrontApp = angular.module('storefrontApp');
-
-storefrontApp.config(['$provide', function ($provide) {
-    $provide.decorator('uibDropdownDirective', ['$delegate', function ($delegate) {
-        var directive = $delegate[0];
-        var compile = directive.compile;
-        directive.compile = function () {
-            var link = compile.apply(this, arguments);
-            return function (scope, element, attrs, dropdownCtrl) {
-                if (attrs.autoClose === 'mouseleave') {
-                    dropdownCtrl.toggle(false);
-                }
-
-                var closeDropdown = function() {
-                    scope.$apply(function () {
-                        if (attrs.autoClose === 'mouseleave') {
-                            dropdownCtrl.toggle(false);
-                        }
-                    });
-                };
-
-                element.on('mouseleave', closeDropdown);
-
-                link.apply(this, arguments);
-
-                scope.$on('$destroy', function() {
-                    element.off('mouseleave', closeDropdown);
-                });
-            };
-        };
-        return $delegate;
-    }]);
-
-    $provide.decorator('uibDropdownToggleDirective', ['$delegate', function($delegate) {
-        var directive = $delegate[0];
-        directive.controller = function () { };
-        $delegate[0] = directive;
-        return $delegate;
-    }]);
-}]);
-
-storefrontApp.directive('toggleOnMouseEnter', function() {
-    return {
-        require: ['?^uibDropdown', '?uibDropdownToggle'],
-        link: function (scope, element, attrs, ctrls) {
-            var dropdownCtrl = ctrls[0];
-            var dropdownToggleCtrl = ctrls[1];
-            if (!(dropdownCtrl && dropdownToggleCtrl)) {
-                return;
-            }
-
-            element.addClass('toggle-on-mouse-enter');
-
-            var openDropdown = function () {
-                if (!element.hasClass('disabled') && !attrs.disabled) {
-                    scope.$apply(function () {
-                        dropdownCtrl.toggle(true);
-                    });
-                }
-            };
-
-            element.on('mouseenter', openDropdown);
-
-            scope.$on('$destroy', function () {
-                element.off('mouseenter', openDropdown);
-            });
-        }
-    };
 });
 
 var storefrontApp = angular.module('storefrontApp');

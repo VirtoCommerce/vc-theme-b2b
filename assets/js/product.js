@@ -228,5 +228,22 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             $scope.selectedVariation = findVariationBySelectedProps(allVariations, getSelectedPropsMap($scope.allVariationPropsMap));
     };  
 
+    $scope.sendToEmail = function (storeId, productId, language) {
+        dialogService.showDialog({ storeId: storeId, productId: productId, language: language }, 'recentlyAddedCartItemDialogController', 'storefront.send-product-to-email.tpl');
+    };
+
     initialize();
+}]);
+
+storefrontApp.controller('recentlyAddedCartItemDialogController', ['$scope', '$window', '$uibModalInstance', 'mailingService', 'dialogData', function ($scope, $window, $uibModalInstance, mailingService, dialogData) {
+    $scope.dialogData = dialogData;
+
+    $scope.close = function() {
+        $uibModalInstance.dismiss('cancel');
+    }
+
+    $scope.send = function(email) {
+        mailingService.sendProduct(dialogData.productId, { email: email, storeId: dialogData.storeId, language: dialogData.language });
+        $uibModalInstance.close();
+    }
 }]);
