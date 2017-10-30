@@ -95,6 +95,12 @@ button {
   @include button-variant-alt($btn-primary-color, $btn-primary-bg, $btn-primary-border, 'darken');
 }
 
+.btn-link[disabled],
+.btn-link[disabled]:hover {
+  background-color: transparent;
+  border-color: transparent;
+}
+
 .btn.btn-lg {
   padding: 14px 35px;
 }

@@ -41,7 +41,9 @@
             "assets/js/*.js",
             "assets/js/common-components/*.js",
             "assets/js/checkout/*.js",
-            "assets/js/account/*.js"
+            "assets/js/account/*.js",
+            "assets/js/lists/add-to-list.js",
+            "assets/js/lists/add-to-list-button.js"
         ]
     },
     {
@@ -77,6 +79,7 @@
             "assets/js/searchBar.js",
             "assets/js/common-components/*.js",
             "assets/js/account/*.js",
+            "assets/js/lists/*.js",
             "assets/js/permission.js"
         ]
     },

@@ -8,7 +8,7 @@
             </li>
             <li>
                 <i class="fa fa-print"></i>
-                <a href="">Print</a>
+                <a href="" ng-click="print()">Print</a>
             </li>
         </ul>
     </div>
@@ -73,7 +73,7 @@
                                     <input type="text" class="form-control qty" ng-init="product['{{product.id}}'].quantity = 1" ng-model="product['{{product.id}}'].quantity">
                                     <button class="btn btn-primary" title="{{ 'products.general.add_to_cart' | t }}" ng-click="addProductToCartById('{{ product.id }}', product['{{product.id}}'].quantity, $event)" ng-controller="productController">{{ 'products.general.add_to_cart' | t }}</button>
                                 </div>
-                                <a href="#" class="add-to-list"><i class="fa fa-plus"></i> Add to list</a>
+                                <add-to-list-button ng-if="customer.isRegisteredUser" selected-variation="selectedVariation"></add-to-list-button>
                             </div>
                             <div class="col-md-4">
                                 <vc-shipping-type is-dropdown="false" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
@@ -107,6 +107,15 @@
         </div>
     </div>
 </ng-controller>
+
+<script>
+    window.products = [];
+    window.products.push({
+        id: "{{ product.id }}",
+        catalogId: "{{ product.catalog_id }}",
+        categoryId: "{{ product.category_id }}"
+    });
+</script>
 
 {% comment %}
     <!--default product images if product doesn't no have variations or variation not selected also it for search craulers-->

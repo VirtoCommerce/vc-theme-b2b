@@ -651,56 +651,6 @@ storefrontApp.controller('inventoryController', ['dialogService', 'fulfillmentCe
 
 var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', 'listService', '$translate', function ($scope, $window, $uibModalInstance, dialogData, listService, $translate) {
-    $scope.availableLists = [];
-    $scope.selectedList = {};
-    $scope.dialogData = dialogData;
-    $scope.inProgress = false;
-    $scope.itemAdded = false;
-
-    $scope.addProductToList = function () {
-        $scope.inProgress = true;
-        listService.addLineItem(dialogData.id, $scope.selectedList.name).then(function (response) {
-            if (response.data) {
-                $scope.inProgress = false;
-                $scope.itemAdded = true;
-            }
-        })
-    }
-    $scope.selectList = function (list) {
-        $scope.selectedList = list;
-    };
-
-    $scope.close = function () {
-        $uibModalInstance.close();
-    };
-    $scope.redirect = function (url) {
-        $window.location = url;
-    }
-
-    $scope.initialize = function (lists) {        
-        $scope.lists = lists;
-        angular.forEach($scope.lists, function (list) {
-            var titleKey = 'wishlist.general.' + list.name + '_list_title';
-            var descriptionKey = 'wishlist.general.' + list.name + '_list_description';
-            $translate([titleKey, descriptionKey]).then(function (translations) {
-                list.title = translations[titleKey];
-                list.description = translations[descriptionKey];
-            }, function (translationIds) {
-                list.title = translationIds[titleKey];
-                list.description = translationIds[descriptionKey];
-                });
-            listService.contains(dialogData.id, list.name).then(function (response) {
-                list.contains = response.data.contains;
-            });            
-        });
-      
-    };
-
-
-}]);
-var storefrontApp = angular.module('storefrontApp');
-
 storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location', '$window', 'customerService', 'storefrontApp.mainContext',
     function ($rootScope, $scope, $location, $window, customerService, mainContext) {
 
@@ -940,241 +890,225 @@ storefrontApp.controller('productListController', ['$scope', '$window', 'pricing
 }]);
 
 var storefrontApp = angular.module('storefrontApp');
+storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', '$timeout', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService',    function ($rootScope, $scope, $window, $timeout, dialogService, catalogService, cartService, quoteRequestService) {
+        //TODO: prevent add to cart not selected variation
+        // display validator please select property
+        // display price range
 
-storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', '$timeout', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'customerService', 'listService',
-    function ($rootScope, $scope, $window, $timeout, dialogService, catalogService, cartService, quoteRequestService, customerService, listService) {
-    //TODO: prevent add to cart not selected variation
-    // display validator please select property
-    // display price range
+        var allVariations = [];
 
-    var allVariations = [];
-  
-    $scope.selectedVariation = {};
-    $scope.allVariationPropsMap = {};
-    $scope.productPrice = null;
-    $scope.productPriceLoaded = false;
+        $scope.selectedVariation = {};
+        $scope.allVariationPropsMap = {};
+        $scope.productPrice = null;
+        $scope.productPriceLoaded = false;
 
-    $scope.addProductToCart = function (product, quantity) {
-        var dialogData = toDialogDataModel(product, quantity);
-        dialogService.showDialog(dialogData, 'recentlyAddedCartItemDialogController', 'storefront.recently-added-cart-item-dialog.tpl');
-        cartService.addLineItem(product.id, quantity).then(function (response) {
-            $rootScope.$broadcast('cartItemsChanged');
-        });
-    }
+        $scope.addProductToCart = function (product, quantity) {
+            var dialogData = toDialogDataModel(product, quantity);
+            dialogService.showDialog(dialogData, 'recentlyAddedCartItemDialogController', 'storefront.recently-added-cart-item-dialog.tpl');
+            cartService.addLineItem(product.id, quantity).then(function (response) {
+                $rootScope.$broadcast('cartItemsChanged');
+            });
+        }
 
-    // TODO: Replace mock with real function
-    $scope.addProductsToCartMock = function () {
-        var rejection = {
-            data: {
-                message: "The 1 product(s) below was not added to cart:",
-                modelState: {
-                    "Test": "Test"
+        // TODO: Replace mock with real function
+        $scope.addProductsToCartMock = function () {
+            var rejection = {
+                data: {
+                    message: "The 1 product(s) below was not added to cart:",
+                    modelState: {
+                        "Test": "Test"
+                    }
                 }
-            }
-        };
-        var items = [
-            {
-                id: "9cbd8f316e254a679ba34a900fccb076",
-                name: "3DR Solo Quadcopter (No Gimbal)",
-                imageUrl: "//localhost/admin/assets/catalog/1428965138000_1133723.jpg",
-                price: {
-                    actualPrice: {
-                        formattedAmount: "$896.39"
+            };
+            var items = [
+                {
+                    id: "9cbd8f316e254a679ba34a900fccb076",
+                    name: "3DR Solo Quadcopter (No Gimbal)",
+                    imageUrl: "//localhost/admin/assets/catalog/1428965138000_1133723.jpg",
+                    price: {
+                        actualPrice: {
+                            formattedAmount: "$896.39"
+                        },
+                        actualPriceWithTax: {
+                            formattedAmount: "$1,075.67"
+                        },
+                        listPrice: {
+                            formattedAmount: "$995.99"
+                        },
+                        listPriceWithTax: {
+                            formattedAmount: "$1,195.19"
+                        },
+                        extendedPrice: {
+                            formattedAmount: "$1,792.78"
+                        },
+                        extendedPriceWithTax: {
+                            formattedAmount: "$2,151.34"
+                        }
                     },
-                    actualPriceWithTax: {
-                        formattedAmount: "$1,075.67"
-                    },
-                    listPrice: {
-                        formattedAmount: "$995.99"
-                    },
-                    listPriceWithTax: {
-                        formattedAmount: "$1,195.19"
-                    },
-                    extendedPrice: {
-                        formattedAmount: "$1,792.78"
-                    },
-                    extendedPriceWithTax: {
-                        formattedAmount: "$2,151.34"
-                    }
+                    quantity: 2,
+                    url: "~/camcorders/aerial-imaging-drones/3dr-solo-quadcopter-no-gimbal"
                 },
-                quantity: 2,
-                url: "~/camcorders/aerial-imaging-drones/3dr-solo-quadcopter-no-gimbal"
-            },
-            {
-                id: "ad4ae79ffdbc4c97959139a0c387c72e",
-                name: "Samsung Galaxy Note 4 SM-N910C 32GB",
-                imageUrl: "//localhost/admin/assets/catalog/1416164841000_1097106.jpg",
-                price: {
-                    actualPrice: {
-                        formattedAmount: "$530.99"
+                {
+                    id: "ad4ae79ffdbc4c97959139a0c387c72e",
+                    name: "Samsung Galaxy Note 4 SM-N910C 32GB",
+                    imageUrl: "//localhost/admin/assets/catalog/1416164841000_1097106.jpg",
+                    price: {
+                        actualPrice: {
+                            formattedAmount: "$530.99"
+                        },
+                        actualPriceWithTax: {
+                            formattedAmount: "$637.19"
+                        },
+                        listPrice: {
+                            formattedAmount: "$589.99"
+                        },
+                        listPriceWithTax: {
+                            formattedAmount: "$707.99"
+                        },
+                        extendedPrice: {
+                            formattedAmount: "$1,592.97"
+                        },
+                        extendedPriceWithTax: {
+                            formattedAmount: "$1,911.57"
+                        }
                     },
-                    actualPriceWithTax: {
-                        formattedAmount: "$637.19"
-                    },
-                    listPrice: {
-                        formattedAmount: "$589.99"
-                    },
-                    listPriceWithTax: {
-                        formattedAmount: "$707.99"
-                    },
-                    extendedPrice: {
-                        formattedAmount: "$1,592.97"
-                    },
-                    extendedPriceWithTax: {
-                        formattedAmount: "$1,911.57"
-                    }
-                },
-                quantity: 5,
-                url: "~/cell-phones/samsung-galaxy-note-4-sm-n910c-32gb"
-            }
-        ];
-        var dialogData = toDialogDataModelMock(items, rejection);
-        dialogService.showDialog(dialogData, 'recentlyAddedCartItemDialogController', 'storefront.recently-added-cart-item-dialog.tpl');
-    }
-
-    $scope.addProductToCartById = function (productId, quantity, event) {
-        event.preventDefault();
-        catalogService.getProduct([productId]).then(function (response) {
-            if (response.data && response.data.length) {
-                var product = response.data[0];
-                $scope.addProductToCart(product, quantity);
-            }
-        });
-    }
-
-    $scope.addProductToWishlist = function (product) {
-        var dialogData = toDialogDataModel(product, 1);
-        dialogService.showDialog(dialogData, 'recentlyAddedListItemDialogController', 'storefront.recently-added-list-item-dialog.tpl');
-    }
-
-    $scope.addProductToActualQuoteRequest = function (product, quantity) {
-        var dialogData = toDialogDataModel(product, quantity);
-        dialogService.showDialog(dialogData, 'recentlyAddedActualQuoteRequestItemDialogController', 'storefront.recently-added-actual-quote-request-item-dialog.tpl');
-        quoteRequestService.addProductToQuoteRequest(product.id, quantity).then(function (response) {
-            $rootScope.$broadcast('actualQuoteRequestItemsChanged');
-        });
-    }
-
-    function toDialogDataModel(product, quantity) {
-        return { items: [angular.extend({ }, product, { quantity: quantity })] };
-        //     return {
-        //         id: product.id,
-        //         name: product.name,
-        //         imageUrl: product.primaryImage ? product.primaryImage.url : null,
-        //         listPrice: product.price.listPrice,
-        //listPriceWithTax: product.price.listPriceWithTax,
-        //         placedPrice: product.price.actualPrice,
-        //         placedPriceWithTax: product.price.actualPriceWithTax,
-        //         quantity: quantity,
-        //         updated: false
-        //     }
-    }
-
-    function toDialogDataModelMock(items, rejection) {
-        var dialogDataModel = {};
-        if (rejection) {
-            dialogDataModel.errorMessage = rejection.data.message;
-            dialogDataModel.errors = rejection.data.modelState;
+                    quantity: 5,
+                    url: "~/cell-phones/samsung-galaxy-note-4-sm-n910c-32gb"
+                }
+            ];
+            var dialogData = toDialogDataModelMock(items, rejection);
+            dialogService.showDialog(dialogData, 'recentlyAddedCartItemDialogController', 'storefront.recently-added-cart-item-dialog.tpl');
         }
-        dialogDataModel.items = items;
-        return dialogDataModel;
-    }
 
-    function initialize() {
-        var productIds = _.map($window.products, function (product) { return product.id });
-        if (!productIds || !productIds.length) {
-            return;
+        $scope.addProductToCartById = function (productId, quantity, event) {
+            event.preventDefault();
+            catalogService.getProduct([productId]).then(function (response) {
+                if (response.data && response.data.length) {
+                    var product = response.data[0];
+                    $scope.addProductToCart(product, quantity);
+                }
+            });
         }
-        catalogService.getProduct(productIds).then(function (response) {
-            var product = response.data[0];
+
+        $scope.addProductToActualQuoteRequest = function (product, quantity) {
+            var dialogData = toDialogDataModel(product, quantity);
+            dialogService.showDialog(dialogData, 'recentlyAddedActualQuoteRequestItemDialogController', 'storefront.recently-added-actual-quote-request-item-dialog.tpl');
+            quoteRequestService.addProductToQuoteRequest(product.id, quantity).then(function (response) {
+                $rootScope.$broadcast('actualQuoteRequestItemsChanged');
+            });
+        }
+
+        function toDialogDataModel(product, quantity) {
+            return { items: [angular.extend({ }, product, { quantity: quantity })] };
+            //     return {
+            //         id: product.id,
+            //         name: product.name,
+            //         imageUrl: product.primaryImage ? product.primaryImage.url : null,
+            //         listPrice: product.price.listPrice,
+            //listPriceWithTax: product.price.listPriceWithTax,
+            //         placedPrice: product.price.actualPrice,
+            //         placedPriceWithTax: product.price.actualPriceWithTax,
+            //         quantity: quantity,
+            //         updated: false
+            //     }
+        }
+
+        function toDialogDataModelMock(items, rejection) {
+            var dialogDataModel = {};
+            if (rejection) {
+                dialogDataModel.errorMessage = rejection.data.message;
+                dialogDataModel.errors = rejection.data.modelState;
+            }
+            dialogDataModel.items = items;
+            return dialogDataModel;
+        }
+
+        function initialize() {
+            var productIds = _.map($window.products, function (product) { return product.id });
+            if (!productIds || !productIds.length) {
+                return;
+            }
+            catalogService.getProduct(productIds).then(function (response) {
+				var product = response.data[0];
                 //Current product is also a variation (titular)
                 allVariations = [product].concat(product.variations || []);
                 $scope.allVariationPropsMap = getFlatternDistinctPropertiesMap(allVariations);
 
-            //Auto select initial product as default variation  (its possible because all our products is variations)
-            var propertyMap = getVariationPropertyMap(product);
-            _.each(_.keys(propertyMap), function (x) {
-                $scope.checkProperty(propertyMap[x][0])
+                //Auto select initial product as default variation  (its possible because all our products is variations)
+                var propertyMap = getVariationPropertyMap(product);
+                _.each(_.keys(propertyMap), function (x) {
+                    $scope.checkProperty(propertyMap[x][0])
+                });
+				$scope.selectedVariation = product;
             });
-            $scope.selectedVariation = product;
-            compareProductInLists(product.id);
-        });        
-    };
+        };
 
-    function getFlatternDistinctPropertiesMap(variations) {
-        var retVal = {};
-        _.each(variations, function (variation) {
-            var propertyMap = getVariationPropertyMap(variation);
-            //merge
-            _.each(_.keys(propertyMap), function (x) {
+        function getFlatternDistinctPropertiesMap(variations) {
+            var retVal = {};
+            _.each(variations, function (variation) {
+                var propertyMap = getVariationPropertyMap(variation);
+                //merge
+                _.each(_.keys(propertyMap), function (x) {
                     retVal[x] = _.uniq(_.union(retVal[x], propertyMap[x]), "value");
+                });
             });
-        });
-        return retVal;
-    };
+            return retVal;
+        };
 
-    function getVariationPropertyMap(variation) {
+        function getVariationPropertyMap(variation) {
             return _.groupBy(variation.variationProperties, function (x) { return x.displayName });
         }
 
-    function getSelectedPropsMap(variationPropsMap) {
-        var retVal = {};
-        _.each(_.keys(variationPropsMap), function (x) {
-            var property = _.find(variationPropsMap[x], function (y) {
-                return y.selected;
-            });
-            if (property) {
-                retVal[x] = [property];
-            }
-        });
-        return retVal;
-        }
-
-    function comparePropertyMaps(propMap1, propMap2) {
-        return _.every(_.keys(propMap1), function (x) {
-            var retVal = propMap2.hasOwnProperty(x);
-            if (retVal) {
-                    retVal = propMap1[x][0].value == propMap2[x][0].value;
-            }
-            return retVal;
-        });
-    };
-
-    function findVariationBySelectedProps(variations, selectedPropMap) {
-            return _.find(variations, function (x) {
-                return comparePropertyMaps(getVariationPropertyMap(x), selectedPropMap);
-        });
-    }
-
-    function compareProductInLists(productId) {
-        $scope.buttonInvalid = true;
-        var listNames = [{ title: 'shopping' }, { title: 'wish' }];
-        angular.forEach(listNames, function (listName) {
-            listService.contains(productId, listName.title).then(function (result) {
-                if (result && (result.data.contains == false)) {
-                    $scope.buttonInvalid = false;
+        function getSelectedPropsMap(variationPropsMap) {
+            var retVal = {};
+            _.each(_.keys(variationPropsMap), function (x) {
+                var property = _.find(variationPropsMap[x], function (y) {
+                    return y.selected;
+                });
+                if (property) {
+                    retVal[x] = [property];
                 }
             });
-        })
-    }
+            return retVal;
+        }
+
+        function comparePropertyMaps(propMap1, propMap2) {
+            return _.every(_.keys(propMap1), function (x) {
+                var retVal = propMap2.hasOwnProperty(x);
+                if (retVal) {
+                    retVal = propMap1[x][0].value == propMap2[x][0].value;
+                }
+                return retVal;
+            });
+        };
+
+        function findVariationBySelectedProps(variations, selectedPropMap) {
+            return _.find(variations, function (x) {
+                return comparePropertyMaps(getVariationPropertyMap(x), selectedPropMap);
+            });
+        }
 
         //Method called from View when user clicks one property value
-    $scope.checkProperty = function (property) {
+        $scope.checkProperty = function (property) {
             //Select appropriate property and unselect previous selection
             _.each($scope.allVariationPropsMap[property.displayName], function (x) {
-            x.selected = x != property ? false : !x.selected;
-        });
+                x.selected = x != property ? false : !x.selected;
+            });
 
             //try to find the best variation match for selected properties
             $scope.selectedVariation = findVariationBySelectedProps(allVariations, getSelectedPropsMap($scope.allVariationPropsMap));
-    };  
+        };
 
-    $scope.sendToEmail = function (storeId, productId, language) {
-        dialogService.showDialog({ storeId: storeId, productId: productId, language: language }, 'recentlyAddedCartItemDialogController', 'storefront.send-product-to-email.tpl');
-    };
+        $scope.sendToEmail = function (storeId, productId, language) {
+            dialogService.showDialog({ storeId: storeId, productId: productId, language: language }, 'recentlyAddedCartItemDialogController', 'storefront.send-product-to-email.tpl');
+        };
 
-    initialize();
-}]);
+        $scope.print = function() {
+            $window.print();
+        };
+
+		initialize();
+    }]);
 
 storefrontApp.controller('recentlyAddedCartItemDialogController', ['$scope', '$window', '$uibModalInstance', 'mailingService', 'dialogData', function ($scope, $window, $uibModalInstance, mailingService, dialogData) {
     $scope.dialogData = dialogData;
@@ -1715,19 +1649,113 @@ storefrontApp.service('cartService', ['$http', function ($http) {
     }
 }]);
 
-storefrontApp.service('listService', ['$http', function ($http) {
+storefrontApp.service('listService', ['$q', '$http', '$localStorage', 'customerService', function ($q, $http, $localStorage, customerService) {
     return {
-        getWishlist: function (listName) {
-            return $http.get('storefrontapi/lists/' + listName + '?t=' + new Date().getTime());
+        getOrCreateMyLists: function (userName, lists) {
+            if (!$localStorage['lists']) {
+                $localStorage['lists'] = {};
+                $localStorage['lists'][userName] = [];
+                $localStorage['sharedListsIds'] = {};
+                $localStorage['sharedListsIds'][userName] = [];
+                _.each(lists, function (list) {
+                    list.author = userName;
+                    list.id = Math.floor(Math.random() * 230910443210623294 + 1).toString();
+                });
+                _.extend($localStorage['lists'][userName], lists);
+                $ctrl.accountLists.selectTab('myLists');
+
+                return;
+            }
+            else return $q(function (resolve, reject) { resolve($localStorage['lists'][userName]) });
         },
+
+        getSharedLists: function (userName) {
+            var lists = $localStorage['lists'];
+            var sharedLists = [];
+            if ($localStorage['sharedListsIds']) {
+                _.each($localStorage['sharedListsIds'][userName], function (cartId) {
+                    _.each(lists, function (list) {
+                        if (angular.isDefined(_.find(list, { id: cartId.toString() }))) {
+                            sharedLists.push(_.find(list, { id: cartId }));
+                        }
+
+                    })
+                })
+            }
+            return $q(function (resolve, reject) { resolve(sharedLists) });
+        },
+        getWishlist: function (listName, permission, id, userName) {
+            if (_.contains($localStorage['lists'][userName], _.find($localStorage['lists'][userName], { name: listName })) && angular.isDefined(userName)) {
+                $localStorage['lists'][userName].push({ name: listName + 1, permission: permission, id: id, items: [], author: userName });
+            }
+            else $localStorage['lists'][userName].push({ name: listName, permission: permission, id: id, items: [], author: userName })
+
+            return _.find($localStorage['lists'][userName], { name: listName });
+            //return $http.get('storefrontapi/lists/' + listName + '?t=' + new Date().getTime());
+        },
+
+        addItemToList: function (listId, product) {
+            _.each($localStorage['lists'], function (list) {
+                if (angular.isDefined(_.find(list, { id: listId }))) {
+                    var searchedList = _.find(list, { id: listId });
+                    searchedList.items.push(product);
+                }
+
+            })
+        },
+
+        containsInList: function (productId, cartId) {
+            var lists = angular.copy($localStorage['lists']);
+            var contains;
+            _.each(lists, function (list) {
+                if (angular.isDefined(_.find(list, { id: cartId }))) {
+                    var currentList = _.find(list, { id: cartId });
+                    if (angular.isDefined(_.find(currentList.items, { productId: productId })))
+                        contains = true;
+                    else
+                        contains = false;
+                }
+            })
+            return $q(function (resolve, reject) { resolve({ contains: contains }) });
+        },
+
+        addSharedList: function (userName, myLists, sharedCartId) {
+            if (!_.some($localStorage['sharedListsIds'][userName], function (x) { return x === sharedCartId }) && (!_.find(myLists, { id: sharedCartId }))) {
+                $localStorage['sharedListsIds'][userName].push(sharedCartId);
+                return $q(function (resolve, reject) {
+                    resolve()
+                });
+            }
+            else return $q(function (resolve, reject) {
+                resolve()
+            });
+        },
+
         contains: function (productId, listName) {
-            return $http.get('storefrontapi/lists/' + listName +'/items/'+ productId + '/contains?t=' + new Date().getTime());
+            return $http.get('storefrontapi/lists/' + listName + '/items/' + productId + '/contains?t=' + new Date().getTime());
         },
         addLineItem: function (productId, listName) {
             return $http.post('storefrontapi/lists/' + listName + '/items', { productId: productId });
         },
-        removeLineItem: function (lineItemId, listName) {
-            return $http.delete('storefrontapi/lists/' + listName + '/items/' + lineItemId);
+
+        removeLineItem: function (lineItemId, listId, userName) {
+            var searchedList = _.find($localStorage['lists'][userName], { id: listId });
+            searchedList.items = _.filter(searchedList.items, function (item) { return item.id != lineItemId });
+            return $q(function (resolve, reject) {
+                resolve(searchedList)
+            });
+            //return $http.delete('storefrontapi/lists/' + listName + '/items/' + lineItemId);
+        },
+        clearList: function (cartId, userName) {
+            $localStorage['lists'][userName] = _.filter($localStorage['lists'][userName], function (x) { return x.id != cartId });
+            //return $http.post('storefrontapi/lists/clear', { listName: listName });
+        },
+        removeFromFriendsLists: function (currentId, userName) {
+            $localStorage['sharedListsIds'][userName] = _.filter($localStorage['sharedListsIds'][userName], function (cartId) {
+                return $q(function (resolve, reject) {
+                    resolve(cartId !== currentId)
+                })
+            })
         }
     }
 }]);
@@ -2950,6 +2978,21 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards',
 }])
 
 .value('$routerRootComponent', 'vcAccountManager')
+.service('accountDialogService', ['$uibModal', function ($uibModal) {
+    return {
+        showDialog: function (dialogData, controller, templateUrl) {
+            var modalInstance = $uibModal.open({
+                controller: controller,
+                templateUrl: templateUrl,
+                resolve: {
+                    dialogData: function () {
+                        return dialogData;
+                    }
+                }
+            });
+        }
+    }
+}])
 
 .component('vcAccountManager', {
     templateUrl: "account-manager.tpl",
@@ -2966,7 +3009,7 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards',
          { path: '/changePassword', name: 'PasswordChange', component: 'vcAccountPasswordChange' },
          { path: '/companyInfo', name: 'CompanyInfo', component: 'vcAccountCompanyInfo' },
          { path: '/companyMembers/...', name: 'CompanyMembers', component: 'vcAccountCompanyMembers' },
-         { path: '/wishlist', name: 'WishList', component: 'vcAccountLists' }
+         { path: '/lists/...', name: 'Lists', component: 'vcAccountLists' }
     ],
     controller: ['$scope', '$timeout', 'storefront.accountApi', 'storefrontApp.mainContext', 'authService', 'storefront.corporateAccountApi', 'loadingIndicatorService', function ($scope, $timeout, accountApi, mainContext, authService, corporateAccountApi, loader) {
         var $ctrl = this;
@@ -3481,66 +3524,6 @@ angular.module('storefront.account')
         };
     }]
 });
-
-angular.module('storefront.account')
-    .component('vcAccountLists', {
-        templateUrl: "themes/assets/js/account/account-lists.tpl.liquid",
-        $routeConfig: [
-            { path: '/', name: 'WishList', component: 'vcAccountLists', useAsDefault: true }
-        ],
-        controller: ['listService', '$rootScope', 'cartService', '$translate', 'loadingIndicatorService', '$timeout', function (listService, $rootScope, cartService, $translate, loader, $timeout) {
-            var $ctrl = this;
-            $ctrl.loader = loader;
-            $ctrl.selectedList = {};
-
-            $ctrl.initialize = function (lists) {
-                if (lists && lists.length > 0) {
-                    $ctrl.lists = lists;
-                    $ctrl.selectList(lists[0]);
-                    angular.forEach($ctrl.lists, function (list) {
-                        var titleKey = 'wishlist.general.' + list.name + '_list_title';
-                        var descriptionKey = 'wishlist.general.' + list.name + '_list_description';
-                        $translate([titleKey, descriptionKey]).then(function (translations) {
-                            list.title = translations[titleKey];
-                            list.description = translations[descriptionKey];
-                        }, function (translationIds) {
-                            list.title = translationIds[titleKey];
-                            list.description = translationIds[descriptionKey];
-                        });
-                    });
-                }
-            };
-
-
-            $ctrl.selectList = function (list) {
-                $ctrl.selectedList = list;
-                loader.wrapLoading(function () {
-                    return listService.getWishlist(list.name).then(function (response) {
-                        $ctrl.selectedList.items = response.data.items;                     
-                    });
-                });
-            };
-
-            $ctrl.removeLineItem = function (lineItem, list) {  
-                loader.wrapLoading(function () {
-                    return listService.removeLineItem(lineItem.id, list.name).then(function (response) {
-                        $ctrl.selectList(list);
-                    });
-                });
-            };
-
-            $ctrl.addToCart = function (lineItem) {
-                loader.wrapLoading(function () {
-                    return cartService.addLineItem(lineItem.productId, 1).then(function (response) {
-                        $ctrl.productAdded = true;
-                        $timeout(function () {
-                            $ctrl.productAdded = false;
-                        }, 2000);
-                    });
-                });
-            }
-        }]
-    });
 
  var storefrontApp = angular.module('storefrontApp');
 
@@ -4179,4 +4162,115 @@ angular.module('storefront.account')
         }
     };
 }]);
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', 'listService', '$translate', '$localStorage', 'customerService', function ($scope, $window, $uibModalInstance, dialogData, listService, $translate, $localStorage, customerService) {
+    $scope.availableLists = [];
+    $scope.selectedList = {};
+    dialogData.product.imageUrl = dialogData.product.primaryImage.url;
+    dialogData.product.createdDate = new Date;
+    dialogData.product.productId = dialogData.product.price.productId;
+    _.extend(dialogData.product, dialogData.product.price);
+    _.extend(dialogData.product, dialogData.product.salePrice);
+
+    $scope.dialogData = dialogData.product;
+    $scope.dialogData.quantity = dialogData.quantity;
+    $scope.inProgress = false;
+    $scope.itemAdded = false;
+
+    $scope.addProductToList = function () {
+        $scope.inProgress = true;
+        var customer = { userName: $scope.userName, id: $scope.userId, isRegisteredUser: true };
+
+        if ($scope.userName !== $scope.selectedList.author) {
+            dialogData.product.modifiedBy = $scope.userName;
+		}
+        listService.addItemToList($scope.selectedList.id, dialogData.product);
+
+        $scope.inProgress = false;
+        $scope.itemAdded = true;
+    }
+    $scope.selectList = function (list) {
+        $scope.selectedList = list;
+    };
+
+    $scope.close = function () {
+        $uibModalInstance.close();
+    };
+    $scope.redirect = function (url) {
+        $window.location = url;
+    }
+
+    $scope.initialize = function (lists) {
+        customerService.getCurrentCustomer().then(function (user) {
+            $scope.userName = user.data.userName;
+			listService.getOrCreateMyLists($scope.userName, lists).then(function (result) {
+                $scope.lists = result;
+                angular.forEach($scope.lists, function (list) {
+                    list.title = list.name;
+                    list.description = list.name;
+                    listService.containsInList(dialogData.product.id, list.id).then(function (result) {
+                        list.contains = result.contains;
+                    })
+                });
+			})
+			
+			listService.getSharedLists($scope.userName).then(function (result) {
+                $scope.sharedLists = result;
+                angular.forEach($scope.sharedLists, function (list) {
+                    list.title = list.name;
+                    list.description = list.name;
+                    listService.containsInList(dialogData.product.id, list.id).then(function (result) {
+                        list.contains = result.contains;
+                    })
+                });
+			})
+        })
+    };
+}]);
+
+angular.module('storefrontApp')
+	.component('addToListButton', {
+		templateUrl: 'themes/assets/js/lists/add-to-list-button.tpl.html',
+		bindings: {
+			selectedVariation: '<'
+		},
+		controller: ['customerService', 'listService', 'dialogService', function (customerService, listService, dialogService) {
+			var $ctrl = this;
+			$ctrl.$onInit = function () {
+				compareProductInLists();
+			}
+
+			function compareProductInLists() {
+				$ctrl.buttonInvalid = true;
+				customerService.getCurrentCustomer().then(function (user) {
+					listService.getOrCreateMyLists(user.data.userName).then(function (result) {
+						var lists = result;
+						angular.forEach(lists, function (list) {
+							listService.containsInList($ctrl.selectedVariation.id, list.id).then(function (result) {
+								if (result.contains === false) {
+									$ctrl.buttonInvalid = false;
+								}
+							});
+						})
+					})
+				})
+			}
+
+			function toListsDialogDataModel(product, quantity) {
+				return {
+					product: product,
+					quantity: quantity,
+					updated: false
+				}
+			}
+
+			$ctrl.addProductToWishlist = function () {
+				var dialogData = toListsDialogDataModel($ctrl.selectedVariation, 1);
+				dialogService.showDialog(dialogData, 'recentlyAddedListItemDialogController', 'storefront.recently-added-list-item-dialog.tpl');
+			}
+
+		}]
+	})
+
 //# sourceMappingURL=scripts.js.map

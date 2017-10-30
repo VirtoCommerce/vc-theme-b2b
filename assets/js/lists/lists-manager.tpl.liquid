@@ -1,0 +1,14 @@
+<div id="lists-manager.tpl.liquid" type="text/ng-template">
+
+<ul class="nav nav-tabs">
+        <li style="cursor:pointer;" ng-click="$ctrl.selectTab('myLists');"
+            ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountMyLists'}">
+            <a ng-link="['MyLists']">{{'My lists'}}</a>
+        </li>
+        <li style="cursor:pointer;" ng-click="$ctrl.selectTab('friendsLists');"
+          ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountFriendsLists'}">
+            <a ng-link="['FriendsLists']">{{'Friends lists'}}</a>
+        </li>
+    </ul>
+            <ng-outlet></ng-outlet>
+</div>

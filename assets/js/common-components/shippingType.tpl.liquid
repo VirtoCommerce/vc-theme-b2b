@@ -31,7 +31,7 @@
                 Ship to <strong>{% raw %}{{ $ctrl.shipmentAddress.postalCode }}{% endraw %}</strong>
                 <a href="" ng-click="$ctrl.isChanging = true">(change)</a>
             </p>
-            <input type="text" class="form-control" ng-style="{width: !$ctrl.isDropdown ? '100px' : 'auto'}" ng-show="!$ctrl.shipmentAddress || $ctrl.isChanging" ng-model="$ctrl.shipmentAddress.postalCode">
+            <input type="text" class="form-control" ng-style="{width: !$ctrl.isDropdown ? '100px' : 'auto'}" ng-show="!$ctrl.shipmentAddress || $ctrl.isChanging" ng-model="$ctrl.shipmentAddress.postalCode" placeholder="Enter index">
             <a ng-if="(!$ctrl.shipmentAddress || $ctrl.isChanging) && !ctrl.isDropdown" class="btn btn-default" href="" ng-click="$ctrl.save(); $ctrl.isChanging = false;">Save</a>
         </div>
         
@@ -39,7 +39,7 @@
             <p ng-if="!$ctrl.isDropdown && $ctrl.shipmentFulfillmentCenter">Available for pickup Tue. Oct 31 after 1:30 PM.</p>
             <p>
                 <strong>{% raw %}{{ $ctrl.shipmentFulfillmentCenter.name  }}{% endraw %}</strong>
-                <a href="" ng-click="$ctrl.selectFulfillmentCenter()">{% raw %}{{ !$ctrl.shipment.shipmentFulfillmentCenter ? 'Select' : '(change)' }}{% endraw %}</a>
+                <a href="" ng-click="$ctrl.selectFulfillmentCenter()">{% raw %}{{ !$ctrl.shipment.shipmentFulfillmentCenter ? 'Select branch' : '(change)' }}{% endraw %}</a>
             </p>
         </div>
     </div>

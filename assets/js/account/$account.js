@@ -1,4 +1,4 @@
-//Call this to register our module to main application
+﻿//Call this to register our module to main application
 var moduleName = "storefront.account";
 
 if (storefrontAppDependencies !== undefined) {
@@ -18,6 +18,21 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards',
 }])
 
 .value('$routerRootComponent', 'vcAccountManager')
+.service('accountDialogService', ['$uibModal', function ($uibModal) {
+    return {
+        showDialog: function (dialogData, controller, templateUrl) {
+            var modalInstance = $uibModal.open({
+                controller: controller,
+                templateUrl: templateUrl,
+                resolve: {
+                    dialogData: function () {
+                        return dialogData;
+                    }
+                }
+            });
+        }
+    }
+}])
 
 .component('vcAccountManager', {
     templateUrl: "account-manager.tpl",
@@ -34,7 +49,7 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards',
          { path: '/changePassword', name: 'PasswordChange', component: 'vcAccountPasswordChange' },
          { path: '/companyInfo', name: 'CompanyInfo', component: 'vcAccountCompanyInfo' },
          { path: '/companyMembers/...', name: 'CompanyMembers', component: 'vcAccountCompanyMembers' },
-         { path: '/wishlist', name: 'WishList', component: 'vcAccountLists' }
+         { path: '/lists/...', name: 'Lists', component: 'vcAccountLists' }
     ],
     controller: ['$scope', '$timeout', 'storefront.accountApi', 'storefrontApp.mainContext', 'authService', 'storefront.corporateAccountApi', 'loadingIndicatorService', function ($scope, $timeout, accountApi, mainContext, authService, corporateAccountApi, loader) {
         var $ctrl = this;
