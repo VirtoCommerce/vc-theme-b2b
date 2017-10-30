@@ -32,17 +32,17 @@
         {% include 'dialogs/list-settings-dialog' %}
         {% include 'dialogs/list-shared-link-dialog' %}
         <div id="layout">
-            <div class="top">
+            <div class="top hidden-print">
                 <div class="container top-inner">
                     {% include 'main/top' %}
                 </div>
             </div>
-            <header class="header">
+            <header class="header hidden-print">
                 <div class="container header-inner">
                     {% include 'main/header' %}
                 </div>
             </header>
-            <nav class="navbar navbar-default">
+            <nav class="navbar navbar-default hidden-print">
                 <div class="container navbar-inner">
                     {% include 'main/nav' %}
                 </div>
@@ -52,7 +52,7 @@
             </main>
         </div>
         {% include 'scripts' %}
-        <footer class="footer">
+        <footer class="footer hidden-print">
             <div class="container footer-inner">
                 {% include 'main/footer' %}
             </div>

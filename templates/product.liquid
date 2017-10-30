@@ -1,5 +1,5 @@
 ﻿<ng-controller ng-controller="productController">
-    <div class="toolbar clearfix">
+    <div class="toolbar hidden-print clearfix">
         {% include 'shared/breadcrumb' %}
         <ul class="toolbar-actions pull-right">
             <li>
@@ -85,9 +85,10 @@
             {% if product.properties.size > 1  %}
                 <div class="tech-spec clearfix">
                     <h2>Technical Specs</h2>
-                    {% assign half_of_properties = product.properties.size | divided_by: 2 %}
+                    {% assign remainder_of_properties_size = product.properties.size | modulo: 2 %}
+                    {% assign half_of_properties_size = product.properties.size | divided_by: 2 | plus: remainder_of_properties_size %}
                     <ul class="col-md-6">
-                        {% for property in product.properties limit:half_of_properties %}
+                        {% for property in product.properties limit:half_of_properties_size %}
                             <li>
                                 <div class="tech-name col-md-4">{{ property.name }}</div>
                                 <div class="tech-value col-md-8">{{ property.value }}</div>
@@ -95,7 +96,7 @@
                         {% endfor %}
                     </ul>
                     <ul class="col-md-6">
-                        {% for property in product.properties offset:half_of_properties %}
+                        {% for property in product.properties offset:half_of_properties_size %}
                             <li>
                                 <div class="tech-name col-md-4">{{ property.name }}</div>
                                 <div class="tech-value col-md-8">{{ property.value }}</div>
