@@ -95,6 +95,10 @@ button {
   @include button-variant-alt($btn-primary-color, $btn-primary-bg, $btn-primary-border, 'darken');
 }
 
+.btn-link {
+  text-transform: none;
+}
+
 .btn-link[disabled],
 .btn-link[disabled]:hover {
   background-color: transparent;
@@ -1074,6 +1078,35 @@ hr {
     }
   }
 }
+
+//== Print
+//
+//##
+
+@media print {
+
+  @page {
+    margin: 5px;
+  }
+
+  .product-page {
+    .product-content {
+      width: 100%;
+    }
+
+    .product-related {
+      display: none !important;
+    }
+  }
+}
+
+@media print and (orientation: landscape){
+  @include make-grid(md);
+}
+
+//== Styleguide
+//
+//##
 
 .styleguide {
 
