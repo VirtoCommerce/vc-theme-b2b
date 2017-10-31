@@ -1112,7 +1112,7 @@ storefrontApp.component('vcShippingType', {
             });
         };
         $ctrl.save = function (isDefined) {
-            if (isDefined) {
+            if (isDefined !== false) {
                 $localStorage['shipmentType'] = $ctrl.shipmentType;
                 if ($ctrl.shipmentType === 'shipping') {
                     $localStorage['shipmentAddress'] = $ctrl.shipmentAddress;

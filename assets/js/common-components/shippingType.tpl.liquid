@@ -1,4 +1,4 @@
-﻿<div ng-if="$ctrl.isDropdown" class="ship-pickup dropdown" uib-dropdown is-open="$ctrl.isOpen" auto-close="outsideClick">
+﻿<div ng-if="$ctrl.isDropdown" class="ship-pickup dropdown" uib-dropdown is-open="$ctrl.isOpen" auto-close="disabled">
     <a class="dropdown" href="" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
         Ship or Pickup
         <i class="fa fa-angle-down"></i>
@@ -10,14 +10,14 @@
     <div class="dropdown-head">
         <div class="radio radio-inline">
             <label>
-                <input type="radio" ng-model="$ctrl.shipmentType" value="shipping" ng-click="$ctrl.isChanging = !$ctrl.shipmentAddress; $ctrl.save(!$ctrl.isChaning)">
+                <input type="radio" ng-model="$ctrl.shipmentType" value="shipping" ng-click="$ctrl.isChanging = !$ctrl.shipmentAddress; $ctrl.save(!$ctrl.isChanging)">
                 <span class="switch"></span>
                 <span class="name">Shipping</span>
             </label>
         </div>
         <div class="radio radio-inline">
             <label>
-                <input type="radio" ng-model="$ctrl.shipmentType" value="pickup" ng-click="$ctrl.isChanging = !$ctrl.shipmentFulfillmentCenter; $ctrl.save(!$ctrl.isChaning)">
+                <input type="radio" ng-model="$ctrl.shipmentType" value="pickup" ng-click="$ctrl.isChanging = !$ctrl.shipmentFulfillmentCenter; $ctrl.save(!$ctrl.isChanging)">
                 <span class="switch"></span>
                 <span class="name">Pickup</span>
             </label>
@@ -32,7 +32,7 @@
                 <a href="" ng-click="$ctrl.isChanging = true">(change)</a>
             </p>
             <input type="text" class="form-control" ng-style="{width: !$ctrl.isDropdown ? '100px' : 'auto'}" ng-show="!$ctrl.shipmentAddress || $ctrl.isChanging" ng-model="$ctrl.shipmentAddress.postalCode" placeholder="Enter index">
-            <a ng-if="(!$ctrl.shipmentAddress || $ctrl.isChanging) && !ctrl.isDropdown" class="btn btn-default" href="" ng-click="$ctrl.save(); $ctrl.isChanging = false;">Save</a>
+            <a ng-if="(!$ctrl.shipmentAddress || $ctrl.isChanging) && !$ctrl.isDropdown" class="btn btn-default" href="" ng-click="$ctrl.isChanging = false; $ctrl.save();">Save</a>
         </div>
         
         <div class="form-group" ng-show="$ctrl.shipmentType === 'pickup'">
