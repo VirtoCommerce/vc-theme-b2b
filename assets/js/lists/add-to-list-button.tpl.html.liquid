@@ -1,4 +1,4 @@
-﻿<button id="addToWishlist" class="btn btn-link add-to-list" ng-disabled="$ctrl.buttonInvalid" ng-click="$ctrl.addProductToWishlist()">
+﻿<button id="addToWishlist" class="btn btn-link add-to-list" ng-init='$ctrl.lists = {{ settings.available_lists | json }}' ng-disabled="$ctrl.buttonInvalid" ng-click="customer.isRegisteredUser ? $ctrl.addProductToWishlist() : $ctrl.signInToProceed()">
     <span class="fa fa-plus"></span>
     <span>{{ 'products.list.add_to_myList' | t }}</span>
 </button> 

@@ -1662,25 +1662,22 @@ storefrontApp.service('listService', ['$q', '$http', '$localStorage', 'customerS
                     list.id = Math.floor(Math.random() * 230910443210623294 + 1).toString();
                 });
                 _.extend($localStorage['lists'][userName], lists);
-                $ctrl.accountLists.selectTab('myLists');
-
-                return;
             }
-            else return $q(function (resolve, reject) { resolve($localStorage['lists'][userName]) });
+            return $q(function (resolve, reject) { resolve($localStorage['lists'][userName]) });
         },
 
         getSharedLists: function (userName) {
             var lists = $localStorage['lists'];
             var sharedLists = [];
             if ($localStorage['sharedListsIds']) {
-                _.each($localStorage['sharedListsIds'][userName], function (cartId) {
-                    _.each(lists, function (list) {
+                _.each($localStorage['sharedListsIds'][userName], function(cartId) {
+                    _.each(lists, function(list) {
                         if (angular.isDefined(_.find(list, { id: cartId.toString() }))) {
                             sharedLists.push(_.find(list, { id: cartId }));
                         }
 
-                    })
-                })
+                    });
+                });
             }
             return $q(function (resolve, reject) { resolve(sharedLists) });
         },
@@ -1691,23 +1688,22 @@ storefrontApp.service('listService', ['$q', '$http', '$localStorage', 'customerS
             else $localStorage['lists'][userName].push({ name: listName, permission: permission, id: id, items: [], author: userName })
 
             return _.find($localStorage['lists'][userName], { name: listName });
-            //return $http.get('storefrontapi/lists/' + listName + '?t=' + new Date().getTime());
         },
 
         addItemToList: function (listId, product) {
-            _.each($localStorage['lists'], function (list) {
+            _.each($localStorage['lists'], function(list) {
                 if (angular.isDefined(_.find(list, { id: listId }))) {
                     var searchedList = _.find(list, { id: listId });
                     searchedList.items.push(product);
                 }
 
-            })
+            });
         },
 
         containsInList: function (productId, cartId) {
             var lists = angular.copy($localStorage['lists']);
             var contains;
-            _.each(lists, function (list) {
+            _.each(lists, function(list) {
                 if (angular.isDefined(_.find(list, { id: cartId }))) {
                     var currentList = _.find(list, { id: cartId });
                     if (angular.isDefined(_.find(currentList.items, { productId: productId })))
@@ -1715,7 +1711,7 @@ storefrontApp.service('listService', ['$q', '$http', '$localStorage', 'customerS
                     else
                         contains = false;
                 }
-            })
+            });
             return $q(function (resolve, reject) { resolve({ contains: contains }) });
         },
 
@@ -1723,11 +1719,11 @@ storefrontApp.service('listService', ['$q', '$http', '$localStorage', 'customerS
             if (!_.some($localStorage['sharedListsIds'][userName], function (x) { return x === sharedCartId }) && (!_.find(myLists, { id: sharedCartId }))) {
                 $localStorage['sharedListsIds'][userName].push(sharedCartId);
                 return $q(function (resolve, reject) {
-                    resolve()
+                    resolve();
                 });
             }
             else return $q(function (resolve, reject) {
-                resolve()
+                resolve();
             });
         },
 
@@ -1751,11 +1747,11 @@ storefrontApp.service('listService', ['$q', '$http', '$localStorage', 'customerS
             //return $http.post('storefrontapi/lists/clear', { listName: listName });
         },
         removeFromFriendsLists: function (currentId, userName) {
-            $localStorage['sharedListsIds'][userName] = _.filter($localStorage['sharedListsIds'][userName], function (cartId) {
-                return $q(function (resolve, reject) {
+            $localStorage['sharedListsIds'][userName] = _.filter($localStorage['sharedListsIds'][userName], function(cartId) {
+                return $q(function(resolve, reject) {
                     resolve(cartId !== currentId)
-                })
-            })
+                });
+            });
         }
     }
 }]);
@@ -4243,18 +4239,18 @@ angular.module('storefrontApp')
 
 			function compareProductInLists() {
 				$ctrl.buttonInvalid = true;
-				customerService.getCurrentCustomer().then(function (user) {
-					listService.getOrCreateMyLists(user.data.userName).then(function (result) {
-						var lists = result;
-						angular.forEach(lists, function (list) {
-							listService.containsInList($ctrl.selectedVariation.id, list.id).then(function (result) {
-								if (result.contains === false) {
-									$ctrl.buttonInvalid = false;
-								}
-							});
-						})
-					})
-				})
+			    customerService.getCurrentCustomer().then(function(user) {
+			        listService.getOrCreateMyLists(user.data.userName, $ctrl.lists).then(function(result) {
+			            $ctrl.lists = result;
+			            angular.forEach($ctrl.lists, function(list) {
+			                listService.containsInList($ctrl.selectedVariation.id, list.id).then(function(result) {
+			                    if (result.contains === false) {
+			                        $ctrl.buttonInvalid = false;
+			                    }
+			                });
+			            });
+			        });
+			    });
 			}
 
 			function toListsDialogDataModel(product, quantity) {
@@ -4268,7 +4264,11 @@ angular.module('storefrontApp')
 			$ctrl.addProductToWishlist = function () {
 				var dialogData = toListsDialogDataModel($ctrl.selectedVariation, 1);
 				dialogService.showDialog(dialogData, 'recentlyAddedListItemDialogController', 'storefront.recently-added-list-item-dialog.tpl');
-			}
+            }
+
+            $ctrl.signInToProceed = function() {
+                dialogService.showDialog({ title: 'Add product to list...' }, 'universalDialogController', 'storefront.sign-in-to-proceed.tpl');
+            }
 
 		}]
 	})

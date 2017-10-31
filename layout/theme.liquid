@@ -23,6 +23,7 @@
     </head>
     <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" ng-controller="mainController" ng-init="baseUrl='{{ '/' | absolute_url }}'">
         {% include 'third-party/google-tag-manager-body' %}
+        {% include 'dialogs/sign-in-to-proceed' %}
         {% include 'dialogs/recently-added-cart-item' %}
         {% include 'dialogs/select-fulfillment-center' %}
         {% include 'dialogs/send-product-to-email' %}

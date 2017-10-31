@@ -1,4 +1,4 @@
-angular.module('storefrontApp')
+﻿angular.module('storefrontApp')
 	.component('addToListButton', {
 		templateUrl: 'themes/assets/js/lists/add-to-list-button.tpl.html',
 		bindings: {
@@ -12,18 +12,18 @@ angular.module('storefrontApp')
 
 			function compareProductInLists() {
 				$ctrl.buttonInvalid = true;
-				customerService.getCurrentCustomer().then(function (user) {
-					listService.getOrCreateMyLists(user.data.userName).then(function (result) {
-						var lists = result;
-						angular.forEach(lists, function (list) {
-							listService.containsInList($ctrl.selectedVariation.id, list.id).then(function (result) {
-								if (result.contains === false) {
-									$ctrl.buttonInvalid = false;
-								}
-							});
-						})
-					})
-				})
+			    customerService.getCurrentCustomer().then(function(user) {
+			        listService.getOrCreateMyLists(user.data.userName, $ctrl.lists).then(function(result) {
+			            $ctrl.lists = result;
+			            angular.forEach($ctrl.lists, function(list) {
+			                listService.containsInList($ctrl.selectedVariation.id, list.id).then(function(result) {
+			                    if (result.contains === false) {
+			                        $ctrl.buttonInvalid = false;
+			                    }
+			                });
+			            });
+			        });
+			    });
 			}
 
 			function toListsDialogDataModel(product, quantity) {
@@ -37,7 +37,11 @@ angular.module('storefrontApp')
 			$ctrl.addProductToWishlist = function () {
 				var dialogData = toListsDialogDataModel($ctrl.selectedVariation, 1);
 				dialogService.showDialog(dialogData, 'recentlyAddedListItemDialogController', 'storefront.recently-added-list-item-dialog.tpl');
-			}
+            }
+
+            $ctrl.signInToProceed = function() {
+                dialogService.showDialog({ title: 'Add product to list...' }, 'universalDialogController', 'storefront.sign-in-to-proceed.tpl');
+            }
 
 		}]
 	})

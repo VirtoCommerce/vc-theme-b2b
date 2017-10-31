@@ -73,7 +73,7 @@
                                     <input type="text" class="form-control qty" ng-init="product['{{product.id}}'].quantity = 1" ng-model="product['{{product.id}}'].quantity">
                                     <button class="btn btn-primary" title="{{ 'products.general.add_to_cart' | t }}" ng-click="addProductToCartById('{{ product.id }}', product['{{product.id}}'].quantity, $event)" ng-controller="productController">{{ 'products.general.add_to_cart' | t }}</button>
                                 </div>
-                                <add-to-list-button ng-if="customer.isRegisteredUser" selected-variation="selectedVariation"></add-to-list-button>
+                                <add-to-list-button selected-variation="selectedVariation"></add-to-list-button>
                             </div>
                             <div class="col-md-4">
                                 <vc-shipping-type is-dropdown="false" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
