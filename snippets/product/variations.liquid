@@ -1,0 +1,112 @@
+﻿<div class="toolbar hidden-print clearfix">
+    {% include 'shared/breadcrumb' %}
+    <ul class="toolbar-actions pull-right">
+        <li>
+            <i class="fa fa-envelope"></i>
+            <a href="" ng-click="">Email</a>
+        </li>
+    </ul>
+</div>
+<div class="product-page clearfix" itemscope itemtype="http://schema.org/Product">
+    <meta itemprop="url" content="{{ product.url | absolute_url}}">
+
+    <h1>{{ product.title }}</h1>
+    <p>6 products found with these common attributes:</p>
+    <p>Narrow your results by</p>
+
+    <ul class="list-inline list-unstyled">
+        <li class="dropdown" ng-repeat="(propName, props) in filterableVariationPropsMap" uib-dropdown aria-haspopup="true">
+            <button class="btn btn-alt btn-secondary" uib-dropdown-toggle>{% raw %}{{ propName }}{% endraw %}&nbsp;<i class="dropdown-ico fa fa-angle-down"></i></button>
+            <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
+                <li ng-repeat="prop in props">
+                    {% raw %}{{ prop.value }}{% endraw %}
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="table-items">
+        <div class="table-head">
+            <div class="table-controls clearfix">
+                <div class="compare-controls pull-left">
+                    Select items to compare
+                </div>
+                <div class="pull-right">
+                    <div class="purchase">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox">
+                                <span class="switch"></span>
+                                <span class="name">View Previously Purchased</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="product-controls">
+                        <a href="#">Add to list</a>
+                        <a href="#" class="btn btn-primary">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+            <div class="table-row clearfix">
+                <div class="col-md-3">
+                    <div class="table-item">Compare / item #</div>
+                    <div class="table-item">Mfr. Model #</div>
+                </div>
+                <div class="col-md-6">
+                    <div class="table-item" ng-repeat="(propName, props) in allVariationPropsMap">{% raw %}{{ propName }}{% endraw %}</div>
+                </div>
+                <div class="col-md-3">
+                    <div class="table-item">Price</div>
+                    <div class="table-item">
+                        <a href="#">Ship or pickup <i class="fa fa-angle-down"></i></a><br>
+                        Enter location
+                    </div>
+                    <div class="table-item">Qty</div>
+                </div>
+            </div>
+        </div>
+        <div class="table-body">
+            {% for variant in product.variants %}
+                <div class="table-row clearfix">
+                    <div class="table-content">
+                        <div class="col-md-3">
+                            <div class="table-item">
+                                <img class="table-pic" src="{{ variant.featured_image.src }}" alt="">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox">
+                                        <span class="switch"></span>
+                                        <span class="name">Compare</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="table-item">Temp</div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="table-item" ng-init="id = {{ variant.id }}" ng-repeat="(propName, props) in allVariationPropsMap">{% raw %}{{ allVariations | filter: { id: id } }}{% endraw %}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="table-item">
+                                <div class="table-price">
+                                    <span class="price">$11.41</span> / each
+                                </div>
+                            </div>
+                            <div class="table-item">
+                                <a href="#">Enter location</a> to <br> check availability
+                            </div>
+                            <div class="table-item">
+                                <vc-labeled-input value="userName" form="customer_login" name="customer[user_name]" placeholder="User Name" required="true" class="ng-isolate-scope">
+                                    <div class="form-group keyuped" ng-class="{'keyuped': $ctrl.form[$ctrl.name].$viewValue.length, 'has-error': ($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) &amp;&amp; $ctrl.form[$ctrl.name].$invalid }">
+                                        <label for="customer[user_name]" class="control-label ng-binding" ng-bind="$ctrl.placeholder">Qty</label>
+                                        <input ng-model="$ctrl.value" name="customer[user_name]" id="customer[user_name]" autofocus="autofocus" type="" ng-required="$ctrl.required" ng-disabled="$ctrl.disabled" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" required="required">
+                                    </div>
+                                </vc-labeled-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-content"></div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

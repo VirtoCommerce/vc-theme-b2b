@@ -897,7 +897,7 @@ var storefrontApp = angular.module('storefrontApp');
 
         var allVariations = [];
 
-        $scope.selectedVariation = {};
+        $scope.selectedVariation = {};        $scope.filterableVariationPropsMap = { };
         $scope.allVariationPropsMap = {};
         $scope.productPrice = null;
         $scope.productPriceLoaded = false;
@@ -1031,8 +1031,8 @@ var storefrontApp = angular.module('storefrontApp');
             catalogService.getProduct(productIds).then(function (response) {
 				var product = response.data[0];
                 //Current product is also a variation (titular)
-                allVariations = [product].concat(product.variations || []);
-                $scope.allVariationPropsMap = getFlatternDistinctPropertiesMap(allVariations);
+                $scope.allVariations = [product].concat(product.variations || []);
+                $scope.allVariationPropsMap = getFlatternDistinctPropertiesMap($scope.allVariations);                $scope.filterableVariationPropsMap = _.pick($scope.allVariationPropsMap, function(value, key, object) { return value.length > 1; });
 
                 //Auto select initial product as default variation  (its possible because all our products is variations)
                 var propertyMap = getVariationPropertyMap(product);
