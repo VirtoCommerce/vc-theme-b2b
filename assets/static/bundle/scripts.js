@@ -1031,8 +1031,8 @@ var storefrontApp = angular.module('storefrontApp');
             catalogService.getProduct(productIds).then(function (response) {
 				var product = response.data[0];
                 //Current product is also a variation (titular)
-                $scope.allVariations = [product].concat(product.variations || []);
-                $scope.allVariationPropsMap = getFlatternDistinctPropertiesMap($scope.allVariations);                $scope.filterableVariationPropsMap = _.pick($scope.allVariationPropsMap, function(value, key, object) { return value.length > 1; });
+                allVariations = [product].concat(product.variations || []);                $scope.allVariationsMap = _.object(allVariations.map(function(variation) { return [variation.id, variation]; }));
+                $scope.allVariationPropsMap = getFlatternDistinctPropertiesMap(allVariations);                $scope.filterableVariationPropsMap = _.pick($scope.allVariationPropsMap, function(value, key, object) { return value.length > 1; });
 
                 //Auto select initial product as default variation  (its possible because all our products is variations)
                 var propertyMap = getVariationPropertyMap(product);
@@ -2432,6 +2432,8 @@ storefrontApp.component('vcShippingType', {
     templateUrl: "themes/assets/js/common-components/shippingType.tpl.html",
     bindings: {
         isDropdown: '<',
+        title: "@",
+        subtitle: "@",
         pickupMethodCode: "@"
     },
     controller: ['$scope', '$localStorage', 'storefrontApp.mainContext', 'dialogService', function($scope, $localStorage, mainContext, dialogService) {

@@ -1076,6 +1076,8 @@ storefrontApp.component('vcShippingType', {
     templateUrl: "themes/assets/js/common-components/shippingType.tpl.html",
     bindings: {
         isDropdown: '<',
+        title: "@",
+        subtitle: "@",
         pickupMethodCode: "@"
     },
     controller: ['$scope', '$localStorage', 'storefrontApp.mainContext', 'dialogService', function($scope, $localStorage, mainContext, dialogService) {

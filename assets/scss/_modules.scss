@@ -487,36 +487,41 @@ vc-labeled-input:last-child {
       border-bottom: 1px solid $gray;
       margin: 10px 0;
       padding: 10px 0 5px;
+    }
+  }
+}
 
-      .fa {
-        font-size: 16px;
-        margin: 0 0 0 5px;
-        vertical-align: bottom;
-      }
+/* Ship or pickup */
 
-      .dropdown-menu {
-        font-size: 12px;
-        padding: 0;
-        width: 220px;
-      }
+.ship-pickup {
+  .fa {
+    font-size: 16px;
+    margin: 0 0 0 5px;
+    vertical-align: bottom;
+  }
 
-      .dropdown-head {
-        padding: 10px;
-      }
+  .dropdown-menu {
+    font-family: $font-family-base;
+    font-size: 12px;
+    padding: 0;
+    width: 220px;
+  }
 
-      .dropdown-body {
-        padding: 0 10px 10px;
-      }
+  .dropdown-head {
+    padding: 10px;
+  }
 
-      .dropdown-foot {
-        background: $gray-lighter;
-        text-align: right;
-        padding: 10px;
+  .dropdown-body {
+    padding: 0 10px 10px;
+  }
 
-        .btn {
-          margin: 0 0 0 10px;
-        }
-      }
+  .dropdown-foot {
+    background: $gray-lighter;
+    text-align: right;
+    padding: 10px;
+
+    .btn {
+      margin: 0 0 0 10px;
     }
   }
 }

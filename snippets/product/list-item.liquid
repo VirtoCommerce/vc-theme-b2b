@@ -72,7 +72,7 @@
                     <button class="btn btn-alt btn-primary" title="{{ 'products.general.add_to_cart' | t }}" ng-click="addProductToCartById('{{ product.id }}', product['{{product.id}}'].quantity, $event)" ng-controller="productController">{{ 'products.general.add_to_cart' | t }}</button>
                 </div>
                 <a class="add-to-list" href="#"><i class="fa fa-plus"></i> {{ 'products.list.add_to_myList' | t }}</a>
-                <vc-shipping-type is-dropdown="true" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
+                <vc-shipping-type is-dropdown="true" title="Ship or pickup" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
                 <p>Catalog Page # NA </p>
             </div>
         </div>

@@ -58,8 +58,7 @@
                 <div class="col-md-3">
                     <div class="table-item">Price</div>
                     <div class="table-item">
-                        <a href="#">Ship or pickup <i class="fa fa-angle-down"></i></a><br>
-                        Enter location
+                        <vc-shipping-type is-dropdown="true" title="Ship or pickup" subtitle="Enter location" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
                     </div>
                     <div class="table-item">Qty</div>
                 </div>
@@ -83,24 +82,27 @@
                             <div class="table-item">Temp</div>
                         </div>
                         <div class="col-md-6">
-                            <div class="table-item" ng-init="id = {{ variant.id }}" ng-repeat="(propName, props) in allVariationPropsMap">{% raw %}{{ allVariations | filter: { id: id } }}{% endraw %}</div>
+                            <div class="table-item" ng-init="id = '{{ variant.id }}'" ng-repeat="(propName, props) in allVariationPropsMap">{% raw %}{{ (allVariationsMap[id].variationProperties | filter: { name: propName })[0].value }}{% endraw %}</div>
                         </div>
                         <div class="col-md-3">
                             <div class="table-item">
                                 <div class="table-price">
-                                    <span class="price">$11.41</span> / each
+                                    <div class="price-value">
+                                        {% if settings.show_prices_with_taxes %}
+                                            {% include 'product/price', price: product.price_with_tax %}
+                                        {% else %}
+                                            {% include 'product/price', price: product.price %}
+                                        {% endif %}
+                                    </div>
+                                    <!-- TODO: Replace with product unit -->
+                                    <div class="price-unit">/ each</div>
                                 </div>
                             </div>
                             <div class="table-item">
                                 <a href="#">Enter location</a> to <br> check availability
                             </div>
                             <div class="table-item">
-                                <vc-labeled-input value="userName" form="customer_login" name="customer[user_name]" placeholder="User Name" required="true" class="ng-isolate-scope">
-                                    <div class="form-group keyuped" ng-class="{'keyuped': $ctrl.form[$ctrl.name].$viewValue.length, 'has-error': ($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) &amp;&amp; $ctrl.form[$ctrl.name].$invalid }">
-                                        <label for="customer[user_name]" class="control-label ng-binding" ng-bind="$ctrl.placeholder">Qty</label>
-                                        <input ng-model="$ctrl.value" name="customer[user_name]" id="customer[user_name]" autofocus="autofocus" type="" ng-required="$ctrl.required" ng-disabled="$ctrl.disabled" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" required="required">
-                                    </div>
-                                </vc-labeled-input>
+                                <input class="form-control">
                             </div>
                         </div>
                     </div>
