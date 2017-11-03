@@ -49,8 +49,8 @@
 // $font-family-base:        $font-family-sans-serif
 
    $font-size-base:          14px; // 14px
-   $font-size-large:         $font-size-base !default; // ceil(($font-size-base * 1.25)) // ~18px
-// $font-size-small:         ceil(($font-size-base * 0.85)) // ~12px
+   $font-size-large:         ceil(($font-size-base * 1)); // ceil(($font-size-base * 1.25)) // ~18px
+   $font-size-small:         ceil(($font-size-base * 0.85)); // ceil(($font-size-base * 0.85)) // ~12px
 
    $font-size-h1:            odd(($font-size-base * 2.5)); // ~34px // floor(($font-size-base * 2.6)) // ~36px
    $font-size-h2:            odd(($font-size-base * 1.75)); // ~24px // floor(($font-size-base * 2.15)) // ~30px

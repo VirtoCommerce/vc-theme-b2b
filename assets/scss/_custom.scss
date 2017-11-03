@@ -5,7 +5,7 @@
 .row.flexible {
   display: flex;
 
-  & > [class*='col-'] {
+  & > [class*='col-'].flexible {
     display: flex;
     flex-direction: column;
   }
@@ -81,6 +81,10 @@ button {
   text-transform: uppercase;
 
   @include button-variant-disabled;
+
+  + .dropdown-menu {
+    margin-left: 5px;
+  }
 }
 
 .btn-default {
@@ -156,6 +160,16 @@ dd *:only-child {
 .dropdown-menu {
   border-radius: 0;
   margin: 0 0 0 -1px;
+
+  .checkbox {
+    padding: 5px 10px;
+    clear: both;
+    white-space: nowrap;
+
+    label {
+      width: 100%;
+    }
+  }
 }
 
 .dropdown-ico {
@@ -1098,6 +1112,10 @@ hr {
       display: none !important;
     }
   }
+}
+
+@media print and (orientation: portrait) {
+  @include make-grid(xs);
 }
 
 @media print and (orientation: landscape){

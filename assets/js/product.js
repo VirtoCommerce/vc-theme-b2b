@@ -1,12 +1,15 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
-storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', '$timeout', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService',    function ($rootScope, $scope, $window, $timeout, dialogService, catalogService, cartService, quoteRequestService) {
+
+storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', '$timeout', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService',
+    function ($rootScope, $scope, $window, $timeout, dialogService, catalogService, cartService, quoteRequestService) {
         //TODO: prevent add to cart not selected variation
         // display validator please select property
         // display price range
 
         var allVariations = [];
 
-        $scope.selectedVariation = {};        $scope.filterableVariationPropsMap = { };
+        $scope.selectedVariation = {};
+        $scope.filterableVariationPropsMap = { };
         $scope.allVariationPropsMap = {};
         $scope.productPrice = null;
         $scope.productPriceLoaded = false;
@@ -140,8 +143,10 @@
             catalogService.getProduct(productIds).then(function (response) {
 				var product = response.data[0];
                 //Current product is also a variation (titular)
-                allVariations = [product].concat(product.variations || []);                $scope.allVariationsMap = _.object(allVariations.map(function(variation) { return [variation.id, variation]; }));
-                $scope.allVariationPropsMap = getFlatternDistinctPropertiesMap(allVariations);                $scope.filterableVariationPropsMap = _.pick($scope.allVariationPropsMap, function(value, key, object) { return value.length > 1; });
+                allVariations = [product].concat(product.variations || []);
+                $scope.allVariationsMap = _.object(allVariations.map(function(variation) { return [variation.id, variation]; }));
+                $scope.allVariationPropsMap = getFlatternDistinctPropertiesMap(allVariations);
+                $scope.filterableVariationPropsMap = _.pick($scope.allVariationPropsMap, function(value, key, object) { return value.length > 1; });
 
                 //Auto select initial product as default variation  (its possible because all our products is variations)
                 var propertyMap = getVariationPropertyMap(product);
@@ -208,8 +213,8 @@
             $scope.selectedVariation = findVariationBySelectedProps(allVariations, getSelectedPropsMap($scope.allVariationPropsMap));
         };
 
-        $scope.sendToEmail = function (storeId, productId, language) {
-            dialogService.showDialog({ storeId: storeId, productId: productId, language: language }, 'recentlyAddedCartItemDialogController', 'storefront.send-product-to-email.tpl');
+        $scope.sendToEmail = function (storeId, productId, productUrl, language) {
+            dialogService.showDialog({ storeId: storeId, productId: productId, productUrl: productUrl, language: language }, 'recentlyAddedCartItemDialogController', 'storefront.send-product-to-email.tpl');
         };
 
         $scope.print = function() {
@@ -227,7 +232,7 @@ storefrontApp.controller('recentlyAddedCartItemDialogController', ['$scope', '$w
     }
 
     $scope.send = function(email) {
-        mailingService.sendProduct(dialogData.productId, { email: email, storeId: dialogData.storeId, language: dialogData.language });
+        mailingService.sendProduct(dialogData.productId, { email: email, storeId: dialogData.storeId, productUrl: dialogData.productUrl, language: dialogData.language });
         $uibModalInstance.close();
     }
 }]);

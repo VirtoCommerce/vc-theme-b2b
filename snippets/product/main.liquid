@@ -3,7 +3,7 @@
     <ul class="toolbar-actions pull-right">
         <li>
             <i class="fa fa-envelope"></i>                
-            <a href="" ng-click="sendToEmail('{{ shop.id }}', '{{ product.id }}', '{{ current_language.culture_name }}')">Email</a>
+            <a href="" ng-click="sendToEmail('{{ shop.id }}', '{{ product.id }}', '{{ product.url | absolute_url }}', '{{ current_language.culture_name }}')">Email</a>
         </li>
         <li>
             <i class="fa fa-print"></i>
@@ -20,7 +20,7 @@
         <h1>{{ product.title }}</h1>
         <ul class="product-sku list-unstyled">
             <li>
-                {{ 'products.product.sku' | t }}&nbsp;<span itemprop="productID">    {{ product.selected_variant.sku }}</span>
+                {{ 'products.product.sku' | t }}&nbsp;<span itemprop="productID">{{ product.selected_variant.sku }}</span>
             </li>
             <li>
                 {{ 'products.product.mmn' | t }}&nbsp;<span itemprop="model">{{ product.metafields.properties['MMN'] }}</span>
@@ -32,9 +32,9 @@
         <div class="product clearfix">
             <div class="product-img col-md-4">
                 {% if product.featured_image %}
-                <img ng-src="{{ product.featured_image.src | img_url: "168x168" }}" fallback-src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
+                    <img ng-src="{{ product.featured_image.src | img_url: "168x168" }}" fallback-src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
                 {% else %}
-                <img src="{{ 'no-image.svg' | asset_url }}" class="no-image" />
+                    <img src="{{ 'no-image.svg' | asset_url }}" class="no-image" />
                 {% endif %}
                 <div class="compare">
                     <div class="checkbox">
@@ -81,28 +81,28 @@
                 </form>
             </div>
         </div>
-        {% if product.properties.size > 1  %}
-            <div class="tech-spec clearfix">
-                <h2>Technical Specs</h2>
-                {% assign remainder_of_properties_size = product.properties.size | modulo: 2 %}
-                {% assign half_of_properties_size = product.properties.size | divided_by: 2 | plus: remainder_of_properties_size %}
-                <ul class="col-md-6 col-xs-6">
-                    {% for property in product.properties limit:half_of_properties_size %}
-                        <li>
-                            <div class="tech-name col-md-4 col-xs-4">{{ property.name }}</div>
-                            <div class="tech-value col-md-8 col-xs-8">{{ property.value }}</div>
-                        </li>
-                    {% endfor %}
-                </ul>
-                <ul class="col-md-6col-xs-6">
-                    {% for property in product.properties offset:half_of_properties_size %}
-                        <li>
-                            <div class="tech-name col-md-4 col-xs-4">{{ property.name }}</div>
-                            <div class="tech-value col-md-8 col-xs-8">{{ property.value }}</div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
+        {% if product.properties.size > 0  %}
+        <div class="tech-spec clearfix">
+            <h2>Technical Specs</h2>
+            {% assign remainder_of_properties_size = product.properties.size | modulo: 2 %}
+            {% assign half_of_properties_size = product.properties.size | divided_by: 2 | plus: remainder_of_properties_size %}
+            <ul class="col-md-6 col-xs-6">
+                {% for property in product.properties limit:half_of_properties_size %}
+                <li>
+                    <div class="tech-name col-md-4 col-xs-4">{{ property.name }}</div>
+                    <div class="tech-value col-md-8 col-xs-8">{{ property.value }}</div>
+                </li>
+                {% endfor %}
+            </ul>
+            <ul class="col-md-6col-xs-6">
+                {% for property in product.properties offset:half_of_properties_size %}
+                <li>
+                    <div class="tech-name col-md-4 col-xs-4">{{ property.name }}</div>
+                    <div class="tech-value col-md-8 col-xs-8">{{ property.value }}</div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
         {% endif %}
     </div>
     <div class="product-related hidden-print"></div>
