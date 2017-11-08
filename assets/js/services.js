@@ -295,3 +295,86 @@ storefrontApp.service('orderService', ['$http', function ($http) {
         }
     }
 }]);
+
+storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer', function ($location, $httpParamSerializer) {
+    return {
+        // Converts search query strings like '?key=value1[,value2]' or '?key=key1:value1[,value2[;key2:value3[,value4]]]' to search query state object
+        getState: function(obj) {
+            var result = {};
+            // ?key=valueString&key=valueString
+            _.each(Object.keys(obj), function(key) {
+                var valueString = $location.search()[key];
+                // ?key=value or ?key=key1:value1
+                if (valueString) {
+                    if (!valueString.match(/[:]/g)) {
+                        result[key] = valueString.split(',');
+                    } else {
+                        var pairs = { };
+                        // ?key=key1:value1;key2:value2
+                        var pairsString = valueString.split(';');
+                        _.each(pairsString, function(pairString) {
+                            var pair = pairString.split(':');
+                            var key = pair[0];
+                            var values = pair[1].split(',');
+                            pairs[key] = values;
+                        });
+                        result[key] = pairs;
+                    }
+                    result[key] = !angular.isArray(obj[key]) ? result[key][0] : result[key];
+                }
+            });
+            result = angular.extend({ }, obj, result);
+            return result;
+        },
+
+        // Gets link like http://localhost/collection?key=key1:value1,value2;key2:value3,value4 from search query state object
+        getLink: function(obj, type) {
+            var query = $location.search();
+            var state = this.getState(query);
+            // add or replace value when defined, remove when null and leave old when undefined
+            var process = function (src, dest, fn, isArray) {
+                var chain = _.chain(_.union(Object.keys(dest), Object.keys(src)))
+                    .filter(function(key) {
+                        return dest[key] || !(key in dest);
+                    })
+                    .map(function(key) {
+                        return fn(key, src[key], dest[key]);
+                    });
+                if (!isArray) {
+                    chain = chain.object();
+                }
+                return chain.value();
+            }
+            var selectValue = function(srcVal, destVal) {
+                if (angular.isArray(destVal)) {
+                    return (type === 'append' ? _.union(destVal, angular.isArray(srcVal) ? srcVal : [srcVal]) : destVal).join(',');
+                } else {
+                    return destVal || srcVal;
+                }
+            }
+            var result = process(state, obj, function (key, srcVal, destVal) {
+                var value;
+                // replace value when ?key=value and merge objects when ?key=key1:value1
+                if (angular.isObject(destVal) && !angular.isArray(destVal)) {
+                    if (srcVal) {
+                        if (!angular.isObject(srcVal) || angular.isArray(srcVal))
+                            throw 'Type of ' + key + ' in search query and object is different';
+                    } else {
+                        srcVal = angular.isArray(destVal) ? [] : {};
+                    }
+                    value = process(srcVal, destVal, function (subKey, subSrcVal, subDestVal) {
+                        var subVal = selectValue(subSrcVal, subDestVal);
+                        return subKey + ':' + (angular.isArray(subVal) ? subVal.join(',') : subVal);
+                    }, true);
+                    value = value.join(';');
+                } else {
+                    value = selectValue(srcVal, destVal);
+                }
+                return [key, value];
+            }, false);
+            var url = new URL($location.absUrl());
+            url.search = $httpParamSerializer(result);
+            return url.href;
+        }
+    }
+}]);

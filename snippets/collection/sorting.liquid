@@ -8,7 +8,7 @@
             <a id="sort" href="" class="dropdown-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="false">{% raw %}{{ $collection.sortModes[$collection.sortMode] | translate }}{% endraw %}&nbsp;<span class="fa fa-angle-down"></span></a>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="sort">
                 <li ng-repeat="(mode, title) in $collection.sortModes">
-                    <a vc-query="{ sort_by: mode }" ng-bind="title | translate"></a>
+                    <a vc-query-source="{ sort_by: mode }" query-type="replace" ng-bind="title | translate"></a>
                 </li>
             </ul>
         </li>

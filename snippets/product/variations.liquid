@@ -11,18 +11,18 @@
     <meta itemprop="url" content="{{ product.url | absolute_url}}">
 
     <h1>{{ product.title }}</h1>
-    <p>6 products found with these common attributes:</p>
+    <p>6 products found with these common attributes: {{ product.selected_variant }}</p>
     <p>Narrow your results by</p>
 
     <ul class="list-inline list-unstyled">
         <li class="dropdown" ng-repeat="(propName, props) in filterableVariationPropsMap" uib-dropdown aria-haspopup="true">
             <button class="btn btn-alt btn-secondary" uib-dropdown-toggle>{% raw %}{{ propName }}{% endraw %}&nbsp;<i class="dropdown-ico fa fa-angle-down"></i></button>
-            <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
+            <ul class="dropdown-menu" role="menu" uib-dropdown-menu ng-init="propQuery = { [propName]: null }" vc-query-target="propQuery">
                 <li ng-repeat="prop in props">
                     <div class="checkbox">
                         <label>
                             <input type="checkbox">
-                            <a vc-query="{ [propName]: prop.value }" query-type="array">
+                            <a vc-query-source="{ [propName]: [prop.value] }" query-type="'append'">
                                 <span class="switch"></span>
                                 <span class="name">{% raw %}{{ prop.value }}{% endraw %}</span>
                             </a>

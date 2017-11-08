@@ -783,7 +783,8 @@ hr {
   line-height: 18px;
   padding: 10px 0;
 
-  > * {
+  > *,
+  .views > * {
     display: inline-block;
   }
 

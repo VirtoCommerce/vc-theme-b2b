@@ -40,59 +40,39 @@ storefrontApp.directive('vcEnterTarget', [function () {
     };
 }]);
 
-storefrontApp.directive('vcQuery', ['$parse', '$location', '$httpParamSerializer', function ($parse, $location, $httpParamSerializer) {
+storefrontApp.directive('vcQuerySource', ['$parse', 'searchQueryService', function ($parse, searchQueryService) {
     return {
         restrict: "A",
         compile: function (tElem, tAttr) {
-            if (!tAttr.href && !tAttr.xlinkHref) {
+            if (!tAttr.href) {
                 return function(scope, element, attrs) {
                     // If the linked element is not an anchor tag anymore, do nothing
                     if (element[0].nodeName.toLowerCase() !== 'a') return;
 
-                    // SVGAElement does not use the href attribute, but rather the 'xlinkHref' attribute.
-                    var href = toString.call(element.prop('href')) === '[object SVGAnimatedString]' ?
-                        'xlink:href' : 'href';
-                    var type = attrs.queryType || 'pair';
-
-                    function stringToObject(str) {
-                        var result = { };
-                        if (str) {
-                            var pairStrs = str.split(';');
-                            _.each(pairStrs, function(pairStr) {
-                                var pair = pairStr.split(':');
-                                var key = pair[0];
-                                var values = pair[1].split(',');
-                                result[key] = values;
-                            });
-                        }
-                        return result;
-                    }
-
-                    function objectToString(obj) {
-                        return Object.keys(obj).map(function(key) {
-                             return key + ':' + obj[key].join(',');
-                        }).join(';');
-                    }
-
                     // get query from current url, replace query parts with specified parts and set href
-                    scope.$watch($parse(attrs.vcQuery), function (value) {
-                        var query = $location.search();
-                        if (type === 'pair') {
-                            query = angular.extend({ }, query, value);
-                        } else if (type === 'array') {
-                            _.each(Object.keys(value), function (key) {
-                                var queryValues = stringToObject(query[key]);
-                                angular.extend(queryValues, value[key]);
-                                queryValues = objectToString(queryValues);
-                                query[key] = queryValues;
-                            });
-                        }
-                        var url = new URL($location.absUrl());
-                        url.search = $httpParamSerializer(query);
-                        element.attr(href, url.href);
-                    });
+                    scope.$watch(function() {
+                         return [attrs.vcQuerySource, attrs.queryType];
+                    }, function (obj) {
+                        var querySource = $parse(obj[0])(scope);
+                        var queryType = $parse(obj[1])(scope);
+                        var href = searchQueryService.getLink(querySource, queryType);
+                        element.attr("href", href);
+                    }, true);
                 }
             }
+        }
+    }
+}]);
+
+storefrontApp.directive('vcQueryTarget', ['$parse', 'searchQueryService', function ($parse, searchQueryService) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var vcQueryTarget = $parse(attrs.vcQueryTarget);
+            // get requested keys and set ng-model value to value of ?key1=value1&key2=value2
+            var t = vcQueryTarget(scope);
+            var state = searchQueryService.getState(t);
+            vcQueryTarget.assign(scope, state);
         }
     }
 }]);
