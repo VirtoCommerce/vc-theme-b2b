@@ -168,6 +168,11 @@ dd *:only-child {
 
     label {
       width: 100%;
+
+      a {
+        display: inline-block;
+        width: 100%;
+      }
     }
   }
 }

@@ -3,7 +3,7 @@
 {% endcomment %}
 <div class="search-t">{{ 'collections.general.products_per_page' | t }}</div>
 <ul class="pagination" ng-init="$collection.generatePageSizes({{ settings.product_list_capacity }}, {{ settings.product_list_capacity_steps }})">
-	<li ng-repeat="pageSize in $collection.pageSizes" vc-query-target="$collection.pageSizeQuery" query-type="replace" ng-class="{'active': $collection.pageSizeQuery.page_size == pageSize}">
+	<li ng-repeat="pageSize in $collection.pageSizes" vc-query-target="$collection.pageSizeQuery" query-type="'settable'" ng-class="{'active': $collection.pageSizeQuery.page_size == pageSize}">
         <a vc-query-source="{ page_size: pageSize }" ng-bind="pageSize" ></a>
     </li>
 </ul>

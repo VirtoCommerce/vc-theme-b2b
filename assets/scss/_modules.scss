@@ -675,8 +675,11 @@ vc-labeled-input:last-child {
 
   .table-row {
     border-bottom: 1px solid $gray;
-    padding-top: 10px;
-    padding-bottom: 10px;
+
+    .table-content { 
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
 
     .table-col {
       padding: 0 0 0 10px;
@@ -685,13 +688,27 @@ vc-labeled-input:last-child {
 
     .table-item {
       cursor: pointer;
+      position: relative;
 
       .table-pic {
         margin: 0 0 10px;
         max-width: 80px;
       }
 
-      &::after {
+      .expand {
+        display: none;
+        background: $gray-darker;
+        border-radius: 3px;
+        color: #fff;
+        padding: 1px 15px;
+        left: 50%;
+        position: absolute;
+        bottom: 0;
+        transform: translate(0%, -50%);
+      }
+
+      &:hover .expand {
+        display: block;
       }
     }
   }

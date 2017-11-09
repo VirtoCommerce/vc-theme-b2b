@@ -24,7 +24,7 @@
             <div class="col-md-2"><srong>1.3 mi</srong></div>
             <div class="col-md-2">1000 items available</div>
             <div class="col-md-3 form-group">
-                <a ng-if="dialogData.isFilter" class="btn btn-default form-control" vc-query-source="{% raw %}{ terms: { available_in: [fulfillmentCenter.id] } }{% endraw %}" query-type="replace">Select</a>
+                <a ng-if="dialogData.isFilter" class="btn btn-default form-control" vc-query-source="{% raw %}{ terms: { available_in: [fulfillmentCenter.id] } }{% endraw %}" query-type="'settable'">Select</a>
                 <a ng-if="!dialogData.isFilter" class="btn btn-default form-control" ng-click="close(fulfillmentCenter)">Select</a>
             </div>
         </div>

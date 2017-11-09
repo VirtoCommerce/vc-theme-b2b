@@ -877,11 +877,11 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         // display validator please select property
         // display price range
 
-        var allVariations = [];
-
-        $scope.selectedVariation = {};
-        $scope.filterableVariationPropsMap = { };
+        $scope.allVariations = [];
+        $scope.allVariationsMap = {}
         $scope.allVariationPropsMap = {};
+        $scope.filterableVariationPropsMap = { };
+        $scope.selectedVariation = {};
         $scope.productPrice = null;
         $scope.productPriceLoaded = false;
 
@@ -1006,7 +1006,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             return dialogDataModel;
         }
 
-        function initialize() {
+        function initialize(filters) {
             var productIds = _.map($window.products, function (product) { return product.id });
             if (!productIds || !productIds.length) {
                 return;
@@ -1014,17 +1014,28 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             catalogService.getProduct(productIds).then(function (response) {
 				var product = response.data[0];
                 //Current product is also a variation (titular)
-                allVariations = [product].concat(product.variations || []);
-                $scope.allVariationsMap = _.object(allVariations.map(function(variation) { return [variation.id, variation]; }));
-                $scope.allVariationPropsMap = getFlatternDistinctPropertiesMap(allVariations);
-                $scope.filterableVariationPropsMap = _.pick($scope.allVariationPropsMap, function(value, key, object) { return value.length > 1; });
+                var allVariations = [product].concat(product.variations || []);
+                var filteredVariations = allVariations;
+                $scope.allVariations.length = 0;
+                if (filters) {
+                    var variationPropsKeys = Object.keys(filters.terms || {});
+                    filteredVariations = _.filter(allVariations, function(variation) {
+                        return _.all(variation.variationProperties, function(property) {
+                            return !variationPropsKeys.includes(property.displayName) || filters.terms[property.displayName].includes(property.value);
+                        });
+                    });
+                }
+                Array.prototype.push.apply($scope.allVariations, filteredVariations);
+                angular.copy(_.object(filteredVariations.map(function (variation) { return [variation.id, variation]; })), $scope.allVariationsMap);
+                angular.copy(getFlatternDistinctPropertiesMap(allVariations), $scope.allVariationPropsMap);
+                angular.copy(_.pick($scope.allVariationPropsMap, function (value, key, object) { return value.length > 1; }), $scope.filterableVariationPropsMap);
 
                 //Auto select initial product as default variation  (its possible because all our products is variations)
-                var propertyMap = getVariationPropertyMap(product);
-                _.each(_.keys(propertyMap), function (x) {
-                    $scope.checkProperty(propertyMap[x][0])
-                });
-				$scope.selectedVariation = product;
+                //var propertyMap = getVariationPropertyMap(product);
+                //_.each(_.keys(propertyMap), function (x) {
+                //    $scope.checkProperty(propertyMap[x][0])
+                //});
+                $scope.selectedVariation = product;
             });
         };
 
@@ -1067,22 +1078,22 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             });
         };
 
-        function findVariationBySelectedProps(variations, selectedPropMap) {
-            return _.find(variations, function (x) {
-                return comparePropertyMaps(getVariationPropertyMap(x), selectedPropMap);
-            });
-        }
+        //function findVariationBySelectedProps(variations, selectedPropMap) {
+        //    return _.find(variations, function (x) {
+        //        return comparePropertyMaps(getVariationPropertyMap(x), selectedPropMap);
+        //    });
+        //}
 
-        //Method called from View when user clicks one property value
-        $scope.checkProperty = function (property) {
-            //Select appropriate property and unselect previous selection
-            _.each($scope.allVariationPropsMap[property.displayName], function (x) {
-                x.selected = x != property ? false : !x.selected;
-            });
+        ////Method called from View when user clicks one property value
+        //$scope.checkProperty = function (property) {
+        //    //Select appropriate property and unselect previous selection
+        //    _.each($scope.allVariationPropsMap[property.displayName], function (x) {
+        //        x.selected = x != property ? false : !x.selected;
+        //    });
 
-            //try to find the best variation match for selected properties
-            $scope.selectedVariation = findVariationBySelectedProps(allVariations, getSelectedPropsMap($scope.allVariationPropsMap));
-        };
+        //    //try to find the best variation match for selected properties
+        //    $scope.selectedVariation = findVariationBySelectedProps(allVariations, getSelectedPropsMap($scope.allVariationPropsMap));
+        //};
 
         $scope.sendToEmail = function (storeId, productId, productUrl, language) {
             dialogService.showDialog({ storeId: storeId, productId: productId, productUrl: productUrl, language: language }, 'recentlyAddedCartItemDialogController', 'storefront.send-product-to-email.tpl');
@@ -1092,7 +1103,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             $window.print();
         };
 
-		initialize();
+        $scope.$watch('filters', initialize);
     }]);
 
 storefrontApp.controller('recentlyAddedCartItemDialogController', ['$scope', '$window', '$uibModalInstance', 'mailingService', 'dialogData', function ($scope, $window, $uibModalInstance, mailingService, dialogData) {
@@ -1816,7 +1827,7 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
                         });
                         result[key] = pairs;
                     }
-                    result[key] = !angular.isArray(obj[key]) ? result[key][0] : result[key];
+                    result[key] = !angular.isArray(obj[key]) && result[key].length === 1 ? result[key][0] : result[key];
                 }
             });
             result = angular.extend({ }, obj, result);
@@ -1835,7 +1846,8 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
                     })
                     .map(function(key) {
                         return fn(key, src[key], dest[key]);
-                    });
+                    })
+                    .compact();
                 if (!isArray) {
                     chain = chain.object();
                 }
@@ -1843,7 +1855,9 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
             }
             var selectValue = function(srcVal, destVal) {
                 if (angular.isArray(destVal)) {
-                    return (type === 'append' ? _.union(destVal, angular.isArray(srcVal) ? srcVal : [srcVal]) : destVal).join(',');
+                    destVal = _.compact(destVal);
+                    srcVal = _.chain([srcVal]).flatten().compact().value();
+                    return (type === 'checkable' ? _.difference(destVal.concat(srcVal), _.intersection(destVal, srcVal)) : destVal).join(',');
                 } else {
                     return destVal || srcVal;
                 }
@@ -1860,13 +1874,13 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
                     }
                     value = process(srcVal, destVal, function (subKey, subSrcVal, subDestVal) {
                         var subVal = selectValue(subSrcVal, subDestVal);
-                        return subKey + ':' + (angular.isArray(subVal) ? subVal.join(',') : subVal);
+                        return subVal ? subKey + ':' + (angular.isArray(subVal) ? subVal.join(',') : subVal) : null;
                     }, true);
                     value = value.join(';');
                 } else {
                     value = selectValue(srcVal, destVal);
                 }
-                return [key, value];
+                return value ? [key, value] : [];
             }, false);
             var url = new URL($location.absUrl());
             url.search = $httpParamSerializer(result);

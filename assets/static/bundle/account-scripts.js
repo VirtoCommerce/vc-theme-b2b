@@ -431,7 +431,7 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
                         });
                         result[key] = pairs;
                     }
-                    result[key] = !angular.isArray(obj[key]) ? result[key][0] : result[key];
+                    result[key] = !angular.isArray(obj[key]) && result[key].length === 1 ? result[key][0] : result[key];
                 }
             });
             result = angular.extend({ }, obj, result);
@@ -450,7 +450,8 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
                     })
                     .map(function(key) {
                         return fn(key, src[key], dest[key]);
-                    });
+                    })
+                    .compact();
                 if (!isArray) {
                     chain = chain.object();
                 }
@@ -458,7 +459,9 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
             }
             var selectValue = function(srcVal, destVal) {
                 if (angular.isArray(destVal)) {
-                    return (type === 'append' ? _.union(destVal, angular.isArray(srcVal) ? srcVal : [srcVal]) : destVal).join(',');
+                    destVal = _.compact(destVal);
+                    srcVal = _.chain([srcVal]).flatten().compact().value();
+                    return (type === 'checkable' ? _.difference(destVal.concat(srcVal), _.intersection(destVal, srcVal)) : destVal).join(',');
                 } else {
                     return destVal || srcVal;
                 }
@@ -475,13 +478,13 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
                     }
                     value = process(srcVal, destVal, function (subKey, subSrcVal, subDestVal) {
                         var subVal = selectValue(subSrcVal, subDestVal);
-                        return subKey + ':' + (angular.isArray(subVal) ? subVal.join(',') : subVal);
+                        return subVal ? subKey + ':' + (angular.isArray(subVal) ? subVal.join(',') : subVal) : null;
                     }, true);
                     value = value.join(';');
                 } else {
                     value = selectValue(srcVal, destVal);
                 }
-                return [key, value];
+                return value ? [key, value] : [];
             }, false);
             var url = new URL($location.absUrl());
             url.search = $httpParamSerializer(result);

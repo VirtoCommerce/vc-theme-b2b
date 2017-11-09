@@ -6,7 +6,7 @@
         <div class="form-t">{{ 'collections.sidebar.search_within' | t }}</div>
         <div class="form-group group-flex" vc-enter-source>
             <input type="text" class="form-control" vc-query-target="$collection.keywordQuery" ng-model="$collection.keywordQuery.keyword">
-            <a class="btn btn-default" vc-query-source="$collection.keywordQuery" query-type="replace" vc-enter-target>{{ 'common.go' | t }}</a>
+            <a class="btn btn-default" vc-query-source="$collection.keywordQuery" query-type="'settable'" vc-enter-target>{{ 'common.go' | t }}</a>
         </div>
     </form>
 </div>
