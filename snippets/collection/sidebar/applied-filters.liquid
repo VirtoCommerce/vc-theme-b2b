@@ -1,0 +1,14 @@
+﻿<div ng-show="filters.terms" class="panel-default panel-static" uib-accordion-group template-url="collection-sidebar-always-visible-group.html" is-open="always" ng-init="filters = { terms: undefined }" vc-query-target="filters">
+    <uib-accordion-heading>
+        Applied filters
+        <a class="action" vc-query-source="{ terms: null }">Clear all</a>
+    </uib-accordion-heading>
+    <div ng-repeat="term in filters.terms | toArray: true | orderBy: '$key'">
+        <h6>{% raw %}{{ term.$key }}{% endraw %}</h6>
+        <ul class="list-filters">
+            <li class="list-item" ng-repeat="value in term">
+                <a vc-query-source="{ terms: { [term.$key]: [value] } }" query-type="'checkable'" class="fa fa-times-circle"></a>&ensp;{% raw %}{{ value }}{% endraw %}
+            </li>
+        </ul>
+    </div>
+</div>

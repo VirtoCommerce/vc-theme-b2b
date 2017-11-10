@@ -23,30 +23,7 @@
             </div>
         </script>
     {% endraw %}
-    <div class="panel-default panel-static" uib-accordion-group template-url="collection-sidebar-always-visible-group.html" is-open="always">
-        <uib-accordion-heading>
-            Applied filters
-            <a href="#" class="action">Clear all</a>
-        </uib-accordion-heading>
-        <strong>Type:</strong>
-        <ul class="list-filters">
-            <li class="list-item">
-                <a class="list-ico fa fa-times-circle"></a>
-                Handheld
-            </li>
-            <li class="list-item">
-                <a class="list-ico fa fa-times-circle"></a>
-                Semi-portable
-            </li>
-        </ul>
-        <strong>Price:</strong>
-        <ul class="list-filters">
-            <li class="list-item">
-                <a class="list-ico fa fa-times-circle"></a>
-                $100-$200
-            </li>
-        </ul>
-    </div>
+    {% include 'collection/sidebar/applied-filters' %}
     {% include 'collection/sidebar/keyword' %}
     <div class="panel-default panel-static" uib-accordion-group template-url="collection-sidebar-always-visible-group.html" is-open="always">
         <uib-accordion-heading>
@@ -62,6 +39,6 @@
             </label>
         </div>
     </div>
-    {% include 'collection/sidebar/fulfillmentCenter' %}
+    {% include 'collection/sidebar/fulfillment-center' %}
     {% include 'collection/sidebar/filters' %}
 </uib-accordion>

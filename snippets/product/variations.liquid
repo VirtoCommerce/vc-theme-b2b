@@ -42,6 +42,9 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <a ng-show="filters.terms" class="action" vc-query-source="{ terms: null }">Clear all</a>
+            </li>
         </ul>
     </div>
 
@@ -78,7 +81,7 @@
                 <div class="col-md-3">
                     <div class="table-col">Price</div>
                     <div class="table-col">
-                        <vc-shipping-type is-dropdown="true" title="Ship or pickup" subtitle="Enter location" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
+                        <vc-shipping-type id="shipOrPickup" is-dropdown="true" title="Ship or pickup" subtitle="Enter location" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
                     </div>
                     <div class="table-col">Qty</div>
                 </div>
@@ -122,7 +125,7 @@
                                 <div class="price-unit">/ each</div>
                             </div>
                             <div class="table-col">
-                                <a href="#">Enter location</a> to <br> check availability
+                                <a href="" ng-click="$event.stopPropagation()" onclick="document.getElementById('shipOrPickup').getElementsByClassName('dropdown-toggle')[0].click()">Enter location</a> to <br> check availability
                             </div>
                             <div class="table-col">
                                 <input class="form-control">

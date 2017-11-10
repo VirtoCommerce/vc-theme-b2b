@@ -30,9 +30,14 @@
                 {% include 'collection/sorting' %}
 				<div class="search-controls">
                     {% include 'collection/views' %}
-					{% include 'collection/pagination' %}
+					{% include 'collection/page-size' %}
 				</div>
                 {% include product_items %}
+                <div class="search-controls">
+                    {% include 'collection/views' %}
+                    {% include 'collection/page-size' %}
+                </div>
+                {% include 'shared/pagination' %}
                 <script>
                     window.productList = [];
                     {% for product in collection.products %}

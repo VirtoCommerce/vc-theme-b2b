@@ -809,6 +809,11 @@ hr {
   .search-t {
     margin: 0 10px 0 0;
   }
+
+  + nav {
+    margin: 0 0 -1px;
+    padding: 10px 0;
+  }
 }
 
 /* Product page */
