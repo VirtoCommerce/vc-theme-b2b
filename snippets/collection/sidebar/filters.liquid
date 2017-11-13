@@ -29,18 +29,12 @@
                             {%- else -%}
                                 <li class="checkbox advanced-filter" data-group="{{ cat_item }}">
                             {%- endif -%}
-                                <label>
+                                <label>                                    
                                     <input type="checkbox" ng-checked="{{ is_active }}">
-                                    {% capture tag_link_text %}{{ tag_label }} ({{custom_tag.count}}){% endcapture %}
-                                    {% capture tag_link_elements %}
+                                    <a vc-query-source="{ terms: { '{{ cat_item }}': ['{{ custom_tag.value }}'] } }" query-type="'checkable'">
                                         <span class="switch"></span>
                                         <span class="name">{{ tag_label }} <span class="count">({{ custom_tag.count }})</span></span>
-                                    {% endcapture %}
-                                    {% if is_active %}
-                                        {{ tag_label | link_to_remove_tag: custom_tag | replace: tag_link_text, tag_link_elements }}
-                                    {% else %}
-                                        {{ tag_label | link_to_add_tag: custom_tag | replace: tag_link_text, tag_link_elements }}                                            
-                                    {% endif %}
+                                    </a>
                                 </label>
                             </li>
                         {%- endif -%}
@@ -49,43 +43,4 @@
             </div>
         {%- endunless -%}
     {%- endfor -%}
-    <script>
-    $(function() {
-        var currentTags = '{{ current_tags }}',
-                filters = $('.advanced-filter'),
-                activeTag,
-                activeHandle;
-
-        filters.each(function() {
-            var el = $(this),
-                    group = el.data('group'),
-                    isActive = el.hasClass('active-filter');
-        });
-
-        filters.on('click', function(e) {
-            var el = $(this),
-                    group = el.data('group'),
-                    url = el.find('a').attr('href');
-
-            // Continue as normal if we're clicking on the active link
-            if ( el.hasClass('active-filter') ) {
-                return;
-            }
-
-            // Get active group link (unidentified if there isn't one)
-            activeTag = $('.active-filter[data-group="'+ group +'"]');
-
-            // If a tag from this group is already selected, remove it from the new tag's URL and continue
-            if ( activeTag && activeTag.data('group') === group ) {
-                e.preventDefault();
-                activeHandle = activeTag.data('handle') + '+';
-
-                // Create new URL without the currently active handle
-                url = url.replace(activeHandle, '');
-
-                window.location = url;
-            }
-        });
-    });
-    </script>
 {%- endif -%}

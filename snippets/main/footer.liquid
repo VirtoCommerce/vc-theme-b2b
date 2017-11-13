@@ -1,16 +1,21 @@
 ﻿{% include 'main/footer-links' %}
 <div class="row center footer-line">
     {% if settings.footer_mobile_apps_enable %}
-        <div class="col-md-3 col-md-offset-{{ column_offset }}">
+        <div class="col-md-3">
             <h4>
                 <a href="#">{{ 'layout.footer.mobile_apps_title' | t }}</a>
             </h4>
             <p>{{ 'layout.footer.mobile_apps_message' | t }}</p>
-            <!-- TODO: Modile app icons -->
+            <a href="#">
+                <img class="mobile-app" src="{{ 'app-store-badge.svg' | asset_url }}" />
+            </a>
+            <a href="#">
+                <img class="mobile-app" src="{{ 'google-play-badge.png' | asset_url }}" />
+            </a>
         </div>
     {% endif %}
     {% if settings.footer_newsletter_enable %}
-        <div class="col-md-3 col-md-offset-{{ column_offset }}">
+        <div class="col-md-3">
             <h4>{{ 'layout.footer.newsletter_title' | t }}</h4>
             <p>{{ 'blogs.newsletter.message' | t }}</p>
             <!-- Show popup? -->
@@ -18,12 +23,13 @@
         </div>
     {% endif %}
     {% if settings.footer_social_enable %}
-        <div class="col-md-3 col-md-offset-{{ column_offset }}">
+        <div class="col-md-3">
+            <h4>Connect with us</h4>
             {% include 'social/links' %}
         </div>
     {% endif %}
     {% if settings.footer_support_number_enable %}
-        <div class="col-md-3 col-md-offset-{{ column_offset }}">
+        <div class="col-md-3">
             <p>{{ 'layout.footer.call_us' | t | append: settings.support_number }}</p>
         </div>
     {% endif %}

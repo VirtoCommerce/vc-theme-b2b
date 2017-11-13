@@ -1,12 +1,13 @@
-﻿@import "_functions";
+﻿@import "_functions.scss";
 
 // Import custom Bootstrap variables
-@import "_bootstrap-variables";
+@import "_bootstrap-variables.scss";
 // Import Bootstrap for Sass
-@import "../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap.scss";
+@import "../../bower_components/bootstrap-social/bootstrap-social.scss";
 
-@import "mixins/_buttons";
-@import "_variables";
-@import "_custom";
-@import "_modules";
-@import "_responsive";
+@import "mixins/_buttons.scss";
+@import "_variables.scss";
+@import "_custom.scss";
+@import "_modules.scss";
+@import "_responsive.scss";

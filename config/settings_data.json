@@ -17,20 +17,20 @@
             "footer_services_linklist": "our-services",
             "footer_legallinks_enable": true,
             "footer_legallinks_linklist": "legal-links",
-            "footer_mobile_apps_enable": false,
+            "footer_mobile_apps_enable": true,
             "mobile_features_link": "",
             "google_play_link": "",
             "app_store_link": "",
-            "footer_social_enable": false,
+            "footer_social_enable": true,
             "social_google_plus_link": "https://plus.google.com/+virtocommerce",
             "social_facebook_link": "https://facebook.com/virtocommerce",
             "social_twitter_link": "https://twitter.com/virtocommerce",
             "social_instagram_link": "https://instagram.com/virtocommerce",
-            "social_youtube_link": "",
+            "social_youtube_link": "https://www.youtube.com/virtocommerce",
             "social_vimeo_link": "",
             "social_tumblr_link": "",
             "social_pinterest_link": "",
-            "social_fancy_link": "",
+            "social_linkedin_link": "https://www.linkedin.com/company/virto-commerce",
             "footer_support_number_enable": true,
             "support_number": "<strong>1-800-555-CENT</strong>&nbsp;(1-800-555-2368)",
             "copyright": "VirtoCommerce. All Rights Reserved.",
@@ -184,16 +184,16 @@
             "collect_user_events_enabled": false,
             "available_lists": [
                 {
-                   "name": "shopping list",
-                   "default": true,
-                     "permission": "private",
-                     "items": []
-                 },
-                 {
-                     "name": "wish list",
-                     "permission": "public",
-                     "items": []
-                 }
+                    "name": "shopping list",
+                    "default": true,
+                    "permission": "private",
+                    "items": []
+                },
+                {
+                    "name": "wish list",
+                    "permission": "public",
+                    "items": []
+                }
             ]
         }
     }

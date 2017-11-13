@@ -15,9 +15,10 @@
   text-align: center;
 
   > *[class*="col-"] {
-    float: none;
     display: inline-block;
-    text-align: initial;
+    float: none;
+    text-align: left;
+    margin-right: -4px;
     vertical-align: top;
   }
 }
@@ -73,7 +74,7 @@ button {
 //
 //##
 
-.btn {
+.btn:not(.btn-social) {
   border-width: 2px;
   font-family: $btn-font-family;
   line-height: 16px;
@@ -113,6 +114,10 @@ button {
   padding: 14px 35px;
 }
 
+.btn-youtube {
+  @include btn-social(#e52d27);
+}
+
 //== Images
 //
 //##
@@ -123,6 +128,10 @@ img {
 
 .img-ico {
   max-width: 100%;
+}
+
+img.mobile-app {
+  height: 40px;
 }
 
 //== Lists

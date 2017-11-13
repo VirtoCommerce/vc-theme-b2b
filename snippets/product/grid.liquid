@@ -7,7 +7,7 @@
         <ul class="row flexible grid-items" ng-controller="productListController as $productList">
     {% endif %}
     {% include product_item, product: product %}
-    {% if product_index == 2 %}
+    {% if product_index == 2 or forloop.last %}
         </ul>
     {% endif %}
 {% endfor %}
