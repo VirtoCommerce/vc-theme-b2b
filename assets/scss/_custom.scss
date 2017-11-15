@@ -118,6 +118,11 @@ button {
   @include btn-social(#e52d27);
 }
 
+.btn.checkout {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
 //== Images
 //
 //##
@@ -1058,6 +1063,44 @@ hr {
     font-size: 12px;
     font-weight: 700;
     margin: 0 10px 0 0;
+  }
+}
+
+// Steps
+.steps {
+  font-family: "Roboto Condensed";
+  font-size: $font-size-h4;
+  font-weight: 700;
+  line-height: $font-size-h1;
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 10px 0;
+  text-transform: uppercase;
+
+  li {
+    padding: 0;
+    margin: 10px;
+
+    span {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .title {
+      color: $gray-darker;
+    }
+
+    .number {
+      font-size: $font-size-h1;
+    }
+
+    &.active {
+      border-bottom: 5px solid black;
+
+      .title {
+        color: $text-color;
+      }
+    }
   }
 }
 

@@ -642,6 +642,16 @@ vc-labeled-input:last-child {
     border-bottom: 1px solid $gray;
     border-top: 1px solid $gray;
     padding: 10px 0;
+
+    h2 {
+      margin: 0;
+    }
+
+    .links-group {
+      display: inline-block;
+      vertical-align: top;
+      line-height: 26px;
+    }
   }
 
   .compare-controls {
@@ -676,7 +686,7 @@ vc-labeled-input:last-child {
   .table-row {
     border-bottom: 1px solid $gray;
 
-    .table-content { 
+    .table-content {
       padding-top: 10px;
       padding-bottom: 10px;
     }

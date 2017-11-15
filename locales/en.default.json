@@ -225,7 +225,7 @@
             "updating_cart_message": "Updating cart...",
             "loading_cart_message": "Loading cart...",
             "updating_cart_error_message": "An error occured while updating cart",
-            "checkout": "Checkout",
+            "checkout": "Proceed to checkout",
             "empty": "Your cart is currently empty.",
             "adding": "Adding product to cart...",
             "continue_browsing_html": "Continue browsing <a href=\"collections\">here</a>.",
