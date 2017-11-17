@@ -1,0 +1,14 @@
+﻿@include bg-variant('.bg-gray-base',    $gray-base);
+@include bg-variant('.bg-gray-darker',  $gray-darker);
+@include bg-variant('.bg-gray-dark',    $gray-dark);
+@include bg-variant('.bg-gray',         $gray);
+@include bg-variant('.bg-gray-light',   $gray-light);
+@include bg-variant('.bg-gray-lighter', $gray-lighter);
+
+@include bg-variant('.bg-alt', $brand-alt);
+
+@include text-emphasis-variant('.text-alt', $text-alt);
+
+.text-serif {
+  font-family: $font-family-serif;
+}

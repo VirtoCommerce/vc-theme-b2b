@@ -77,6 +77,43 @@ storefrontApp.directive('vcQueryTarget', ['$parse', 'searchQueryService', functi
     }
 }]);
 
+// based on https://github.com/angular/angular.js/blob/master/src/ng/directive/ngInclude.js
+storefrontApp.config(['$provide', function ($provide) {
+    $provide.decorator('ngIncludeDirective', ['$delegate', function ($delegate) {
+        var includeFillContentDirective = $delegate[1];
+        var link = includeFillContentDirective.link;
+        includeFillContentDirective.link = function (scope, $element, $attr, ctrl) {
+            if (!Object.keys($attr).includes('raw')) {
+                link(scope, $element, $attr, ctrl);
+            } else {
+                $element.text(ctrl.template);
+            }
+        };
+        includeFillContentDirective.compile = function() {
+            return includeFillContentDirective.link;
+        };
+        $delegate[1] = includeFillContentDirective;
+        return $delegate;
+    }]);
+}]);
+
+storefrontApp.directive('vcScope', ['$animate', '$compile', function ($animate) {
+    return {
+        multiElement: true,
+        transclude: 'element',
+        priority: 600,
+        terminal: true,
+        restrict: 'A',
+        $$tlb: true,
+        link: function ($scope, $element, $attr, ctrl, $transclude) {
+            var childScope, block;
+            $transclude(function (clone) {
+                $element.after(clone);
+            });
+        }
+    }
+}]);
+
 storefrontApp.directive('fallbackSrc', function () {
     return {
         link: function (scope, element, attrs) {

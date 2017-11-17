@@ -47,6 +47,7 @@
         "gulp-using": "^0.1.1",
         "gulp-util": "^3.0.7",
         "gulp-zip": "^4.0.0",
+        "highlight.js": "file:bower_components/highlight-js",
         "main-bower-files": "^2.13.1",
         "merge-stream": "^1.0.1",
         "node-bourbon": "^4.2.8",

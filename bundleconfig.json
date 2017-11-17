@@ -19,7 +19,9 @@
             "bower_components/angular-translate/angular-translate.js",
             "bower_components/angular-translate-loader-url/angular-translate-loader-url.js",
             "bower_components/angular-component-router/angular_1_router.js",
-            "bower_components/satellizer/dist/satellizer.js"
+            "bower_components/satellizer/dist/satellizer.js",
+            "bower_components/prism/prism.js",
+            "bower_components/prism/plugins/normalize-whitespace/prism-normalize-whitespace.js"
         ]
     },
     {
@@ -50,7 +52,8 @@
         "outputFileName": "assets/static/bundle/styles.scss.css",
         "inputFiles": [
             "bower_components/font-awesome/scss/font-awesome.scss",
-            "assets/scss/main.scss"
+            "assets/scss/main.scss",
+            "bower_components/prism/themes/prism.css"
         ]
     },
     {

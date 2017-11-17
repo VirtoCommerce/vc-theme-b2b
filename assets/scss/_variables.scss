@@ -1,4 +1,10 @@
-﻿//== Forms
+﻿$brand-alt: #10acd2;
+$text-alt:  #fff;
+$font-family-alt: Arial, "Helvetica Neue", Helvetica, sans-serif;
+$font-family-condensed: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+/*
+//== Forms
 $input-font-family: "Roboto Condensed";
 
 //== Buttons
@@ -7,24 +13,25 @@ $btn-disabled-bg: $gray-lighter;
 $btn-disabled-border: $gray;
 $btn-disabled-color: #ccc;
 
-/* ---- Base ---- */
+//== Base
 $redColor: #bb0d02;
 
-/* ---- Header ---- */
+//== Header
 $headerBg: #151b1e;
 
-/* ---- Aside ---- */
+//== Aside
 $asidePadding: 15px;
 $asideBrdColor: $gray;
 $asideAccentBrdColor: $headerBg;
 $asideMargin: 10px;
 
-/* ---- Cvp module ---- */
+//== Cvp module
 $cvpBg: #f2f2f2;
 
-/* ---- Popular ---- */
+//== Popular
 $popularItemHeight: 110px;
 $popularColor: #29333b;
 
-/* ---- Product list ---- */
+//== Product list
 $priceValueColor: #2c9243;
+*/

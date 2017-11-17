@@ -579,6 +579,43 @@ storefrontApp.directive('vcQueryTarget', ['$parse', 'searchQueryService', functi
     }
 }]);
 
+// based on https://github.com/angular/angular.js/blob/master/src/ng/directive/ngInclude.js
+storefrontApp.config(['$provide', function ($provide) {
+    $provide.decorator('ngIncludeDirective', ['$delegate', function ($delegate) {
+        var includeFillContentDirective = $delegate[1];
+        var link = includeFillContentDirective.link;
+        includeFillContentDirective.link = function (scope, $element, $attr, ctrl) {
+            if (!Object.keys($attr).includes('raw')) {
+                link(scope, $element, $attr, ctrl);
+            } else {
+                $element.text(ctrl.template);
+            }
+        };
+        includeFillContentDirective.compile = function() {
+            return includeFillContentDirective.link;
+        };
+        $delegate[1] = includeFillContentDirective;
+        return $delegate;
+    }]);
+}]);
+
+storefrontApp.directive('vcScope', ['$animate', '$compile', function ($animate) {
+    return {
+        multiElement: true,
+        transclude: 'element',
+        priority: 600,
+        terminal: true,
+        restrict: 'A',
+        $$tlb: true,
+        link: function ($scope, $element, $attr, ctrl, $transclude) {
+            var childScope, block;
+            $transclude(function (clone) {
+                $element.after(clone);
+            });
+        }
+    }
+}]);
+
 storefrontApp.directive('fallbackSrc', function () {
     return {
         link: function (scope, element, attrs) {
@@ -1840,12 +1877,12 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
             var state = this.getState(query);
             // add or replace value when defined, remove when null and leave old when undefined
             var process = function (src, dest, fn, isArray) {
-                var chain = _.chain(_.union(Object.keys(dest), Object.keys(src)))
+                var chain = _.chain(_.union(dest ? Object.keys(dest) : [], src ? Object.keys(src) : []))
                     .filter(function(key) {
-                        return dest[key] || !(key in dest);
+                        return dest && (dest[key] || !(key in dest)) || src[key] || !(key in src);
                     })
                     .map(function(key) {
-                        return fn(key, src[key], dest[key]);
+                        return fn(key, src ? src[key] : null, dest ? dest[key] : null);
                     })
                     .compact();
                 if (!isArray) {
@@ -1854,10 +1891,10 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
                 return chain.value();
             }
             var selectValue = function(srcVal, destVal) {
-                if (angular.isArray(destVal)) {
-                    destVal = _.compact(destVal);
+                if (destVal && angular.isArray(destVal) || angular.isArray(srcVal)) {
+                    destVal = destVal ? _.compact(destVal) : null;
                     srcVal = _.chain([srcVal]).flatten().compact().value();
-                    return (type === 'checkable' ? _.difference(destVal.concat(srcVal), _.intersection(destVal, srcVal)) : destVal).join(',');
+                    return (type === 'checkable' ? _.difference((destVal || []).concat(srcVal), _.intersection(destVal, srcVal)) : destVal || srcVal).join(',');
                 } else {
                     return destVal || srcVal;
                 }
@@ -1865,7 +1902,7 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
             var result = process(state, obj, function (key, srcVal, destVal) {
                 var value;
                 // replace value when ?key=value and merge objects when ?key=key1:value1
-                if (angular.isObject(destVal) && !angular.isArray(destVal)) {
+                if (destVal && angular.isObject(destVal) && !angular.isArray(destVal) || angular.isObject(srcVal) && !angular.isArray(srcVal)) {
                     if (srcVal) {
                         if (!angular.isObject(srcVal) || angular.isArray(srcVal))
                             throw 'Type of ' + key + ' in search query and object is different';

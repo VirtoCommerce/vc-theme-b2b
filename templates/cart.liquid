@@ -1,4 +1,25 @@
-﻿<div ng-controller="cartController">
+﻿<div class="toolbar hidden-print clearfix">
+    {% include 'shared/order-steps' %}
+    <ul class="toolbar-actions pull-right">
+        <li>
+            <i class="fa fa-bullhorn"></i>
+            <a href="" ng-click="">Feedback</a>
+        </li>
+        <li>
+            <i class="fa fa-envelope"></i>
+            <a href="" ng-click="">Email</a>
+        </li>
+        <li>
+            <i class="fa fa-print"></i>
+            <a href="" ng-click="">Print</a>
+        </li>
+    </ul>
+    <div></div>
+    <div></div>
+</div>
+
+{% comment %}
+<div ng-controller="cartController">
     <div class="ajax-informer fade" ng-if="!cart">
         <div class="loader"></div>
         <span>{{ 'cart.general.loading_cart_message' | t }}</span>
@@ -116,3 +137,4 @@
         </form>
     </div>   
 </div>
+{% endcomment %}

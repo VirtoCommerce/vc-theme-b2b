@@ -1,4 +1,43 @@
-﻿//== Grid
+﻿// Grid
+.row.flexible {
+  display: flex;
+  flex-wrap: wrap;
+
+  & > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+// Type
+h1 {
+  font-weight: 300;
+}
+
+h2, h3, h4 {
+  text-transform: uppercase;
+}
+
+h4 {
+  small,
+  .small {
+    font-size: 65%;
+  }
+}
+
+// Code
+pre.panel-footer,
+pre.panel-footer[class*="language-"] {
+  margin: 0;
+  padding: $panel-footer-padding;
+  border-bottom: none;
+  border-left: 0;
+  border-right: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/*//== Grid
 //
 //##
 
@@ -155,7 +194,7 @@ dd *:only-child {
   margin-bottom: 0;
 }
 
-/* Helpers */
+// Helpers
 .form-control {
   box-shadow: none;
   height: 40px;
@@ -245,10 +284,10 @@ hr {
   }
 }
 
-/* General */
+// General
 #layout {}
 
-/* Header */
+// Header
 .top {
   background: #fff;
   border-top: 4px solid $brand-primary;
@@ -317,7 +356,7 @@ hr {
   }
 }
 
-/* Header */
+// Header
 .header {
   background: $headerBg;
   height: 70px;
@@ -399,7 +438,7 @@ hr {
   }
 }
 
-/* Navbar */
+// Navbar
 .navbar {
   border-width: 1px 0;
   font-family: "Roboto Condensed";
@@ -593,7 +632,7 @@ hr {
   }
 }
 
-/* Main */
+// Main
 .main {
   margin-bottom: 40px;
 }
@@ -668,7 +707,7 @@ hr {
   margin: 0 0 0 6px;
 }
 
-/* Accordeon */
+// Accordeon
 .panel-group .panel {
   border: none;
   border-radius: 0;
@@ -825,7 +864,7 @@ hr {
   }
 }
 
-/* Product page */
+// Product page
 .no-image {
   min-width: 100%;
 }
@@ -985,7 +1024,7 @@ hr {
   }
 }
 
-/* Add to cart list */
+// Add to cart list
 .add-cart-list {
   [class*="col-md-"] {
     padding: 0;
@@ -1061,7 +1100,45 @@ hr {
   }
 }
 
-/* Footer */
+// Steps
+.steps {
+  font-family: "Roboto Condensed";
+  font-size: $font-size-h4;
+  font-weight: 700;
+  line-height: $font-size-h1;
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 10px 0;
+  text-transform: uppercase;
+
+  li {
+    padding: 0;
+    margin: 10px;
+
+    span {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .title {
+      color: $gray-darker;
+    }
+
+    .number {
+      font-size: $font-size-h1;
+    }
+
+    &.active {
+      border-bottom: 5px solid black;
+
+      .title {
+        color: $text-color;
+      }
+    }
+  }
+}
+
+// Footer
 .footer {
   border-top: 3px solid $gray;
   padding: 20px 0 0;
@@ -1196,4 +1273,4 @@ hr {
   .gray-light {
     background: $gray-light;
   }
-}
+}*/
