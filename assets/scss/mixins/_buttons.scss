@@ -50,7 +50,12 @@
     background-image: none;
   }
 
-  @include button-variant-disabled();
+  @include button-variant-disabled()
+  
+  .badge {
+    color: $background;
+    background-color: $color;
+  }
 }
 
 @mixin button-variant($color, $background, $border, $colorizer: 'darken', $colorizer-multiplier: 1) {
@@ -59,11 +64,6 @@
   border-color: $border;
 
   @include button-variant-states($color, $background, $border, $colorizer, $colorizer-multiplier);
-
-  .badge {
-    color: $background;
-    background-color: $color;
-  }
 }
 
 @mixin button-variant-alt($color, $background, $border, $colorizer: 'darken', $colorizer-multiplier: 1) {
@@ -72,9 +72,4 @@
   border-color: $border;
 
   @include button-variant-states($color, $background, $border, $colorizer, $colorizer-multiplier);
-
-  .badge {
-    color: $color;
-    background-color: $background;
-  }
 }

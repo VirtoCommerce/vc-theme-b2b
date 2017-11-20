@@ -1,0 +1,38 @@
+﻿vc-labeled-input {
+  .form-group {
+    margin-top: $font-size-base;
+    position: relative;
+  }
+
+  label {
+    background: $input-bg;
+    color: $text-muted;
+    font-size: $font-size-base;
+    font-weight: normal;
+    cursor: text;
+    margin: 0;
+    padding: 0 $padding-xs-horizontal;
+    position: absolute;
+    left: $padding-base-horizontal - $padding-xs-horizontal + 1px; // 1px = border width
+    top: $padding-base-vertical + 1px; // 1px = border
+    transition: top 0.25s ease;
+  }
+
+  label.focused {
+    color: $link-color;
+  }
+
+  label.focused ~ input {
+    border-width: 2px;
+    border-color: $link-color;
+  }
+}
+
+vc-labeled-input .form-group.keyuped {
+  label {
+    font-size: $font-size-small;
+    line-height: $line-height-small;
+    cursor: default;
+    top: floor(($line-height-small-computed + $padding-xs-vertical) / 2) * -1;
+  }
+}

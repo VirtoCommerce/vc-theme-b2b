@@ -1,0 +1,78 @@
+﻿.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"],
+.radio input[type="radio"],
+.radio-inline input[type="radio"] {
+  display: none;
+}
+
+.checkbox,
+.checkbox-inline,
+.radio,
+.radio-inline {
+  .switch {
+    background: $input-bg;
+    border: 2px solid $input-border;
+    display: inline-block;
+    position: relative;
+    width: $line-height-computed;
+    height: $line-height-computed;
+    vertical-align: top;
+  }
+
+  input:checked ~ .switch,
+  input:checked ~ * .switch {
+    background: $checkbox-radio-active-bg;
+    border-color: darken($checkbox-radio-active-bg, 5%);
+
+    &::after {
+      color: $text-contrast;
+      content: "\f00c";
+      font-family: "FontAwesome";
+      font-size: $font-size-small;
+      font-weight: normal;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  
+  .name {
+    display: inline-block;
+    padding-left: $padding-small-horizontal;
+    min-height: $line-height-computed;
+  }
+}
+
+.checkbox label,
+.checkbox-inline,
+.radio label,
+.radio-inline {
+    padding-left: 0;
+}
+
+.radio,
+.radio-inline {
+  .switch {
+    border-radius: 50%;
+  }
+
+  input:checked ~ .switch::after {
+    font-size: $font-size-small / 2;
+    content: "\f111";
+  }
+}
+
+.form-inline .checkbox .name,
+.form-inline .radio .name {
+  padding-left: 0;
+}
+
+.checkbox,
+.checkbox-inline,
+.radio,
+.radio-inline {
+  input:disabled ~ .switch {
+    background-color: $input-bg-disabled;
+  }
+}

@@ -1,0 +1,10 @@
+﻿.table > thead > tr,
+.table > tbody > tr,
+.table > tfoot > tr {
+  > td.active,
+  > th.active,
+  &.active > td,
+  &.active > th {
+    color: $text-contrast;
+  }
+}

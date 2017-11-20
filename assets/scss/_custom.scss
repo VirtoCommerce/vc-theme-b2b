@@ -1,41 +1,9 @@
-﻿// Grid
-.row.flexible {
-  display: flex;
-  flex-wrap: wrap;
-
-  & > [class*='col-'] {
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-// Type
-h1 {
-  font-weight: 300;
-}
-
-h2, h3, h4 {
-  text-transform: uppercase;
-}
-
-h4 {
-  small,
-  .small {
-    font-size: 65%;
-  }
-}
-
-// Code
-pre.panel-footer,
-pre.panel-footer[class*="language-"] {
-  margin: 0;
-  padding: $panel-footer-padding;
-  border-bottom: none;
-  border-left: 0;
-  border-right: 0;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
+﻿@import "custom/_type.scss";
+@import "custom/_tables.scss";
+@import "custom/_buttons.scss";
+@import "custom/_forms.scss";
+@import "custom/_checkboxes.scss";
+@import "custom/_code.scss";
 
 /*//== Grid
 //

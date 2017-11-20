@@ -1,4 +1,6 @@
-﻿/* Forms */
+﻿@import "modules/_vc-labeled-input.scss";
+
+/*// Forms
 .form-t {
   font-size: 14px;
   font-family: "Roboto Condensed";
@@ -180,7 +182,7 @@ vc-labeled-input:last-child {
   }
 }
 
-/* Aside box */
+// Aside box
 .aside-box {
   border-color: $asideBrdColor;
   border-style: solid;
@@ -290,7 +292,7 @@ vc-labeled-input:last-child {
   }
 }
 
-/* Cvp module */
+// Cvp module
 .cvp-module {
   background: $cvpBg;
   display: flex;
@@ -315,7 +317,7 @@ vc-labeled-input:last-child {
   }
 }
 
-/* Popular categories  */
+// Popular categories 
 .popular-categories {
   ul,
   li {
@@ -358,7 +360,7 @@ vc-labeled-input:last-child {
   }
 }
 
-/* Product grid */
+// Product grid
 .grid-items {
 
   @include list-unstyled;
@@ -408,7 +410,7 @@ vc-labeled-input:last-child {
   }
 }
 
-/* List filters */
+// List filters
 .list-filters {
   margin: 5px 0;
 
@@ -425,7 +427,7 @@ vc-labeled-input:last-child {
   }
 }
 
-/* Table details & list items */
+// Table details & list items
 .table-detail {
   background-color: $gray-lighter;
   font-size: $font-size-base;
@@ -532,7 +534,7 @@ vc-labeled-input:last-child {
   }
 }
 
-/* Ship or pickup */
+// Ship or pickup
 
 .ship-pickup {
   .fa {
@@ -567,7 +569,7 @@ vc-labeled-input:last-child {
   }
 }
 
-/* Tech spec */
+// Tech spec
 .tech-spec {
   background: $gray-lighter;
 
@@ -601,7 +603,7 @@ vc-labeled-input:last-child {
   }
 }
 
-/* Search items */
+// Search items
 .search-terms {
   @include list-unstyled;
 
@@ -615,7 +617,7 @@ vc-labeled-input:last-child {
   }
 }
 
-/* Modals */
+// Modals
 .modal-header .close {
   font-family: Arial;
 }
@@ -627,12 +629,12 @@ vc-labeled-input:last-child {
   line-height: 38px;
 }
 
-/* Alert */
+// Alert
 .alert {
   font-family: "Roboto Condensed";
 }
 
-/* Table items */
+// Table items
 .table-cols {
   font-family: "Roboto Condensed";
   font-size: 12px;
@@ -731,7 +733,7 @@ vc-labeled-input:last-child {
   }
 }
 
-/* Modal compare */
+// Modal compare
 .modal-compare {
   bottom: 0;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
@@ -823,4 +825,4 @@ vc-labeled-input:last-child {
       width: 50px;
     }
   }
-}
+}*/

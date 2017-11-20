@@ -1,0 +1,41 @@
+﻿.btn {
+  border: 2px solid transparent;
+  font-family: $btn-font-family;
+  text-transform: uppercase;
+}
+
+.btn-link {
+  text-transform: none;
+}
+
+.btn-default {
+  @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border, 'lighten', 2);
+}
+
+.btn-alt {
+  @include button-variant-alt($btn-default-color, $btn-default-bg, $btn-default-border, 'lighten', 0);
+}
+
+.btn-primary.btn-alt {
+  @include button-variant-alt($btn-primary-color, $btn-primary-bg, $btn-primary-border, 'darken', 0);
+}
+
+.btn-primary,
+.btn-success,
+.btn-info,
+.btn-warning,
+.btn-danger {
+  @include button-variant-disabled();
+}
+
+.btn-link {
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus {
+      color: $btn-link-disabled-color;
+      text-decoration: none;
+    }
+  }
+}
