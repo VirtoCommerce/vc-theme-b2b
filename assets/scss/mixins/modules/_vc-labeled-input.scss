@@ -1,0 +1,8 @@
+﻿@mixin vc-labeled-input-size($input-class, $padding-horizontal, $padding-vertical) {
+  vc-labeled-input input {
+    &#{$input-class} ~ label {
+      left: $padding-horizontal - $padding-xs-horizontal + 1px; // 1px = border width
+      top: $padding-vertical + 1px; // 1px = border
+    }
+  }
+}

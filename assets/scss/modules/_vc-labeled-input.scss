@@ -13,18 +13,17 @@
     margin: 0;
     padding: 0 $padding-xs-horizontal;
     position: absolute;
-    left: $padding-base-horizontal - $padding-xs-horizontal + 1px; // 1px = border width
-    top: $padding-base-vertical + 1px; // 1px = border
     transition: top 0.25s ease;
   }
 
-  label.focused {
-    color: $link-color;
+  input:focus ~ label {
+    color: $input-border-focus;
   }
 
-  label.focused ~ input {
-    border-width: 2px;
-    border-color: $link-color;
+  input:disabled ~ label {
+    background-color: $input-bg-disabled;
+    color: $text-muted;
+    cursor: $cursor-disabled;
   }
 }
 
@@ -36,3 +35,7 @@ vc-labeled-input .form-group.keyuped {
     top: floor(($line-height-small-computed + $padding-xs-vertical) / 2) * -1;
   }
 }
+
+@include vc-labeled-input-size('', $padding-base-horizontal, $padding-base-vertical);
+@include vc-labeled-input-size('.input-lg', $padding-large-horizontal, $padding-large-vertical);
+@include vc-labeled-input-size('.input-sm', $padding-small-horizontal, $padding-small-vertical);

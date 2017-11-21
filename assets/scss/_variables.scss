@@ -200,6 +200,8 @@
 
 //** `<input>` background color
 // $input-bg:                       #fff
+//** `<input type="checkbox">` and `<input type="radio>` switch background color
+   $input-bg-checked:               $brand-alt; // not predefined
 //** `<input disabled>` background color
 // $input-bg-disabled:              $gray-lighter
 
@@ -219,9 +221,10 @@
 
 //** Border color for inputs on focus
    $input-border-focus:             $brand-alt; // #66afe9
+   $input-border-checked:           $brand-alt; // not predefined
 
 //** Placeholder text color
-   $input-color-placeholder:        $text-muted;
+   $input-color-placeholder:        $text-muted; // #999
 
 //** Default `.form-control` height
 // $input-height-base:              ($line-height-computed + ($padding-base-vertical * 2) + 2)
@@ -229,8 +232,6 @@
 // $input-height-large:             (ceil($font-size-large * $line-height-large) + ($padding-large-vertical * 2) + 2)
 //** Small `.form-control` height
 // $input-height-small:             (floor($font-size-small * $line-height-small) + ($padding-small-vertical * 2) + 2)
-
-   $checkbox-radio-active-bg:       $brand-alt; // not predefined
 
 //** `.form-group` margin
 // $form-group-margin-bottom:       15px
@@ -254,16 +255,16 @@
 //** Background for the dropdown menu.
 // $dropdown-bg:                    #fff
 //** Dropdown menu `border-color`.
-// $dropdown-border:                rgba(0,0,0,.15)
+   $dropdown-border:                $gray-light; // rgba(0,0,0,.15)
 //** Dropdown menu `border-color` **for IE8**.
-// $dropdown-fallback-border:       #ccc
+   $dropdown-fallback-border:       $gray-light; // #ccc
 //** Divider color for between dropdown items.
-// $dropdown-divider-bg:            #e5e5e5
+   $dropdown-divider-bg:            $gray-lighter; // #e5e5e5
 
 //** Dropdown link text color.
-// $dropdown-link-color:            $gray-dark
+   $dropdown-link-color:            $gray-darker; // $gray-dark
 //** Hover color for dropdown links.
-// $dropdown-link-hover-color:      darken($gray-dark, 5%)
+   $dropdown-link-hover-color:      darken($gray-darker, 5%); // darken($gray-dark, 5%)
 //** Hover background for dropdown links.
 // $dropdown-link-hover-bg:         #f5f5f5
 
@@ -273,10 +274,10 @@
 // $dropdown-link-active-bg:        $component-active-bg
 
 //** Disabled dropdown menu item background color.
-// $dropdown-link-disabled-color:   $gray-light
+   $dropdown-link-disabled-color:   $text-muted; // $gray-light
 
 //** Text color for headers within dropdown menus.
-// $dropdown-header-color:          $gray-light
+   $dropdown-header-color:          $gray-dark; // $gray-light
 
 //** Deprecated `$dropdown-caret-color` as of v3.1.0
 // $dropdown-caret-color:           #000

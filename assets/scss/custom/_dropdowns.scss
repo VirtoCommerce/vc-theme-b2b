@@ -1,0 +1,10 @@
+﻿a.dropdown-toggle {
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+.dropdown-menu {
+  margin: 0;
+}

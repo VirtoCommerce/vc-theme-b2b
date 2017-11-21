@@ -1,0 +1,28 @@
+﻿.btn-group {
+  .btn + .btn,
+  .btn + .btn-group,
+  .btn-group + .btn,
+  .btn-group + .btn-group {    
+    margin-left: -2px;
+  }
+
+  .btn-group-justified + .btn {
+    border-left: 1px;
+    border-right: 1px;
+
+    &:first-child {
+      border-left: 2px;
+    }
+
+    &:last-child {
+      border-right: 2px;
+    }
+  }
+}
+
+@include button-split-dropdown-fix('.btn-default', $btn-default-border);
+@include button-split-dropdown-fix('.btn-primary', $btn-primary-border);
+@include button-split-dropdown-fix('.btn-success', $btn-success-border);
+@include button-split-dropdown-fix('.btn-info',    $btn-info-border);
+@include button-split-dropdown-fix('.btn-warning', $btn-warning-border);
+@include button-split-dropdown-fix('.btn-danger',  $btn-danger-border);

@@ -73,7 +73,7 @@ gulp.task('min:js', function () {
         return gulp.src(bundle.inputFiles, { base: '.' })
             .pipe(sourcemaps.init())
             .pipe(concat(bundle.outputFileName))
-            //.pipe(uglify({ mangle: false }))
+            .pipe(uglify({ mangle: false }))
             .pipe(mapSources())
             .pipe(sourcemaps.write("."))
             .pipe(gulp.dest('.'));

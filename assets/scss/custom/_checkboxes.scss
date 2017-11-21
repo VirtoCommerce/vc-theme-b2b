@@ -21,8 +21,8 @@
 
   input:checked ~ .switch,
   input:checked ~ * .switch {
-    background: $checkbox-radio-active-bg;
-    border-color: darken($checkbox-radio-active-bg, 5%);
+    background: $input-bg-checked;
+    border-color: $input-border-checked;
 
     &::after {
       color: $text-contrast;
@@ -36,7 +36,7 @@
       transform: translate(-50%, -50%);
     }
   }
-  
+
   .name {
     display: inline-block;
     padding-left: $padding-small-horizontal;
@@ -72,7 +72,46 @@
 .checkbox-inline,
 .radio,
 .radio-inline {
-  input:disabled ~ .switch {
-    background-color: $input-bg-disabled;
+  input:disabled {
+    & ~ .switch {
+      background-color: $input-bg-disabled;
+    }
+
+    & ~ .name {
+      color: $text-muted;
+    }
+  }
+}
+
+.has-success {
+  .checkbox,
+  .checkbox-inline {
+    input:checked ~ .switch,
+    input:checked ~ * .switch {
+      background: $brand-success;
+      border-color: $brand-success;
+    }
+  }
+}
+
+.has-warning {
+  .checkbox,
+  .checkbox-inline {
+    input:checked ~ .switch,
+    input:checked ~ * .switch {
+      background: $brand-warning;
+      border-color: $brand-warning;
+    }
+  }
+}
+
+.has-error {
+  .checkbox,
+  .checkbox-inline {
+    input:checked ~ .switch,
+    input:checked ~ * .switch {
+      background: $brand-danger;
+      border-color: $brand-danger;
+    }
   }
 }

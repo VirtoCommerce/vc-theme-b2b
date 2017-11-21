@@ -1,16 +1,17 @@
 ﻿.form-control {
   box-shadow: none;
-  padding: ($padding-base-vertical + 1px) ($padding-base-horizontal + 1px);
 }
 
-.form-control:focus
-{
+.form-control:focus {
   &,
   .has-success &,
   .has-warning &,
   .has-error & {
-    padding: $padding-base-vertical $padding-base-horizontal;
-    border-width: 2px;
-    box-shadow: none;
+    box-shadow: 0 0 0 1px $input-border-focus;
   }
+}
+
+.form-control[disabled],
+fieldset[disabled] .form-control {
+  color: $text-muted;
 }

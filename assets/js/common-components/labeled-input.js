@@ -6,6 +6,7 @@
         value: '=',
         form: '=',
         name: '@',
+        inputClass: '<',
         placeholder: '@',
         type: '@?',
         required: '<',
