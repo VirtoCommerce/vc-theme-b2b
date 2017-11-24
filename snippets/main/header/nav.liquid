@@ -1,0 +1,16 @@
+﻿<nav class="navbar navbar-inverse-light hidden-print" role="navigation">
+    <div class="container">
+        {% include 'main/header/nav/top-level-collections' %}
+        <ul class="nav navbar-nav navbar-right">
+            {% if template != 'bulk-order' %}
+                {% include 'main/header/nav/bulk-order-form' %}
+            {% endif %}
+            <li>
+                <a href="{{ 'cart' | absolute_url }}" ng-controller="cartBarController">
+                    <i class="cart-ico fa fa-shopping-cart"></i>&ensp;{{ 'layout.cart.cart' | t }}&nbsp;<span ng-if="cartItemsCount > 0">(<span ng-bind="cartItemsCount"></span>)</span>
+                </a>
+            </li>
+        </ul>
+        {% include 'main/header/nav/search-bar' %}
+    </div>
+</nav>

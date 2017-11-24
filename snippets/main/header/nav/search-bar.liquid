@@ -1,6 +1,6 @@
-<form method="get" action="{{ '/search' | absolute_url }}" name="formSearch" class="navbar-form" role="search" autocomplete="off" ng-controller="searchBarController">
+﻿<form method="get" action="{{ '/search' | absolute_url }}" name="formSearch" class="navbar-form" role="search" autocomplete="off" ng-controller="searchBarController">
     <!-- TODO: Replace with typeahead -->
-    <div class="dropdown form-group" uib-dropdown aria-haspopup="true">
+    <div class="dropdown input-group" uib-dropdown aria-haspopup="true">
         <input type="hidden" name="type" value="product" />
         <input id="searchBar" type="search" name="q" ng-model="query" value="{{ search.terms | escape }}" class="form-control" placeholder="{{ 'layout.search_bar.placeholder' | t }}" aria-label="{{ 'layout.search_bar.placeholder' | t }}"  uib-dropdown-toggle ng-change="getSuggestions()" />
         <ul class="dropdown-menu list-styled" role="menu" uib-dropdown-menu aria-labellledby="searchBar" ng-if="(categorySuggestions || productSuggestions) && query">
@@ -19,8 +19,10 @@
                 <a href="">{{ 'cart.general.product_search_empty' | t }}</a>
             </li>
         </ul>
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary">{{ 'layout.search_bar.submit' | t }}</button>            
+        </span>
     </div>
-    <button type="submit" class="btn btn-primary">{{ 'layout.search_bar.submit' | t }}</button>
 </form>
 <script>
   window.searchQuery = '{{ search.terms | escape }}';

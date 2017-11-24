@@ -1,0 +1,53 @@
+﻿.container {
+  @media (min-width: $screen-xl-min) {
+    width: $container-xl;
+  }
+
+  @media (min-width: $screen-xxl-min) {
+    width: $container-xxl;
+  }
+}
+
+@include make-grid-columns;
+
+@media (min-width: $screen-xl-min) {
+  @include make-grid(xl);
+}
+
+@media (min-width: $screen-xxl-min) {
+  @include make-grid(xxl);
+}
+
+.container,
+.container-fluid {
+  .row > [class*="col-"]::before,
+  .row > [class*="col-"]::after {
+    content: ' ';
+    display: block;
+  }
+}
+
+.container-drain {
+  .row {
+    padding-top: ceil($grid-gutter-height / 2);
+  }
+  .row {
+    padding-bottom: floor($grid-gutter-height / 2);
+  }
+}
+
+.container-bordered {
+  .row:not(:last-child) > [class*="col-"]::after {
+    border-bottom: 1px solid $grid-border;
+    position: absolute;
+    width: calc(100% - #{$grid-gutter-width});
+    bottom: floor($grid-gutter-width / 2) * -1;
+  }
+
+  .row > [class*="col-"]:not(:last-child)::before {
+    border-right: 1px solid $grid-border;
+    position: absolute;
+    height: 100%;
+    right: 0;
+  }
+}

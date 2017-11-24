@@ -2,6 +2,19 @@
   border-width: 2px;
   font-family: $btn-font-family;
   text-transform: uppercase;
+  height: $input-height-base;
+}
+
+.btn-lg {
+  height: $input-height-large;
+}
+
+.btn-sm {
+  height: $input-height-small;
+}
+
+.btn-xs {
+  height: $input-height-xs;
 }
 
 .btn-link {

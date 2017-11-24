@@ -1,0 +1,203 @@
+﻿.navbar-default {
+  border-width: 2px 0 0 0;
+}
+
+.navbar-inverse {
+  .navbar-form {
+    .form-control,
+    .input-group-btn .btn {
+        border-color: darken($navbar-inverse-bg, 7%);
+    }
+  }
+}
+
+// Copied from navbar-inverse source code
+.navbar-inverse-light {
+  background-color: $navbar-inverse-light-bg;
+  border-color: $navbar-inverse-light-border;
+
+  .navbar-brand {
+    color: $navbar-inverse-light-brand-color;
+
+    &:hover,
+    &:focus {
+      color: $navbar-inverse-light-brand-hover-color;
+      background-color: $navbar-inverse-light-brand-hover-bg;
+    }
+  }
+
+  .navbar-text {
+    color: $navbar-inverse-light-color;
+  }
+
+  .navbar-nav {
+    > li > a {
+      color: $navbar-inverse-light-link-color;
+      text-transform: uppercase;
+
+      &:hover,
+      &:focus {
+        color: $navbar-inverse-light-link-hover-color;
+        background-color: $navbar-inverse-light-link-hover-bg;
+      }
+    }
+
+    > .active > a {
+      &,
+      &:hover,
+      &:focus {
+        color: $navbar-inverse-light-link-active-color;
+        background-color: $navbar-inverse-light-link-active-bg;
+      }
+    }
+
+    > .disabled > a {
+      &,
+      &:hover,
+      &:focus {
+        color: $navbar-inverse-light-link-disabled-color;
+        background-color: $navbar-inverse-light-link-disabled-bg;
+      }
+    }
+  }
+  // Darken the responsive nav toggle
+  .navbar-toggle {
+    border-color: $navbar-inverse-light-toggle-border-color;
+
+    &:hover,
+    &:focus {
+      background-color: $navbar-inverse-light-toggle-hover-bg;
+    }
+
+    .icon-bar {
+      background-color: $navbar-inverse-light-toggle-icon-bar-bg;
+    }
+  }
+
+  .navbar-collapse,
+  .navbar-form {
+    border-color: darken($navbar-inverse-light-bg, 7%);
+
+    .input-group-btn {
+      .btn {
+        border-color: darken($navbar-inverse-light-bg, 7%);
+      }
+    }
+  }
+  // Dropdowns
+  .navbar-nav {
+    > .open > a {
+      &,
+      &:hover,
+      &:focus {
+        background-color: $navbar-inverse-light-link-active-bg;
+        color: $navbar-inverse-light-link-active-color;
+      }
+    }
+
+    @media (max-width: $grid-float-breakpoint-max) {
+      // Dropdowns get custom display
+      .open .dropdown-menu {
+        > .dropdown-header {
+          border-color: $navbar-inverse-light-border;
+        }
+
+        .divider {
+          background-color: $navbar-inverse-light-border;
+        }
+
+        > li > a {
+          color: $navbar-inverse-light-link-color;
+
+          &:hover,
+          &:focus {
+            color: $navbar-inverse-light-link-hover-color;
+            background-color: $navbar-inverse-light-link-hover-bg;
+          }
+        }
+
+        > .active > a {
+          &,
+          &:hover,
+          &:focus {
+            color: $navbar-inverse-light-link-active-color;
+            background-color: $navbar-inverse-light-link-active-bg;
+          }
+        }
+
+        > .disabled > a {
+          &,
+          &:hover,
+          &:focus {
+            color: $navbar-inverse-light-link-disabled-color;
+            background-color: $navbar-inverse-light-link-disabled-bg;
+          }
+        }
+      }
+    }
+  }
+
+  .navbar-link {
+    color: $navbar-inverse-light-link-color;
+
+    &:hover {
+      color: $navbar-inverse-light-link-hover-color;
+    }
+  }
+
+  .btn-link {
+    color: $navbar-inverse-light-link-color;
+
+    &:hover,
+    &:focus {
+      color: $navbar-inverse-light-link-hover-color;
+    }
+
+    &[disabled],
+    fieldset[disabled] & {
+      &:hover,
+      &:focus {
+        color: $navbar-inverse-light-link-disabled-color;
+      }
+    }
+  }
+}
+
+.navbar-inverse,
+.navbar-inverse-light {
+  .btn-default {
+    @include button-variant($btn-default-contrast-color, $btn-default-contrast-bg, $btn-default-contrast-border, 'darken', 1);
+  }
+
+  .btn-alt {
+    @include button-variant-alt($btn-default-contrast-color, $btn-default-contrast-bg, $btn-default-contrast-border, 'darken', 0);
+  }
+}
+
+.navbar-form {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+  .form-control,
+  .btn {
+    border-radius: 0;
+    line-height: $line-height-computed;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: ($line-height-computed + (10px * 2));
+
+    @media (min-width: 576px) {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      height: ($line-height-computed + (15px * 2));
+    }
+  }
+
+  .input-group {
+    .input-group-addon,
+    .input-group-btn {
+      width: 1%;
+    }
+  }
+}

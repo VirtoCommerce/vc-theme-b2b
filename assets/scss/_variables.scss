@@ -28,19 +28,22 @@
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-// $body-bg:               #fff
+   $body-bg:                              #fff; // #fff
 //** Global text color on `<body>`.
-   $text-color:            #111;
-   $text-contrast:         #fff;  // not predefined
+   $text-color:                           #111;
+   $text-contrast:                        #fff;  // not predefined
 //** Text muted color
-   $text-muted:            #757575; // $gray-light
+   $text-muted:                           #757575; // $gray-light
 
 //** Global textual link color.
-   $link-color:            $brand-alt; // $brand-primary
+   $link-color:                           $brand-alt; // $brand-primary
+   $link-primary-color:                   $brand-primary; // not predefined
 //** Link hover color set via `darken()` function.
-//   $link-hover-color:    darken($link-color, 15%)
+// $link-hover-color:                     darken($link-color, 15%)
+   $link-primary-hover-color:             darken($link-primary-color, 15%); // not predefined
 //** Link hover decoration.
-//   $link-hover-decoration: underline
+// $link-hover-decoration:                underline
+   $internal-link-hover-decoration-style: dashed;
 
 
 //== Typography
@@ -52,8 +55,8 @@
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 // $font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace
 // $font-family-base:        $font-family-sans-serif
-   $font-family-alt: Arial, "Helvetica Neue", Helvetica, sans-serif; // not predefined
-   $font-family-condensed: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif; // not predefined
+   $font-family-alt:         Arial, "Helvetica Neue", Helvetica, sans-serif; // not predefined
+   $font-family-condensed:  "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif; // not predefined
 
    $font-size-base:          14px; // 14px
    $font-size-large:         $font-size-base; // =18px // ceil( ($font-size-base * 1.25)) // ~18px
@@ -76,6 +79,8 @@
    $headings-font-weight:    700; // 500
 // $headings-line-height:    1.1
 // $headings-color:          inherit
+   $link-font-family:        $font-family-condensed; // not predefined
+   $link-font-weight:        700; // not predefined
 
 
 //== Iconography
@@ -104,8 +109,8 @@
    $padding-large-vertical:     11px; // 10px
    $padding-large-horizontal:   32px; // 16px
 
-// $padding-small-vertical:     5px
-// $padding-small-horizontal:   10px
+   $padding-small-vertical:     5px; // 5px
+   $padding-small-horizontal:   10px; // 10px
 
    $padding-xs-vertical:        2px; // 1px
 // $padding-xs-horizontal:      5px
@@ -162,6 +167,10 @@
    $btn-default-bg:                 $gray-base; // #fff
    $btn-default-border:             $btn-default-bg; // #ccc
 
+   $btn-default-contrast-color:     $text-color; // not predefined
+   $btn-default-contrast-bg:        $body-bg; // not predefined
+   $btn-default-contrast-border:    $btn-default-contrast-bg; // not predefined
+
    $btn-primary-color:              $text-contrast; // #fff
    $btn-primary-bg:                 $brand-primary; // $brand-primary
    $btn-primary-border:             $btn-primary-bg; // darken($btn-primary-bg, 5%)
@@ -199,7 +208,7 @@
 //##
 
 //** `<input>` background color
-// $input-bg:                       #fff
+   $input-bg:                       $body-bg; // #fff;
 //** `<input type="checkbox">` and `<input type="radio>` switch background color
    $input-bg-checked:               $brand-alt; // not predefined
 //** `<input disabled>` background color
@@ -213,11 +222,11 @@
 // TODO: Rename `$input-border-radius` to `$input-border-radius-base` in v4
 //** Default `.form-control` border radius
 // This has no effect on `<select>`s in some browsers, due to the limited stylability of `<select>`s in CSS.
-// $input-border-radius:            $border-radius-base
+   $input-border-radius:            0; // $border-radius-base
 //** Large `.form-control` border radius
-// $input-border-radius-large:      $border-radius-large
+   $input-border-radius-large:      0; // $border-radius-large
 //** Small `.form-control` border radius
-// $input-border-radius-small:      $border-radius-small
+   $input-border-radius-small:      0; // $border-radius-small
 
 //** Border color for inputs on focus
    $input-border-focus:             $brand-alt; // #66afe9
@@ -226,12 +235,14 @@
 //** Placeholder text color
    $input-color-placeholder:        $text-muted; // #999
 
-//** Default `.form-control` height
+//** Default `.form-control` & `button` height
 // $input-height-base:              ($line-height-computed + ($padding-base-vertical * 2) + 2)
-//** Large `.form-control` height
+//** Large `.form-control` & `button` height
 // $input-height-large:             (ceil($font-size-large * $line-height-large) + ($padding-large-vertical * 2) + 2)
-//** Small `.form-control` height
+//** Small `.form-control` & `button` height
 // $input-height-small:             (floor($font-size-small * $line-height-small) + ($padding-small-vertical * 2) + 2)
+//** Extra small `button` height
+   $input-height-xs:                (floor($font-size-small * $line-height-small) + ($padding-xs-vertical * 2) + 2);
 
 //** `.form-group` margin
 // $form-group-margin-bottom:       15px
@@ -311,31 +322,43 @@
 //** Deprecated `$screen-phone` as of v3.0.1
 // $screen-phone:               $screen-xs-min
 
-// Small screen / tablet
+// Small screen / phablet
 //** Deprecated `$screen-sm` as of v3.0.1
-// $screen-sm:                  768px
-// $screen-sm-min:              $screen-sm
+   $screen-sm:                  576px; // 768px
+   $screen-sm-min:              $screen-sm; // $screen-sm
 //** Deprecated `$screen-tablet` as of v3.0.1
 // $screen-tablet:              $screen-sm-min
 
-// Medium screen / desktop
+// Medium screen / tablet
 //** Deprecated `$screen-md` as of v3.0.1
-// $screen-md:                  992px
-// $screen-md-min:              $screen-md
+   $screen-md:                  768px; // 992px
+   $screen-md-min:              $screen-md; // $screen-md
 //** Deprecated `$screen-desktop` as of v3.0.1
 // $screen-desktop:             $screen-md-min
 
-// Large screen / wide desktop
+// Large screen / desktop
 //** Deprecated `$screen-lg` as of v3.0.1
-// $screen-lg:                  1200px
-// $screen-lg-min:              $screen-lg
+   $screen-lg:                  992px; // 1200px
+   $screen-lg-min:              $screen-lg; // $screen-lg
 //** Deprecated `$screen-lg-desktop` as of v3.0.1
 // $screen-lg-desktop:          $screen-lg-min
 
+// Extra large screen / wide desktop (not predefined)
+   $screen-xl:                  1200px;
+   $screen-xl-min:              $screen-xl;
+   $screen-xl-desktop:          $screen-xl-min;
+
+// Huge screen / HD desktop (not predefined)
+   $screen-xxl:                  1366px;
+   $screen-xxl-min:              $screen-xxl;
+   $screen-xxl-desktop:          $screen-xxl-min;
+
 // So media queries don't overlap when required, provide a maximum
-// $screen-xs-max:              ($screen-sm-min - 1)
-// $screen-sm-max:              ($screen-md-min - 1)
-// $screen-md-max:              ($screen-lg-min - 1)
+   $screen-xs-max:              ($screen-sm-min - 1); // ($screen-sm-min - 1);
+   $screen-sm-max:              ($screen-md-min - 1); // ($screen-md-min - 1);
+   $screen-md-max:              ($screen-lg-min - 1); // ($screen-lg-min - 1);
+   $screen-lg-max:              ($screen-xl-min - 1); // not predefined
+   $screen-xl-max:              ($screen-xxl-min - 1); // not predefined
 
 
 //== Grid system
@@ -345,7 +368,9 @@
 //** Number of columns in the grid.
 // $grid-columns:              12
 //** Padding between columns. Gets divided in half for the left and right.
-// $grid-gutter-width:         30px
+   $grid-border:               $gray-light; // not predefined
+   $grid-gutter-width:         30px; // 30px
+   $grid-gutter-height:        $grid-gutter-width; // not predefined
 // Navbar collapse
 //** Point at which the navbar becomes uncollapsed.
 // $grid-float-breakpoint:     $screen-sm-min
@@ -357,20 +382,30 @@
 //
 //## Define the maximum width of `.container` for different screen sizes.
 
-// Small screen / tablet
-// $container-tablet:             (720px + $grid-gutter-width)
+// Small screen / phablet
+   $container-phablet:             (510px + $grid-gutter-width);   //  not predefined
 //** For `$screen-sm-min` and up.
-// $container-sm:                 $container-tablet
+   $container-sm:                  $container-phablet;             // $container-tablet
 
-// Medium screen / desktop
-// $container-desktop:            (940px + $grid-gutter-width)
+// Medium screen / tablet
+   $container-tablet:              (720px + $grid-gutter-width);   // $container-tablet:             (720px + $grid-gutter-width)
 //** For `$screen-md-min` and up.
-// $container-md:                 $container-desktop
+   $container-md:                  $container-tablet;              // $container-desktop
+
+// Large screen / desktop
+   $container-desktop:             (940px + $grid-gutter-width);   // $container-desktop:            (940px + $grid-gutter-width)
+//** For `$screen-lg-min` and up.
+   $container-lg:                  $container-desktop;             // $container-large-desktop
+
+// Extra large screen / wide desktop
+   $container-large-desktop:       (1140px + $grid-gutter-width);  // $container-large-desktop:      (1140px + $grid-gutter-width)
+//** For `$screen-lg-min` and up.
+   $container-xl:                  $container-large-desktop;       //  not predefined
 
 // Large screen / wide desktop
-// $container-large-desktop:      (1140px + $grid-gutter-width)
+   $container-extra-large-desktop: (1306px + $grid-gutter-width);  //  not predefined
 //** For `$screen-lg-min` and up.
-// $container-lg:                 $container-large-desktop
+   $container-xxl:                 $container-extra-large-desktop; //  not predefined
 
 
 //== Navbar
@@ -380,21 +415,21 @@
 // Basics of a navbar
 // $navbar-height:                    50px
 // $navbar-margin-bottom:             $line-height-computed
-// $navbar-border-radius:             $border-radius-base
+   $navbar-border-radius:             0; // $border-radius-base
 // $navbar-padding-horizontal:        floor(($grid-gutter-width / 2))
 // $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2)
 // $navbar-collapse-max-height:       340px
 
-// $navbar-default-color:             #777
-// $navbar-default-bg:                #f8f8f8
-// $navbar-default-border:            darken($navbar-default-bg, 6.5%)
+   $navbar-default-color:             $text-color; // #777
+   $navbar-default-bg:                $body-bg; // #f8f8f8
+   $navbar-default-border:            $brand-primary; // darken($navbar-default-bg, 6.5%)
 
 // Navbar links
-// $navbar-default-link-color:                #777
-// $navbar-default-link-hover-color:          #333
+   $navbar-default-link-color:                $link-color; // #777
+   $navbar-default-link-hover-color:          darken($navbar-default-link-color, 15%); // #333
 // $navbar-default-link-hover-bg:             transparent
-// $navbar-default-link-active-color:         #555
-// $navbar-default-link-active-bg:            darken($navbar-default-bg, 6.5%)
+   $navbar-default-link-active-color:         $text-color; // #555
+   $navbar-default-link-active-bg:            $gray-lighter; // darken($navbar-default-bg, 6.5%)
 // $navbar-default-link-disabled-color:       #ccc
 // $navbar-default-link-disabled-bg:          transparent
 
@@ -411,16 +446,16 @@
 
 //=== Inverted navbar
 // Reset inverted navbar basics
-// $navbar-inverse-color:                      lighten($gray-light, 15%)
-// $navbar-inverse-bg:                         #222
-// $navbar-inverse-border:                     darken($navbar-inverse-bg, 10%)
+   $navbar-inverse-color:                      $text-contrast;// lighten($gray-light, 15%)
+   $navbar-inverse-bg:                         $gray-darker; // #222
+   $navbar-inverse-border:                     $gray-dark; // darken($navbar-inverse-bg, 10%)
 
 // Inverted navbar links
 // $navbar-inverse-link-color:                 lighten($gray-light, 15%)
 // $navbar-inverse-link-hover-color:           #fff
 // $navbar-inverse-link-hover-bg:              transparent
-// $navbar-inverse-link-active-color:          $navbar-inverse-link-hover-color
-// $navbar-inverse-link-active-bg:             darken($navbar-inverse-bg, 10%)
+   $navbar-inverse-link-active-color:          $text-color; // $navbar-inverse-link-hover-color
+   $navbar-inverse-link-active-bg:             $gray-lighter; // darken($navbar-inverse-bg, 10%)
 // $navbar-inverse-link-disabled-color:        #444
 // $navbar-inverse-link-disabled-bg:           transparent
 
@@ -434,13 +469,40 @@
 // $navbar-inverse-toggle-icon-bar-bg:         #fff
 // $navbar-inverse-toggle-border-color:        #333
 
+//=== Light inverted navbar // not predefined, copied from inverted navbar variables
+// Reset inverted navbar basics
+   $navbar-inverse-light-color:                      $text-contrast;// lighten($gray-light, 15%)
+   $navbar-inverse-light-bg:                         $gray-base; // #222
+   $navbar-inverse-light-border:                     $gray-base; // darken($navbar-inverse-light-bg, 10%)
+
+// Inverted navbar links
+   $navbar-inverse-light-link-color:                 lighten($gray-light, 15%);
+   $navbar-inverse-light-link-hover-color:           #fff;
+   $navbar-inverse-light-link-hover-bg:              transparent;
+   $navbar-inverse-light-link-active-color:          $text-color; // $navbar-inverse-light-link-hover-color
+   $navbar-inverse-light-link-active-bg:             $gray-lighter; // darken($navbar-inverse-light-bg, 10%)
+   $navbar-inverse-light-link-disabled-color:        #444;
+   $navbar-inverse-light-link-disabled-bg:           transparent;
+
+// Inverted navbar brand label
+   $navbar-inverse-light-brand-color:                $navbar-inverse-light-link-color;
+   $navbar-inverse-light-brand-hover-color:          #fff;
+   $navbar-inverse-light-brand-hover-bg:             transparent;
+
+// Inverted navbar toggle
+   $navbar-inverse-light-toggle-hover-bg:            #333;
+   $navbar-inverse-light-toggle-icon-bar-bg:         #fff;
+   $navbar-inverse-light-toggle-border-color:        #333;
+
 
 //== Navs
 //
 //##
 
 //=== Shared nav styles
-// $nav-link-padding:                          10px 15px
+   $nav-link-padding:                          $padding-base-vertical $padding-base-horizontal; // 10px 15px
+   $nav-large-link-padding:                    $padding-large-vertical $padding-large-horizontal; // not predefined
+   $nav-small-link-padding:                    $padding-small-vertical $padding-small-horizontal; // not predefined
 // $nav-link-hover-bg:                         $gray-lighter
 
 // $nav-disabled-link-color:                   $gray-light
@@ -459,7 +521,7 @@
 // $nav-tabs-justified-active-link-border-color:     $body-bg
 
 //== Pills
-// $nav-pills-border-radius:                   $border-radius-base
+   $nav-pills-border-radius:                   0; // $border-radius-base
 // $nav-pills-active-link-hover-bg:            $component-active-bg
 // $nav-pills-active-link-hover-color:         $component-active-color
 
@@ -559,7 +621,7 @@
 //** Popover body background color
 // $popover-bg:                          #fff
 //** Popover maximum width
-// $popover-max-width:                   276px
+   $popover-max-width:                   $screen-xs-max; // 276px
 //** Popover border color
 // $popover-border-color:                rgba(0,0,0,.2)
 //** Popover fallback border color
@@ -728,6 +790,9 @@
 // $panel-heading-padding:       10px 15px
 // $panel-footer-padding:        $panel-heading-padding
 // $panel-border-radius:         $border-radius-base
+
+   $panel-heading-font-family:   $font-family-condensed; // not predefined
+   $panel-heading-font-weight:   700; // not predefined
 
 //** Border color for elements within panels
 // $panel-inner-border:          #ddd

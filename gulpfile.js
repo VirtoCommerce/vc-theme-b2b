@@ -115,7 +115,7 @@ gulp.task('min:scss', function () {
             //], { syntax: scss }))
             .pipe(sass({
                 outputStyle: "nested",
-                precision: 5
+                precision: 10
             }))
             .pipe(concat(bundle.outputFileName))
             .pipe(postcss([autoprefix(), cssnano()]))

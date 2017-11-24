@@ -35,19 +35,11 @@
         <div id="layout">
             <div class="top hidden-print">
                 <div class="container top-inner">
-                    {% include 'main/top' %}
+                    {% include 'main/header/top' %}
                 </div>
             </div>
-            <header class="header hidden-print">
-                <div class="container header-inner">
-                    {% include 'main/header' %}
-                </div>
-            </header>
-            <nav class="navbar navbar-default hidden-print">
-                <div class="container navbar-inner">
-                    {% include 'main/nav' %}
-                </div>
-            </nav>
+            {% include 'main/header/main' %}
+            {% include 'main/header/nav' %}            
             <main class="container main" role="main">
                 {{ content_for_layout }}
             </main>
@@ -55,11 +47,11 @@
         {% include 'scripts' %}
         <footer class="footer hidden-print">
             <div class="container footer-inner">
-                {% include 'main/footer' %}
+                {% include 'main/footer/main' %}
             </div>
             <div class="footer-legal">
                 <div class="container">
-                    {% include 'main/footer-legal' %}
+                    {% include 'main/footer/legal' %}
                 </div>
             </div>
         </footer>

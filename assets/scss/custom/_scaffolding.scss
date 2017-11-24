@@ -1,0 +1,26 @@
+﻿.text-serif {
+  font-family: $font-family-serif;
+}
+
+a {
+  font-family: $link-font-family;
+  font-weight: $link-font-weight;
+  text-underline-position: below;
+  text-underline-position: under;
+
+  &[href=""] {
+    &:hover,
+    &:focus {
+      text-decoration-style: $internal-link-hover-decoration-style;
+    }
+  }
+}
+
+a.primary {
+  color: $link-primary-color;
+
+  &:hover,
+  &:focus {
+    color: $link-primary-hover-color;
+  }
+}
