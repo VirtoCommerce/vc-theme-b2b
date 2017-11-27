@@ -1,44 +1,73 @@
-﻿<div class="nav navbar-nav hidden-xs">
-    <p class="navbar-text">
-        {% for link in linklists[settings.header_servicemenu_linklist].links %}
-            <a class="navbar-link" href="{{ link.url }}">{{ link.title }}</a>
-        {% endfor %}
-    </p>
-</div>
-<ul class="nav navbar-nav hidden-xs">
-    {% assign index = 0 %}
-    {% for link in linklists[settings.header_mainmenu_linklist].links %}
-        {% assign child_list_handle = link.title | handleize %}
-        {% if linklists[child_list_handle].links != blank %}
-            {% assign id = 'header-link-' | append: index %}
-            <li class="dropdown" uib-dropdown auto-close="mouseleave" aria-haspopup="true">
-                <a id="{{ id }}" href="{{ link.url }}" uib-dropdown-toggle vc-toggle-on-mouse-enter>{{ link.title }}&nbsp;<i class="dropdown-ico fa fa-angle-down"></i></a>
-                <ul class="dropdown-menu" role="menu" uib-dropdown-menu aria-labelledby="{{ link.name }}">
-                    {% for childlink in linklists[child_list_handle].links %}
-                        <li>
-                            <a role="menuitem" tabindex="-1" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
-                        </li>
-                    {% endfor %}
+﻿<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="row flexible">
+            <div class="navbar-header col-xs-3" itemscope itemtype="http://schema.org/Organization">
+                <a class="navbar-brand" href="{{ '/' | absolute_url }}" itemprop="url">
+                    {% if settings.logo_use_image %}
+                        <img alt="{{ shop.name }}" src="{{ 'logo.png' | asset_url }}" itemprop="logo" />
+                    {% else %}
+                        <strong class="h1 text-uppercase text-condensed">{{ shop.name }}</strong>
+                    {% endif %}
+                </a>
+            </div>
+            <div class="col-xs-9">
+                <div class="row">
+                    <div class="nav navbar-nav navbar-right hidden-xs">
+                        <div class="navbar-text small">
+                            <ul class="list-inline">
+                                {% for link in linklists[settings.header_servicemenu_linklist].links %}
+                                    <li>
+                                        <a class="navbar-link text-normal" href="{{ link.url }}">{{ link.title }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="nav navbar-nav navbar-right hidden-xs">
+                        <div class="navbar-text">
+                            <ul class="list-inline">
+                                {% assign index = 0 %}
+                                {% for link in linklists[settings.header_mainmenu_linklist].links %}
+                                    {% assign child_list_handle = link.title | handleize %}
+                                    {% if linklists[child_list_handle].links != blank %}
+                                        {% assign id = 'header-link-' | append: index %}
+                                        <li uib-dropdown auto-close="mouseleave">
+                                            <a id="{{ id }}" class="navbar-link text-normal" href="{{ link.url }}" uib-dropdown-toggle vc-toggle-on-mouse-enter>{{ link.title }}&ensp;<i class="dropdown-ico fa fa-angle-down"></i></a>
+                                            <ul class="dropdown-menu dropdown-menu-left dropdown-menu-square" role="menu" uib-dropdown-menu aria-labelledby="{{ link.name }}">
+                                                {% for childlink in linklists[child_list_handle].links %}
+                                                    <li>
+                                                        <a role="menuitem" tabindex="-1" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <a class="navbar-link text-normal" href="{{ link.url }}">{{ link.title }}</a>
+                                        </li>
+                                    {% endif %}
+                                    {% assign index = index | plus: 1 %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav navbar-nav visible-xs-block">
+                    <li>
+                        {% assign login_link_title = 'layout.customer.sign_in' | t %}
+                        {% assign login_link_content = '<i class="fa fa-user"></i> ' | append: login_link_title %}
+                        {{ login_link_title | customer_login_link | replace: login_link_title, login_link_content }}
+                    </li>
+                    <li>
+                        <a class="text-normal" href="{{ 'cart' | absolute_url }}" ng-controller="cartBarController">
+                            <i class="fa fa-shopping-cart"></i> {{ 'layout.cart.cart' | t }}
+                            <span class="count">{{ cartItemsCount }}</span>
+                        </a>
+                    </li>
                 </ul>
-            </li>
-        {% else %}
-            <li>
-                <a href="{{ link.url }}">{{ link.title }}</a>
-            </li>
-        {% endif %}
-        {% assign index = index | plus: 1 %}
-    {% endfor %}
-</ul>
-<ul class="nav navbar-nav visible-xs-block">
-    <li>
-        {% assign login_link_title = 'layout.customer.sign_in' | t %}
-        {% assign login_link_content = '<i class="fa fa-user"></i> ' | append: login_link_title %}
-        {{ login_link_title | customer_login_link | replace: login_link_title, login_link_content }}
-    </li>
-    <li>
-        <a href="{{ 'cart' | absolute_url }}" ng-controller="cartBarController">
-            <i class="fa fa-shopping-cart"></i> {{ 'layout.cart.cart' | t }}
-            <span class="count">{{ cartItemsCount }}</span>
-        </a>
-    </li>
-</ul>
+            </div>
+        </div>
+    </div>
+</nav>

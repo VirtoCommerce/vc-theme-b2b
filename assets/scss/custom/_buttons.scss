@@ -18,7 +18,28 @@
 }
 
 .btn-link {
+  border-bottom: 1px solid transparent;
+  font-weight: $link-font-weight;
   text-transform: none;
+  margin: (($input-height-base - $line-height-computed) / 2) $padding-base-horizontal;
+  padding: 0;
+  height: $line-height-computed;
+
+  &:hover,
+  &:focus {
+    border-bottom: 1px $link-hover-border-style $link-hover-color;
+  }
+
+  &.btn-link-internal {
+    &:hover,
+    &:focus {
+      border-bottom: 1px $internal-link-hover-border-style $link-hover-color;
+    }
+  }
+
+  &:disabled {
+    border-bottom: 1px solid transparent;
+  }
 }
 
 .btn-default {

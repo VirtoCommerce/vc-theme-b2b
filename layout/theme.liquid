@@ -32,19 +32,14 @@
         {% include 'dialogs/recently-create-new-list-dialog' %}
         {% include 'dialogs/list-settings-dialog' %}
         {% include 'dialogs/list-shared-link-dialog' %}
-        <div id="layout">
-            <div class="top hidden-print">
-                <div class="container top-inner">
-                    {% include 'main/header/top' %}
-                </div>
-            </div>
-            {% include 'main/header/main' %}
-            {% include 'main/header/nav' %}            
-            <main class="container main" role="main">
-                {{ content_for_layout }}
-            </main>
-        </div>
+
+        {% include 'main/header' %}
+        
+        <main class="container main" role="main">
+            {{ content_for_layout }}
+        </main>
         {% include 'scripts' %}
+
         <footer class="footer hidden-print">
             <div class="container footer-inner">
                 {% include 'main/footer/main' %}

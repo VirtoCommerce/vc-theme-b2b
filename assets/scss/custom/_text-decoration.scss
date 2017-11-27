@@ -1,0 +1,20 @@
+﻿// Disable anchor border for controls which is not real link
+a,
+a[href=""] {
+  &.badge,
+  &.btn-link, // text-decoration used because of paddings
+  &.carousel-control,
+  &.close,
+  &.dropdown-toggle, // not-predefined
+  .dropdown-menu > li > &,
+  .dropdown-menu > .active > &,
+  .dropdown-menu > .disabled > &,
+  &.label,
+  // .list-group-item // overriding
+  &.navbar-brand,
+  .nav > li > &,
+  .pager > li > &,
+  .pagination > li & {
+    border-bottom: 0;
+  }
+}

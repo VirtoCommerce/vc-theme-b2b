@@ -2,6 +2,7 @@
 @import "mixins/custom/_grid.scss";
 @import "mixins/custom/_buttons.scss";
 @import "mixins/custom/_button-groups.scss";
+@import "mixins/custom/_navbar.scss";
 
 @import "custom/_grid.scss";
 @import "custom/_type.scss";
@@ -21,25 +22,16 @@
 @import "custom/_responsive-utilities.scss";
 
 #all-products-popover + .popover {
-  width: 420px;
+  width: 480px;
 }
 
 #bulk-order-popover + .popover {
-  width: 280px;
+  width: 305px;
 }
 
 /*//== Grid
 //
 //##
-
-.row.flexible {
-  display: flex;
-
-  & > [class*='col-'].flexible {
-    display: flex;
-    flex-direction: column;
-  }
-}
 
 .row.center {
   text-align: center;

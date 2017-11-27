@@ -1,5 +1,5 @@
 ﻿<li ng-class="{'active': isBulkOrderFormOpen}">
-    <a id="bulk-order-popover" href="" popover-class="square hide-arrow" uib-popover-template="'bulk-order-popover.tpl'" popover-placement="bottom" popover-is-open="isBulkOrderFormOpen">
+    <a id="bulk-order-popover" href="" class="text-uppercase text-condensed" popover-class="popover-square hide-arrow" uib-popover-template="'bulk-order-popover.tpl'" popover-placement="bottom" popover-is-open="isBulkOrderFormOpen">
         {{ 'bulk_order.general.title' | t }}&ensp;<i class="fa fa-angle-down"></i>
     </a>
     <script id="bulk-order-popover.tpl" type="text/ng-template">
@@ -7,11 +7,11 @@
             <div class="panel-heading">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-xs-7">
                             <span ng-show="state == 'manual'">{{ 'bulk_order.general.subtitle' | t }}</span>
                             <span ng-show="state == 'csv'">{{ 'bulk_order.general.csv_title' | t }}</span>
                         </div>
-                        <div class="col-xs-6">
+                        <div class="col-xs-5">
                             <a href="" ng-show="state == 'csv'" ng-click="state = 'manual'">{{ 'bulk_order.general.subtitle' | t }}</a>
                             <a href="" ng-show="state == 'manual'" ng-click="state = 'csv'">{{ 'bulk_order.general.csv_title' | t }}</a>
                         </div>
@@ -22,11 +22,11 @@
                 <form ng-show="state == 'manual'">
                     {% assign column_count = 1 %}
                     {% assign rows_count = 5 %}
-                    {% assign sku_grid_column_count = 8 %}
-                    {% assign quantity_grid_column_count = 4 %}
+                    {% assign sku_grid_column_count = 7 %}
+                    {% assign quantity_grid_column_count = 5 %}
                     <div class="container-fluid">
                         {% include 'shared/bulk-order-fields' %}
-                        <p><a class="show-more" href="{{ 'bulkorder' | absolute_url }}">Show More Entry Fields</a></p>
+                        <p><a class="small" href="{{ 'bulkorder' | absolute_url }}">Show More Entry Fields</a></p>
                         <!-- TODO: Replace mock with real method -->
                         <button class="btn btn-primary" ng-click="addProductsToCartMock()" dropdown-close>{{ 'bulk_order.general.add_to_cart' | t }}</button>
                     </div>

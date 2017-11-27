@@ -1,39 +1,39 @@
 ﻿{% capture form %}{% form 'customer_login' %}{% include 'shared/form-errors-custom' %}{% endform %}{% endcapture %}
 {{ form | replace: 'id="customer_login"', 'id="customer_login" name="customer_login"' | remove: "</form>" }}
-    <div ng-keypress="login($event)">
+    <fieldset ng-keypress="login($event)">
 
-        <fieldset class="form-group">
+        <div class="form-group">
             <vc-labeled-input value="userName" form="customer_login" name="customer[user_name]" placeholder="{{ 'customer.sign-in.user_name' | t }}" required="true"></vc-labeled-input>
             <vc-labeled-input value="password" form="customer_login" name="customer[password]" placeholder="{{ 'customer.sign-in.password' | t }}" type="password" required="true"></vc-labeled-input>
-        </fieldset>
+        </div>
 
         {% if template != 'customers/login' %}
-            <fieldset class="aside-links">
+            <div class="form-group">
                 {% include 'customers/forgot-links' %}
-            </fieldset>
+            </div>
         {% endif %}
 
         {% if template != 'customers/login' %}
-            <fieldset class="aside-actions row">
+            <div class="row">
                 <div class="col-md-8">
         {% else %}
-            <fieldset class="form-group">
+            <div class="form-group">
         {% endif %}
-            <button class="btn btn-primary" ng-click="login()">{{ 'customer.sign-in.sign_in' | t }}</button>
+            <button class="btn btn-primary btn-block" ng-click="login()">{{ 'customer.sign-in.sign_in' | t }}</button>
         {% if template != 'customers/login' %}
                 </div>
         {% endif %}
         {% if template != 'customers/login' %}
 			<div class="col-md-4">
-                {{ 'layout.customer.register' | t | customer_register_link | replace: 'a href', 'a class="register" href' }}
+                {{ 'layout.customer.register' | t | customer_register_link | replace: 'a href', 'a class="btn btn-link" href' }}
 			</div>
         {% endif %}
-        </fieldset>
+        </div>
 
         {% if template == 'customers/login' %}
-            <fieldset>
+            <div class="form-group">
                 {% include 'customers/forgot-links' %}
-            </fieldset>
+            </div>
         {% endif %}
-    </div>
+    </fieldset>
 </form>

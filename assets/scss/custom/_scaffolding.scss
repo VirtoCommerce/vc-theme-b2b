@@ -1,26 +1,36 @@
-﻿.text-serif {
-  font-family: $font-family-serif;
-}
-
-a {
+﻿a {
   font-family: $link-font-family;
   font-weight: $link-font-weight;
-  text-underline-position: below;
-  text-underline-position: under;
+  border-bottom: 1px solid transparent;
+
+  &:hover,
+  &:focus {
+    border-bottom: 1px $link-hover-border-style $link-hover-color;
+  }
 
   &[href=""] {
     &:hover,
     &:focus {
-      text-decoration-style: $internal-link-hover-decoration-style;
+      border-bottom: 1px $internal-link-hover-border-style $link-hover-color;
     }
   }
 }
 
-a.primary {
-  color: $link-primary-color;
+// Disable anchor border for controls which is not real link
+@import "_text-decoration.scss";
+
+a.primary-link {
+  color: $primary-link-color;
 
   &:hover,
   &:focus {
-    color: $link-primary-hover-color;
+    border-bottom-color: $primary-link-hover-color;
+    color: $primary-link-hover-color;
   }
+}
+
+figcaption {
+  font-family: $font-family-condensed;
+  text-align: center;
+  margin: ($line-height-computed / 2) 0 $line-height-computed;
 }

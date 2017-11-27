@@ -8,10 +8,12 @@
    - http://docs.shopify.com/support/configuration/store-customization/where-do-i-get-my-mailchimp-form-action
 
 {% endcomment %}
-<form action="{{ settings.mailing_list_form_action }}" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank">
-    <p>{{ 'blogs.newsletter.message' | t: shop: shop }}</p>
-    <div class="form-group">
-        <input type="email" value="{% raw %}{{ customer ? customer.email : null }}{% endraw %}" placeholder="{{ 'blogs.newsletter.email_placeholder' | t }}" name="EMAIL" id="mail" class="form-control" aria-label="{{ 'blogs.newsletter.email_placeholder' | t }}" autocorrect="off" autocapitalize="off">
-        <input type="submit" class="btn btn-default" value="{{ 'blogs.newsletter.sign_up' | t }}" name="subscribe" id="subscribe">
+<form id="mc-embedded-subscribe-form" action="{{ settings.mailing_list_form_action }}" method="post" name="mc-embedded-subscribe-form" target="_blank">
+    <p class="text-center text-condensed">{{ 'blogs.newsletter.message' | t: shop: shop }}</p>
+    <div class="input-group">
+        <input type="email" id="mail" class="form-control"  value="{% raw %}{{ customer ? customer.email : null }}{% endraw %}" placeholder="{{ 'blogs.newsletter.email_placeholder' | t }}" name="EMAIL" aria-label="{{ 'blogs.newsletter.email_placeholder' | t }}" autocorrect="off" autocapitalize="off">
+        <span class="input-group-btn">
+            <input type="submit" id="subscribe" class="btn btn-default" value="{{ 'blogs.newsletter.sign_up' | t }}" name="subscribe">
+        </span>
     </div>
 </form>

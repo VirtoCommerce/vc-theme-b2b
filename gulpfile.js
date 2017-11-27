@@ -118,7 +118,7 @@ gulp.task('min:scss', function () {
                 precision: 10
             }))
             .pipe(concat(bundle.outputFileName))
-            .pipe(postcss([autoprefix(), cssnano()]))
+            //.pipe(postcss([autoprefix(), cssnano()]))
             //.pipe(rename({ extname: '.css' }))
             .pipe(mapSources())
             .pipe(sourcemaps.write("."))

@@ -34,16 +34,18 @@
    $text-contrast:                        #fff;  // not predefined
 //** Text muted color
    $text-muted:                           #757575; // $gray-light
+   $text-muted-contrast:                  #999; // not predefined
 
 //** Global textual link color.
    $link-color:                           $brand-alt; // $brand-primary
-   $link-primary-color:                   $brand-primary; // not predefined
+   $primary-link-color:                   $brand-primary; // not predefined
 //** Link hover color set via `darken()` function.
 // $link-hover-color:                     darken($link-color, 15%)
-   $link-primary-hover-color:             darken($link-primary-color, 15%); // not predefined
+   $primary-link-hover-color:             darken($primary-link-color, 15%); // not predefined
 //** Link hover decoration.
-// $link-hover-decoration:                underline
-   $internal-link-hover-decoration-style: dashed;
+   $link-hover-decoration:                none; // underline
+   $link-hover-border-style:              solid;
+   $internal-link-hover-border-style:     dashed;
 
 
 //== Typography
@@ -70,9 +72,9 @@
    $font-size-h6:            odd(($font-size-base * 0.85));  // =12px // ceil( ($font-size-base * 0.85)) // ~12px
 
 //** Unit-less `line-height` for use in components like buttons.
-// $line-height-base:        1.428571429 // 20/14
+   $line-height-base:        1.428571429; // 1.428571429 // 20/14
 //** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
-// $line-height-computed:    floor(($font-size-base * $line-height-base)) // ~20px
+   $line-height-computed:    floor(($font-size-base * $line-height-base)); // floor(($font-size-base * $line-height-base)) // ~20px
 
 //** By default, this inherits from the `<body>`.
    $headings-font-family:    $font-family-condensed; // inherit
@@ -413,16 +415,21 @@
 //##
 
 // Basics of a navbar
-// $navbar-height:                    50px
-// $navbar-margin-bottom:             $line-height-computed
-   $navbar-border-radius:             0; // $border-radius-base
-// $navbar-padding-horizontal:        floor(($grid-gutter-width / 2))
-// $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2)
-// $navbar-collapse-max-height:       340px
+// $navbar-height:                     50px
+// $navbar-margin-bottom:              $line-height-computed
+   $navbar-border-radius:              0; // $border-radius-base
+// $navbar-padding-horizontal:         floor(($grid-gutter-width / 2))
+// $navbar-padding-vertical:           (($navbar-height - $line-height-computed) / 2)
+   $navbar-condensed-height:           40px; // not predefined
+   $navbar-condensed-padding-vertical: (($navbar-condensed-height - $line-height-computed) / 2); // not predefined
+// $navbar-collapse-max-height:        340px
 
-   $navbar-default-color:             $text-color; // #777
-   $navbar-default-bg:                $body-bg; // #f8f8f8
-   $navbar-default-border:            $brand-primary; // darken($navbar-default-bg, 6.5%)
+   $navbar-primary-link-color:         $primary-link-color; // not predefined
+   $navbar-primary-link-hover-color:   darken($navbar-primary-link-color, 15%); // not predefined
+
+   $navbar-default-color:                     $text-color; // #777
+   $navbar-default-bg:                        $body-bg; // #f8f8f8
+   $navbar-default-border:                    $brand-primary; // darken($navbar-default-bg, 6.5%)
 
 // Navbar links
    $navbar-default-link-color:                $link-color; // #777
@@ -446,53 +453,53 @@
 
 //=== Inverted navbar
 // Reset inverted navbar basics
-   $navbar-inverse-color:                      $text-contrast;// lighten($gray-light, 15%)
-   $navbar-inverse-bg:                         $gray-darker; // #222
-   $navbar-inverse-border:                     $gray-dark; // darken($navbar-inverse-bg, 10%)
+   $navbar-inverse-color:                     $text-contrast;// lighten($gray-light, 15%)
+   $navbar-inverse-bg:                        $gray-base; // #222
+   $navbar-inverse-border:                    $gray-base; // darken($navbar-inverse-light-bg, 10%)
 
 // Inverted navbar links
-// $navbar-inverse-link-color:                 lighten($gray-light, 15%)
-// $navbar-inverse-link-hover-color:           #fff
-// $navbar-inverse-link-hover-bg:              transparent
-   $navbar-inverse-link-active-color:          $text-color; // $navbar-inverse-link-hover-color
-   $navbar-inverse-link-active-bg:             $gray-lighter; // darken($navbar-inverse-bg, 10%)
-// $navbar-inverse-link-disabled-color:        #444
-// $navbar-inverse-link-disabled-bg:           transparent
+   $navbar-inverse-link-color:                lighten($gray-light, 15%); // lighten($gray-light, 15%)
+   $navbar-inverse-link-hover-color:          $text-contrast; // #fff
+   $navbar-inverse-link-hover-bg:             transparent; // transparent
+   $navbar-inverse-link-active-color:         $text-color; // $navbar-inverse-link-hover-color
+   $navbar-inverse-link-active-bg:            $gray-lighter; // darken($navbar-inverse-bg, 10%)
+   $navbar-inverse-link-disabled-color:       $text-muted-contrast; // #444
+   $navbar-inverse-link-disabled-bg:          transparent; // transparent
 
 // Inverted navbar brand label
-// $navbar-inverse-brand-color:                $navbar-inverse-link-color
-// $navbar-inverse-brand-hover-color:          #fff
-// $navbar-inverse-brand-hover-bg:             transparent
+   $navbar-inverse-brand-color:               $navbar-inverse-link-color; // $navbar-inverse-link-color
+   $navbar-inverse-brand-hover-color:         $text-contrast; // #fff
+   $navbar-inverse-brand-hover-bg:            transparent; // transparent
 
 // Inverted navbar toggle
-// $navbar-inverse-toggle-hover-bg:            #333
-// $navbar-inverse-toggle-icon-bar-bg:         #fff
-// $navbar-inverse-toggle-border-color:        #333
+   $navbar-inverse-toggle-hover-bg:           #333; // #333
+   $navbar-inverse-toggle-icon-bar-bg:        #fff; // #fff
+   $navbar-inverse-toggle-border-color:       #333; // #333
 
 //=== Light inverted navbar // not predefined, copied from inverted navbar variables
 // Reset inverted navbar basics
-   $navbar-inverse-light-color:                      $text-contrast;// lighten($gray-light, 15%)
-   $navbar-inverse-light-bg:                         $gray-base; // #222
-   $navbar-inverse-light-border:                     $gray-base; // darken($navbar-inverse-light-bg, 10%)
+   $navbar-inverse-light-color:               $text-contrast;// lighten($gray-light, 15%)
+   $navbar-inverse-light-bg:                  $gray-darker; // #222
+   $navbar-inverse-light-border:              $gray-dark; // darken($navbar-inverse-bg, 10%)
 
 // Inverted navbar links
-   $navbar-inverse-light-link-color:                 lighten($gray-light, 15%);
-   $navbar-inverse-light-link-hover-color:           #fff;
-   $navbar-inverse-light-link-hover-bg:              transparent;
-   $navbar-inverse-light-link-active-color:          $text-color; // $navbar-inverse-light-link-hover-color
-   $navbar-inverse-light-link-active-bg:             $gray-lighter; // darken($navbar-inverse-light-bg, 10%)
-   $navbar-inverse-light-link-disabled-color:        #444;
-   $navbar-inverse-light-link-disabled-bg:           transparent;
+   $navbar-inverse-light-link-color:          $navbar-inverse-link-color;
+   $navbar-inverse-light-link-hover-color:    $navbar-inverse-link-hover-color;
+   $navbar-inverse-light-link-hover-bg:       $navbar-inverse-link-hover-bg;
+   $navbar-inverse-light-link-active-color:   $text-color; // $navbar-inverse-light-link-hover-color
+   $navbar-inverse-light-link-active-bg:      $gray-lighter; // darken($navbar-inverse-light-bg, 10%)
+   $navbar-inverse-light-link-disabled-color: $navbar-inverse-link-disabled-color;
+   $navbar-inverse-light-link-disabled-bg:    $navbar-inverse-link-disabled-bg;
 
 // Inverted navbar brand label
-   $navbar-inverse-light-brand-color:                $navbar-inverse-light-link-color;
-   $navbar-inverse-light-brand-hover-color:          #fff;
-   $navbar-inverse-light-brand-hover-bg:             transparent;
+   $navbar-inverse-light-brand-color:         $navbar-inverse-light-link-color;
+   $navbar-inverse-light-brand-hover-color:   $navbar-inverse-brand-hover-color;
+   $navbar-inverse-light-brand-hover-bg:      $navbar-inverse-brand-hover-bg;
 
 // Inverted navbar toggle
-   $navbar-inverse-light-toggle-hover-bg:            #333;
-   $navbar-inverse-light-toggle-icon-bar-bg:         #fff;
-   $navbar-inverse-light-toggle-border-color:        #333;
+   $navbar-inverse-light-toggle-hover-bg:     $navbar-inverse-toggle-hover-bg;
+   $navbar-inverse-light-toggle-icon-bar-bg:  $navbar-inverse-toggle-icon-bar-bg;
+   $navbar-inverse-light-toggle-border-color: $navbar-inverse-toggle-border-color;
 
 
 //== Navs

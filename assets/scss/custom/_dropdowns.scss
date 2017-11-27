@@ -1,10 +1,7 @@
-﻿a.dropdown-toggle {
-  &:hover,
-  &:focus {
-    text-decoration: none;
-  }
-}
-
-.dropdown-menu {
+﻿.dropdown-menu {
   margin: 0;
+
+  &.dropdown-menu-square {
+    border-radius: 0;
+  }
 }

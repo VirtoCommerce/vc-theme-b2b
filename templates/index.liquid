@@ -1,21 +1,5 @@
-﻿<div class="sidebar col-md-4">
-    <aside class="aside-box" ng-if="customer && customer.isRegisteredUser">
-		<div class="aside-t">{% raw %}{{ customer.firstName }} {{ customer.lastName }}{% endraw %}</div>
-        {% include 'customers/badge' %}
-	</aside>
-    <aside class="aside-box" ng-if="customer && !customer.isRegisteredUser">
-        <div class="aside-t">{{ 'customer.sign-in.title' | t }}</div>
-        <div ng-controller="accountLoginController">
-            {% include 'customers/login-form' %}
-        </div>
-    </aside>
-    {% include 'index/featured-article' %}
-    {% if settings.footer_newsletter_enable %}
-        <aside class="aside-box email-offers">
-            {% include 'shared/newsletter-form' %}
-        </aside>
-    {% endif %}
-    <!-- TODO: Products you have recently viewed -->
+﻿<div class="col-md-4">
+    {% include 'index/asides' %}
 </div>
 <div class="content col-md-8">
     <section class="section">

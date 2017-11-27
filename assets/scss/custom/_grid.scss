@@ -51,3 +51,13 @@
     right: 0;
   }
 }
+
+.row.flexible {
+  display: flex;
+  flex-wrap: wrap;
+
+  & > [class*='col-'].flexible {
+    display: flex;
+    flex-direction: column;
+  }
+}
