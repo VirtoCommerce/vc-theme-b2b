@@ -18,7 +18,7 @@
   }
 }
 
-$navbars-count: 2;
+$navbars-count: 3;
 @for $i from 0 to $navbars-count {
   .navbar-static-bottom:nth-child(#{$i}),
   .navbar-static-top:nth-last-child(#{$i}) {
