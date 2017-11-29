@@ -2,9 +2,11 @@
     "current": "B2B",
     "presets": {
         "B2B": {
-            "header_servicemenu_linklist": "service-menu",
-            "header_mainmenu_linklist": "main-menu",
-            "nav_allproducts_linklist": "all-products-menu",
+            "service_menu": "service-menu",
+            "main_menu": "main-menu",
+            "all_products_menu": "all-products-menu",
+            "suggestions_category_limit": 5,
+            "suggestions_product_limit": 15,
             "footer_company_information_enable": true,
             "footer_company_information_linklist": "company-information",
             "footer_customer_support_enable": true,
@@ -44,7 +46,6 @@
                 "Corporate manager",
                 "Employee"
             ],
-            "suggestions_limit": 10,
             "bulk_order_enabled": true,
             "product_compare_enabled": true,
             "product_compare_list_capacity": 4,

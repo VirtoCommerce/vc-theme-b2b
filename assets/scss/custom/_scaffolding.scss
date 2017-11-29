@@ -28,9 +28,3 @@ a.primary-link {
     color: $primary-link-hover-color;
   }
 }
-
-figcaption {
-  font-family: $font-family-condensed;
-  text-align: center;
-  margin: ($line-height-computed / 2) 0 $line-height-computed;
-}

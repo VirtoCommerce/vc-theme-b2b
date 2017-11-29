@@ -21,12 +21,34 @@
 @import "custom/_code.scss";
 @import "custom/_responsive-utilities.scss";
 
+header {
+  .navbar-default {
+    border-color: $brand-primary;
+    border-width: 4px 0 0 0;
+  }
+}
+
 #all-products-popover + .popover {
   width: 480px;
 }
 
 #bulk-order-popover + .popover {
   width: 305px;
+}
+
+
+main {
+  @media (max-width: $screen-sm-max){
+    margin-top: ($navbar-height + 1px) * 2 + $navbar-margin-bottom; // 1px border
+  }
+}
+
+.mobile-app {
+  width: 120px;
+}
+
+.btn-youtube {
+  @include btn-social(#e52d27);
 }
 
 /*//== Grid
@@ -136,9 +158,7 @@ button {
   padding: 14px 35px;
 }
 
-.btn-youtube {
-  @include btn-social(#e52d27);
-}
+
 
 //== Images
 //

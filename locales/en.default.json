@@ -722,7 +722,7 @@
             "store_on_social_network": "{{ store_name }} on {{ social_network }}",
             "company_information": "Company information",
             "customer_support": "Customer support",
-            "order_support": "Customer support",
+            "order_support": "Order support",
             "resources": "Online resources",
             "services": "Services",
             "mobile_apps_title": "Check it out! We're mobile!",

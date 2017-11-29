@@ -15,14 +15,14 @@
     {% for article in blog.articles %}
         {% assign found = article.is_sticked %}
         {% if found %}
-            <aside class="panel panel-default">
-                <div class="panel-body">
-                    <figure>
-                        <img src="{{ article.image_url }}" class="img-responsive">
-                        <figcaption>{{ article.title }}</figcaption>
-                    </figure>
-                    <a href="{{ article.url }}" class="btn btn-alt btn-lg btn-block">{{ 'blogs.featured.learn_more' | t }}</a>
-                </div>
+            <aside class="thumbnail">
+                <figure>
+                    <img src="{{ article.image_url }}" class="img-responsive">
+                    <figcaption class="caption">
+                        <h4 class="text-center">{{ article.title }}</h4>
+                        <a href="{{ article.url }}" class="btn btn-alt btn-lg btn-block">{{ 'blogs.featured.learn_more' | t }}</a>
+                    </figcaption>
+                </figure>
             </aside>
             {% break %}
         {% endif %}

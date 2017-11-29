@@ -7,11 +7,11 @@
             <div class="panel-heading">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-xs-7">
+                        <div class="col-md-7">
                             <span ng-show="state == 'manual'">{{ 'bulk_order.general.subtitle' | t }}</span>
                             <span ng-show="state == 'csv'">{{ 'bulk_order.general.csv_title' | t }}</span>
                         </div>
-                        <div class="col-xs-5">
+                        <div class="col-md-5">
                             <a href="" ng-show="state == 'csv'" ng-click="state = 'manual'">{{ 'bulk_order.general.subtitle' | t }}</a>
                             <a href="" ng-show="state == 'manual'" ng-click="state = 'csv'">{{ 'bulk_order.general.csv_title' | t }}</a>
                         </div>

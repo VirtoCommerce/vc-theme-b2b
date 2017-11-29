@@ -6,9 +6,9 @@
         <script id="all-products-popover.tpl" type="text/ng-template">                    
             <div class="container-fluid container-drain container-bordered">
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-md-12">
                         <ul class="nav nav-sm nav-pills nav-justified text-nowrap">
-                            {% for link in linklists[settings.nav_allproducts_linklist].links %}
+                            {% for link in linklists[settings.all_products_menu].links %}
                                 <li>
                                     <a href="{{ link.url }}">
                                         {%- if link.icon != blank -%}

@@ -375,9 +375,9 @@
    $grid-gutter-height:        $grid-gutter-width; // not predefined
 // Navbar collapse
 //** Point at which the navbar becomes uncollapsed.
-// $grid-float-breakpoint:     $screen-sm-min
+   $grid-float-breakpoint:     0; // $screen-sm-min
 //** Point at which the navbar begins collapsing.
-// $grid-float-breakpoint-max: ($grid-float-breakpoint - 1)
+   $grid-float-breakpoint-max: 0; // ($grid-float-breakpoint - 1)
 
 
 //== Container sizes
@@ -416,7 +416,8 @@
 
 // Basics of a navbar
 // $navbar-height:                     50px
-// $navbar-margin-bottom:              $line-height-computed
+   $navbar-margin-bottom:              $line-height-computed; // $line-height-computed
+   $navbar-margin-top:                 $navbar-margin-bottom; // not predefined
    $navbar-border-radius:              0; // $border-radius-base
 // $navbar-padding-horizontal:         floor(($grid-gutter-width / 2))
 // $navbar-padding-vertical:           (($navbar-height - $line-height-computed) / 2)
@@ -429,7 +430,7 @@
 
    $navbar-default-color:                     $text-color; // #777
    $navbar-default-bg:                        $body-bg; // #f8f8f8
-   $navbar-default-border:                    $brand-primary; // darken($navbar-default-bg, 6.5%)
+// $navbar-default-border:                    darken($navbar-default-bg, 6.5%)
 
 // Navbar links
    $navbar-default-link-color:                $link-color; // #777

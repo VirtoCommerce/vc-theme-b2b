@@ -28,10 +28,13 @@
 }
 
 .container-drain {
-  .row {
+  [class*="col-"] & .row:not(:first-child),
+  :not([class*="col-"]) > & .row {
     padding-top: ceil($grid-gutter-height / 2);
   }
-  .row {
+
+  [class*="col-"] & .row:not(:last-child),
+  :not([class*="col-"]) > & .row {
     padding-bottom: floor($grid-gutter-height / 2);
   }
 }

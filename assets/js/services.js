@@ -71,10 +71,10 @@ storefrontApp.service('catalogService', ['$http', function ($http) {
             return $http.get('storefrontapi/products?productIds=' + productIds + '&t=' + new Date().getTime());
         },
         search: function (criteria) {
-            return $http.post('storefrontapi/catalog/search', { searchCriteria: criteria });
+            return $http.post('storefrontapi/catalog/search', criteria);
         },
         searchCategories: function (criteria) {
-            return $http.post('storefrontapi/categories/search', { searchCriteria: criteria });
+            return $http.post('storefrontapi/categories/search', criteria);
         }
     }
 }]);

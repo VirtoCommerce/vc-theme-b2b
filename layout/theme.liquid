@@ -33,23 +33,11 @@
         {% include 'dialogs/list-settings-dialog' %}
         {% include 'dialogs/list-shared-link-dialog' %}
 
-        {% include 'main/header' %}
-        
-        <main class="container main" role="main">
+        {% include 'main/header' %}        
+        <main class="container" role="main">
             {{ content_for_layout }}
         </main>
-        {% include 'scripts' %}
-
-        <footer class="footer hidden-print">
-            <div class="container footer-inner">
-                {% include 'main/footer/main' %}
-            </div>
-            <div class="footer-legal">
-                <div class="container">
-                    {% include 'main/footer/legal' %}
-                </div>
-            </div>
-        </footer>
+        {% include 'main/footer' %}
 </body>
 
     {% comment %}

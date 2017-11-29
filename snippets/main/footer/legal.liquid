@@ -1,9 +1,0 @@
-﻿{% if settings.footer_legallinks_enable %}
-    <ul>
-        {% for link in linklists[settings.footer_legallinks_linklist].links %}
-            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-        {% endfor %}
-    </ul>
-{% endif %}
-<p>&copy; {{ 'now' | date: "%Y" }} {{ settings.copyright }}<br>{{ powered_by_link }}</p>
-

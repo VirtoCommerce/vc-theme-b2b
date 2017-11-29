@@ -1,7 +1,7 @@
 ﻿.navbar {
   margin-bottom: 0;
 
-  &:last-child {
+  &:last-of-type {
     margin-bottom: $navbar-margin-bottom;
   }
 
@@ -20,27 +20,24 @@
 
 $navbars-count: 3;
 @for $i from 0 to $navbars-count {
-  .navbar-static-bottom:nth-child(#{$i}),
-  .navbar-static-top:nth-last-child(#{$i}) {
-    z-index: $zindex-navbar - $i;
+  .navbar-static-top:nth-of-type(#{$i + 1}),
+  .navbar-static-bottom:nth-last-of-type(#{$i + 1}) {
+    z-index: ($zindex-navbar - $i);
+  }
+
+  .navbar-fixed-top:nth-of-type(#{$i + 1}) {
+    top: $i * $navbar-height;
+  }
+
+  .navbar-fixed-bottom:nth-last-of-type(#{$i + 1}) {
+    bottom: $i * $navbar-height;
   }
 }
 
 .navbar-default {
-  border-width: 4px 0 0 0;
-
   .navbar-link {
-    &.primary-link {
-      color: $navbar-primary-link-color;
-    }
-
     &:hover {
       border-bottom-color: $navbar-default-link-hover-color;
-
-      &.primary-link {
-        border-bottom-color: $navbar-primary-link-hover-color;
-        color: $navbar-primary-link-hover-color;
-      }
     }
   }
 
@@ -53,7 +50,6 @@ $navbars-count: 3;
 }
 
 .navbar-inverse {
-
   .navbar-form {
     .form-control,
     .input-group-btn .btn {
@@ -62,17 +58,8 @@ $navbars-count: 3;
   }
 
   .navbar-link {
-    &.primary-link {
-      color: $navbar-primary-link-color;
-    }
-
     &:hover {
       border-bottom-color: $navbar-inverse-link-hover-color;
-
-      &.primary-link {
-        border-bottom-color: $navbar-primary-link-hover-color;
-        color: $navbar-primary-link-hover-color;
-      }
     }
   }
 
@@ -211,18 +198,9 @@ $navbars-count: 3;
   .navbar-link {
     color: $navbar-inverse-light-link-color;
 
-    &.primary-link {
-      color: $navbar-primary-link-color;
-    }
-
     &:hover {
       border-bottom-color: $navbar-inverse-light-link-hover-color;
       color: $navbar-inverse-light-link-hover-color;
-
-      &.primary-link {
-        border-bottom-color: $navbar-primary-link-hover-color;
-        color: $navbar-primary-link-hover-color;
-      }
     }
   }
 
@@ -251,6 +229,15 @@ $navbars-count: 3;
   .navbar-nav > li > a,
   .navbar-link {
     font-family: $font-family-base;
+
+    &.primary-link {
+      color: $navbar-primary-link-color;
+    }
+
+    &.primary-link:hover {
+      border-bottom-color: $navbar-primary-link-hover-color;
+      color: $navbar-primary-link-hover-color;
+    }
   }
 
   .navbar-text .open > a {
@@ -320,7 +307,34 @@ $navbars-count: 3;
   }
 }
 
-.navbar-form-lg {
+.navbar-static-bottom {
+  padding-left: 0;
+  padding-right: 0;
+
+  &:first-of-type {
+    margin-top: $navbar-margin-top;
+  }
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  z-index: $zindex-navbar;
+  border-width: 1px 0 0;
+
+  @media (min-width: $grid-float-breakpoint) {
+    border-radius: 0;
+  }
+}
+
+// Fix bootstrap bug
+@media (min-width: $grid-float-breakpoint) {
+  .navbar-right {
+    margin-right: 0;
+  }
+}
+
+.navbar-form-justify {
   margin: -1px;
   padding: 0;
   overflow: hidden;
@@ -329,14 +343,9 @@ $navbars-count: 3;
   .btn {
     border-radius: 0;
     line-height: $line-height-computed;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    height: ($line-height-computed + (10px * 2) + 2px); // compensate margin
-    @media (min-width: 576px) {
-      padding-top: 15px;
-      padding-bottom: 15px;
-      height: ($line-height-computed + (15px * 2) + 2px); // compensate margin
-    }
+    padding-top: 15px;
+    padding-bottom: 15px;
+    height: ($line-height-computed + (15px * 2) + 2px); // compensate margin
   }
 
   .input-group {
@@ -350,6 +359,12 @@ $navbars-count: 3;
 .navbar-text {
   ul,
   ol {
-    margin-bottom: 0;
+    &:only-child {
+      margin-bottom: 0;
+    }
   }
+}
+
+.navbar-text-justify {
+  float: none;
 }
