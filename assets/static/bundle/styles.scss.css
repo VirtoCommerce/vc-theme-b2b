@@ -10278,7 +10278,8 @@ a {
   a[href=""]:hover, a[href=""]:focus {
     border-bottom: 1px dashed #003b52; }
 
-a.badge, a.btn-link, a.carousel-control, a.close, a.dropdown-toggle,
+a.badge, a.btn-link,
+.checkbox a, a.carousel-control, a.close, a.dropdown-toggle,
 .dropdown-menu > li > a,
 .dropdown-menu > .active > a,
 .dropdown-menu > .disabled > a, a.label, a.navbar-brand,
@@ -10287,6 +10288,8 @@ a.badge, a.btn-link, a.carousel-control, a.close, a.dropdown-toggle,
 .pagination > li a,
 a[href=""].badge,
 a[href=""].btn-link,
+.checkbox
+a[href=""],
 a[href=""].carousel-control,
 a[href=""].close,
 a[href=""].dropdown-toggle,
@@ -10311,6 +10314,9 @@ a.primary-link {
   a.primary-link:hover, a.primary-link:focus {
     border-bottom-color: #7d1616;
     color: #7d1616; }
+
+.breadcrumb {
+  margin-bottom: 0; }
 
 .table > thead > tr > td.active,
 .table > thead > tr > th.active,
