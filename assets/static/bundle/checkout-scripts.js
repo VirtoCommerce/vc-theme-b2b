@@ -71,10 +71,10 @@ storefrontApp.service('catalogService', ['$http', function ($http) {
             return $http.get('storefrontapi/products?productIds=' + productIds + '&t=' + new Date().getTime());
         },
         search: function (criteria) {
-            return $http.post('storefrontapi/catalog/search', { searchCriteria: criteria });
+            return $http.post('storefrontapi/catalog/search', criteria);
         },
         searchCategories: function (criteria) {
-            return $http.post('storefrontapi/categories/search', { searchCriteria: criteria });
+            return $http.post('storefrontapi/categories/search', criteria);
         }
     }
 }]);
@@ -333,12 +333,12 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
             var state = this.getState(query);
             // add or replace value when defined, remove when null and leave old when undefined
             var process = function (src, dest, fn, isArray) {
-                var chain = _.chain(_.union(Object.keys(dest), Object.keys(src)))
+                var chain = _.chain(_.union(dest ? Object.keys(dest) : [], src ? Object.keys(src) : []))
                     .filter(function(key) {
-                        return dest[key] || !(key in dest);
+                        return dest && (dest[key] || !(key in dest)) || src[key] || !(key in src);
                     })
                     .map(function(key) {
-                        return fn(key, src[key], dest[key]);
+                        return fn(key, src ? src[key] : null, dest ? dest[key] : null);
                     })
                     .compact();
                 if (!isArray) {
@@ -347,10 +347,10 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
                 return chain.value();
             }
             var selectValue = function(srcVal, destVal) {
-                if (angular.isArray(destVal)) {
-                    destVal = _.compact(destVal);
+                if (destVal && angular.isArray(destVal) || angular.isArray(srcVal)) {
+                    destVal = destVal ? _.compact(destVal) : null;
                     srcVal = _.chain([srcVal]).flatten().compact().value();
-                    return (type === 'checkable' ? _.difference(destVal.concat(srcVal), _.intersection(destVal, srcVal)) : destVal).join(',');
+                    return (type === 'checkable' ? _.difference((destVal || []).concat(srcVal), _.intersection(destVal, srcVal)) : destVal || srcVal).join(',');
                 } else {
                     return destVal || srcVal;
                 }
@@ -358,7 +358,7 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
             var result = process(state, obj, function (key, srcVal, destVal) {
                 var value;
                 // replace value when ?key=value and merge objects when ?key=key1:value1
-                if (angular.isObject(destVal) && !angular.isArray(destVal)) {
+                if (destVal && angular.isObject(destVal) && !angular.isArray(destVal) || angular.isObject(srcVal) && !angular.isArray(srcVal)) {
                     if (srcVal) {
                         if (!angular.isObject(srcVal) || angular.isArray(srcVal))
                             throw 'Type of ' + key + ' in search query and object is different';
@@ -709,102 +709,6 @@ storefrontApp.component('vcCreditCard', {
 });
 
 var storefrontApp = angular.module('storefrontApp');
-
-storefrontApp.config(['$provide', function ($provide) {
-    $provide.decorator('uibDropdownDirective', ['$delegate', function ($delegate) {
-        var directive = $delegate[0];
-        var compile = directive.compile;
-        directive.compile = function () {
-            var link = compile.apply(this, arguments);
-            return function (scope, element, attrs, dropdownCtrl) {
-                if (attrs.autoClose === 'mouseleave') {
-                    dropdownCtrl.toggle(false);
-                }
-
-                var closeDropdown = function() {
-                    scope.$apply(function () {
-                        if (attrs.autoClose === 'mouseleave') {
-                            dropdownCtrl.toggle(false);
-                        }
-                    });
-                };
-
-                element.on('mouseleave', closeDropdown);
-
-                link.apply(this, arguments);
-
-                scope.$on('$destroy', function() {
-                    element.off('mouseleave', closeDropdown);
-                });
-            };
-        };
-        return $delegate;
-    }]);
-
-    $provide.decorator('uibDropdownToggleDirective', ['$delegate', function($delegate) {
-        var directive = $delegate[0];
-        directive.controller = function () { };
-        $delegate[0] = directive;
-        return $delegate;
-    }]);
-}]);
-
-storefrontApp.directive('toggleOnMouseEnter', function() {
-    return {
-        require: ['?^uibDropdown', '?uibDropdownToggle'],
-        link: function (scope, element, attrs, ctrls) {
-            var dropdownCtrl = ctrls[0];
-            var dropdownToggleCtrl = ctrls[1];
-            if (!(dropdownCtrl && dropdownToggleCtrl)) {
-                return;
-            }
-
-            element.addClass('toggle-on-mouse-enter');
-
-            var openDropdown = function () {
-                if (!element.hasClass('disabled') && !attrs.disabled) {
-                    scope.$apply(function () {
-                        dropdownCtrl.toggle(true);
-                    });
-                }
-            };
-
-            element.on('mouseenter', openDropdown);
-
-            scope.$on('$destroy', function () {
-                element.off('mouseenter', openDropdown);
-            });
-        }
-    };
-});
-
-storefrontApp.directive('dropdownClose', function () {
-    return {
-        require: ['?^uibDropdown'],
-        link: function (scope, element, attrs, ctrls) {
-            var dropdownCtrl = ctrls[0];
-            if (!dropdownCtrl) {
-                return;
-            }
-
-            var closeDropdown = function () {
-                if (!element.hasClass('disabled') && !attrs.disabled) {
-                    scope.$apply(function () {
-                        dropdownCtrl.toggle(false);
-                    });
-                }
-            };
-
-            element.on('click', closeDropdown);
-
-            scope.$on('$destroy', function () {
-                element.off('click', closeDropdown);
-            });
-        }
-    };
-});
-
-var storefrontApp = angular.module('storefrontApp');
 storefrontApp.component('vcErrors', {
     templateUrl: "themes/assets/errors.tpl.html",
     bindings: {
@@ -826,6 +730,7 @@ angular.module('storefrontApp')
         value: '=',
         form: '=',
         name: '@',
+        inputClass: '<',
         placeholder: '@',
         type: '@?',
         required: '<',
@@ -1133,6 +1038,53 @@ storefrontApp.component('vcPaymentPlan', {
                 $localStorage['paymentPlan'] = undefined;
             }
         }
+    }]
+});
+
+var storefrontApp = angular.module('storefrontApp');
+storefrontApp.component('vcSearchBar', {
+    templateUrl: "themes/assets/js/common-components/searchBar.tpl.html",
+    bindings: {
+        placeholder: '<',
+        searching: '<',
+        noResults: '<',
+        query: '@',
+        categoriesLabel: '<',
+        productsLabel: '<',
+        submitLabel: '<',
+        categoryLimit: '@',
+        productLimit: '@'
+    },
+    controller: ['$scope', '$q', 'catalogService', function ($scope, $q, catalogService) {
+        var $ctrl = this;
+        $ctrl.hasHint = false;
+
+        $scope.$watch('$ctrl.isOpen', function (isOpen) {
+            $ctrl.hasHint = !!$ctrl.query && !isOpen;
+        });
+
+        $scope.$watch('$ctrl.query', function(query) {
+            $ctrl.hasHint = !!query && !$ctrl.isOpen;
+        });
+
+        $ctrl.getSuggestions = function () {
+            var searchCriteria = { keyword: $ctrl.query, start: 0 };
+            return $q.all([
+                catalogService.searchCategories(angular.extend({ }, searchCriteria, { pageSize: $ctrl.categoryLimit })),
+                catalogService.search(angular.extend({ }, searchCriteria, { pageSize: $ctrl.productLimit }))
+            ]).then(function(results) {
+                var process = function(within) {
+                    return (results[0].data[within] || results[1].data[within]).map(function (suggestion) {
+                        suggestion['within'] = within;
+                        return suggestion;
+                    });
+                }
+                return process('categories').concat(process('products')).map(function (suggestion, index) {
+                    suggestion['index'] = index;
+                    return suggestion;
+                });
+            });
+        };
     }]
 });
 

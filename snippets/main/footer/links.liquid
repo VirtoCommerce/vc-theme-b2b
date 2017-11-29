@@ -1,0 +1,57 @@
+﻿<div class="navbar navbar-default navbar-static-bottom hidden-xs hidden-sm">
+    <div class="container container-drain">
+        <div class="row">
+            <div ng-class="'col-md-' + (12 / 2 - columnCount)"></div>
+            {% if settings.footer_company_information_enable %}    
+                <div class="col-md-2" ng-init="columnCount = columnCount + 1">
+                    <h4>{{ 'layout.footer.company_information' | t }}</h4>
+                    <ul>
+                        {% for link in linklists[settings.footer_company_information_linklist].links %}
+                            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if settings.footer_customer_support_enable %}
+                <div class="col-md-2" ng-init="columnCount = columnCount + 1">
+                    <h4>{{ 'layout.footer.customer_support' | t }}</h4>
+                    <ul>
+                        {% for link in linklists[settings.footer_customer_support_linklist].links %}
+                            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if settings.footer_order_support_enable %}
+                <div class="col-md-2" ng-init="columnCount = columnCount + 1">
+                    <h4>{{ 'layout.footer.order_support' | t }}</h4>
+                    <ul>
+                        {% for link in linklists[settings.footer_order_support_linklist].links %}
+                            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if settings.footer_resources_enable %}
+                <div class="col-md-2" ng-init="columnCount = columnCount + 1">
+                    <h4>{{ 'layout.footer.resources' | t }}</h4>
+                    <ul>
+                        {% for link in linklists[settings.footer_resources_linklist].links %}
+                            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if settings.footer_services_enable %}
+                <div class="col-md-2" ng-init="columnCount = columnCount + 1">
+                    <h4>{{ 'layout.footer.services' | t }}</h4>
+                    <ul>
+                        {% for link in linklists[settings.footer_services_linklist].links %}
+                            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

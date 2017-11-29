@@ -745,6 +745,17 @@ angular.module('storefrontApp')
         }
     };
 }]);
+if (Prism.languages.markup) {
+    Prism.languages.insertBefore('markup', 'tag', {
+        'script': {
+            pattern: /(<script[\s\S]*?type="text\/ng-template"[\s\S]*?>)[\s\S]*?(?=<\/script>)/i,
+            lookbehind: true,
+            inside: Prism.languages.html,
+            alias: 'language-html'
+        }
+    });
+}
+
 var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.controller('productCompareListController', ['$rootScope', '$scope', '$localStorage', '$window', 'catalogService', 'dialogService',
@@ -1468,44 +1479,6 @@ storefrontApp.controller('recommendationsController', ['$scope', '$timeout', 're
     }
 }]);
 var storefrontApp = angular.module('storefrontApp');
-storefrontApp.controller('searchBarController', ['$scope', '$timeout', '$window', 'catalogService', function ($scope, $timeout, $window, catalogService) {
-    var timer;
-
-    $scope.query = $window.searchQuery;
-
-    $scope.getSuggestions = function () {
-        if (!$scope.query) {
-            return;
-        }
-        $timeout.cancel(timer);
-        timer = $timeout(function () {
-            $scope.searching = true;
-            $scope.categorySuggestions = [];
-            $scope.productSuggestions = [];
-            var searchCriteria = {
-                keyword: $scope.query,
-                skip: 0,
-                take: $window.suggestionsLimit
-            }
-            catalogService.searchCategories(searchCriteria).then(function (response) {
-                var categories = response.data.categories;
-                if (categories.length > 5) {
-                    searchCriteria.take = $window.suggestionsLimit - 5;
-                    $scope.categorySuggestions = _.first(categories, 5);
-                } else {
-                    searchCriteria.take = $window.suggestionsLimit - categories.length;
-                    $scope.categorySuggestions = categories;
-                }
-                catalogService.search(searchCriteria).then(function (response) {
-                    var products = response.data.products;
-                    $scope.productSuggestions = products;
-                    $scope.searching = false;
-                });
-            });
-        }, 300);
-    }
-}]);
-var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.service('dialogService', ['$uibModal', function ($uibModal) {
     return {
@@ -1578,10 +1551,10 @@ storefrontApp.service('catalogService', ['$http', function ($http) {
             return $http.get('storefrontapi/products?productIds=' + productIds + '&t=' + new Date().getTime());
         },
         search: function (criteria) {
-            return $http.post('storefrontapi/catalog/search', { searchCriteria: criteria });
+            return $http.post('storefrontapi/catalog/search', criteria);
         },
         searchCategories: function (criteria) {
-            return $http.post('storefrontapi/categories/search', { searchCriteria: criteria });
+            return $http.post('storefrontapi/categories/search', criteria);
         }
     }
 }]);
@@ -1840,12 +1813,12 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
             var state = this.getState(query);
             // add or replace value when defined, remove when null and leave old when undefined
             var process = function (src, dest, fn, isArray) {
-                var chain = _.chain(_.union(Object.keys(dest), Object.keys(src)))
+                var chain = _.chain(_.union(dest ? Object.keys(dest) : [], src ? Object.keys(src) : []))
                     .filter(function(key) {
-                        return dest[key] || !(key in dest);
+                        return dest && (dest[key] || !(key in dest)) || src[key] || !(key in src);
                     })
                     .map(function(key) {
-                        return fn(key, src[key], dest[key]);
+                        return fn(key, src ? src[key] : null, dest ? dest[key] : null);
                     })
                     .compact();
                 if (!isArray) {
@@ -1854,10 +1827,10 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
                 return chain.value();
             }
             var selectValue = function(srcVal, destVal) {
-                if (angular.isArray(destVal)) {
-                    destVal = _.compact(destVal);
+                if (destVal && angular.isArray(destVal) || angular.isArray(srcVal)) {
+                    destVal = destVal ? _.compact(destVal) : null;
                     srcVal = _.chain([srcVal]).flatten().compact().value();
-                    return (type === 'checkable' ? _.difference(destVal.concat(srcVal), _.intersection(destVal, srcVal)) : destVal).join(',');
+                    return (type === 'checkable' ? _.difference((destVal || []).concat(srcVal), _.intersection(destVal, srcVal)) : destVal || srcVal).join(',');
                 } else {
                     return destVal || srcVal;
                 }
@@ -1865,7 +1838,7 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
             var result = process(state, obj, function (key, srcVal, destVal) {
                 var value;
                 // replace value when ?key=value and merge objects when ?key=key1:value1
-                if (angular.isObject(destVal) && !angular.isArray(destVal)) {
+                if (destVal && angular.isObject(destVal) && !angular.isArray(destVal) || angular.isObject(srcVal) && !angular.isArray(srcVal)) {
                     if (srcVal) {
                         if (!angular.isObject(srcVal) || angular.isArray(srcVal))
                             throw 'Type of ' + key + ' in search query and object is different';
@@ -1888,1155 +1861,6 @@ storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer'
         }
     }
 }]);
-
-var storefrontApp = angular.module('storefrontApp');
-storefrontApp.component('vcAddress', {
-    templateUrl: "themes/assets/address.tpl.html",
-    bindings: {
-        address: '=',
-        addresses: '<',
-        countries: '=',
-        validationContainer: '=',
-        getCountryRegions: '&',
-        editMode: '<',
-        onUpdate: '&'
-    },
-    require: {
-        checkoutStep: '?^vcCheckoutWizardStep'
-    },
-    controller: ['$scope', function ($scope) {
-        var ctrl = this;
-        ctrl.types = [{ id: 'Billing', name: 'Billing' }, { id: 'Shipping', name: 'Shipping' }, { id: 'BillingAndShipping', name: 'Billing and Shipping' }];
-        
-        this.$onInit = function () {
-            if (ctrl.validationContainer)
-                ctrl.validationContainer.addComponent(this);
-            if (ctrl.checkoutStep)
-                ctrl.checkoutStep.addComponent(this);
-        };
-
-        this.$onDestroy = function () {
-            if (ctrl.validationContainer)
-                ctrl.validationContainer.removeComponent(this);
-            if (ctrl.checkoutStep)
-                ctrl.checkoutStep.removeComponent(this);
-        };
-
-        function populateRegionalDataForAddress(address) {
-            if (address) {
-                //Set country object for address
-                address.country = _.findWhere(ctrl.countries, { code3: address.countryCode });
-                if (address.country != null) {
-                    ctrl.address.countryName = ctrl.address.country.name;
-                    ctrl.address.countryCode = ctrl.address.country.code3;
-                }
-
-                if (address.country) {
-                    if (address.country.regions) {
-                        setAddressRegion(address, address.country.regions);
-                    }
-                    else {
-                        ctrl.getCountryRegions({ country: address.country }).then(function (regions) {
-                            address.country.regions = regions;
-                            setAddressRegion(address, regions);
-                        });
-                    }
-                }
-            }
-        }
-
-        function setAddressRegion(address, regions) {
-            address.region = _.findWhere(regions, { code: address.regionId });
-            if (address.region) {
-                ctrl.address.regionId = ctrl.address.region.code;
-                ctrl.address.regionName = ctrl.address.region.name;
-            }
-            else {
-                ctrl.address.regionId = undefined;
-                ctrl.address.regionName = undefined;
-            }
-        }
-
-        ctrl.setForm = function (frm) { ctrl.form = frm; };
-
-        ctrl.validate = function () {
-            if (ctrl.form) {
-                ctrl.form.$setSubmitted();
-                return ctrl.form.$valid;
-            }
-            return true;
-        };
-
-        function stringifyAddress(address) {
-            var addressType = '';
-
-            var type = _.find(ctrl.types, function (i) { return i.id == ctrl.address.addressType });
-            if (type)
-                addressType = '[' + type.name + '] ';
-
-            var stringifiedAddress = addressType;
-            stringifiedAddress += address.firstName + ' ' + address.lastName + ', ';
-            stringifiedAddress += address.organization ? address.organization + ', ' : '';
-            stringifiedAddress += address.countryName + ', ';
-            stringifiedAddress += address.regionName ? address.regionName + ', ' : '';
-            stringifiedAddress += address.city + ' ';
-            stringifiedAddress += address.line1 + ', ';
-            stringifiedAddress += address.line2 ? address.line2 : '';
-            stringifiedAddress += address.postalCode;
-            return stringifiedAddress;
-        }
-
-        $scope.$watch('$ctrl.address', function () {
-            if (ctrl.address) {
-                populateRegionalDataForAddress(ctrl.address);
-                ctrl.address.name = stringifyAddress(ctrl.address);
-            }
-            ctrl.onUpdate({ address: ctrl.address });
-        }, true);
-
-    }]
-});
-
-var storefrontApp = angular.module('storefrontApp');
-
-storefrontApp.component('vcCreditCard', {
-    templateUrl: "themes/assets/js/common-components/creditCard.tpl.html",
-    require: {
-        checkoutStep: '?^vcCheckoutWizardStep'
-    },
-    bindings: {
-        card: '=',
-        validationContainer: '='
-    },
-    controller: ['$scope', '$filter', function ($scope, $filter) {
-        var ctrl = this;
-
-        this.$onInit = function () {
-            if(ctrl.validationContainer)
-                ctrl.validationContainer.addComponent(this);
-            if (ctrl.checkoutStep)
-                ctrl.checkoutStep.addComponent(this);
-        };
-
-        this.$onDestroy = function () {
-            if (ctrl.validationContainer)
-                ctrl.validationContainer.removeComponent(this);
-            if (ctrl.checkoutStep)
-                ctrl.checkoutStep.removeComponent(this);
-        };
-
-        $scope.$watch('$ctrl.card.bankCardHolderName', function (val) {
-            if (ctrl.card) {
-                ctrl.card.bankCardHolderName = $filter('uppercase')(val);
-            }
-        }, true);
-
-        ctrl.validate = function () {
-            ctrl.form.$setSubmitted();
-            return !ctrl.form.$invalid;
-        }
-
-    }]
-});
-
-var storefrontApp = angular.module('storefrontApp');
-
-storefrontApp.config(['$provide', function ($provide) {
-    $provide.decorator('uibDropdownDirective', ['$delegate', function ($delegate) {
-        var directive = $delegate[0];
-        var compile = directive.compile;
-        directive.compile = function () {
-            var link = compile.apply(this, arguments);
-            return function (scope, element, attrs, dropdownCtrl) {
-                if (attrs.autoClose === 'mouseleave') {
-                    dropdownCtrl.toggle(false);
-                }
-
-                var closeDropdown = function() {
-                    scope.$apply(function () {
-                        if (attrs.autoClose === 'mouseleave') {
-                            dropdownCtrl.toggle(false);
-                        }
-                    });
-                };
-
-                element.on('mouseleave', closeDropdown);
-
-                link.apply(this, arguments);
-
-                scope.$on('$destroy', function() {
-                    element.off('mouseleave', closeDropdown);
-                });
-            };
-        };
-        return $delegate;
-    }]);
-
-    $provide.decorator('uibDropdownToggleDirective', ['$delegate', function($delegate) {
-        var directive = $delegate[0];
-        directive.controller = function () { };
-        $delegate[0] = directive;
-        return $delegate;
-    }]);
-}]);
-
-storefrontApp.directive('toggleOnMouseEnter', function() {
-    return {
-        require: ['?^uibDropdown', '?uibDropdownToggle'],
-        link: function (scope, element, attrs, ctrls) {
-            var dropdownCtrl = ctrls[0];
-            var dropdownToggleCtrl = ctrls[1];
-            if (!(dropdownCtrl && dropdownToggleCtrl)) {
-                return;
-            }
-
-            element.addClass('toggle-on-mouse-enter');
-
-            var openDropdown = function () {
-                if (!element.hasClass('disabled') && !attrs.disabled) {
-                    scope.$apply(function () {
-                        dropdownCtrl.toggle(true);
-                    });
-                }
-            };
-
-            element.on('mouseenter', openDropdown);
-
-            scope.$on('$destroy', function () {
-                element.off('mouseenter', openDropdown);
-            });
-        }
-    };
-});
-
-storefrontApp.directive('dropdownClose', function () {
-    return {
-        require: ['?^uibDropdown'],
-        link: function (scope, element, attrs, ctrls) {
-            var dropdownCtrl = ctrls[0];
-            if (!dropdownCtrl) {
-                return;
-            }
-
-            var closeDropdown = function () {
-                if (!element.hasClass('disabled') && !attrs.disabled) {
-                    scope.$apply(function () {
-                        dropdownCtrl.toggle(false);
-                    });
-                }
-            };
-
-            element.on('click', closeDropdown);
-
-            scope.$on('$destroy', function () {
-                element.off('click', closeDropdown);
-            });
-        }
-    };
-});
-
-var storefrontApp = angular.module('storefrontApp');
-storefrontApp.component('vcErrors', {
-    templateUrl: "themes/assets/errors.tpl.html",
-    bindings: {
-        level: '<',
-        message: '<',
-        errors: '<'
-    },
-    controller: [function () {
-        var $ctrl = this;
-        $ctrl.level = $ctrl.level || 'danger';
-    }]
-});
-
-angular.module('storefrontApp')
-
-.component('vcLabeledInput', {
-    templateUrl: "themes/assets/labeled-input.tpl.html",
-    bindings: {
-        value: '=',
-        form: '=',
-        name: '@',
-        placeholder: '@',
-        type: '@?',
-        required: '<',
-        requiredError: '@?',
-        autofocus: '<',
-        disabled: '<'
-    },
-    controller: [function () {
-        var $ctrl = this;
-        
-        $ctrl.validate = function () {
-            $ctrl.form.$setSubmitted();
-            return $ctrl.form.$valid;
-        };
-
-    }]
-});
-
-angular.module('storefrontApp')
-
-.component('vcLabeledSelect', {
-    templateUrl: "themes/assets/labeled-select.tpl.html",
-    require: {
-        ngModel: "?ngModel"
-    },
-    bindings: {
-        options: '<',
-        select: '&',
-        form: '=',
-        name: '@',
-        placeholder: '<',
-        required: '<',
-        requiredError: '@?',
-        autofocus: '<',
-        disabled: '<'
-    },
-    controller: ['$scope', function ($scope) {
-        var $ctrl = this;
-        
-        $ctrl.$onInit = function() {
-            if ($ctrl.required)
-                $ctrl.ngModel.$setValidity('required', false);
-            $ctrl.ngModel.$render = function() {
-                $ctrl.value = $ctrl.ngModel.$viewValue;
-            };
-        };
-
-        $ctrl.validate = function () {
-            $ctrl.form.$setSubmitted();
-            return $ctrl.form.$valid;
-        };
-
-        var select = $ctrl.select;
-        $ctrl.select = function(option) {
-            select(option);
-            $ctrl.value = option;
-            if ($ctrl.required)
-                $ctrl.ngModel.$setValidity('required', false);
-            $ctrl.ngModel.$setViewValue($ctrl.value);
-        };        
-    }]
-});
-angular.module('storefrontApp')
-
-.component('vcLabeledTextArea', {
-    templateUrl: "themes/assets/labeled-textarea.tpl.html",
-    bindings: {
-        value: '=',
-        form: '=',
-        name: '@',
-        label: '@',
-        required: '<',
-        requiredError: '@?',
-        pattern: '<?',
-        autofocus: '<'
-    },
-    controller: [function () {
-        var $ctrl = this;
-
-        $ctrl.validate = function () {
-            $ctrl.form.$setSubmitted();
-            return $ctrl.form.$valid;
-        };
-
-    }]
-});
-var storefrontApp = angular.module('storefrontApp');
-
-storefrontApp.component('vcLineItems', {
-    templateUrl: "themes/assets/js/common-components/lineItems.tpl.liquid",
-    bindings: {
-        items: '='
-    }
-});
-
-var storefrontApp = angular.module('storefrontApp');
-storefrontApp.component('vcMember', {
-    templateUrl: "themes/assets/member.tpl.html",
-    bindings: {
-        member: '=',
-        memberComponent: '='
-    },
-    controller: ['$scope', function ($scope) {
-        var $ctrl = this;
-
-        this.$onInit = function () {
-            $ctrl.memberComponent = this;
-        };
-
-        this.$onDestroy = function () {
-            $ctrl.memberComponent = null;
-        };
-
-        $ctrl.setForm = function (frm) { $ctrl.form = frm; };
-
-
-        $ctrl.validate = function () {
-            if ($ctrl.form) {
-                $ctrl.form.$setSubmitted();
-                return $ctrl.form.$valid;
-            }
-            return true;
-        };
-    }]
-});
-
-var storefrontApp = angular.module('storefrontApp');
-storefrontApp.component('vcMemberDetail', {
-    templateUrl: "themes/assets/memberDetail.tpl.html",
-    bindings: {
-        member: '=',
-        memberComponent: '=',
-        fieldsConfig: '<'
-    },
-    controller: ['$scope', function ($scope) {
-        var $ctrl = this;
-        
-        $ctrl.config = [
-            {
-                field: 'CompanyName',
-                disabled: false,
-                visible: true,
-                required: true
-            },
-            {
-                field: 'Email',
-                disabled: false,
-                visible: true,
-                required: true
-            },
-            {
-                field: 'UserName',
-                disabled: false,
-                visible: true
-            },
-            {
-                field: 'Password',
-                disabled: false,
-                visible: true
-            },
-            {
-                field: 'Roles',
-                disabled: false,
-                visible:  false
-            }
-        ];
-
-        if ($ctrl.fieldsConfig)
-            angular.extend($ctrl.config, $ctrl.fieldsConfig);
-
-        $ctrl.rolesComponent = null;
-
-        this.$onInit = function () {
-            $ctrl.memberComponent = this;
-        };
-
-        this.$onDestroy = function () {
-            $ctrl.memberComponent = null;
-        };
-
-        $ctrl.setForm = function (frm) {
-            $ctrl.form = frm;
-        };
-
-        $ctrl.validate = function () {
-            if ($ctrl.form) {
-                $ctrl.form.$setSubmitted();
-                return $ctrl.form.$valid;
-            }
-            return true;
-        };
-
-        $ctrl.showField = function (field) {
-            return getFieldConfig(field).visible == true;
-        }
-
-        $ctrl.disableField = function (field) {
-            return getFieldConfig(field).disabled == true;
-        }
-
-        $ctrl.requiredField = function (field) {
-            return getFieldConfig(field).required == true;
-        }
-
-        function getFieldConfig(field) {
-            var configItem = _.first(_.filter($ctrl.config, function (configItem) { return configItem.field === field; }));
-            return configItem;
-        }
-    }]
-});
-
-storefrontApp.directive('confirmPasswordValidation', function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, elem, attr, ngModel) {
-            ngModel.$parsers.unshift(function (value, scope) {
-                var isValid = true;
-                var password = ngModel.$$parentForm.Password.$viewValue;
-
-                if (password) {
-                    isValid = password === value;
-                }
-
-                ngModel.$setValidity('confirmPasswordValidation', isValid);
-                return value;
-            });
-        }
-    };
-});
-
-var storefrontApp = angular.module('storefrontApp');
-
-storefrontApp.component('vcPaymentMethods', {
-    templateUrl: "themes/assets/js/common-components/paymentMethods.tpl.html",
-    require: {
-        checkoutStep: '?^vcCheckoutWizardStep'
-    },
-    bindings: {
-        getAvailPaymentMethods: '&',
-        onSelectMethod: '&',
-        paymentMethod: '=',
-        validationContainer: '='
-    },
-    controller: ['$scope', function ($scope) {
-        var ctrl = this;
-
-        this.$onInit = function () {
-            ctrl.getAvailPaymentMethods().then(function (methods) {
-                ctrl.availPaymentMethods = _.sortBy(methods, function (x) { return x.priority; });
-                if (ctrl.paymentMethod) {
-                    ctrl.paymentMethod = _.findWhere(ctrl.availPaymentMethods, { code: ctrl.paymentMethod.code });
-                }
-                if (!ctrl.paymentMethod && ctrl.availPaymentMethods.length > 0) {
-                    ctrl.selectMethod(ctrl.availPaymentMethods[0]);
-                }
-            })
-            if (ctrl.validationContainer)
-                ctrl.validationContainer.addComponent(this);
-            if (ctrl.checkoutStep)
-                ctrl.checkoutStep.addComponent(this);
-        };
-
-        this.$onDestroy = function () {
-            if (ctrl.validationContainer)
-                ctrl.validationContainer.removeComponent(this);
-            if (ctrl.checkoutStep)
-                ctrl.checkoutStep.removeComponent(this);
-        };
-
-        ctrl.validate = function () {
-            return ctrl.paymentMethod;
-        }
-
-        ctrl.selectMethod = function (method) {
-            ctrl.paymentMethod = method;
-            ctrl.onSelectMethod({ paymentMethod: method });
-        };
-    }]
-});
-
-var storefrontApp = angular.module('storefrontApp');
-
-storefrontApp.component('vcPaymentPlan', {
-    templateUrl: "themes/assets/js/common-components/paymentPlan.tpl.html",
-    bindings: {
-    },
-    controller: ['$scope', '$localStorage', function($scope, $localStorage) {
-        var $ctrl = this;
-
-        $scope.$watch(function() {
-            return $ctrl.availablePaymentPlans;
-        }, function (availablePaymentPlans) {
-            if (availablePaymentPlans) {
-                $ctrl.paymentPlan = $localStorage['paymentPlan'];
-                $ctrl.type = $ctrl.paymentPlan ? 'auto-reorder' : 'one-time';
-                $ctrl.paymentPlan = ($ctrl.paymentPlan ? _.findWhere($ctrl.availablePaymentPlans, { intervalCount: $ctrl.paymentPlan.intervalCount, interval: $ctrl.paymentPlan.interval }) : undefined) ||
-                    _.findWhere($ctrl.availablePaymentPlans, { intervalCount: 1, interval: 'months' });
-            }
-        });
-
-        $ctrl.save = function() {
-            if ($ctrl.type === 'auto-reorder') {
-                $localStorage['paymentPlan'] = $ctrl.paymentPlan;
-            } else {
-                $localStorage['paymentPlan'] = undefined;
-            }
-        }
-    }]
-});
-
-var storefrontApp = angular.module('storefrontApp');
-storefrontApp.component('vcRoles', {
-    templateUrl: "themes/assets/roles.tpl.html.liquid",
-    bindings: {
-        value: '=',
-        accounts: "<",
-        form: '=',
-        name: "@",
-        required: "<",
-        disabled: "<"
-    },
-    controller: ['$scope', 'roleService', 'loadingIndicatorService', function ($scope, roleService, loader) {
-        var $ctrl = this;
-        $ctrl.loader = loader;
-
-        $scope.$watch(function(){
-            return roleService.available;
-        }, function(){
-            $ctrl.availableRoles = _.map(roleService.available, function(availableRole) {
-                return availableRole;
-            });
-            $ctrl.getRole();
-        });
-
-        $ctrl.$onChanges = function() {
-            $ctrl.getRole();
-        };
-        
-        $ctrl.getRole = function() {
-            if ($ctrl.accounts) {
-                $ctrl.value = roleService.get($ctrl.accounts);
-            }
-        };
-
-        $ctrl.selectRole = function(role){
-            if ($ctrl.value)
-                $ctrl.value.assigned = false;
-            role.assigned = true;
-        };
-    }]
-});
-var storefrontApp = angular.module('storefrontApp');
-
-storefrontApp.component('vcShippingType', {
-    templateUrl: "themes/assets/js/common-components/shippingType.tpl.html",
-    bindings: {
-        isDropdown: '<',
-        title: "@",
-        subtitle: "@",
-        pickupMethodCode: "@"
-    },
-    controller: ['$scope', '$localStorage', 'storefrontApp.mainContext', 'dialogService', function($scope, $localStorage, mainContext, dialogService) {
-        var $ctrl = this;
-        $ctrl.shipmentType = $localStorage['shipmentType'];
-        if (!$ctrl.shipmentType) {
-            $ctrl.shipmentType = 'shipping';
-            $ctrl.isChanging = true;
-        }
-        $ctrl.shipmentAddress = $localStorage['shipmentAddress'];
-        $ctrl.shipmentFulfillmentCenter = $localStorage['shipmentFulfillmentCenter'];
-        $scope.$watch(
-            function() { return mainContext.customer; },
-            function (customer) {
-                if (customer) {
-                    $ctrl.customer = customer;
-                    if (!$ctrl.shipmentAddress && $ctrl.customer.defaultShippingAddress) {
-                        $ctrl.shipmentAddress = { postalCode: $ctrl.customer.defaultShippingAddress.postalCode };
-                    }
-                }
-            }
-        );
-        $ctrl.selectFulfillmentCenter = function () {
-            var modalInstance = dialogService.showDialog(null, 'universalDialogController', 'storefront.select-fulfillment-center-dialog.tpl');
-            modalInstance.result.then(function(fulfillmentCenter) {
-                $ctrl.shipmentFulfillmentCenter = fulfillmentCenter;
-                if (!$ctrl.isDropdown) {
-                    $ctrl.save();
-                }
-            });
-        };
-        $ctrl.save = function (isDefined) {
-            if (isDefined !== false) {
-                $localStorage['shipmentType'] = $ctrl.shipmentType;
-                if ($ctrl.shipmentType === 'shipping') {
-                    $localStorage['shipmentAddress'] = $ctrl.shipmentAddress;
-                } else {
-                    $localStorage['shipmentFulfillmentCenter'] = $ctrl.shipmentFulfillmentCenter;
-                }
-            }
-        }
-    }]
-});
-
-var storefrontApp = angular.module('storefrontApp');
-
-storefrontApp.component('vcTotals', {
-    templateUrl: "themes/assets/js/common-components/totals.tpl.liquid",
-	bindings: {
-		order: '<'
-	}
-});
-
-var storefrontApp = angular.module('storefrontApp');
-
-storefrontApp.component('vcCheckoutCoupon', {
-	templateUrl: "themes/assets/js/checkout/checkout-coupon.tpl.liquid",
-	bindings: {
-		coupon: '=',
-		onApplyCoupon: '&',
-		onRemoveCoupon: '&'
-	},
-	controller: [function () {
-		var ctrl = this;	
-	}]
-});
-
-var storefrontApp = angular.module('storefrontApp');
-
-storefrontApp.component('vcCheckoutEmail', {
-	templateUrl: "themes/assets/js/checkout/checkout-email.tpl.html",
-	require: {
-		checkoutStep: '^vcCheckoutWizardStep'
-	},
-	bindings: {
-		email: '='
-	},
-	controller: [function () {
-		var ctrl = this;
-
-		this.$onInit = function () {
-			ctrl.checkoutStep.addComponent(this);
-		};
-
-		this.$onDestroy = function () {
-			ctrl.checkoutStep.removeComponent(this);
-		};
-	
-		ctrl.validate = function () {
-			ctrl.form.$setSubmitted();
-			return !ctrl.form.$invalid;
-		}
-
-	}]
-});
-
-var storefrontApp = angular.module('storefrontApp');
-
-storefrontApp.component('vcCheckoutShippingMethods', {
-	templateUrl: "themes/assets/js/checkout/checkout-shippingMethods.tpl.liquid",
-	require: {
-		checkoutStep: '^vcCheckoutWizardStep'
-	},
-	bindings: {
-		shipment: '=',
-		getAvailShippingMethods: '&',
-		onSelectShippingMethod: '&'
-	},
-	controller: [function () {
-
-		var ctrl = this;
-		
-		ctrl.availShippingMethods = [];
-		ctrl.selectedMethod = {};
-		this.$onInit = function () {
-			ctrl.checkoutStep.addComponent(this);
-			ctrl.loading = true;
-			ctrl.getAvailShippingMethods(ctrl.shipment).then(function (availMethods) {
-				ctrl.availShippingMethods = availMethods;
-				_.each(ctrl.availShippingMethods, function (x) {
-					x.id = getMethodId(x);
-				});
-				ctrl.selectedMethod = _.find(ctrl.availShippingMethods, function (x) { return ctrl.shipment.shipmentMethodCode == x.shipmentMethodCode && ctrl.shipment.shipmentMethodOption == x.optionName });
-				ctrl.loading = false;
-			});
-		};		
-		
-		this.$onDestroy = function () {
-			ctrl.checkoutStep.removeComponent(this);
-		};
-			
-		function getMethodId(method) {
-			var retVal = method.shipmentMethodCode;
-			if (method.optionName) {
-				retVal += ':' + method.optionName;
-			}
-			return retVal;
-		}
-
-		ctrl.selectMethod = function (method) {
-			ctrl.selectedMethod = method;
-			ctrl.onSelectShippingMethod({ shippingMethod: method });
-		};
-	
-		ctrl.validate = function () {
-			ctrl.form.$setSubmitted();
-			return !ctrl.form.$invalid;
-		}
-	}]
-});
-
-var storefrontApp = angular.module('storefrontApp');
-storefrontApp.component('vcCheckoutWizardStep', {
-    templateUrl: "themes/assets/js/checkout/checkout-wizard-step.tpl.html",
-    transclude: true,
-    require: {
-        wizard: '^vcCheckoutWizard'
-    },
-    bindings: {
-        name: '@',
-        title: '@',
-        stepDisabled: '=?',
-        onNextStep: '&?',
-        canEnter: '=?',
-        final: '<?'
-    },
-    controller: [function () {
-        var ctrl = this;
-        ctrl.components = [];
-        ctrl.canEnter = true;
-
-        this.$onInit = function () {
-            ctrl.wizard.addStep(this);
-        };
-
-        ctrl.addComponent = function (component) {
-            ctrl.components.push(component);
-        };
-        ctrl.removeComponent = function (component) {
-            ctrl.components = _.without(ctrl.components, component);
-        };
-        ctrl.validate = function () {
-            return _.every(ctrl.components, function (x) { return typeof x.validate !== "function" || x.validate(); });
-        }
-    }]
-});
-
-var storefrontApp = angular.module('storefrontApp');
-storefrontApp.component('vcCheckoutWizard', {
-	transclude: true,
-	templateUrl: 'themes/assets/js/checkout/checkout-wizard.tpl.html',
-	bindings: {
-		wizard: '=',
-		loading: '=',
-		onFinish: '&?',
-		onInitialized: '&?'
-	},
-	controller: ['$scope', function ($scope) {
-		var ctrl = this;
-		ctrl.wizard = ctrl;
-		ctrl.steps = [];	
-		ctrl.goToStep = function (step) {
-			if (angular.isString(step))
-			{
-				step = _.find(ctrl.steps, function (x) { return x.name == step; });
-			}
-			if (step && ctrl.currentStep != step && step.canEnter) {
-				if (!step.final) {
-					step.isActive = true;
-					if (ctrl.currentStep) {
-						ctrl.currentStep.isActive = false;
-					}
-					ctrl.currentStep = step;
-				}
-				else if (ctrl.onFinish)
-				{
-					ctrl.onFinish();
-				}
-			}
-		};
-
-		ctrl.nextStep = function () {
-			if (!ctrl.currentStep.validate || ctrl.currentStep.validate()) {
-				if (ctrl.currentStep.nextStep) {
-					if (ctrl.currentStep.onNextStep) {
-						//evaluate onNextStep function
-						var promise = ctrl.currentStep.onNextStep();
-						//For promise function need to delay going to next step
-						if (promise && angular.isFunction(promise.then)) {
-							promise.then(function () {
-								ctrl.goToStep(ctrl.currentStep.nextStep);
-							});
-						}
-						else
-						{
-							ctrl.goToStep(ctrl.currentStep.nextStep);
-						}
-					}
-					else {
-						ctrl.goToStep(ctrl.currentStep.nextStep);
-					}
-				}			
-			}
-		};
-
-		ctrl.prevStep = function () {
-			ctrl.goToStep(ctrl.currentStep.prevStep);
-		};
-
-		function rebuildStepsLinkedList(steps) {
-			var nextStep = undefined;
-			for (var i = steps.length; i-- > 0;) {
-				steps[i].prevStep = undefined;
-				steps[i].nextStep = undefined;
-				if (nextStep && !steps[i].disabled) {
-					nextStep.prevStep = steps[i]
-				};				
-				if (!steps[i].disabled) {
-					steps[i].nextStep = nextStep;
-					nextStep = steps[i];
-				}
-			}		
-		};
-		
-		ctrl.addStep = function (step) {
-			ctrl.steps.push(step);
-			$scope.$watch(function () { return step.disabled; }, function () {
-				rebuildStepsLinkedList(ctrl.steps);			
-			});
-			rebuildStepsLinkedList(ctrl.steps);
-			if(!ctrl.currentStep)
-			{
-				ctrl.goToStep(step);
-			}
-			if (step.final && ctrl.onInitialized)
-			{
-				ctrl.onInitialized();
-			}
-		};
-
-	}]
-});
-
-//Call this to register our module to main application
-var moduleName = "storefront.checkout";
-
-if (storefrontAppDependencies != undefined) {
-    storefrontAppDependencies.push(moduleName);
-}
-angular.module(moduleName, ['credit-cards', 'angular.filter'])
-.controller('checkoutController', ['$rootScope', '$scope', '$window', 'cartService',
-    function ($rootScope, $scope, $window, cartService) {
-        $scope.checkout = {
-            wizard: {},
-            paymentMethod: {},
-            shipment: {},
-            payment: {},
-            coupon: {},
-            availCountries: [],
-            loading: false,
-            isValid: false
-        };
-
-        $scope.validateCheckout = function (checkout) {
-            checkout.isValid = checkout.payment && checkout.payment.paymentGatewayCode;
-            if (checkout.isValid && !checkout.billingAddressEqualsShipping) {
-                checkout.isValid = angular.isObject(checkout.payment.billingAddress);
-            }
-            if (checkout.isValid && checkout.cart && checkout.cart.hasPhysicalProducts) {
-                checkout.isValid = angular.isObject(checkout.shipment)
-                                && checkout.shipment.shipmentMethodCode
-                                && angular.isObject(checkout.shipment.deliveryAddress);
-            }
-        };
-
-        $scope.reloadCart = function () {
-            return cartService.getCart().then(function (response) {
-                var cart = response.data;
-                if (!cart || !cart.id) {
-                    $scope.outerRedirect($scope.baseUrl + 'cart');
-                }
-                else {
-                    $scope.checkout.cart = cart;
-                    $scope.checkout.coupon = cart.coupon || $scope.checkout.coupon;
-                    if ($scope.checkout.coupon.code && !$scope.checkout.coupon.appliedSuccessfully) {
-                        $scope.checkout.coupon.errorCode = 'InvalidCouponCode';
-                    }
-                    if (cart.payments.length) {
-                        $scope.checkout.payment = cart.payments[0];
-                        $scope.checkout.paymentMethod.code = $scope.checkout.payment.paymentGatewayCode;
-                    }
-                    if (cart.shipments.length) {
-                        $scope.checkout.shipment = cart.shipments[0];
-                    }
-                    $scope.checkout.billingAddressEqualsShipping = cart.hasPhysicalProducts && !angular.isObject($scope.checkout.payment.billingAddress);
-
-                    $scope.checkout.canCartBeRecurring = $scope.customer.isRegisteredUser && _.all(cart.items, function (x) { return !x.isReccuring });
-                    $scope.checkout.paymentPlan = cart.paymentPlan && _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: cart.paymentPlan.intervalCount, interval: cart.paymentPlan.interval }) ||
-                                                                      _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: 1, interval: 'months' });
-                }
-                $scope.validateCheckout($scope.checkout);
-                return cart;
-            });
-        };
-
-        $scope.applyCoupon = function (coupon) {
-            coupon.processing = true;
-            cartService.addCoupon(coupon.code).then(function () {
-                coupon.processing = false;
-                $scope.reloadCart();
-            }, function (response) {
-                coupon.processing = false;
-            });
-        }
-
-        $scope.removeCoupon = function (coupon) {
-            coupon.processing = true;
-            cartService.removeCoupon().then(function (response) {
-                coupon.processing = false;
-                $scope.checkout.coupon = {};
-                $scope.reloadCart();
-            }, function (response) {
-                coupon.processing = false;
-            });
-        }
-
-        $scope.selectPaymentMethod = function (paymentMethod) {
-            angular.extend($scope.checkout.payment, paymentMethod);
-            $scope.checkout.payment.paymentGatewayCode = paymentMethod.code;
-            $scope.checkout.payment.amount = angular.copy($scope.checkout.cart.total);
-            $scope.checkout.payment.amount.amount += paymentMethod.totalWithTax.amount;
-
-            updatePayment($scope.checkout.payment);
-        };
-
-        function getAvailCountries() {
-            //Load avail countries
-            return cartService.getCountries().then(function (response) {
-                return response.data;
-            });
-        };
-
-        $scope.getCountryRegions = function (country) {
-            return cartService.getCountryRegions(country.code3).then(function (response) {
-                return response.data;
-            });
-        };
-
-        $scope.getAvailShippingMethods = function (shipment) {
-            return wrapLoading(function () {
-                return cartService.getAvailableShippingMethods(shipment.id).then(function (response) {
-                    return response.data;
-                });
-            });
-        }
-
-        $scope.getAvailPaymentMethods = function () {
-            return wrapLoading(function () {
-                return cartService.getAvailablePaymentMethods().then(function (response) {
-                    return response.data;
-                });
-            });
-        };
-
-        $scope.selectShippingMethod = function (shippingMethod) {
-            if (shippingMethod) {
-                $scope.checkout.shipment.shipmentMethodCode = shippingMethod.shipmentMethodCode;
-                $scope.checkout.shipment.shipmentMethodOption = shippingMethod.optionName;
-            }
-            else {
-                $scope.checkout.shipment.shipmentMethodCode = undefined;
-                $scope.checkout.shipment.shipmentMethodOption = undefined;
-            }
-            $scope.updateShipment($scope.checkout.shipment);
-        };
-
-        $scope.updateShipment = function (shipment) {
-            if (shipment.deliveryAddress) {
-                $scope.checkout.shipment.deliveryAddress.type = 'Shipping';
-            };
-            //Does not pass validation errors to API
-            shipment.validationErrors = undefined;
-            return wrapLoading(function () {
-                return cartService.addOrUpdateShipment(shipment).then($scope.reloadCart);
-            });
-        };
-
-        $scope.createOrder = function () {
-            updatePayment($scope.checkout.payment).then(function () {
-                $scope.checkout.loading = true;
-                cartService.createOrder($scope.checkout.paymentMethod.card).then(function (response) {
-                    var order = response.data.order;
-                    var orderProcessingResult = response.data.orderProcessingResult;
-                    var paymentMethod = response.data.paymentMethod;
-                    handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
-                });
-            });
-        };
-
-        $scope.savePaymentPlan = function () {
-            wrapLoading(function () {
-                return cartService.addOrUpdatePaymentPlan($scope.checkout.paymentPlan).then(function () {
-                    $scope.checkout.cart.paymentPlan = $scope.checkout.paymentPlan;
-                });
-            });
-        };
-
-        $scope.isRecurringChanged = function (isRecurring) {
-            if ($scope.checkout.paymentPlan) {
-                if (isRecurring) {
-                    $scope.savePaymentPlan();
-                } else {
-                    wrapLoading(function () {
-                        return cartService.removePaymentPlan().then(function () {
-                            $scope.checkout.cart.paymentPlan = undefined;
-                        });
-                    });
-                }
-            }
-        };
-
-        function updatePayment(payment) {
-            if ($scope.checkout.billingAddressEqualsShipping) {
-                payment.billingAddress = undefined;
-            }
-
-            if (payment.billingAddress) {
-                payment.billingAddress.type = 'Billing';
-            }
-            return wrapLoading(function () {
-                return cartService.addOrUpdatePayment(payment).then($scope.reloadCart);
-            });
-        }
-
-        function handlePostPaymentResult(order, orderProcessingResult, paymentMethod) {
-            if (!orderProcessingResult.isSuccess) {
-                $scope.checkout.loading = false;
-                $rootScope.$broadcast('storefrontError', {
-                    type: 'error',
-                    title: ['Error in new order processing: ', orderProcessingResult.error, 'New Payment status: ' + orderProcessingResult.newPaymentStatus].join(' '),
-                    message: orderProcessingResult.error,
-                });
-                return;
-            }
-
-            if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() == 'preparedform' && orderProcessingResult.htmlForm) {
-                $scope.outerRedirect($scope.baseUrl + 'cart/checkout/paymentform?orderNumber=' + order.number);
-            } else if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() == 'redirection' && orderProcessingResult.redirectUrl) {
-                $window.location.href = orderProcessingResult.redirectUrl;
-            } else {
-                if (!$scope.customer.isRegisteredUser) {
-                    $scope.outerRedirect($scope.baseUrl + 'cart/thanks/' + order.number);
-                } else {
-                    $scope.outerRedirect($scope.baseUrl + 'account#/orders/' + order.number);
-                }
-            }
-        }
-
-        function wrapLoading(func) {
-            $scope.checkout.loading = true;
-            return func().then(function (result) {
-                $scope.checkout.loading = false;
-                return result;
-            },
-                function () {
-                    $scope.checkout.loading = false;
-                });
-        }
-
-        $scope.initialize = function () {
-
-            $scope.reloadCart().then(function (cart) {
-                $scope.checkout.wizard.goToStep(cart.hasPhysicalProducts ? 'shipping-address' : 'payment-method');
-            });
-        };
-
-        getAvailCountries().then(function (countries) {
-            $scope.checkout.availCountries = countries;
-        });
-
-    }]);
 
 //Call this to register our module to main application
 var moduleName = "storefront.account";
@@ -4244,6 +3068,1472 @@ angular.module('storefront.account')
 }]);
 var storefrontApp = angular.module('storefrontApp');
 
+storefrontApp.component('vcCheckoutCoupon', {
+	templateUrl: "themes/assets/js/checkout/checkout-coupon.tpl.liquid",
+	bindings: {
+		coupon: '=',
+		onApplyCoupon: '&',
+		onRemoveCoupon: '&'
+	},
+	controller: [function () {
+		var ctrl = this;	
+	}]
+});
+
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.component('vcCheckoutEmail', {
+	templateUrl: "themes/assets/js/checkout/checkout-email.tpl.html",
+	require: {
+		checkoutStep: '^vcCheckoutWizardStep'
+	},
+	bindings: {
+		email: '='
+	},
+	controller: [function () {
+		var ctrl = this;
+
+		this.$onInit = function () {
+			ctrl.checkoutStep.addComponent(this);
+		};
+
+		this.$onDestroy = function () {
+			ctrl.checkoutStep.removeComponent(this);
+		};
+	
+		ctrl.validate = function () {
+			ctrl.form.$setSubmitted();
+			return !ctrl.form.$invalid;
+		}
+
+	}]
+});
+
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.component('vcCheckoutShippingMethods', {
+	templateUrl: "themes/assets/js/checkout/checkout-shippingMethods.tpl.liquid",
+	require: {
+		checkoutStep: '^vcCheckoutWizardStep'
+	},
+	bindings: {
+		shipment: '=',
+		getAvailShippingMethods: '&',
+		onSelectShippingMethod: '&'
+	},
+	controller: [function () {
+
+		var ctrl = this;
+		
+		ctrl.availShippingMethods = [];
+		ctrl.selectedMethod = {};
+		this.$onInit = function () {
+			ctrl.checkoutStep.addComponent(this);
+			ctrl.loading = true;
+			ctrl.getAvailShippingMethods(ctrl.shipment).then(function (availMethods) {
+				ctrl.availShippingMethods = availMethods;
+				_.each(ctrl.availShippingMethods, function (x) {
+					x.id = getMethodId(x);
+				});
+				ctrl.selectedMethod = _.find(ctrl.availShippingMethods, function (x) { return ctrl.shipment.shipmentMethodCode == x.shipmentMethodCode && ctrl.shipment.shipmentMethodOption == x.optionName });
+				ctrl.loading = false;
+			});
+		};		
+		
+		this.$onDestroy = function () {
+			ctrl.checkoutStep.removeComponent(this);
+		};
+			
+		function getMethodId(method) {
+			var retVal = method.shipmentMethodCode;
+			if (method.optionName) {
+				retVal += ':' + method.optionName;
+			}
+			return retVal;
+		}
+
+		ctrl.selectMethod = function (method) {
+			ctrl.selectedMethod = method;
+			ctrl.onSelectShippingMethod({ shippingMethod: method });
+		};
+	
+		ctrl.validate = function () {
+			ctrl.form.$setSubmitted();
+			return !ctrl.form.$invalid;
+		}
+	}]
+});
+
+var storefrontApp = angular.module('storefrontApp');
+storefrontApp.component('vcCheckoutWizardStep', {
+    templateUrl: "themes/assets/js/checkout/checkout-wizard-step.tpl.html",
+    transclude: true,
+    require: {
+        wizard: '^vcCheckoutWizard'
+    },
+    bindings: {
+        name: '@',
+        title: '@',
+        stepDisabled: '=?',
+        onNextStep: '&?',
+        canEnter: '=?',
+        final: '<?'
+    },
+    controller: [function () {
+        var ctrl = this;
+        ctrl.components = [];
+        ctrl.canEnter = true;
+
+        this.$onInit = function () {
+            ctrl.wizard.addStep(this);
+        };
+
+        ctrl.addComponent = function (component) {
+            ctrl.components.push(component);
+        };
+        ctrl.removeComponent = function (component) {
+            ctrl.components = _.without(ctrl.components, component);
+        };
+        ctrl.validate = function () {
+            return _.every(ctrl.components, function (x) { return typeof x.validate !== "function" || x.validate(); });
+        }
+    }]
+});
+
+var storefrontApp = angular.module('storefrontApp');
+storefrontApp.component('vcCheckoutWizard', {
+	transclude: true,
+	templateUrl: 'themes/assets/js/checkout/checkout-wizard.tpl.html',
+	bindings: {
+		wizard: '=',
+		loading: '=',
+		onFinish: '&?',
+		onInitialized: '&?'
+	},
+	controller: ['$scope', function ($scope) {
+		var ctrl = this;
+		ctrl.wizard = ctrl;
+		ctrl.steps = [];	
+		ctrl.goToStep = function (step) {
+			if (angular.isString(step))
+			{
+				step = _.find(ctrl.steps, function (x) { return x.name == step; });
+			}
+			if (step && ctrl.currentStep != step && step.canEnter) {
+				if (!step.final) {
+					step.isActive = true;
+					if (ctrl.currentStep) {
+						ctrl.currentStep.isActive = false;
+					}
+					ctrl.currentStep = step;
+				}
+				else if (ctrl.onFinish)
+				{
+					ctrl.onFinish();
+				}
+			}
+		};
+
+		ctrl.nextStep = function () {
+			if (!ctrl.currentStep.validate || ctrl.currentStep.validate()) {
+				if (ctrl.currentStep.nextStep) {
+					if (ctrl.currentStep.onNextStep) {
+						//evaluate onNextStep function
+						var promise = ctrl.currentStep.onNextStep();
+						//For promise function need to delay going to next step
+						if (promise && angular.isFunction(promise.then)) {
+							promise.then(function () {
+								ctrl.goToStep(ctrl.currentStep.nextStep);
+							});
+						}
+						else
+						{
+							ctrl.goToStep(ctrl.currentStep.nextStep);
+						}
+					}
+					else {
+						ctrl.goToStep(ctrl.currentStep.nextStep);
+					}
+				}			
+			}
+		};
+
+		ctrl.prevStep = function () {
+			ctrl.goToStep(ctrl.currentStep.prevStep);
+		};
+
+		function rebuildStepsLinkedList(steps) {
+			var nextStep = undefined;
+			for (var i = steps.length; i-- > 0;) {
+				steps[i].prevStep = undefined;
+				steps[i].nextStep = undefined;
+				if (nextStep && !steps[i].disabled) {
+					nextStep.prevStep = steps[i]
+				};				
+				if (!steps[i].disabled) {
+					steps[i].nextStep = nextStep;
+					nextStep = steps[i];
+				}
+			}		
+		};
+		
+		ctrl.addStep = function (step) {
+			ctrl.steps.push(step);
+			$scope.$watch(function () { return step.disabled; }, function () {
+				rebuildStepsLinkedList(ctrl.steps);			
+			});
+			rebuildStepsLinkedList(ctrl.steps);
+			if(!ctrl.currentStep)
+			{
+				ctrl.goToStep(step);
+			}
+			if (step.final && ctrl.onInitialized)
+			{
+				ctrl.onInitialized();
+			}
+		};
+
+	}]
+});
+
+//Call this to register our module to main application
+var moduleName = "storefront.checkout";
+
+if (storefrontAppDependencies != undefined) {
+    storefrontAppDependencies.push(moduleName);
+}
+angular.module(moduleName, ['credit-cards', 'angular.filter'])
+.controller('checkoutController', ['$rootScope', '$scope', '$window', 'cartService',
+    function ($rootScope, $scope, $window, cartService) {
+        $scope.checkout = {
+            wizard: {},
+            paymentMethod: {},
+            shipment: {},
+            payment: {},
+            coupon: {},
+            availCountries: [],
+            loading: false,
+            isValid: false
+        };
+
+        $scope.validateCheckout = function (checkout) {
+            checkout.isValid = checkout.payment && checkout.payment.paymentGatewayCode;
+            if (checkout.isValid && !checkout.billingAddressEqualsShipping) {
+                checkout.isValid = angular.isObject(checkout.payment.billingAddress);
+            }
+            if (checkout.isValid && checkout.cart && checkout.cart.hasPhysicalProducts) {
+                checkout.isValid = angular.isObject(checkout.shipment)
+                                && checkout.shipment.shipmentMethodCode
+                                && angular.isObject(checkout.shipment.deliveryAddress);
+            }
+        };
+
+        $scope.reloadCart = function () {
+            return cartService.getCart().then(function (response) {
+                var cart = response.data;
+                if (!cart || !cart.id) {
+                    $scope.outerRedirect($scope.baseUrl + 'cart');
+                }
+                else {
+                    $scope.checkout.cart = cart;
+                    $scope.checkout.coupon = cart.coupon || $scope.checkout.coupon;
+                    if ($scope.checkout.coupon.code && !$scope.checkout.coupon.appliedSuccessfully) {
+                        $scope.checkout.coupon.errorCode = 'InvalidCouponCode';
+                    }
+                    if (cart.payments.length) {
+                        $scope.checkout.payment = cart.payments[0];
+                        $scope.checkout.paymentMethod.code = $scope.checkout.payment.paymentGatewayCode;
+                    }
+                    if (cart.shipments.length) {
+                        $scope.checkout.shipment = cart.shipments[0];
+                    }
+                    $scope.checkout.billingAddressEqualsShipping = cart.hasPhysicalProducts && !angular.isObject($scope.checkout.payment.billingAddress);
+
+                    $scope.checkout.canCartBeRecurring = $scope.customer.isRegisteredUser && _.all(cart.items, function (x) { return !x.isReccuring });
+                    $scope.checkout.paymentPlan = cart.paymentPlan && _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: cart.paymentPlan.intervalCount, interval: cart.paymentPlan.interval }) ||
+                                                                      _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: 1, interval: 'months' });
+                }
+                $scope.validateCheckout($scope.checkout);
+                return cart;
+            });
+        };
+
+        $scope.applyCoupon = function (coupon) {
+            coupon.processing = true;
+            cartService.addCoupon(coupon.code).then(function () {
+                coupon.processing = false;
+                $scope.reloadCart();
+            }, function (response) {
+                coupon.processing = false;
+            });
+        }
+
+        $scope.removeCoupon = function (coupon) {
+            coupon.processing = true;
+            cartService.removeCoupon().then(function (response) {
+                coupon.processing = false;
+                $scope.checkout.coupon = {};
+                $scope.reloadCart();
+            }, function (response) {
+                coupon.processing = false;
+            });
+        }
+
+        $scope.selectPaymentMethod = function (paymentMethod) {
+            angular.extend($scope.checkout.payment, paymentMethod);
+            $scope.checkout.payment.paymentGatewayCode = paymentMethod.code;
+            $scope.checkout.payment.amount = angular.copy($scope.checkout.cart.total);
+            $scope.checkout.payment.amount.amount += paymentMethod.totalWithTax.amount;
+
+            updatePayment($scope.checkout.payment);
+        };
+
+        function getAvailCountries() {
+            //Load avail countries
+            return cartService.getCountries().then(function (response) {
+                return response.data;
+            });
+        };
+
+        $scope.getCountryRegions = function (country) {
+            return cartService.getCountryRegions(country.code3).then(function (response) {
+                return response.data;
+            });
+        };
+
+        $scope.getAvailShippingMethods = function (shipment) {
+            return wrapLoading(function () {
+                return cartService.getAvailableShippingMethods(shipment.id).then(function (response) {
+                    return response.data;
+                });
+            });
+        }
+
+        $scope.getAvailPaymentMethods = function () {
+            return wrapLoading(function () {
+                return cartService.getAvailablePaymentMethods().then(function (response) {
+                    return response.data;
+                });
+            });
+        };
+
+        $scope.selectShippingMethod = function (shippingMethod) {
+            if (shippingMethod) {
+                $scope.checkout.shipment.shipmentMethodCode = shippingMethod.shipmentMethodCode;
+                $scope.checkout.shipment.shipmentMethodOption = shippingMethod.optionName;
+            }
+            else {
+                $scope.checkout.shipment.shipmentMethodCode = undefined;
+                $scope.checkout.shipment.shipmentMethodOption = undefined;
+            }
+            $scope.updateShipment($scope.checkout.shipment);
+        };
+
+        $scope.updateShipment = function (shipment) {
+            if (shipment.deliveryAddress) {
+                $scope.checkout.shipment.deliveryAddress.type = 'Shipping';
+            };
+            //Does not pass validation errors to API
+            shipment.validationErrors = undefined;
+            return wrapLoading(function () {
+                return cartService.addOrUpdateShipment(shipment).then($scope.reloadCart);
+            });
+        };
+
+        $scope.createOrder = function () {
+            updatePayment($scope.checkout.payment).then(function () {
+                $scope.checkout.loading = true;
+                cartService.createOrder($scope.checkout.paymentMethod.card).then(function (response) {
+                    var order = response.data.order;
+                    var orderProcessingResult = response.data.orderProcessingResult;
+                    var paymentMethod = response.data.paymentMethod;
+                    handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
+                });
+            });
+        };
+
+        $scope.savePaymentPlan = function () {
+            wrapLoading(function () {
+                return cartService.addOrUpdatePaymentPlan($scope.checkout.paymentPlan).then(function () {
+                    $scope.checkout.cart.paymentPlan = $scope.checkout.paymentPlan;
+                });
+            });
+        };
+
+        $scope.isRecurringChanged = function (isRecurring) {
+            if ($scope.checkout.paymentPlan) {
+                if (isRecurring) {
+                    $scope.savePaymentPlan();
+                } else {
+                    wrapLoading(function () {
+                        return cartService.removePaymentPlan().then(function () {
+                            $scope.checkout.cart.paymentPlan = undefined;
+                        });
+                    });
+                }
+            }
+        };
+
+        function updatePayment(payment) {
+            if ($scope.checkout.billingAddressEqualsShipping) {
+                payment.billingAddress = undefined;
+            }
+
+            if (payment.billingAddress) {
+                payment.billingAddress.type = 'Billing';
+            }
+            return wrapLoading(function () {
+                return cartService.addOrUpdatePayment(payment).then($scope.reloadCart);
+            });
+        }
+
+        function handlePostPaymentResult(order, orderProcessingResult, paymentMethod) {
+            if (!orderProcessingResult.isSuccess) {
+                $scope.checkout.loading = false;
+                $rootScope.$broadcast('storefrontError', {
+                    type: 'error',
+                    title: ['Error in new order processing: ', orderProcessingResult.error, 'New Payment status: ' + orderProcessingResult.newPaymentStatus].join(' '),
+                    message: orderProcessingResult.error,
+                });
+                return;
+            }
+
+            if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() == 'preparedform' && orderProcessingResult.htmlForm) {
+                $scope.outerRedirect($scope.baseUrl + 'cart/checkout/paymentform?orderNumber=' + order.number);
+            } else if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() == 'redirection' && orderProcessingResult.redirectUrl) {
+                $window.location.href = orderProcessingResult.redirectUrl;
+            } else {
+                if (!$scope.customer.isRegisteredUser) {
+                    $scope.outerRedirect($scope.baseUrl + 'cart/thanks/' + order.number);
+                } else {
+                    $scope.outerRedirect($scope.baseUrl + 'account#/orders/' + order.number);
+                }
+            }
+        }
+
+        function wrapLoading(func) {
+            $scope.checkout.loading = true;
+            return func().then(function (result) {
+                $scope.checkout.loading = false;
+                return result;
+            },
+                function () {
+                    $scope.checkout.loading = false;
+                });
+        }
+
+        $scope.initialize = function () {
+
+            $scope.reloadCart().then(function (cart) {
+                $scope.checkout.wizard.goToStep(cart.hasPhysicalProducts ? 'shipping-address' : 'payment-method');
+            });
+        };
+
+        getAvailCountries().then(function (countries) {
+            $scope.checkout.availCountries = countries;
+        });
+
+    }]);
+
+var storefrontApp = angular.module('storefrontApp');
+storefrontApp.component('vcAddress', {
+    templateUrl: "themes/assets/address.tpl.html",
+    bindings: {
+        address: '=',
+        addresses: '<',
+        countries: '=',
+        validationContainer: '=',
+        getCountryRegions: '&',
+        editMode: '<',
+        onUpdate: '&'
+    },
+    require: {
+        checkoutStep: '?^vcCheckoutWizardStep'
+    },
+    controller: ['$scope', function ($scope) {
+        var ctrl = this;
+        ctrl.types = [{ id: 'Billing', name: 'Billing' }, { id: 'Shipping', name: 'Shipping' }, { id: 'BillingAndShipping', name: 'Billing and Shipping' }];
+        
+        this.$onInit = function () {
+            if (ctrl.validationContainer)
+                ctrl.validationContainer.addComponent(this);
+            if (ctrl.checkoutStep)
+                ctrl.checkoutStep.addComponent(this);
+        };
+
+        this.$onDestroy = function () {
+            if (ctrl.validationContainer)
+                ctrl.validationContainer.removeComponent(this);
+            if (ctrl.checkoutStep)
+                ctrl.checkoutStep.removeComponent(this);
+        };
+
+        function populateRegionalDataForAddress(address) {
+            if (address) {
+                //Set country object for address
+                address.country = _.findWhere(ctrl.countries, { code3: address.countryCode });
+                if (address.country != null) {
+                    ctrl.address.countryName = ctrl.address.country.name;
+                    ctrl.address.countryCode = ctrl.address.country.code3;
+                }
+
+                if (address.country) {
+                    if (address.country.regions) {
+                        setAddressRegion(address, address.country.regions);
+                    }
+                    else {
+                        ctrl.getCountryRegions({ country: address.country }).then(function (regions) {
+                            address.country.regions = regions;
+                            setAddressRegion(address, regions);
+                        });
+                    }
+                }
+            }
+        }
+
+        function setAddressRegion(address, regions) {
+            address.region = _.findWhere(regions, { code: address.regionId });
+            if (address.region) {
+                ctrl.address.regionId = ctrl.address.region.code;
+                ctrl.address.regionName = ctrl.address.region.name;
+            }
+            else {
+                ctrl.address.regionId = undefined;
+                ctrl.address.regionName = undefined;
+            }
+        }
+
+        ctrl.setForm = function (frm) { ctrl.form = frm; };
+
+        ctrl.validate = function () {
+            if (ctrl.form) {
+                ctrl.form.$setSubmitted();
+                return ctrl.form.$valid;
+            }
+            return true;
+        };
+
+        function stringifyAddress(address) {
+            var addressType = '';
+
+            var type = _.find(ctrl.types, function (i) { return i.id == ctrl.address.addressType });
+            if (type)
+                addressType = '[' + type.name + '] ';
+
+            var stringifiedAddress = addressType;
+            stringifiedAddress += address.firstName + ' ' + address.lastName + ', ';
+            stringifiedAddress += address.organization ? address.organization + ', ' : '';
+            stringifiedAddress += address.countryName + ', ';
+            stringifiedAddress += address.regionName ? address.regionName + ', ' : '';
+            stringifiedAddress += address.city + ' ';
+            stringifiedAddress += address.line1 + ', ';
+            stringifiedAddress += address.line2 ? address.line2 : '';
+            stringifiedAddress += address.postalCode;
+            return stringifiedAddress;
+        }
+
+        $scope.$watch('$ctrl.address', function () {
+            if (ctrl.address) {
+                populateRegionalDataForAddress(ctrl.address);
+                ctrl.address.name = stringifyAddress(ctrl.address);
+            }
+            ctrl.onUpdate({ address: ctrl.address });
+        }, true);
+
+    }]
+});
+
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.component('vcCreditCard', {
+    templateUrl: "themes/assets/js/common-components/creditCard.tpl.html",
+    require: {
+        checkoutStep: '?^vcCheckoutWizardStep'
+    },
+    bindings: {
+        card: '=',
+        validationContainer: '='
+    },
+    controller: ['$scope', '$filter', function ($scope, $filter) {
+        var ctrl = this;
+
+        this.$onInit = function () {
+            if(ctrl.validationContainer)
+                ctrl.validationContainer.addComponent(this);
+            if (ctrl.checkoutStep)
+                ctrl.checkoutStep.addComponent(this);
+        };
+
+        this.$onDestroy = function () {
+            if (ctrl.validationContainer)
+                ctrl.validationContainer.removeComponent(this);
+            if (ctrl.checkoutStep)
+                ctrl.checkoutStep.removeComponent(this);
+        };
+
+        $scope.$watch('$ctrl.card.bankCardHolderName', function (val) {
+            if (ctrl.card) {
+                ctrl.card.bankCardHolderName = $filter('uppercase')(val);
+            }
+        }, true);
+
+        ctrl.validate = function () {
+            ctrl.form.$setSubmitted();
+            return !ctrl.form.$invalid;
+        }
+
+    }]
+});
+
+var storefrontApp = angular.module('storefrontApp');
+storefrontApp.component('vcErrors', {
+    templateUrl: "themes/assets/errors.tpl.html",
+    bindings: {
+        level: '<',
+        message: '<',
+        errors: '<'
+    },
+    controller: [function () {
+        var $ctrl = this;
+        $ctrl.level = $ctrl.level || 'danger';
+    }]
+});
+
+angular.module('storefrontApp')
+
+.component('vcLabeledInput', {
+    templateUrl: "themes/assets/labeled-input.tpl.html",
+    bindings: {
+        value: '=',
+        form: '=',
+        name: '@',
+        inputClass: '<',
+        placeholder: '@',
+        type: '@?',
+        required: '<',
+        requiredError: '@?',
+        autofocus: '<',
+        disabled: '<'
+    },
+    controller: [function () {
+        var $ctrl = this;
+        
+        $ctrl.validate = function () {
+            $ctrl.form.$setSubmitted();
+            return $ctrl.form.$valid;
+        };
+
+    }]
+});
+
+angular.module('storefrontApp')
+
+.component('vcLabeledSelect', {
+    templateUrl: "themes/assets/labeled-select.tpl.html",
+    require: {
+        ngModel: "?ngModel"
+    },
+    bindings: {
+        options: '<',
+        select: '&',
+        form: '=',
+        name: '@',
+        placeholder: '<',
+        required: '<',
+        requiredError: '@?',
+        autofocus: '<',
+        disabled: '<'
+    },
+    controller: ['$scope', function ($scope) {
+        var $ctrl = this;
+        
+        $ctrl.$onInit = function() {
+            if ($ctrl.required)
+                $ctrl.ngModel.$setValidity('required', false);
+            $ctrl.ngModel.$render = function() {
+                $ctrl.value = $ctrl.ngModel.$viewValue;
+            };
+        };
+
+        $ctrl.validate = function () {
+            $ctrl.form.$setSubmitted();
+            return $ctrl.form.$valid;
+        };
+
+        var select = $ctrl.select;
+        $ctrl.select = function(option) {
+            select(option);
+            $ctrl.value = option;
+            if ($ctrl.required)
+                $ctrl.ngModel.$setValidity('required', false);
+            $ctrl.ngModel.$setViewValue($ctrl.value);
+        };        
+    }]
+});
+angular.module('storefrontApp')
+
+.component('vcLabeledTextArea', {
+    templateUrl: "themes/assets/labeled-textarea.tpl.html",
+    bindings: {
+        value: '=',
+        form: '=',
+        name: '@',
+        label: '@',
+        required: '<',
+        requiredError: '@?',
+        pattern: '<?',
+        autofocus: '<'
+    },
+    controller: [function () {
+        var $ctrl = this;
+
+        $ctrl.validate = function () {
+            $ctrl.form.$setSubmitted();
+            return $ctrl.form.$valid;
+        };
+
+    }]
+});
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.component('vcLineItems', {
+    templateUrl: "themes/assets/js/common-components/lineItems.tpl.liquid",
+    bindings: {
+        items: '='
+    }
+});
+
+var storefrontApp = angular.module('storefrontApp');
+storefrontApp.component('vcMember', {
+    templateUrl: "themes/assets/member.tpl.html",
+    bindings: {
+        member: '=',
+        memberComponent: '='
+    },
+    controller: ['$scope', function ($scope) {
+        var $ctrl = this;
+
+        this.$onInit = function () {
+            $ctrl.memberComponent = this;
+        };
+
+        this.$onDestroy = function () {
+            $ctrl.memberComponent = null;
+        };
+
+        $ctrl.setForm = function (frm) { $ctrl.form = frm; };
+
+
+        $ctrl.validate = function () {
+            if ($ctrl.form) {
+                $ctrl.form.$setSubmitted();
+                return $ctrl.form.$valid;
+            }
+            return true;
+        };
+    }]
+});
+
+var storefrontApp = angular.module('storefrontApp');
+storefrontApp.component('vcMemberDetail', {
+    templateUrl: "themes/assets/memberDetail.tpl.html",
+    bindings: {
+        member: '=',
+        memberComponent: '=',
+        fieldsConfig: '<'
+    },
+    controller: ['$scope', function ($scope) {
+        var $ctrl = this;
+        
+        $ctrl.config = [
+            {
+                field: 'CompanyName',
+                disabled: false,
+                visible: true,
+                required: true
+            },
+            {
+                field: 'Email',
+                disabled: false,
+                visible: true,
+                required: true
+            },
+            {
+                field: 'UserName',
+                disabled: false,
+                visible: true
+            },
+            {
+                field: 'Password',
+                disabled: false,
+                visible: true
+            },
+            {
+                field: 'Roles',
+                disabled: false,
+                visible:  false
+            }
+        ];
+
+        if ($ctrl.fieldsConfig)
+            angular.extend($ctrl.config, $ctrl.fieldsConfig);
+
+        $ctrl.rolesComponent = null;
+
+        this.$onInit = function () {
+            $ctrl.memberComponent = this;
+        };
+
+        this.$onDestroy = function () {
+            $ctrl.memberComponent = null;
+        };
+
+        $ctrl.setForm = function (frm) {
+            $ctrl.form = frm;
+        };
+
+        $ctrl.validate = function () {
+            if ($ctrl.form) {
+                $ctrl.form.$setSubmitted();
+                return $ctrl.form.$valid;
+            }
+            return true;
+        };
+
+        $ctrl.showField = function (field) {
+            return getFieldConfig(field).visible == true;
+        }
+
+        $ctrl.disableField = function (field) {
+            return getFieldConfig(field).disabled == true;
+        }
+
+        $ctrl.requiredField = function (field) {
+            return getFieldConfig(field).required == true;
+        }
+
+        function getFieldConfig(field) {
+            var configItem = _.first(_.filter($ctrl.config, function (configItem) { return configItem.field === field; }));
+            return configItem;
+        }
+    }]
+});
+
+storefrontApp.directive('confirmPasswordValidation', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elem, attr, ngModel) {
+            ngModel.$parsers.unshift(function (value, scope) {
+                var isValid = true;
+                var password = ngModel.$$parentForm.Password.$viewValue;
+
+                if (password) {
+                    isValid = password === value;
+                }
+
+                ngModel.$setValidity('confirmPasswordValidation', isValid);
+                return value;
+            });
+        }
+    };
+});
+
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.component('vcPaymentMethods', {
+    templateUrl: "themes/assets/js/common-components/paymentMethods.tpl.html",
+    require: {
+        checkoutStep: '?^vcCheckoutWizardStep'
+    },
+    bindings: {
+        getAvailPaymentMethods: '&',
+        onSelectMethod: '&',
+        paymentMethod: '=',
+        validationContainer: '='
+    },
+    controller: ['$scope', function ($scope) {
+        var ctrl = this;
+
+        this.$onInit = function () {
+            ctrl.getAvailPaymentMethods().then(function (methods) {
+                ctrl.availPaymentMethods = _.sortBy(methods, function (x) { return x.priority; });
+                if (ctrl.paymentMethod) {
+                    ctrl.paymentMethod = _.findWhere(ctrl.availPaymentMethods, { code: ctrl.paymentMethod.code });
+                }
+                if (!ctrl.paymentMethod && ctrl.availPaymentMethods.length > 0) {
+                    ctrl.selectMethod(ctrl.availPaymentMethods[0]);
+                }
+            })
+            if (ctrl.validationContainer)
+                ctrl.validationContainer.addComponent(this);
+            if (ctrl.checkoutStep)
+                ctrl.checkoutStep.addComponent(this);
+        };
+
+        this.$onDestroy = function () {
+            if (ctrl.validationContainer)
+                ctrl.validationContainer.removeComponent(this);
+            if (ctrl.checkoutStep)
+                ctrl.checkoutStep.removeComponent(this);
+        };
+
+        ctrl.validate = function () {
+            return ctrl.paymentMethod;
+        }
+
+        ctrl.selectMethod = function (method) {
+            ctrl.paymentMethod = method;
+            ctrl.onSelectMethod({ paymentMethod: method });
+        };
+    }]
+});
+
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.component('vcPaymentPlan', {
+    templateUrl: "themes/assets/js/common-components/paymentPlan.tpl.html",
+    bindings: {
+    },
+    controller: ['$scope', '$localStorage', function($scope, $localStorage) {
+        var $ctrl = this;
+
+        $scope.$watch(function() {
+            return $ctrl.availablePaymentPlans;
+        }, function (availablePaymentPlans) {
+            if (availablePaymentPlans) {
+                $ctrl.paymentPlan = $localStorage['paymentPlan'];
+                $ctrl.type = $ctrl.paymentPlan ? 'auto-reorder' : 'one-time';
+                $ctrl.paymentPlan = ($ctrl.paymentPlan ? _.findWhere($ctrl.availablePaymentPlans, { intervalCount: $ctrl.paymentPlan.intervalCount, interval: $ctrl.paymentPlan.interval }) : undefined) ||
+                    _.findWhere($ctrl.availablePaymentPlans, { intervalCount: 1, interval: 'months' });
+            }
+        });
+
+        $ctrl.save = function() {
+            if ($ctrl.type === 'auto-reorder') {
+                $localStorage['paymentPlan'] = $ctrl.paymentPlan;
+            } else {
+                $localStorage['paymentPlan'] = undefined;
+            }
+        }
+    }]
+});
+
+var storefrontApp = angular.module('storefrontApp');
+storefrontApp.component('vcRoles', {
+    templateUrl: "themes/assets/roles.tpl.html.liquid",
+    bindings: {
+        value: '=',
+        accounts: "<",
+        form: '=',
+        name: "@",
+        required: "<",
+        disabled: "<"
+    },
+    controller: ['$scope', 'roleService', 'loadingIndicatorService', function ($scope, roleService, loader) {
+        var $ctrl = this;
+        $ctrl.loader = loader;
+
+        $scope.$watch(function(){
+            return roleService.available;
+        }, function(){
+            $ctrl.availableRoles = _.map(roleService.available, function(availableRole) {
+                return availableRole;
+            });
+            $ctrl.getRole();
+        });
+
+        $ctrl.$onChanges = function() {
+            $ctrl.getRole();
+        };
+        
+        $ctrl.getRole = function() {
+            if ($ctrl.accounts) {
+                $ctrl.value = roleService.get($ctrl.accounts);
+            }
+        };
+
+        $ctrl.selectRole = function(role){
+            if ($ctrl.value)
+                $ctrl.value.assigned = false;
+            role.assigned = true;
+        };
+    }]
+});
+var storefrontApp = angular.module('storefrontApp');
+storefrontApp.component('vcSearchBar', {
+    templateUrl: "themes/assets/js/common-components/searchBar.tpl.html",
+    bindings: {
+        placeholder: '<',
+        searching: '<',
+        noResults: '<',
+        query: '@',
+        categoriesLabel: '<',
+        productsLabel: '<',
+        submitLabel: '<',
+        categoryLimit: '@',
+        productLimit: '@'
+    },
+    controller: ['$scope', '$q', 'catalogService', function ($scope, $q, catalogService) {
+        var $ctrl = this;
+        $ctrl.hasHint = false;
+
+        $scope.$watch('$ctrl.isOpen', function (isOpen) {
+            $ctrl.hasHint = !!$ctrl.query && !isOpen;
+        });
+
+        $scope.$watch('$ctrl.query', function(query) {
+            $ctrl.hasHint = !!query && !$ctrl.isOpen;
+        });
+
+        $ctrl.getSuggestions = function () {
+            var searchCriteria = { keyword: $ctrl.query, start: 0 };
+            return $q.all([
+                catalogService.searchCategories(angular.extend({ }, searchCriteria, { pageSize: $ctrl.categoryLimit })),
+                catalogService.search(angular.extend({ }, searchCriteria, { pageSize: $ctrl.productLimit }))
+            ]).then(function(results) {
+                var process = function(within) {
+                    return (results[0].data[within] || results[1].data[within]).map(function (suggestion) {
+                        suggestion['within'] = within;
+                        return suggestion;
+                    });
+                }
+                return process('categories').concat(process('products')).map(function (suggestion, index) {
+                    suggestion['index'] = index;
+                    return suggestion;
+                });
+            });
+        };
+    }]
+});
+
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.component('vcShippingType', {
+    templateUrl: "themes/assets/js/common-components/shippingType.tpl.html",
+    bindings: {
+        isDropdown: '<',
+        title: "@",
+        subtitle: "@",
+        pickupMethodCode: "@"
+    },
+    controller: ['$scope', '$localStorage', 'storefrontApp.mainContext', 'dialogService', function($scope, $localStorage, mainContext, dialogService) {
+        var $ctrl = this;
+        $ctrl.shipmentType = $localStorage['shipmentType'];
+        if (!$ctrl.shipmentType) {
+            $ctrl.shipmentType = 'shipping';
+            $ctrl.isChanging = true;
+        }
+        $ctrl.shipmentAddress = $localStorage['shipmentAddress'];
+        $ctrl.shipmentFulfillmentCenter = $localStorage['shipmentFulfillmentCenter'];
+        $scope.$watch(
+            function() { return mainContext.customer; },
+            function (customer) {
+                if (customer) {
+                    $ctrl.customer = customer;
+                    if (!$ctrl.shipmentAddress && $ctrl.customer.defaultShippingAddress) {
+                        $ctrl.shipmentAddress = { postalCode: $ctrl.customer.defaultShippingAddress.postalCode };
+                    }
+                }
+            }
+        );
+        $ctrl.selectFulfillmentCenter = function () {
+            var modalInstance = dialogService.showDialog(null, 'universalDialogController', 'storefront.select-fulfillment-center-dialog.tpl');
+            modalInstance.result.then(function(fulfillmentCenter) {
+                $ctrl.shipmentFulfillmentCenter = fulfillmentCenter;
+                if (!$ctrl.isDropdown) {
+                    $ctrl.save();
+                }
+            });
+        };
+        $ctrl.save = function (isDefined) {
+            if (isDefined !== false) {
+                $localStorage['shipmentType'] = $ctrl.shipmentType;
+                if ($ctrl.shipmentType === 'shipping') {
+                    $localStorage['shipmentAddress'] = $ctrl.shipmentAddress;
+                } else {
+                    $localStorage['shipmentFulfillmentCenter'] = $ctrl.shipmentFulfillmentCenter;
+                }
+            }
+        }
+    }]
+});
+
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.component('vcTotals', {
+    templateUrl: "themes/assets/js/common-components/totals.tpl.liquid",
+	bindings: {
+		order: '<'
+	}
+});
+
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.config(['$provide', function ($provide) {
+    $provide.decorator('uibDropdownService', ['$delegate', function($delegate) {
+        var service = $delegate;
+        var close = service.close;
+        service.close = function (dropdownScope, element, appendTo) {
+            dropdownScope.focusToggleElement = function() {};
+            close(dropdownScope, element, appendTo);
+        }
+        return $delegate;
+    }]);
+
+    $provide.decorator('uibDropdownDirective', ['$delegate', function ($delegate) {
+        var directive = $delegate[0];
+        var compile = directive.compile;
+        directive.compile = function () {
+            var link = compile.apply(this, arguments);
+            return function (scope, element, attrs, dropdownCtrl) {
+                if (attrs.autoClose === 'mouseleave') {
+                    dropdownCtrl.toggle(false);
+                }
+
+                var closeDropdown = function () {
+                    scope.$apply(function () {
+                        if (attrs.autoClose === 'mouseleave') {
+                            dropdownCtrl.toggle(false);
+                        }
+                    });
+                };
+
+                element.on('mouseleave', closeDropdown);
+
+                link.apply(this, arguments);
+
+                scope.$on('$destroy', function () {
+                    element.off('mouseleave', closeDropdown);
+                });
+            };
+        };
+        return $delegate;
+    }]);
+
+    $provide.decorator('uibDropdownToggleDirective', ['$delegate', function ($delegate) {
+        var directive = $delegate[0];
+        directive.controller = function () { };
+        $delegate[0] = directive;
+        return $delegate;
+    }]);
+}]);
+
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.directive('dropdownClose', function () {
+    return {
+        require: ['?^uibDropdown'],
+        link: function (scope, element, attrs, ctrls) {
+            var dropdownCtrl = ctrls[0];
+            if (!dropdownCtrl) {
+                return;
+            }
+
+            var closeDropdown = function () {
+                if (!element.hasClass('disabled') && !attrs.disabled) {
+                    scope.$apply(function () {
+                        dropdownCtrl.toggle(false);
+                    });
+                }
+            };
+
+            element.on('click', closeDropdown);
+
+            scope.$on('$destroy', function () {
+                element.off('click', closeDropdown);
+            });
+        }
+    };
+});
+
+// based on https://github.com/angular/angular.js/blob/master/src/ng/directive/ngInclude.js
+storefrontApp.config(['$provide', function ($provide) {
+    $provide.decorator('ngIncludeDirective', ['$delegate', function ($delegate) {
+        var includeFillContentDirective = $delegate[1];
+        var link = includeFillContentDirective.link;
+        includeFillContentDirective.link = function (scope, $element, $attr, ctrl) {
+            if (!Object.keys($attr).includes('raw')) {
+                link(scope, $element, $attr, ctrl);
+            } else {
+                $element.text(ctrl.template);
+            }
+        };
+        includeFillContentDirective.compile = function () {
+            return includeFillContentDirective.link;
+        };
+        $delegate[1] = includeFillContentDirective;
+        return $delegate;
+    }]);
+}]);
+
+storefrontApp.directive('vcScope', ['$animate', '$compile', function ($animate) {
+    return {
+        multiElement: true,
+        transclude: 'element',
+        priority: 600,
+        terminal: true,
+        restrict: 'A',
+        $$tlb: true,
+        link: function ($scope, $element, $attr, ctrl, $transclude) {
+            $transclude(function (clone) {
+                $element.after(clone);
+            });
+        }
+    }
+}]);
+
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.directive('vcToggleOnMouseEnter', function () {
+    return {
+        require: ['?^uibDropdown', '?uibDropdownToggle'],
+        link: function (scope, element, attrs, ctrls) {
+            var dropdownCtrl = ctrls[0];
+            var dropdownToggleCtrl = ctrls[1];
+            if (!(dropdownCtrl && dropdownToggleCtrl)) {
+                return;
+            }
+
+            element.addClass('toggle-on-mouse-enter');
+
+            var openDropdown = function () {
+                if (!element.hasClass('disabled') && !attrs.disabled) {
+                    scope.$apply(function () {
+                        dropdownCtrl.toggle(true);
+                    });
+                }
+            };
+
+            element.on('mouseenter', openDropdown);
+
+            scope.$on('$destroy', function () {
+                element.off('mouseenter', openDropdown);
+            });
+        }
+    };
+});
+
+angular.module('storefrontApp')
+    .component('vcAccountLists', {
+        templateUrl: "lists-manager.tpl",
+        $routeConfig: [
+            { path: '/', name: 'Lists', component: 'vcAccountLists' },
+            { path: '/friendsLists', name: 'FriendsLists', component: 'vcAccountFriendsLists' },
+            { path: '/myLists', name: 'MyLists', component: 'vcAccountMyLists', useAsDefault: true }
+        ],
+        controller: ['listService', '$rootScope', '$location', 'customerService', 'cartService', '$translate', 'loadingIndicatorService', '$timeout', 'dialogService', '$localStorage', function (listService, $rootScope, $location, customerService, cartService, $translate, loader, $timeout, dialogService, $localStorage) {
+        	var $ctrl = this;
+
+            $ctrl.getCustomer = function () {
+                customerService.getCurrentCustomer().then(function (user) {
+                    $ctrl.userName = user.data.userName;
+                    $ctrl.initialize();
+                })
+            };
+
+            $ctrl.selectTab = function (tabName) {
+                $ctrl.selectedList = [];
+                $ctrl.selectedTab = tabName;
+                $ctrl.getCustomer();
+            };
+
+            $ctrl.initialize = function (lists) {     
+				if ($ctrl.selectedTab === 'myLists') {
+					loader.wrapLoading(function () {
+						return listService.getOrCreateMyLists($ctrl.userName).then(function (result) {
+							$ctrl.lists = result;
+							selectDefault($ctrl.lists);
+						});
+					})
+				}
+
+				else if ($ctrl.selectedTab === 'friendsLists') {
+					loader.wrapLoading(function () {
+						return listService.getSharedLists($ctrl.userName).then(function (result) {
+							$ctrl.lists = result;
+							selectDefault($ctrl.lists);
+						});
+					})
+				}
+            };
+
+			function selectDefault(lists) {
+				if (_.find(lists, { default: true })) {
+					var selected = _.find(lists, { default: true });
+					$ctrl.selectList(selected);
+				}
+				else if (!_.isEmpty(lists)) {
+					_.first(lists).default = true;
+					$ctrl.selectList(_.first(lists));
+				}
+			}
+
+            $ctrl.selectList = function (list) {
+                $ctrl.selectedList = list;
+            };
+
+            $ctrl.addToCart = function (lineItem) {
+                loader.wrapLoading(function () {
+                    return cartService.addLineItem(lineItem.productId, 1).then(function (response) {
+                        $ctrl.productAdded = true;
+                        $timeout(function () {
+                            $ctrl.productAdded = false;
+                        }, 2000);
+                    });
+                });
+            };
+
+            $ctrl.removeList = function (listName) {
+				loader.wrapLoading(function () {
+					return listService.clearList(listName, $ctrl.userName).then(function (response) {
+						document.location.reload();
+					});
+                });
+            };
+
+            $ctrl.removeLineItem = function (lineItem) {
+				loader.wrapLoading(function () {
+					return listService.removeLineItem(lineItem.id, $ctrl.selectedList.id, $ctrl.userName).then(function (result) {
+					});
+				});
+            };
+
+            $ctrl.generateLink = function () {
+                $ctrl.sharedLink = $location.absUrl().substr(0, _.lastIndexOf($location.absUrl(), '/')) + '/friendsLists?id=' + $ctrl.selectedList.id;
+                $ctrl.selectedList.permission = 'public';
+                var dialogData = {sharedLink:$ctrl.sharedLink};
+                dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.list-shared-link-dialog.tpl');
+            };
+
+            $ctrl.addToCartAllProducts = function () {
+                _.each($ctrl.selectedList.items, function (item) {
+                    loader.wrapLoading(function () {
+                        return cartService.addLineItem(item.productId, 1).then(function (response) {
+                            $ctrl.productAdded = true;
+                            $timeout(function () {
+                                $ctrl.productAdded = false;
+                            }, 6000);
+                        });
+                    });
+                })
+            }
+
+            $ctrl.createList = function () {
+                var dialogData = $ctrl.lists;
+                dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.recently-create-new-list-dialog.tpl');
+            };
+
+            $ctrl.listSettings = function () {
+                var dialogData = {};
+                dialogData.lists = $ctrl.lists;
+                dialogData.userName = $ctrl.userName;
+                dialogData.selectedTab = $ctrl.selectedTab;
+                dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.list-settings-dialog.tpl');
+            };
+
+        }]
+    })
+    .component('vcAccountMyLists', {
+        templateUrl: 'themes/assets/js/lists/account-lists.tpl.liquid',
+        require: {
+            accountLists: '^^vcAccountLists'
+        },
+        controller: ['$rootScope', 'listService', 'customerService', 'loadingIndicatorService', '$timeout', 'accountDialogService', '$localStorage', function ($rootScope, listService, customerService, loader, $timeout, dialogService, $localStorage) {
+			var $ctrl = this;
+			$ctrl.listPreSetting = function (lists) {
+				customerService.getCurrentCustomer().then(function (user) {
+					var userName = user.data.userName;
+					loader.wrapLoading(function () {
+						return listService.getOrCreateMyLists(userName, lists).then(function (result) {
+						})
+					})
+				})
+			};
+
+            $ctrl.$onInit = function (lists) {
+                $ctrl.accountLists.selectTab('myLists');
+            }
+        }]
+    })
+    .component('vcAccountFriendsLists', {
+        templateUrl: "themes/assets/js/lists/account-lists.tpl.liquid",
+        require: {
+            accountLists: '^^vcAccountLists'
+        },
+        controller: ['$rootScope', 'listService', '$location', 'customerService', 'loadingIndicatorService', '$timeout', 'accountDialogService', '$localStorage', function ($rootScope, listService, $location, customerService, loader, $timeout, dialogService, $localStorage) {
+            var $ctrl = this;
+
+            function checkLocation() {
+                var sharedCartId = $location.search().id.toString();
+                customerService.getCurrentCustomer().then(function (user) {
+                    var userName = user.data.userName;
+				    var myLists = listService.getOrCreateMyLists(userName);
+					loader.wrapLoading(function () {
+                        return listService.addSharedList(userName, myLists, sharedCartId).then(function (result) {
+                            $ctrl.accountLists.selectTab('friendsLists');
+						});
+					})
+                })
+            }
+
+            $ctrl.$onInit = function () {
+                if ($location.search().id)
+                    checkLocation();               
+                $ctrl.accountLists.selectTab('friendsLists');
+            }
+        }]
+    });
+
+angular.module('storefrontApp')
+	.component('addToListButton', {
+		templateUrl: 'themes/assets/js/lists/add-to-list-button.tpl.html',
+		bindings: {
+			selectedVariation: '<'
+		},
+		controller: ['customerService', 'listService', 'dialogService', function (customerService, listService, dialogService) {
+			var $ctrl = this;
+			$ctrl.$onInit = function () {
+				compareProductInLists();
+			}
+
+			function compareProductInLists() {
+				$ctrl.buttonInvalid = true;
+			    customerService.getCurrentCustomer().then(function(user) {
+			        listService.getOrCreateMyLists(user.data.userName, $ctrl.lists).then(function(result) {
+			            $ctrl.lists = result;
+			            angular.forEach($ctrl.lists, function(list) {
+			                listService.containsInList($ctrl.selectedVariation.id, list.id).then(function(result) {
+			                    if (result.contains === false) {
+			                        $ctrl.buttonInvalid = false;
+			                    }
+			                });
+			            });
+			        });
+			    });
+			}
+
+			function toListsDialogDataModel(product, quantity) {
+				return {
+					product: product,
+					quantity: quantity,
+					updated: false
+				}
+			}
+
+			$ctrl.addProductToWishlist = function () {
+				var dialogData = toListsDialogDataModel($ctrl.selectedVariation, 1);
+				dialogService.showDialog(dialogData, 'recentlyAddedListItemDialogController', 'storefront.recently-added-list-item-dialog.tpl');
+            }
+
+            $ctrl.signInToProceed = function() {
+                dialogService.showDialog({ title: 'Add product to list...' }, 'universalDialogController', 'storefront.sign-in-to-proceed.tpl');
+            }
+
+		}]
+	})
+
+var storefrontApp = angular.module('storefrontApp');
+
 storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', 'listService', '$translate', '$localStorage', 'customerService', function ($scope, $window, $uibModalInstance, dialogData, listService, $translate, $localStorage, customerService) {
     $scope.availableLists = [];
     $scope.selectedList = {};
@@ -4309,52 +4599,73 @@ storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$w
     };
 }]);
 
-angular.module('storefrontApp')
-	.component('addToListButton', {
-		templateUrl: 'themes/assets/js/lists/add-to-list-button.tpl.html',
-		bindings: {
-			selectedVariation: '<'
-		},
-		controller: ['customerService', 'listService', 'dialogService', function (customerService, listService, dialogService) {
-			var $ctrl = this;
-			$ctrl.$onInit = function () {
-				compareProductInLists();
-			}
+var storefrontApp = angular.module('storefrontApp');
 
-			function compareProductInLists() {
-				$ctrl.buttonInvalid = true;
-			    customerService.getCurrentCustomer().then(function(user) {
-			        listService.getOrCreateMyLists(user.data.userName, $ctrl.lists).then(function(result) {
-			            $ctrl.lists = result;
-			            angular.forEach($ctrl.lists, function(list) {
-			                listService.containsInList($ctrl.selectedVariation.id, list.id).then(function(result) {
-			                    if (result.contains === false) {
-			                        $ctrl.buttonInvalid = false;
-			                    }
-			                });
-			            });
-			        });
-			    });
-			}
+storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope', '$scope', '$window', '$uibModalInstance', 'customerService', 'dialogData', 'listService', '$localStorage', 'loadingIndicatorService', '$translate', function($rootScope, $scope, $window, $uibModalInstance, customerService, dialogData, listService, $localStorage, loader, $translate) {
 
-			function toListsDialogDataModel(product, quantity) {
-				return {
-					product: product,
-					quantity: quantity,
-					updated: false
-				}
-			}
+    if (dialogData.sharedLink)
+        $scope.sharedLink = dialogData.sharedLink;
+    else {
+        $scope.dialogData = dialogData.lists;
+        $scope.userName = dialogData.userName;
+        $scope.inProgress = false;
+        $scope.data = $scope.listName;
+        $scope.selectedTab = dialogData.selectedTab;
+    }
 
-			$ctrl.addProductToWishlist = function () {
-				var dialogData = toListsDialogDataModel($ctrl.selectedVariation, 1);
-				dialogService.showDialog(dialogData, 'recentlyAddedListItemDialogController', 'storefront.recently-added-list-item-dialog.tpl');
-            }
+    $scope.createList = function () {   
+        if ($scope.dialogData.permission != 'public')
+            $scope.dialogData.permission = 'private';
 
-            $ctrl.signInToProceed = function() {
-                dialogService.showDialog({ title: 'Add product to list...' }, 'universalDialogController', 'storefront.sign-in-to-proceed.tpl');
-            }
+        $scope.dialogData.id = Math.floor(Math.random() * 230910443210623294 + 1).toString();
+        customerService.getCurrentCustomer().then(function (user) {
+            $scope.userName = user.data.userName;
+            listService.getWishlist($scope.dialogData.listName, $scope.dialogData.permission, $scope.dialogData.id, user.data.userName);
+            $uibModalInstance.close();
+        })
 
-		}]
-	})
+    };
+
+    $scope.setDefault = function (list) {
+        _.each($scope.dialogData, function (x) {
+            x.default = list === x;
+        })
+    };
+
+    $scope.removeList = function (list) {
+        if ($scope.selectedTab === 'friendsLists') {
+			loader.wrapLoading(function () {
+				return listService.removeFromFriendsLists(list.id, $scope.userName).then(function () {
+				});
+			})
+        }
+        else
+            listService.clearList(list.id, $scope.userName);
+
+        $uibModalInstance.close();
+        document.location.reload();
+    };
+
+    $scope.selectedList = function (listName) {
+        var items = listService.getWishlist(listName, '', '', $scope.userName).items;
+        $scope.selectedList.items = items;
+    };
+
+    $scope.submitSettings = function () {
+        angular.forEach(dialogData.lists, function (list) {
+            if (list.delete)
+                $scope.removeList(list);
+        })
+        $uibModalInstance.close();
+    };
+
+    $scope.close = function() {
+        $uibModalInstance.close();
+    };
+
+    $scope.redirect = function (url) {
+        $window.location = url;
+    };
+}]);
 
 //# sourceMappingURL=scripts.js.map

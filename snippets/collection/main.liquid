@@ -1,27 +1,28 @@
 ﻿{% paginate collection.products by settings.product_list_capacity %}
-    <div class="toolbar clearfix">
+    <div class="col-xs-12">
         {% include 'shared/breadcrumb' %}
     </div>
-
     <ng-controller ng-controller="collectionController as $collection">
-        <h1>{{ collection.title }}
-            {% if collection.description != blank %}
-                <a href="" ng-click="isAboutOpen = !isAboutOpen">
-                    <i class="fa" ng-class="{'fa-question-circle': !isAboutOpen, 'fa-times-circle': isAboutOpen}"></i>
-                    <span ng-hide="isAboutOpen">{{ 'collections.general.about_category' | t }}</span>
-                    <span ng-show="isAboutOpen">{{ 'layout.general.close' | t }}</span>
-                </a>
-            {% endif %}
-        </h1>
-        {% assign variants_count = 0 %}
-        {% for product in collection.products %}
-            {% assign product_variant_count = product.variants | size %}
-            {% assign variants_count = variants_count | plus: product_variant_count %}
-        {% endfor %}
-        {% assign all_results_count = collection.products_count %}
-        {% assign displayed_results_count = collection.products | size %}
-        <p>{{ 'collections.general.products_count' | t, all_results_count: all_results_count, displayed_results_count: displayed_results_count, products_count: variants_count }}</p>
-        <p ng-show="isAboutOpen">{{ collection.description }}</p>
+        <div class="col-xs-12">
+            <h1>{{ collection.title }}
+                {% if collection.description != blank %}
+                    <a href="" ng-click="isAboutOpen = !isAboutOpen">
+                        <i class="fa" ng-class="{'fa-question-circle': !isAboutOpen, 'fa-times-circle': isAboutOpen}"></i>
+                        <span ng-hide="isAboutOpen">{{ 'collections.general.about_category' | t }}</span>
+                        <span ng-show="isAboutOpen">{{ 'layout.general.close' | t }}</span>
+                    </a>
+                {% endif %}
+            </h1>
+            {% assign variants_count = 0 %}
+            {% for product in collection.products %}
+                {% assign product_variant_count = product.variants | size %}
+                {% assign variants_count = variants_count | plus: product_variant_count %}
+            {% endfor %}
+            {% assign all_results_count = collection.products_count %}
+            {% assign displayed_results_count = collection.products | size %}
+            <p>{{ 'collections.general.products_count' | t, all_results_count: all_results_count, displayed_results_count: displayed_results_count, products_count: variants_count }}</p>
+            <p ng-show="isAboutOpen">{{ collection.description }}</p>
+        </div>
         <div class="sidebar col-md-4">
             {% include 'collection/sidebar', collection: collection %}
         </div>

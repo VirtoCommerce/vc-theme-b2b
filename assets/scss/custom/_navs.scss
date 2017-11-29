@@ -1,0 +1,18 @@
+﻿.nav-sm {
+  > li > a {
+    padding: $nav-small-link-padding;
+  }
+}
+
+.nav-lg {
+  > li > a {
+    padding: $nav-large-link-padding;
+  }
+}
+
+.nav-pills {
+  > li > a {
+    color: $text-color;
+    font-weight: normal;
+  }
+}

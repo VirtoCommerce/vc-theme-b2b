@@ -1,10 +1,6 @@
-<div class="header-brand" itemscope itemtype="http://schema.org/Organization">
-        <a href="{{ '/' | absolute_url }}" itemprop="url">
-            {% if settings.logo_use_image %}
-                <img alt="{{ shop.name }}" src="{{ 'logo.png' | asset_url }}" itemprop="logo" />
-            {% else %}
-                {{ shop.name }}
-            {% endif %}
-        </a>
-</div>
-{% include 'main/header-links' %}
+﻿<header class="hidden-print hidden-xs hidden-sm">
+    {% include 'main/header/top' %}
+    {% include 'main/header/links' %}
+    {% include 'main/header/nav' %}
+</header>
+{% include 'main/header/nav-mobile' %}

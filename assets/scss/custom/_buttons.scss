@@ -1,0 +1,75 @@
+﻿.btn {
+  border-width: 2px;
+  font-family: $btn-font-family;
+  text-transform: uppercase;
+  height: $input-height-base;
+}
+
+.btn-lg {
+  height: $input-height-large;
+}
+
+.btn-sm {
+  height: $input-height-small;
+}
+
+.btn-xs {
+  height: $input-height-xs;
+}
+
+.btn-link {
+  border-bottom: 1px solid transparent;
+  font-weight: $link-font-weight;
+  text-transform: none;
+  margin: (($input-height-base - $line-height-computed) / 2) $padding-base-horizontal;
+  padding: 0;
+  height: $line-height-computed;
+
+  &:hover,
+  &:focus {
+    border-bottom: 1px $link-hover-border-style $link-hover-color;
+  }
+
+  &.btn-link-internal {
+    &:hover,
+    &:focus {
+      border-bottom: 1px $internal-link-hover-border-style $link-hover-color;
+    }
+  }
+
+  &:disabled {
+    border-bottom: 1px solid transparent;
+  }
+}
+
+.btn-default {
+  @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border, 'lighten', 2);
+}
+
+.btn-alt {
+  @include button-variant-alt($btn-default-color, $btn-default-bg, $btn-default-border, 'lighten', 0);
+}
+
+.btn-primary.btn-alt {
+  @include button-variant-alt($btn-primary-color, $btn-primary-bg, $btn-primary-border, 'darken', 0);
+}
+
+.btn-primary,
+.btn-success,
+.btn-info,
+.btn-warning,
+.btn-danger {
+  @include button-variant-disabled();
+}
+
+.btn-link {
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus {
+      color: $btn-link-disabled-color;
+      text-decoration: none;
+    }
+  }
+}

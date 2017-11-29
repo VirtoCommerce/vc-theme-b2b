@@ -1,0 +1,27 @@
+﻿.popover {
+  padding: 0;
+
+  &.popover-square {
+    border-radius: 0;
+    > * {
+      border-radius: 0;
+    }
+  }
+
+  &.hide-arrow {
+    margin: -1px;
+
+    .arrow {
+      display: none;
+    }
+  }
+
+  .popover-content {
+    padding: 0;
+
+    > * {
+      border: none;
+      margin: 0;
+    }
+  }
+}

@@ -33,6 +33,7 @@
         "jquery": "^1.11.0",
         "ngstorage": "^0.3.11",
         "polyfills": "0.1.36",
+        "prism": "^1.8.4", 
         "satellizer": "^0.15.5",
         "underscore": "^1.8.3"
     },

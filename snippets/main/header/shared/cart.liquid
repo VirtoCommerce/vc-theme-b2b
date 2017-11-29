@@ -1,0 +1,5 @@
+﻿<li>
+    <a class="text-uppercase text-condensed" href="{{ 'cart' | absolute_url }}" ng-controller="cartBarController">
+        <i class="fa fa-shopping-cart"></i>&ensp;{{ 'layout.cart.cart' | t }}&nbsp;<span ng-if="cartItemsCount > 0" ng-cloak>(<span ng-bind="cartItemsCount"></span>)</span>
+    </a>
+</li>
