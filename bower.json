@@ -25,7 +25,6 @@
         "angular-translate": "^2.12.1",
         "angular-translate-loader-url": "^2.12.1",
         "angular-ui-router": "^1.0.6",
-        "antlr4": "^4.7.0",
         "bootstrap-sass": "^3.3.7",
         "bootstrap-social": "^5.1.1",
         "es5-shim": "4.5.9",
