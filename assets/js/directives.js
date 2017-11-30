@@ -40,43 +40,6 @@ storefrontApp.directive('vcEnterTarget', [function () {
     };
 }]);
 
-storefrontApp.directive('vcQuerySource', ['$parse', 'searchQueryService', function ($parse, searchQueryService) {
-    return {
-        restrict: "A",
-        compile: function (tElem, tAttr) {
-            if (!tAttr.href) {
-                return function(scope, element, attrs) {
-                    // If the linked element is not an anchor tag anymore, do nothing
-                    if (element[0].nodeName.toLowerCase() !== 'a') return;
-
-                    // get query from current url, replace query parts with specified parts and set href
-                    scope.$watch(function() {
-                         return [attrs.vcQuerySource, attrs.queryType];
-                    }, function (obj) {
-                        var querySource = $parse(obj[0])(scope);
-                        var queryType = $parse(obj[1])(scope);
-                        var href = searchQueryService.getLink(querySource, queryType);
-                        element.attr("href", href);
-                    }, true);
-                }
-            }
-        }
-    }
-}]);
-
-storefrontApp.directive('vcQueryTarget', ['$parse', 'searchQueryService', function ($parse, searchQueryService) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var vcQueryTarget = $parse(attrs.vcQueryTarget);
-            // get requested keys and set ng-model value to value of ?key1=value1&key2=value2
-            var t = vcQueryTarget(scope);
-            var state = searchQueryService.getState(t);
-            vcQueryTarget.assign(scope, state);
-        }
-    }
-}]);
-
 storefrontApp.directive('fallbackSrc', function () {
     return {
         link: function (scope, element, attrs) {

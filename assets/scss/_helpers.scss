@@ -12,8 +12,6 @@
 @include bg-variant('.bg-brand-warning', $brand-warning);
 @include bg-variant('.bg-brand-danger',  $brand-danger);
 
-@include text-emphasis-variant('.text-contrast', $text-contrast);
-
 .block {
   padding-bottom: 50%;
 }

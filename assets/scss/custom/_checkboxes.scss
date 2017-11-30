@@ -37,6 +37,15 @@
     }
   }
 
+  a {
+    &,
+    &:hover,
+    &:focus {
+      color: inherit;
+      font-weight: inherit;
+    }
+  }
+
   .name {
     display: inline-block;
     padding-left: $padding-small-horizontal;

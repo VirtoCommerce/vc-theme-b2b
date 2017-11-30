@@ -1,4 +1,20 @@
-﻿.form-control {
+﻿.form-inline {
+  .form-group + .form-group {
+    margin-left: $form-group-margin-left;
+  }
+
+  .dropdown {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .pagination {
+    margin: 0;
+    vertical-align: middle;
+  }
+}
+
+.form-control {
   box-shadow: none;
 }
 

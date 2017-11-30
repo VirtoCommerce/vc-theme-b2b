@@ -3,10 +3,12 @@
         {{ 'collections.sidebar.filter_by' | t }}
     </uib-accordion-heading>
     <form>
-        <div class="form-t">{{ 'collections.sidebar.search_within' | t }}</div>
-        <div class="form-group group-flex" vc-enter-source>
-            <input type="text" class="form-control" vc-query-target="$collection.keywordQuery" ng-model="$collection.keywordQuery.keyword">
-            <a class="btn btn-default" vc-query-source="$collection.keywordQuery" query-type="'settable'" vc-enter-target>{{ 'common.go' | t }}</a>
+        <p>{{ 'collections.sidebar.search_within' | t }}</p>
+        <div class="input-group" vc-enter-source>
+            <input class="form-control" type="text" vc-query-target="$collection.keywordQuery" ng-model="$collection.keywordQuery.keyword">
+            <span class="input-group-btn">
+                <a class="btn btn-default" vc-query-source="$collection.keywordQuery" switchable="false" vc-enter-target>{{ 'common.go' | t }}</a>
+            </span>
         </div>
     </form>
 </div>

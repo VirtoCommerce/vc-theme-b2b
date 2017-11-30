@@ -39,14 +39,17 @@
   }
 }
 
-.container-bordered {
+.container-bordered,
+.container-bordered-horizontal {
   .row:not(:last-child) > [class*="col-"]::after {
     border-bottom: 1px solid $grid-border;
     position: absolute;
     width: calc(100% - #{$grid-gutter-width});
     bottom: floor($grid-gutter-width / 2) * -1;
   }
-
+}
+.container-bordered,
+.container-bordered-vertical {
   .row > [class*="col-"]:not(:last-child)::before {
     border-right: 1px solid $grid-border;
     position: absolute;

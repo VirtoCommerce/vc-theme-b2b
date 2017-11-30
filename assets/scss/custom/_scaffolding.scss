@@ -28,3 +28,10 @@ a.primary-link {
     color: $primary-link-hover-color;
   }
 }
+
+.link-reset {
+  font-family: $link-font-family;
+  font-weight: $link-font-weight;
+  font-size:   $font-size-base;
+  text-transform: none;
+}

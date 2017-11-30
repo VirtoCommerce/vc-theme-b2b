@@ -1,28 +1,4 @@
-﻿<uib-accordion close-others="false">
-    {% raw %}
-        <script type="text/ng-template" id="collection-sidebar-always-visible-group.html">
-            <div id="{{::headingId}}" role="tab" class="panel-heading" ng-keypress="toggleOpen($event)">
-                <h4 class="panel-title">
-                    <span tabindex="0" uib-accordion-transclude="heading" ng-disabled="isDisabled" uib-tabindex-toggle>
-                        <span uib-accordion-header ng-class="{'text-muted': isDisabled}">{{heading}}</span>
-                    </span>
-                </h4>
-            </div>
-            <div id="{{::panelId}}" aria-labelledby="{{::headingId}}" role="tabpanel" class="panel-collapse collapse in">
-                <div class="panel-body" ng-transclude></div>
-            </div>
-        </script>
-        <script type="text/ng-template" id="collection-sidebar-default-group.html">
-            <div role="tab" id="{{::headingId}}" aria-selected="{{isOpen}}" class="panel-heading" ng-keypress="toggleOpen($event)">
-                <h4 class="panel-title">
-                    <a role="button" data-toggle="collapse" href="" aria-expanded="{{isOpen}}" aria-controls="{{::panelId}}" tabindex="0" class="accordion-toggle" ng-class="{'collapsed': !isOpen }" ng-click="toggleOpen()" uib-accordion-transclude="heading" ng-disabled="isDisabled" uib-tabindex-toggle><span uib-accordion-header ng-class="{'text-muted': isDisabled}">{{heading}}</span></a>
-                </h4>
-            </div>
-            <div id="{{::panelId}}" aria-labelledby="{{::headingId}}" aria-hidden="{{!isOpen}}" role="tabpanel" class="panel-collapse collapse" uib-collapse="!isOpen">
-                <div class="panel-body" ng-transclude></div>
-            </div>
-        </script>
-    {% endraw %}
+﻿<uib-accordion close-others="false" ng-init="filters = { terms: undefined }" vc-query-target="filters">
     {% include 'collection/sidebar/applied-filters' %}
     {% include 'collection/sidebar/keyword' %}
     <div class="panel-default panel-static" uib-accordion-group template-url="collection-sidebar-always-visible-group.html" is-open="always">
@@ -40,5 +16,19 @@
         </div>
     </div>
     {% include 'collection/sidebar/fulfillment-center' %}
-    {% include 'collection/sidebar/filters' %}
 </uib-accordion>
+{% include 'collection/sidebar/filters' %}
+{% raw %}
+    <script type="text/ng-template" id="collection-sidebar-always-visible-group.html">
+        <div id="{{::headingId}}" role="tab" class="panel-heading" ng-keypress="toggleOpen($event)">
+            <h4 class="panel-title">
+                <span tabindex="0" uib-accordion-transclude="heading" ng-disabled="isDisabled" uib-tabindex-toggle>
+                    <span uib-accordion-header ng-class="{'text-muted': isDisabled}">{{heading}}</span>
+                </span>
+            </h4>
+        </div>
+        <div id="{{::panelId}}" aria-labelledby="{{::headingId}}" role="tabpanel" class="panel-collapse collapse in">
+            <div class="panel-body" ng-transclude></div>
+        </div>
+    </script>
+{% endraw %}

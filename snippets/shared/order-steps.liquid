@@ -1,14 +1,20 @@
-﻿<ol class="steps list-inline">
-    <li {% if template == 'cart'     %} class="active" {% endif %}>
-        <span class="number">1</span>
-        <span class="title">My cart</span>
+﻿<ol class="nav nav-pills pull-left">
+    <li role="presentation" {% if template == 'cart'     %} class="active" {% endif %}>
+        <a href="">
+            <span class="h1 text-middle">1</span>
+            <span class="h2 text-middle">My cart</span>
+        </a>
     </li>
-    <li {% if template == "checkout" %} class="active" {% endif %}>
-        <span class="number">2</span>
-        <span class="title">Review</span>
+    <li role="presentation" {% if template == "checkout" %} class="active" {% endif %}>
+        <a href="">
+        <span class="h1 text-middle">2</span>
+        <span class="h2 text-middle">Review</span>
+    </a>
     </li>
-    <li {% if template == "thanks"   %} class="active" {% endif %}>
-        <span class="number">3</span>
-        <span class="title">Complete</span>
+    <li role="presentation" {% if template == "thanks"   %} class="active" {% endif %}>
+        <a href="">
+            <span class="h1 text-middle">3</span>
+            <span class="h2 text-middle">Complete</span>
+        </a>
     </li>
 </ol>

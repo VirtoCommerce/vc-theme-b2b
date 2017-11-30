@@ -12,11 +12,11 @@ storefrontApp.controller('collectionController', ['$scope', '$location', functio
         'createddate-descending': 'collections.sorting.date_descending',
         'createddate-ascending': 'collections.sorting.date_ascending'
     };
-    $ctrl.viewQuery = { view: 'grid' };
+    $ctrl.viewQuery = { view: ['grid'] };
     $ctrl.generatePageSizes = function (capacity, steps) {
-        $ctrl.pageSizeQuery = { page_size: capacity };
+        $ctrl.pageSizeQuery = { page_size: [capacity] };
         // for example            start: 16 stop: 16 * 3 + 1 = 49 step: 16
         $ctrl.pageSizes = _.range(capacity, capacity * steps + 1, capacity);
     }
-    $ctrl.keywordQuery = { keyword: null };
+    $ctrl.keywordQuery = { keyword: [] };
 }]);

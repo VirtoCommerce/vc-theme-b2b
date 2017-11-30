@@ -4,15 +4,15 @@
 
 <!-- TODO: Badges -->
 
-<li class="col-md-4 flexible grid-item">
+<li class="col-md-4 flexible">
     <div class="grid-inner">
         {% assign product_url = product.url | within: current_collection %}
         <div class="grid-img">
             <a href="{{ product_url }}">
                 {% if product.featured_image %}
-                    <img ng-src="{{ product.featured_image.src | img_url: "168x168" }}" fallback-src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" class="grid-pic" />
+                    <img class="img-responsive" ng-src="{{ product.featured_image.src | img_url: "168x168" }}" fallback-src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
                 {% else %}
-                    <img src="{{ 'no-image.svg' | asset_url }}" class="grid-pic no-image" />
+                    <img class="img-responsive" src="{{ 'no-image.svg' | asset_url }}" />
                 {% endif %}
             </a>
             <!-- TODO: Compare -->

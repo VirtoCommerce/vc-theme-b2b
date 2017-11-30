@@ -18,7 +18,7 @@
         "required": "Required",
         "invalid": "Invalid",
         "more": "More",
-        "go": "Go", 
+        "go": "Go",
         "not_match": "Confirm password does not match the password"
     },
     "checkout": {
@@ -168,7 +168,7 @@
         "select_branch": {
             "title": "Select branch",
             "enter_search_phrase": "Enter a full address, city, state, country, ZIP code or branch name:",
-            "phone":  "Phone:", 
+            "phone": "Phone:",
             "close": "Close branch selection"
         },
     },
@@ -208,7 +208,7 @@
             "message": "Your connection to what's new at {{ shop.name }}. <br><strong>Sign Up Now!</strong>",
             "sign_up": "Sign Up",
             "email_placeholder": "Email Address"
-        } 
+        }
     },
     "cart": {
         "general": {
@@ -351,6 +351,9 @@
             "price_descending": "Price, high to low",
             "date_descending": "Date, new to old",
             "date_ascending": "Date, old to new"
+        },
+        "filters": {
+            "applied_filters": "Applied filters"
         }
     },
     "contact": {
@@ -491,7 +494,7 @@
             "submit": "Confirm payment"
         },
         "invoices": {
-            "title":  "Invoice history" 
+            "title": "Invoice history"
         },
         "subscriptions": {
             "title": "My subscriptions",
@@ -653,7 +656,7 @@
             "cancel": "Cancel"
         },
         "lists": {
-            "title": "Lists" 
+            "title": "Lists"
         }
     },
     "homepage": {
@@ -676,8 +679,10 @@
     },
     "layout": {
         "general": {
-            "close": "Close"
-        }, 
+            "close": "Close",
+            "clear_all": "Clear all"
+        },
+        "clear_all": "Clear all",
         "header": {
             "newsletter": "Sign up for email",
             "feedback": "Feedback",

@@ -1,21 +1,79 @@
-﻿<div class="toolbar hidden-print clearfix">
-    {% include 'shared/order-steps' %}
-    <ul class="toolbar-actions pull-right">
-        <li>
-            <i class="fa fa-bullhorn"></i>
-            <a href="" ng-click="">Feedback</a>
-        </li>
-        <li>
-            <i class="fa fa-envelope"></i>
-            <a href="" ng-click="">Email</a>
-        </li>
-        <li>
-            <i class="fa fa-print"></i>
-            <a href="" ng-click="">Print</a>
-        </li>
-    </ul>
-    <div></div>
-    <div></div>
+﻿<div class="row">
+    <div class="col-xs-12 hidden-print clearfix">
+        {% include 'shared/order-steps' %}
+        <ul class="list-inline pull-right">
+            <li>
+                <a href="" class="btn btn-link" ng-click=""><i class="fa fa-bullhorn"></i>&ensp;Feedback</a>
+            </li>
+            <li>                
+                <a href="" class="btn btn-link" ng-click=""><i class="fa fa-envelope"></i>&ensp;Email</a>
+            </li>
+            <li>                
+                <a href="" class="btn btn-link" ng-click=""><i class="fa fa-print"></i>&ensp;Print</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-9">
+        <div class="h2">
+            My products
+            <ul class="list-horizontal link-reset pull-right">
+                <li>
+                    <a href="">Show Reference Information</a>
+                </li>
+                <li>
+                    <a href="">Clear Cart</a>
+                </li>
+            </ul>   
+        </div>     
+        <div class="container-fluid container-drain container-bordered-horizontal">
+            <div class="row">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <p>
+            <button class="btn btn-lg btn-block btn-primary">Proceed to checkout</button>
+        </p>
+        <div class="panel-group">
+            <div class="panel panel-default panel-static">
+                <div class="panel-heading">
+                    Order summary
+                </div>
+                <ol class="list-group">
+                    <li class="list-group-item">
+                        <dl class="dl-horizontal-inverse">
+                            <dt>$59.00</dt>
+                            <dd>Subtotal</dd>
+                            <dt>$10.98</dt>
+                            <dd>Estimated standard shipping</dd>
+                        </dl>
+                    </li>
+                    <li class="list-group-item">
+                        <dl class="dl-horizontal-inverse">
+                            <dt class="text-success">$69.98</dt>
+                            <dd><strong>Estimated Total</strong></dd>
+                        </dl>
+                    </li>
+                    <li class="list-group-item">
+                        <small><a href="">Availability, shipping, tax & promotions</a> are not final until you complete your order.</small>
+                    </li>
+                </ol>
+            </div>
+            <div class="panel panel-default panel-static">
+                <div class="panel-heading">
+                    Promotion code
+                </div>
+                <div class="panel-body">
+                    <form>
+                        <div class="form-group">
+                            <input class="form-control" type="text" placeholder="Promotional code">
+                        </div>
+                        <button class="btn btn-alt">Apply</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% comment %}

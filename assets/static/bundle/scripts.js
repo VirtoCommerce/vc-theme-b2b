@@ -479,13 +479,13 @@ storefrontApp.controller('collectionController', ['$scope', '$location', functio
         'createddate-descending': 'collections.sorting.date_descending',
         'createddate-ascending': 'collections.sorting.date_ascending'
     };
-    $ctrl.viewQuery = { view: 'grid' };
+    $ctrl.viewQuery = { view: ['grid'] };
     $ctrl.generatePageSizes = function (capacity, steps) {
-        $ctrl.pageSizeQuery = { page_size: capacity };
+        $ctrl.pageSizeQuery = { page_size: [capacity] };
         // for example            start: 16 stop: 16 * 3 + 1 = 49 step: 16
         $ctrl.pageSizes = _.range(capacity, capacity * steps + 1, capacity);
     }
-    $ctrl.keywordQuery = { keyword: null };
+    $ctrl.keywordQuery = { keyword: [] };
 }]);
 
 storefrontApp.controller('universalDialogController', ['$scope', '$uibModalInstance', 'dialogData', function ($scope, $uibModalInstance, dialogData) {
@@ -540,43 +540,6 @@ storefrontApp.directive('vcEnterTarget', [function () {
             ctrl.element = element;
         }
     };
-}]);
-
-storefrontApp.directive('vcQuerySource', ['$parse', 'searchQueryService', function ($parse, searchQueryService) {
-    return {
-        restrict: "A",
-        compile: function (tElem, tAttr) {
-            if (!tAttr.href) {
-                return function(scope, element, attrs) {
-                    // If the linked element is not an anchor tag anymore, do nothing
-                    if (element[0].nodeName.toLowerCase() !== 'a') return;
-
-                    // get query from current url, replace query parts with specified parts and set href
-                    scope.$watch(function() {
-                         return [attrs.vcQuerySource, attrs.queryType];
-                    }, function (obj) {
-                        var querySource = $parse(obj[0])(scope);
-                        var queryType = $parse(obj[1])(scope);
-                        var href = searchQueryService.getLink(querySource, queryType);
-                        element.attr("href", href);
-                    }, true);
-                }
-            }
-        }
-    }
-}]);
-
-storefrontApp.directive('vcQueryTarget', ['$parse', 'searchQueryService', function ($parse, searchQueryService) {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var vcQueryTarget = $parse(attrs.vcQueryTarget);
-            // get requested keys and set ng-model value to value of ?key1=value1&key2=value2
-            var t = vcQueryTarget(scope);
-            var state = searchQueryService.getState(t);
-            vcQueryTarget.assign(scope, state);
-        }
-    }
 }]);
 
 storefrontApp.directive('fallbackSrc', function () {
@@ -1772,92 +1735,6 @@ storefrontApp.service('orderService', ['$http', function ($http) {
     return {
         getOrder: function (orderNumber) {
             return $http.get('storefrontapi/orders/' + orderNumber + '?t=' + new Date().getTime());
-        }
-    }
-}]);
-
-storefrontApp.service('searchQueryService', ['$location', '$httpParamSerializer', function ($location, $httpParamSerializer) {
-    return {
-        // Converts search query strings like '?key=value1[,value2]' or '?key=key1:value1[,value2[;key2:value3[,value4]]]' to search query state object
-        getState: function(obj) {
-            var result = {};
-            // ?key=valueString&key=valueString
-            _.each(Object.keys(obj), function(key) {
-                var valueString = $location.search()[key];
-                // ?key=value or ?key=key1:value1
-                if (valueString) {
-                    if (!valueString.match(/[:]/g)) {
-                        result[key] = valueString.split(',');
-                    } else {
-                        var pairs = { };
-                        // ?key=key1:value1;key2:value2
-                        var pairsString = valueString.split(';');
-                        _.each(pairsString, function(pairString) {
-                            var pair = pairString.split(':');
-                            var key = pair[0];
-                            var values = pair[1].split(',');
-                            pairs[key] = values;
-                        });
-                        result[key] = pairs;
-                    }
-                    result[key] = !angular.isArray(obj[key]) && result[key].length === 1 ? result[key][0] : result[key];
-                }
-            });
-            result = angular.extend({ }, obj, result);
-            return result;
-        },
-
-        // Gets link like http://localhost/collection?key=key1:value1,value2;key2:value3,value4 from search query state object
-        getLink: function(obj, type) {
-            var query = $location.search();
-            var state = this.getState(query);
-            // add or replace value when defined, remove when null and leave old when undefined
-            var process = function (src, dest, fn, isArray) {
-                var chain = _.chain(_.union(dest ? Object.keys(dest) : [], src ? Object.keys(src) : []))
-                    .filter(function(key) {
-                        return dest && (dest[key] || !(key in dest)) || src[key] || !(key in src);
-                    })
-                    .map(function(key) {
-                        return fn(key, src ? src[key] : null, dest ? dest[key] : null);
-                    })
-                    .compact();
-                if (!isArray) {
-                    chain = chain.object();
-                }
-                return chain.value();
-            }
-            var selectValue = function(srcVal, destVal) {
-                if (destVal && angular.isArray(destVal) || angular.isArray(srcVal)) {
-                    destVal = destVal ? _.compact(destVal) : null;
-                    srcVal = _.chain([srcVal]).flatten().compact().value();
-                    return (type === 'checkable' ? _.difference((destVal || []).concat(srcVal), _.intersection(destVal, srcVal)) : destVal || srcVal).join(',');
-                } else {
-                    return destVal || srcVal;
-                }
-            }
-            var result = process(state, obj, function (key, srcVal, destVal) {
-                var value;
-                // replace value when ?key=value and merge objects when ?key=key1:value1
-                if (destVal && angular.isObject(destVal) && !angular.isArray(destVal) || angular.isObject(srcVal) && !angular.isArray(srcVal)) {
-                    if (srcVal) {
-                        if (!angular.isObject(srcVal) || angular.isArray(srcVal))
-                            throw 'Type of ' + key + ' in search query and object is different';
-                    } else {
-                        srcVal = angular.isArray(destVal) ? [] : {};
-                    }
-                    value = process(srcVal, destVal, function (subKey, subSrcVal, subDestVal) {
-                        var subVal = selectValue(subSrcVal, subDestVal);
-                        return subVal ? subKey + ':' + (angular.isArray(subVal) ? subVal.join(',') : subVal) : null;
-                    }, true);
-                    value = value.join(';');
-                } else {
-                    value = selectValue(srcVal, destVal);
-                }
-                return value ? [key, value] : [];
-            }, false);
-            var url = new URL($location.absUrl());
-            url.search = $httpParamSerializer(result);
-            return url.href;
         }
     }
 }]);
@@ -4266,6 +4143,50 @@ storefrontApp.config(['$provide', function ($provide) {
     }]);
 }]);
 
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.directive('vcQuerySource', ['$parse', '$location', '$httpParamSerializer', 'searchQueryService', function ($parse, $location, $httpParamSerializer, searchQueryService) {
+    return {
+        restrict: "A",
+        compile: function (tElem, tAttr) {
+            if (!tAttr.href) {
+                return function (scope, element, attrs) {
+                    // If the linked element is not an anchor tag anymore, do nothing
+                    if (element[0].nodeName.toLowerCase() !== 'a') return;
+
+                    // get query from current url, replace query parts with specified parts and set href
+                    scope.$watch(function () {
+                        return [attrs.vcQuerySource, attrs.switchable];
+                    }, function (obj) {
+                        var querySource = $parse(obj[0])(scope);
+                        var switchable = obj[1] == 'true';
+                        var state = searchQueryService.deserialize($location.search(), {});
+                        var result = searchQueryService.merge(state, querySource, switchable);
+                        var params = searchQueryService.serialize(result, {});
+                        var url = new URL($location.absUrl());
+                        url.search = $httpParamSerializer(params);
+                        element.attr("href", url.href);
+                    }, true);
+                }
+            }
+        }
+    }
+}]);
+
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.directive('vcQueryTarget', ['$parse', '$location', 'searchQueryService', function ($parse, $location, searchQueryService) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var vcQueryTarget = $parse(attrs.vcQueryTarget);
+            // get requested keys and set ng-model value to value of ?key1=value1&key2=value2
+            var state = searchQueryService.deserialize($location.search(), vcQueryTarget(scope));
+            vcQueryTarget.assign(scope, state);
+        }
+    }
+}]);
+
 storefrontApp.directive('vcScope', ['$animate', '$compile', function ($animate) {
     return {
         multiElement: true,
@@ -4666,6 +4587,90 @@ storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope',
     $scope.redirect = function (url) {
         $window.location = url;
     };
+}]);
+
+var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.service('searchQueryService', [function () {
+    return {
+        // Deserializes search query strings like 'key=value1[,value2]' or 'key=key1:value1[,value2[;key2:value3[,value4]]]'
+        deserialize: function (searchQuery, defaults) {
+            var deserializeValues = function(string) {
+                return string.split(',');
+            };
+            var deserializePairs = function (string) {
+                return _.object(string.split(';').map(function(pairString) {
+                    return _.reduce(pairString.split(':'), function (key, value) {
+                        return [key, deserializeValues(value)];
+                    });
+                }));
+            };
+            searchQuery = searchQuery || {};
+            defaults = defaults || {};
+            var result = {};
+            _.each(Object.keys(searchQuery), (function (key) {
+                var string = searchQuery[key];
+                if (string) {
+                    var deserialize = string.includes(':') ? deserializePairs : deserializeValues;
+                    result[key] = deserialize(string);
+                }
+            }));
+            result = _.defaults(result, defaults);
+            return result;
+        },
+
+        merge: function (searchQuery, changes, switchable) {
+            if (!switchable) {
+                return _.extend(searchQuery, changes);
+            } else {
+                var mergeValues = function (searchQueryValues, changeValues) {
+                    var checkedValues = _.difference((searchQueryValues || []).concat(changeValues || []), _.intersection(searchQueryValues, changeValues));
+                    return changeValues !== null && checkedValues.length ? checkedValues : null;
+                };
+                var mergePairs = function (searchQueryPairs, changePairs) {
+                    return _.object(_.compact(_.union(Object.keys(searchQueryPairs), Object.keys(changePairs)).map(function (key) {
+                        var mergedValues = mergeValues(searchQueryPairs[key], changePairs[key]);
+                        return mergedValues !== null ? [key, mergedValues] : null;
+                    })));
+                };
+                return _.object(_.compact(_.union(Object.keys(searchQuery), Object.keys(changes)).map(function (key) {
+                    var searchQueryValues = searchQuery[key];
+                    var changeValues = changes[key];
+                    if (changeValues !== null) {
+                        if (searchQueryValues && changeValues && angular.isArray(searchQueryValues) !== angular.isArray(changeValues)) {
+                            throw 'Type of ' + key + ' in search query is' + typeof (searchQueryValues[key]) + ' while in changes is' + typeof (changeValues[key]);
+                        }
+                        if (!angular.isArray(changeValues)) {
+                            return [key, mergePairs(searchQueryValues || [], changeValues || [])];
+                        } else {
+                            var mergedValues = mergeValues(searchQueryValues, changeValues);
+                            return mergedValues !== null ? [key, mergedValues] : null;
+                        }
+                    } else {
+                        return null;
+                    }
+                })));
+            }
+        },
+
+        // Serializes search query objects like { view: ['list'], terms: { Color: ["Black, "Red"], Brand: ["VirtoCommerce", "Microsoft"] } }  to string 
+        serialize: function (searchQuery, defaults) {
+            var serializeValues = function (values) {
+                return values.join(',');
+            };
+            var serializePairs = function (pairs) {
+                return _.map(Object.keys(pairs), function(key) {
+                    return [key, serializeValues(pairs[key])].join(':');
+                }).join(';');
+            };
+            searchQuery = searchQuery || {};
+            defaults = defaults || {};
+            var result = _.defaults(searchQuery, defaults);
+            return _.mapObject(result, function(values, key) {
+                return values !== null ? !angular.isArray(values) ? serializePairs(values) : serializeValues(values) : null;
+            });
+        }
+    }
 }]);
 
 //# sourceMappingURL=scripts.js.map

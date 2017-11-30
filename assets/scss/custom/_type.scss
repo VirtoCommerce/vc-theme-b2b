@@ -17,16 +17,26 @@ h4, .h4 {
   }
 }
 
+@include text-emphasis-variant('.text-contrast', $text-contrast);
+
 .text-serif {
   font-family: $font-family-serif !important;
+}
+
+.text-condensed {
+  font-family: $font-family-condensed !important;
 }
 
 .text-normal {
   font-weight: normal;
 }
 
-.text-condensed {
-  font-family: $font-family-condensed !important;
+.text-normalize {
+  text-transform: none;
+}
+
+.text-middle {
+  vertical-align: middle;
 }
 
 .list-horizontal {
@@ -44,6 +54,40 @@ h4, .h4 {
       position: absolute;
       left: calc(-0.5em - 1px); // horizontal align
       opacity: (1/3);
+    }
+  }
+}
+
+dl:only-child {
+  margin: 0;
+}
+
+.dl-horizontal {
+  @media (min-width: $dl-horizontal-breakpoint) {
+    dt {
+      float: left;
+      width: $dl-horizontal-offset * 0.75;
+      clear: left;
+      text-align: right;
+    }
+
+    dd {
+      margin-left: $dl-horizontal-offset;
+    }
+  }
+}
+
+.dl-horizontal-inverse {
+  @media (min-width: $dl-horizontal-breakpoint) {
+    dt {
+      float: right;
+      width: $dl-horizontal-offset * 0.75;
+      clear: right;
+      text-align: right;
+    }
+
+    dd {
+      margin-right: $dl-horizontal-offset;
     }
   }
 }

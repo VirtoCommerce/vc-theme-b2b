@@ -248,6 +248,7 @@
 
 //** `.form-group` margin
 // $form-group-margin-bottom:       15px
+   $form-group-margin-left:         5px; // not predefined
 
 // $legend-color:                   $gray-dark
 // $legend-border-color:            #e5e5e5
@@ -793,7 +794,7 @@
 //
 //##
 
-// $panel-bg:                    #fff
+   $panel-bg:                    $body-bg; // #fff
 // $panel-body-padding:          15px
 // $panel-heading-padding:       10px 15px
 // $panel-footer-padding:        $panel-heading-padding
@@ -806,11 +807,11 @@
 // $panel-inner-border:          #ddd
 // $panel-footer-bg:             #f5f5f5
 
-// $panel-default-text:          $gray-dark
-// $panel-default-border:        #ddd
+   $panel-default-text:          $text-color; // $gray-dark
+   $panel-default-border:        $gray-light; // #ddd
 // $panel-default-heading-bg:    #f5f5f5
 
-// $panel-primary-text:          #fff
+   $panel-primary-text:          $text-contrast; // #fff
 // $panel-primary-border:        $brand-primary
 // $panel-primary-heading-bg:    $brand-primary
 
@@ -954,7 +955,7 @@
 //** Page header border color
 // $page-header-border-color:    $gray-lighter
 //** Width of horizontal description list titles
-// $dl-horizontal-offset:        $component-offset-horizontal
+   $dl-horizontal-offset:        33%; // $component-offset-horizontal
 //** Point at which .dl-horizontal becomes horizontal
 // $dl-horizontal-breakpoint:    $grid-float-breakpoint
 //** Horizontal line color.
