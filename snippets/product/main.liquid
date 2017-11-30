@@ -5,7 +5,9 @@
             <i class="fa fa-envelope"></i>                
             <a href="" ng-click="sendToEmail('{{ shop.id }}', '{{ product.id }}', '{{ product.url | absolute_url }}', '{{ current_language.culture_name }}')">Email</a>
         </li>
-        {% include 'shared/print' %}
+        <li>
+            {% include 'shared/print' %}
+        </li>
     </ul>
 </div>
 <div class="product-page clearfix" itemscope itemtype="http://schema.org/Product">
