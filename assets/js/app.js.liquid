@@ -46,3 +46,9 @@ storefrontApp.config(['$locationProvider', '$httpProvider', '$translateProvider'
     $translateProvider.preferredLanguage('en');
 
 }]);
+
+storefrontApp.run(['$rootScope', '$window', function($rootScope, $window) {
+    $rootScope.print = function() {
+        $window.print();
+    };
+}]);

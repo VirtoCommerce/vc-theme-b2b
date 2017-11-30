@@ -26,13 +26,15 @@
                 </div>
             </div>-->
         </div>
+        {% include 'shared/item-response-group' %}
+        {% assign response_group = default_product_search_resp_group | plus: item_resp_group_variations %}
         <div class="grid-name">
-            <a href="{{ product_url }}">
+            <a href="{{ product_url | append: '?resp_group=' | append: response_group }}">
                 {{ product.title }}
             </a>
         </div>
         <div class="grid-sku">
-            {{ 'products.product.sku' | t }}&nbsp;<a href="{{ product_url }}">{{ product.selected_variant.sku }}</a>
+            {{ 'products.product.sku' | t }}&nbsp;<a href="{{ product_url| append: '?resp_group=' | append: response_group }}">{{ product.selected_variant.sku }}</a>
         </div>
         <div class="grid-brand">{{ product.metafields.properties['Brand'] }}</div>
         <div class="grid-price">

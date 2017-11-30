@@ -228,10 +228,6 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             dialogService.showDialog({ storeId: storeId, productId: productId, productUrl: productUrl, language: language }, 'recentlyAddedCartItemDialogController', 'storefront.send-product-to-email.tpl');
         };
 
-        $scope.print = function() {
-            $window.print();
-        };
-
         $scope.$watch('filters', initialize);
     }]);
 

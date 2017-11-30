@@ -27,11 +27,13 @@
     </div>
     <div class="list-info col-md-4">
         <div class="list-brand">{{ product.metafields.properties['Brand'] }}</div>
-        <a class="list-name" href="{{ product_url }}">
+        {% include 'shared/item-response-group' %}
+        {% assign response_group = default_product_search_resp_group | plus: item_resp_group_variations %}
+        <a class="list-name" href="{{ product_url | append: '?resp_group=' | append: response_group }}">
             {{ product.title }}
         </a>
         <div class="list-sku">
-            {{ 'products.product.sku' | t }}&nbsp;<a href="{{ product_url }}">{{ product.selected_variant.sku }}</a>
+            {{ 'products.product.sku' | t }}&nbsp;<a href="{{ product_url| append: '?resp_group=' | append: response_group }}">{{ product.selected_variant.sku }}</a>
         </div>
         <div class="list-model">
             {{ 'products.product.mmn' | t }}&nbsp;{{ product.metafields.properties['MMN'] }}
