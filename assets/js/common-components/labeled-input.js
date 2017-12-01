@@ -12,6 +12,7 @@
         required: '<',
         requiredError: '@?',
         autofocus: '<',
+        pattern: '@',
         disabled: '<'
     },
     controller: [function () {
