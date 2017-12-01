@@ -1,4 +1,8 @@
-﻿h1, .h1 {
+﻿.page-header {
+  margin: 0 0 $line-height-computed;
+}
+
+h1, .h1 {
   :not(strong) {
     font-weight: normal;
   }

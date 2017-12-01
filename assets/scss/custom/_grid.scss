@@ -28,29 +28,30 @@
 }
 
 .container-drain {
-  [class*="col-"] & .row:not(:first-child),
-  :not([class*="col-"]) > & .row {
+  [class*="col-"] & > .row:not(:first-child),
+  :not([class*="col-"]) > & > .row {
     padding-top: ceil($grid-gutter-height / 2);
   }
 
-  [class*="col-"] & .row:not(:last-child),
-  :not([class*="col-"]) > & .row {
+  [class*="col-"] & > .row:not(:last-child),
+  :not([class*="col-"]) > & > .row {
     padding-bottom: floor($grid-gutter-height / 2);
   }
 }
 
-.container-bordered,
-.container-bordered-horizontal {
-  .row:not(:last-child) > [class*="col-"]::after {
+.container-bordered-horizontal,
+.container-bordered {
+  > .row:not(:last-child)::after {
     border-bottom: 1px solid $grid-border;
-    position: absolute;
+    position: relative;
     width: calc(100% - #{$grid-gutter-width});
+    left: $grid-gutter-width / 2;
     bottom: floor($grid-gutter-width / 2) * -1;
   }
 }
 .container-bordered,
 .container-bordered-vertical {
-  .row > [class*="col-"]:not(:last-child)::before {
+  > .row > [class*="col-"]:not(:last-child)::before {
     border-right: 1px solid $grid-border;
     position: absolute;
     height: 100%;

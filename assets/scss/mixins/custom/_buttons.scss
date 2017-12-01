@@ -50,7 +50,7 @@
     background-image: none;
   }
 
-  @include button-variant-disabled()
+  @include button-variant-disabled();
   
   .badge {
     color: $background;

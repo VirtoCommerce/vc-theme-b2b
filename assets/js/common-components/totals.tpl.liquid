@@ -1,50 +1,48 @@
-﻿<div class="vc-product-totals">
-    <ul class="list">
-        <li class="list-item">
+﻿<ol class="list-group">
+    <li class="list-group-item">
+        <dl class="dl-horizontal-inverse">
             {% if settings.show_prices_with_taxes %}
-            <div class="list-name">{{ 'checkout.subtotalWithTax' | t }}</div>
-            <div class="list-price" ng-bind="$ctrl.order.subTotalWithTax.formattedAmount"></div>
+                <dt ng-bind="$ctrl.order.subTotalWithTax.formattedAmount"></dt>
+                <dd>{{ 'checkout.subtotalWithTax' | t }}</dd>
             {% else %}
-            <div class="list-name">{{ 'checkout.subtotal' | t }}</div>
-            <div class="list-price" ng-bind="$ctrl.order.subTotal.formattedAmount"></div>
+                <dt ng-bind="$ctrl.order.subTotal.formattedAmount"></dt>
+                <dd>{{ 'checkout.subtotal' | t }}</dd>
             {% endif %}
-        </li>
-        <li class="list-item">
+            {% unless settings.show_prices_with_taxes %}
+                <dt ng-if-start="isReview || $ctrl.order.taxTotal.amount > 0" ng-bind="$ctrl.order.taxTotal.formattedAmount"></dt>
+                <dd ng-if-end>{{ 'checkout.taxes' | t }}</dd>
+            {% endunless %}
             {% if settings.show_prices_with_taxes %}
-            <div class="list-name">{{ 'checkout.shippingWithTax' | t }}</div>
-            <div class="list-price" ng-bind="$ctrl.order.shippingPriceWithTax.formattedAmount || $ctrl.order.shippingTotalWithTax.formattedAmount"></div>
+                <dt ng-if="$ctrl.order.shippingPriceWithTax.amount > 0" ng-bind="$ctrl.order.shippingPriceWithTax.formattedAmount || $ctrl.order.shippingTotalWithTax.formattedAmount"></dt>
+                <dt ng-if="$ctrl.order.shippingPriceWithTax.amount == 0" class="text-uppercase">{{ 'checkout.free' | t }}</dt>
+                <dd>{{ 'checkout.shippingWithTax' | t }}</dd>
             {% else %}
-            <div class="list-name">{{ 'checkout.shipping' | t }}</div>
-            <div class="list-price" ng-bind="$ctrl.order.shippingPrice.formattedAmount || $ctrl.order.shippingTotal.formattedAmount"></div>
+                <dt ng-if="$ctrl.order.shippingTotal.amount > 0" ng-bind="$ctrl.order.shippingPrice.formattedAmount || $ctrl.order.shippingTotal.formattedAmount"></dt>
+                <dt ng-if="$ctrl.order.shippingTotal.amount == 0" class="text-uppercase">{{ 'checkout.free' | t }}</dt>
+                <dd>{{ 'checkout.shipping' | t }}</dd>
             {% endif %}
-        </li>
-        <li class="list-item" ng-if="$ctrl.order.paymentTotal.amount > 0">
             {% if settings.show_prices_with_taxes %}
-            <div class="list-name">{{ 'checkout.paymentFeesWithTax' | t }}</div>
-            <div class="list-price" ng-bind="$ctrl.order.paymentPriceWithTax.formattedAmount"></div>
+                <dt ng-if-start="$ctrl.order.paymentTotal.amount > 0" ng-bind="$ctrl.order.paymentPriceWithTax.formattedAmount"></dt>
+                <dd ng-if-end>{{ 'checkout.paymentFeesWithTax' | t }}</dd>
             {% else %}
-            <div class="list-name">{{ 'checkout.paymentFees' | t }}</div>
-            <div class="list-price" ng-bind="$ctrl.order.paymentPrice.formattedAmount"></div>
+                <dt ng-if-start="$ctrl.order.paymentTotal.amount > 0" ng-bind="$ctrl.order.paymentPrice.formattedAmount"></dt>
+                <dd ng-if-end>{{ 'checkout.paymentFees' | t }}</dd>
             {% endif %}
-        </li>
-        <li class="list-item">
-            <div class="list-name">{{ 'checkout.discount' | t }}</div>
             {% if settings.show_prices_with_taxes %}
-            <div class="list-price" ng-bind="$ctrl.order.discountTotalWithTax.formattedAmount"></div>
+                <dt ng-if-start="isReview || $ctrl.order.discountTotalWithTax.amount > 0" ng-bind="$ctrl.order.discountTotalWithTax.formattedAmount"></dt>
             {% else %}
-            <div class="list-price" ng-bind="$ctrl.order.discountTotal.formattedAmount"></div>
+                <dt ng-if-start="isReview || $ctrl.order.discountTotal.amount > 0" ng-bind="$ctrl.order.discountTotal.formattedAmount"></dt>
             {% endif %}
-        </li>
-        <li class="list-item">
-            <div class="list-name">{{ 'checkout.taxes' | t }}</div>
-            <div class="list-price" ng-bind="$ctrl.order.taxTotal.formattedAmount"></div>
-        </li>
-        <li class="list-item total">
-            <div class="list-name">{{ 'checkout.total' | t }}</div>
-            <div class="list-price">
-                <div class="list-currency" ng-bind="$ctrl.order.total.currency.code"></div>
-                <span ng-bind="$ctrl.order.total.formattedAmount"></span>
-            </div>
-        </li>
-    </ul>
-</div>
+            <dd ng-if-end>{{ 'checkout.discount' | t }}</dd>
+        </dl>
+    </li>
+    <li class="list-group-item">
+        <dl class="dl-horizontal-inverse">
+            <dt class="text-success" ng-bind="$ctrl.order.total.formattedAmount"></dt>
+            <dd><strong>{{ 'checkout.total' | t }}</strong></dd>
+        </dl>
+    </li>
+    <li class="list-group-item" ng-if="!isComplete">
+        <small><a href="">Availability, shipping, tax & promotions</a> are not final until you complete your order.</small>
+    </li>
+</ol>
