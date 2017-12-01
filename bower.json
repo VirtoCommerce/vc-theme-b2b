@@ -31,6 +31,7 @@
         "es6-shim": "0.35.3",
         "font-awesome": "^4.7.0",
         "jquery": "^1.11.0",
+        "ng-wizard": "*",
         "ngstorage": "^0.3.11",
         "polyfills": "0.1.36",
         "prism": "^1.8.4", 
@@ -50,6 +51,8 @@
         "bower_components"
     ],
     "resolutions": {
-        "angular": ">=1.2.26 <1.7"
+    "angular": ">=1.2.26 <1.7",
+    "angular-animate": "~1.5.7",
+    "font-awesome": "~4.7"
     }
 }

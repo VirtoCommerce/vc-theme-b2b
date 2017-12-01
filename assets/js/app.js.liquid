@@ -4,6 +4,7 @@
     'ngSanitize',
     'ngAnimate',
     'ui.bootstrap',
+    'ngWizard',
     'satellizer'
 ]
 var storefrontApp = angular.module('storefrontApp', storefrontAppDependencies);
@@ -37,7 +38,7 @@ storefrontApp.factory('httpErrorInterceptor', ['$q', '$rootScope', function ($q,
     return httpErrorInterceptor;
 }])
 
-storefrontApp.config(['$locationProvider', '$httpProvider', '$translateProvider', function ($locationProvider, $httpProvider, $translateProvider) {
+storefrontApp.config(['$locationProvider', '$httpProvider', '$translateProvider', 'wizardConfigProviderProvider', function ($locationProvider, $httpProvider, $translateProvider, wizardConfigProvider) {
     $locationProvider.html5Mode({ enabled: true, rewriteLinks: false });
     $httpProvider.interceptors.push('httpErrorInterceptor');
 
@@ -45,6 +46,9 @@ storefrontApp.config(['$locationProvider', '$httpProvider', '$translateProvider'
     $translateProvider.useUrlLoader(BASE_URL + 'themes/localization.json');
     $translateProvider.preferredLanguage('en');
 
+    wizardConfigProvider.prevString = 'Back';
+    wizardConfigProvider.nextString = 'Continue';
+   //  wizardConfigProvider.submitString = 'Submit';
 }]);
 
 storefrontApp.run(['$rootScope', '$window', function($rootScope, $window) {
