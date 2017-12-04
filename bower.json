@@ -20,6 +20,7 @@
     "angular-component-router": "0.2.0",
     "angular-credit-cards": "^3.0.1",
     "angular-filter": "^0.5.8",
+    "angular-recaptcha": "^4.1.2",
     "angular-resource": "~1.5.7",
     "angular-sanitize": "~1.5.7",
     "angular-translate": "^2.12.1",
@@ -50,9 +51,9 @@
     "node_modules",
     "bower_components"
   ],
-  "resolutions": {
+    "resolutions": {
     "angular": "~1.5.7",
-    "angular-animate": "~1.5.7",
+        "angular-animate": "~1.5.7",
     "font-awesome": "~4.7"
-  }
+    }
 }

@@ -5,6 +5,7 @@
     'ngAnimate',
     'ui.bootstrap',
     'ngWizard',
+    'vcRecaptcha',
     'satellizer'
 ]
 var storefrontApp = angular.module('storefrontApp', storefrontAppDependencies);
@@ -38,7 +39,8 @@ storefrontApp.factory('httpErrorInterceptor', ['$q', '$rootScope', function ($q,
     return httpErrorInterceptor;
 }])
 
-storefrontApp.config(['$locationProvider', '$httpProvider', '$translateProvider', 'wizardConfigProviderProvider', function ($locationProvider, $httpProvider, $translateProvider, wizardConfigProvider) {
+storefrontApp.config(['$locationProvider', '$httpProvider', '$translateProvider', 'wizardConfigProviderProvider', 'vcRecaptchaServiceProvider', function ($locationProvider, $httpProvider, $translateProvider, wizardConfigProvider, vcRecaptchaServiceProvider) {
+    $locationProvider.html5Mode({ enabled: true, rewriteLinks: false });
     $httpProvider.interceptors.push('httpErrorInterceptor');
 
     $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
@@ -47,7 +49,9 @@ storefrontApp.config(['$locationProvider', '$httpProvider', '$translateProvider'
 
     wizardConfigProvider.prevString = 'Back';
     wizardConfigProvider.nextString = 'Continue';
-   //  wizardConfigProvider.submitString = 'Submit';
+    wizardConfigProvider.submitString = 'Complete';
+
+    vcRecaptchaServiceProvider.setSiteKey('6LeBhjsUAAAAAM-avRbZPkcbsu9eME8-8Na9_bYD')
 }]);
 
 storefrontApp.run(['$rootScope', '$window', function($rootScope, $window) {
