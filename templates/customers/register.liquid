@@ -3,117 +3,119 @@
 {% endcomment %}
 {% include 'third-party/ngWizardTemplate' %}
 
-<div ng-controller="accountRegisterController as $ctrl">
-    <wizard current-step-number="currentStepNumber" submit="submit()">
-        <wizard-step title="{{ 'customer.register.step-personal' | t }}" entered="stepEntered()">
-            <form name="stepForm" novalidate="novalidate">
-                <div class="form-group">
-                    <label class="radio-inline">
-                        <input ng-model="member.type" value="Business" name="radio" type="radio">
-                        <span class="switch"></span>
-                        <span class="name">Business Use</span>
-                    </label>
-                    <label class="radio-inline">
-                        <input ng-model="member.type" value="Personal" name="radio" type="radio">
-                        <span class="switch"></span>
-                        <span class="name">Personal Use</span>
-                    </label>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <vc-labeled-input value="member.firstName" name="FirstName" type="text" required="true" placeholder="{{ 'customer.register.first_name' | t }}" form="stepForm"></vc-labeled-input>
+<main class="container" role="main">
+    <div ng-controller="accountRegisterController as $ctrl">
+        <wizard current-step-number="currentStepNumber" submit="submit()">
+            <wizard-step title="{{ 'customer.register.step-personal' | t }}" entered="stepEntered()">
+                <form name="stepForm" novalidate="novalidate">
+                    <div class="form-group">
+                        <label class="radio-inline">
+                            <input ng-model="member.type" value="Business" name="radio" type="radio">
+                            <span class="switch"></span>
+                            <span class="name">Business Use</span>
+                        </label>
+                        <label class="radio-inline">
+                            <input ng-model="member.type" value="Personal" name="radio" type="radio">
+                            <span class="switch"></span>
+                            <span class="name">Personal Use</span>
+                        </label>
                     </div>
-                    <div class="col-md-6">
-                        <vc-labeled-input value="member.lastName" name="LastName" type="text" required="true" placeholder="{{ 'customer.register.last_name' | t }}" form="stepForm"></vc-labeled-input>
-                    </div>
-                </div>
-                <vc-labeled-input value="member.email" name="Email" type="email" required="true" placeholder="{{ 'customer.register.email-work' | t }}" form="stepForm" ng-if="isOrg()"></vc-labeled-input>
-                <vc-labeled-input value="member.email" name="Email" type="email" required="true" placeholder="{{ 'customer.register.email' | t }}" form="stepForm" ng-if="!isOrg()"></vc-labeled-input>
-
-                <div class="row">
-                    <vc-labeled-input value="member.phone" name="Phone" type="tel" required="true" pattern="[0-9]*" placeholder="{{ 'customer.register.phone' | t }}" form="stepForm" class="col-xs-12"></vc-labeled-input>
-                </div>
-                <div class="row" ng-show="isOrg()">
-                    <vc-labeled-input value="member.accountNo" name="AccountNo" placeholder="{{ 'customer.register.account-number' | t }}" form="stepForm" class="col-xs-12 col-md-6"></vc-labeled-input>
-                </div>
-            </form>
-        </wizard-step>
-        <wizard-step title="{{ 'customer.register.step-address' | t }}" entered="stepEntered()" required-step-number="0">
-            <form name="stepForm" novalidate="novalidate">
-                <div class="row" ng-if="isOrg()">
-                    <vc-labeled-input value="member.organization" name="Organization" required="true" placeholder="{{ 'customer.register.company_name' | t }}" form="stepForm" class="col-xs-12 col-md-6"></vc-labeled-input>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group form-select" ng-class="{'keyuped': stepForm.Country.$modelValue, 'error': stepForm.$submitted && stepForm.Country.$invalid }">
-                            <label for="#" class="form-label" ng-bind="isOrg() ? '{{ 'customer.register.work-country' | t }}' : '{{ 'checkout.address.country' | t }}'" ></label>
-                            <select ng-model="member.address.countryCode" ng-options="x.code3 as x.name for x in $ctrl.countries" name="Country" required="required" class="form-control" size="1">
-                                <option value="">{{ 'checkout.address.country_select_placeholder' | t }}</option>
-                            </select>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <vc-labeled-input value="member.firstName" name="FirstName" type="text" required="true" placeholder="{{ 'customer.register.first_name' | t }}" form="stepForm"></vc-labeled-input>
                         </div>
-                        <p class="form-error" ng-if="stepForm.$submitted && stepForm.Country.$error.required">
-                            {{ 'checkout.country_required_message' | t }}
-                        </p>
-                    </div>
-
-                    <div class="col-md-6 vc-form" ng-if="member.address.country.regions.length">
-                        <div class="form-group form-select" ng-class="{'keyuped': member.address.regionId.length }">
-                            <label for="#" class="form-label" ng-bind="(isOrg() ? '{{ 'customer.register.work-region' | t }}' : '') + member.address.country.regionType"></label>
-                            <select ng-model="member.address.regionId" ng-options="x.code as x.name for x in member.address.country.regions" name="Region" required="required" class="form-control" size="1">
-                                <option value="" ng-bind="'Select ' + member.address.country.regionType"></option>
-                            </select>
+                        <div class="col-md-6">
+                            <vc-labeled-input value="member.lastName" name="LastName" type="text" required="true" placeholder="{{ 'customer.register.last_name' | t }}" form="stepForm"></vc-labeled-input>
                         </div>
-                        <p class="form-error" ng-if="stepForm.Region.$dirty && stepForm.Region.$error.required" ng-bind="'Please select ' + member.address.country.regionType"></p>
+                    </div>
+                    <vc-labeled-input value="member.email" name="Email" type="email" required="true" placeholder="{{ 'customer.register.email-work' | t }}" form="stepForm" ng-if="isOrg()"></vc-labeled-input>
+                    <vc-labeled-input value="member.email" name="Email" type="email" required="true" placeholder="{{ 'customer.register.email' | t }}" form="stepForm" ng-if="!isOrg()"></vc-labeled-input>
+
+                    <div class="row">
+                        <vc-labeled-input value="member.phone" name="Phone" type="tel" required="true" pattern="[0-9]*" placeholder="{{ 'customer.register.phone' | t }}" form="stepForm" class="col-xs-12"></vc-labeled-input>
+                    </div>
+                    <div class="row" ng-show="isOrg()">
+                        <vc-labeled-input value="member.accountNo" name="AccountNo" placeholder="{{ 'customer.register.account-number' | t }}" form="stepForm" class="col-xs-12 col-md-6"></vc-labeled-input>
+                    </div>
+                </form>
+            </wizard-step>
+            <wizard-step title="{{ 'customer.register.step-address' | t }}" entered="stepEntered()" required-step-number="0">
+                <form name="stepForm" novalidate="novalidate">
+                    <div class="row" ng-if="isOrg()">
+                        <vc-labeled-input value="member.organization" name="Organization" required="true" placeholder="{{ 'customer.register.company_name' | t }}" form="stepForm" class="col-xs-12 col-md-6"></vc-labeled-input>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group form-select" ng-class="{'keyuped': stepForm.Country.$modelValue, 'error': stepForm.$submitted && stepForm.Country.$invalid }">
+                                <label for="#" class="form-label" ng-bind="isOrg() ? '{{ 'customer.register.work-country' | t }}' : '{{ 'checkout.address.country' | t }}'"></label>
+                                <select ng-model="member.address.countryCode" ng-options="x.code3 as x.name for x in $ctrl.countries" name="Country" required="required" class="form-control" size="1">
+                                    <option value="">{{ 'checkout.address.country_select_placeholder' | t }}</option>
+                                </select>
+                            </div>
+                            <p class="form-error" ng-if="stepForm.$submitted && stepForm.Country.$error.required">
+                                {{ 'checkout.country_required_message' | t }}
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 vc-form" ng-if="member.address.country.regions.length">
+                            <div class="form-group form-select" ng-class="{'keyuped': member.address.regionId.length }">
+                                <label for="#" class="form-label" ng-bind="(isOrg() ? '{{ 'customer.register.work-region' | t }}' : '') + member.address.country.regionType"></label>
+                                <select ng-model="member.address.regionId" ng-options="x.code as x.name for x in member.address.country.regions" name="Region" required="required" class="form-control" size="1">
+                                    <option value="" ng-bind="'Select ' + member.address.country.regionType"></option>
+                                </select>
+                            </div>
+                            <p class="form-error" ng-if="stepForm.Region.$dirty && stepForm.Region.$error.required" ng-bind="'Please select ' + member.address.country.regionType"></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-7">
+                            <vc-labeled-input value="member.address.line1" name="Line1" type="text" required="true" placeholder="{{ 'customer.register.address1' | t }}" form="stepForm"></vc-labeled-input>
+                        </div>
+                        <div class="col-md-5">
+                            <vc-labeled-input value="member.address.line2" name="Line2" type="text" placeholder="{{ 'customer.register.address2' | t }}" form="stepForm"></vc-labeled-input>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <vc-labeled-input value="member.address.postalCode" name="PostalCode" required="true" pattern="[0-9]*" placeholder="{{ 'checkout.address.zip' | t }}" form="stepForm"></vc-labeled-input>
+                        </div>
+                    </div>
+                </form>
+            </wizard-step>
+
+            <wizard-step title="{{ 'customer.register.step3' | t }}" entered="stepEntered()" required-step-number="1">
+                <form name="stepForm" novalidate="novalidate">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <vc-labeled-input value="member.address.line2" name="Line2" required="true" placeholder="{{ 'checkout.address.address2' | t }}" form="stepForm"></vc-labeled-input>
+                        </div>
+                    </div>
+                </form>
+            </wizard-step>
+        </wizard>
+
+        <!--<div class="vc-contributor">
+            <form class="responsive">
+                <div ng-init="step = 'licenseTerms'" class="steps">
+                    <div ng-click="step = 'licenseTerms';reloadContributorData();" class="step">
+                        <a class="step-link" ng-class="{'selected': (step === 'licenseTerms')}"></a>
+                    </div>
+                    <div ng-click="step = 'contactInfo';reloadContributorData()" class="step">
+                        <a class="step-link" ng-class="{'selected': (step === 'contactInfo')}"></a>
+                    </div>
+                    <div ng-click="step = 'projectInfo';reloadContributorData()" class="step">
+                        <a class="step-link" ng-class="{'selected': (step === 'projectInfo')}"></a>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-7">
-                        <vc-labeled-input value="member.address.line1" name="Line1" type="text" required="true" placeholder="{{ 'customer.register.address1' | t }}" form="stepForm"></vc-labeled-input>
-                    </div>
-                    <div class="col-md-5">
-                        <vc-labeled-input value="member.address.line2" name="Line2" type="text" placeholder="{{ 'customer.register.address2' | t }}" form="stepForm"></vc-labeled-input>
-                    </div>
+                <div class="bg-banner">
+                    <div ng-if="!formCompleted" class="banner-t">Become a contributor</div>
+                    <div ng-if="formCompleted" class="banner-t">Thank you for registration! Now you have become our partner </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <vc-labeled-input value="member.address.postalCode" name="PostalCode" required="true" pattern="[0-9]*" placeholder="{{ 'checkout.address.zip' | t }}" form="stepForm"></vc-labeled-input>
-                    </div>
-                </div>
+                <div ng-show="!formCompleted || loaded" class="columns"></div>
             </form>
-        </wizard-step>
-
-        <wizard-step title="{{ 'customer.register.step3' | t }}" entered="stepEntered()" required-step-number="1">
-            <form name="stepForm" novalidate="novalidate">
-                <div class="row">
-                    <div class="col-md-5">
-                        <vc-labeled-input value="member.address.line2" name="Line2" required="true" placeholder="{{ 'checkout.address.address2' | t }}" form="stepForm"></vc-labeled-input>
-                    </div>
-                </div>
-            </form>
-        </wizard-step>
-    </wizard>
-
-    <!--<div class="vc-contributor">
-        <form class="responsive">
-            <div ng-init="step = 'licenseTerms'" class="steps">
-                <div ng-click="step = 'licenseTerms';reloadContributorData();" class="step">
-                    <a class="step-link" ng-class="{'selected': (step === 'licenseTerms')}"></a>
-                </div>
-                <div ng-click="step = 'contactInfo';reloadContributorData()" class="step">
-                    <a class="step-link" ng-class="{'selected': (step === 'contactInfo')}"></a>
-                </div>
-                <div ng-click="step = 'projectInfo';reloadContributorData()" class="step">
-                    <a class="step-link" ng-class="{'selected': (step === 'projectInfo')}"></a>
-                </div>
-            </div>
-
-            <div class="bg-banner">
-                <div ng-if="!formCompleted" class="banner-t">Become a contributor</div>
-                <div ng-if="formCompleted" class="banner-t">Thank you for registration! Now you have become our partner </div>
-            </div>
-            <div ng-show="!formCompleted || loaded" class="columns"></div>
-        </form>
-    </div>-->
-</div>
+        </div>-->
+    </div>
+</main>
