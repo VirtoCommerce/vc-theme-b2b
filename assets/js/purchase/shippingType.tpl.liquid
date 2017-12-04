@@ -1,4 +1,6 @@
-﻿<div ng-if="$ctrl.isDropdown" class="ship-pickup dropdown" uib-dropdown is-open="$ctrl.isOpen" auto-close="disabled">
+﻿<ng-transclude></ng-transclude>
+{% comment %}
+<div ng-if="$ctrl.isDropdown" class="ship-pickup dropdown" uib-dropdown is-open="$ctrl.isOpen" auto-close="disabled">
     <a class="dropdown" href="" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
         {% raw %}{{ $ctrl.title }}{% endraw %}
         <i class="fa fa-angle-down"></i>
@@ -50,3 +52,4 @@
     <button class="btn btn-link" ng-click="$ctrl.isChanging = false; $ctrl.isOpen = false;">Cancel</button>
     <button class="btn btn-default" ng-click="$ctrl.save(); $ctrl.isChanging = false; $ctrl.isOpen = false;">Save</button>
 </script>
+{% endcomment %}

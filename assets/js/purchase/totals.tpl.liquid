@@ -9,7 +9,7 @@
                 <dd>{{ 'checkout.subtotal' | t }}</dd>
             {% endif %}
             {% unless settings.show_prices_with_taxes %}
-                <dt ng-if-start="isReview || $ctrl.order.taxTotal.amount > 0" ng-bind="$ctrl.order.taxTotal.formattedAmount"></dt>
+                <dt ng-if-start="$ctrl.isReview || $ctrl.order.taxTotal.amount > 0" ng-bind="$ctrl.order.taxTotal.formattedAmount"></dt>
                 <dd ng-if-end>{{ 'checkout.taxes' | t }}</dd>
             {% endunless %}
             {% if settings.show_prices_with_taxes %}
@@ -29,9 +29,9 @@
                 <dd ng-if-end>{{ 'checkout.paymentFees' | t }}</dd>
             {% endif %}
             {% if settings.show_prices_with_taxes %}
-                <dt ng-if-start="isReview || $ctrl.order.discountTotalWithTax.amount > 0" ng-bind="$ctrl.order.discountTotalWithTax.formattedAmount"></dt>
+                <dt ng-if-start="$ctrl.isReview || $ctrl.order.discountTotalWithTax.amount > 0" ng-bind="$ctrl.order.discountTotalWithTax.formattedAmount"></dt>
             {% else %}
-                <dt ng-if-start="isReview || $ctrl.order.discountTotal.amount > 0" ng-bind="$ctrl.order.discountTotal.formattedAmount"></dt>
+                <dt ng-if-start="$ctrl.isReview || $ctrl.order.discountTotal.amount > 0" ng-bind="$ctrl.order.discountTotal.formattedAmount"></dt>
             {% endif %}
             <dd ng-if-end>{{ 'checkout.discount' | t }}</dd>
         </dl>
@@ -42,7 +42,7 @@
             <dd><strong>{{ 'checkout.total' | t }}</strong></dd>
         </dl>
     </li>
-    <li class="list-group-item" ng-if="!isComplete">
+    <li class="list-group-item" ng-if="!$ctrl.isComplete">
         <small><a href="">Availability, shipping, tax & promotions</a> are not final until you complete your order.</small>
     </li>
 </ol>

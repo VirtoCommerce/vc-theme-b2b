@@ -1,10 +1,6 @@
 ﻿.navbar {
   margin-bottom: 0;
 
-  &:last-of-type {
-    margin-bottom: $navbar-margin-bottom;
-  }
-
   .row .navbar-brand {
     height: 100%;
   }
@@ -19,18 +15,20 @@
 }
 
 $navbars-count: 3;
-@for $i from 0 to $navbars-count {
-  .navbar-static-top:nth-of-type(#{$i + 1}),
-  .navbar-static-bottom:nth-last-of-type(#{$i + 1}) {
-    z-index: ($zindex-navbar - $i);
+@for $navbar-index from 0 to $navbars-count {
+  $navbar-number: $navbar-index + 1;
+
+  .navbar-static-top:nth-of-type(#{$navbar-number}),
+  .navbar-static-bottom:nth-last-of-type(#{$navbar-number}) {
+    z-index: ($zindex-navbar - $navbar-index);
   }
 
-  .navbar-fixed-top:nth-of-type(#{$i + 1}) {
-    top: $i * $navbar-height;
+  .navbar-fixed-top:nth-of-type(#{$navbar-number}) {
+    top: $navbar-index * ($navbar-height + 1px);
   }
 
-  .navbar-fixed-bottom:nth-last-of-type(#{$i + 1}) {
-    bottom: $i * $navbar-height;
+  .navbar-fixed-bottom:nth-last-of-type(#{$navbar-number}) {
+    bottom: $navbar-index * ($navbar-height + 1px);
   }
 }
 
@@ -311,10 +309,6 @@ $navbars-count: 3;
   padding-left: 0;
   padding-right: 0;
 
-  &:first-of-type {
-    margin-top: $navbar-margin-top;
-  }
-
   &:last-of-type {
     margin-bottom: 0;
   }
@@ -335,20 +329,27 @@ $navbars-count: 3;
 }
 
 .navbar-form-justify {
-  margin: -1px;
+  margin: 0;
   padding: 0;
-  overflow: hidden;
 
   .form-control,
   .btn {
     border-radius: 0;
-    line-height: $line-height-computed;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    height: ($line-height-computed + (15px * 2) + 2px); // compensate margin
+    border-top: 0;
+    border-bottom: 0;
+    height: $navbar-height;
+  }
+
+  &:only-child {
+    .form-control,
+    .btn {
+      border-left: 0;
+      border-right: 0;
+    }
   }
 
   .input-group {
+    display: table;
     .input-group-addon,
     .input-group-btn {
       width: 1%;

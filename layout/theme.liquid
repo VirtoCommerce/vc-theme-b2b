@@ -33,12 +33,10 @@
         {% include 'dialogs/list-settings-dialog' %}
         {% include 'dialogs/list-shared-link-dialog' %}
 
-        {% include 'main/header' %}        
-        <main class="container" role="main">
-            {{ content_for_layout }}
-        </main>
+        {% include 'main/header' %}
+        {{ content_for_layout }}
         {% include 'main/footer' %}
-</body>
+    </body>
 
     {% comment %}
         <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" ng-controller="mainController" ng-init="baseUrl='{{ '/' | absolute_url }}'">

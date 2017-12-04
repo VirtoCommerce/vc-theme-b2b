@@ -1,13 +1,14 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.component('vcShippingType', {
-    templateUrl: "themes/assets/js/common-components/shippingType.tpl.html",
+    templateUrl: "themes/assets/js/purchase/shippingType.tpl.html",
     bindings: {
         isDropdown: '<',
         title: "@",
         subtitle: "@",
         pickupMethodCode: "@"
     },
+    transclude: true,
     controller: ['$scope', '$localStorage', 'storefrontApp.mainContext', 'dialogService', function($scope, $localStorage, mainContext, dialogService) {
         var $ctrl = this;
         $ctrl.shipmentType = $localStorage['shipmentType'];

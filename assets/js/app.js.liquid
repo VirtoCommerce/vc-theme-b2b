@@ -39,7 +39,6 @@ storefrontApp.factory('httpErrorInterceptor', ['$q', '$rootScope', function ($q,
 }])
 
 storefrontApp.config(['$locationProvider', '$httpProvider', '$translateProvider', 'wizardConfigProviderProvider', function ($locationProvider, $httpProvider, $translateProvider, wizardConfigProvider) {
-    $locationProvider.html5Mode({ enabled: true, rewriteLinks: false });
     $httpProvider.interceptors.push('httpErrorInterceptor');
 
     $translateProvider.useSanitizeValueStrategy('sanitizeParameters');

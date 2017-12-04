@@ -1,7 +1,20 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.service('searchQueryService', [function () {
+storefrontApp.service('searchQueryService', ['$location', function ($location) {
     return {
+        // emulate html5 mode because of bug in Microsoft Edge
+        get: function () {
+            var result = {};
+            var url = new URL($location.absUrl());
+            var entries = url.searchParams.entries();
+            var pair = entries.next();
+            while (!pair.done) {
+                result[pair.value[0]] = pair.value[1];
+                pair = entries.next();
+            }
+            return result;
+        },
+
         // Deserializes search query strings like 'key=value1[,value2]' or 'key=key1:value1[,value2[;key2:value3[,value4]]]'
         deserialize: function (searchQuery, defaults) {
             var deserializeValues = function(string) {
@@ -50,7 +63,8 @@ storefrontApp.service('searchQueryService', [function () {
                             throw 'Type of ' + key + ' in search query is' + typeof (searchQueryValues[key]) + ' while in changes is' + typeof (changeValues[key]);
                         }
                         if (!angular.isArray(changeValues)) {
-                            return [key, mergePairs(searchQueryValues || [], changeValues || [])];
+                            var mergedPairs = mergePairs(searchQueryValues || [], changeValues || []);
+                            return !_.isEmpty(mergedPairs) ? [key, mergedPairs] : null;
                         } else {
                             var mergedValues = mergeValues(searchQueryValues, changeValues);
                             return mergedValues !== null ? [key, mergedValues] : null;

@@ -37,11 +37,20 @@ header {
   width: 305px;
 }
 
-
 main {
-  @media (max-width: $screen-sm-max){
-    margin-top: ($navbar-height + 1px) * 2 + $navbar-margin-bottom; // 1px border
+  margin-top: $navbar-margin-bottom;
+
+  @media (max-width: $screen-sm-max) {
+    .navbar-fixed-top + .navbar-fixed-top + & {
+      margin-top: ($navbar-height + 1px) * 2 + $navbar-margin-bottom; // 1px border
+    }
+
+    .navbar-fixed-top + .navbar-fixed-top + .navbar-fixed-top:not(.ng-hide) + & {
+      margin-top: ($navbar-height + 1px) * 3 + $navbar-margin-bottom; // 1px border
+    }
   }
+
+  margin-bottom: $navbar-margin-top;
 }
 
 .mobile-app {
@@ -51,8 +60,7 @@ main {
 .btn-youtube {
   @include btn-social(#e52d27);
 }
-
-/*//== Grid
+  /*//== Grid
 //
 //##
 

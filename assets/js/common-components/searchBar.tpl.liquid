@@ -11,18 +11,18 @@
             <button type="submit" class="btn btn-primary" ng-bind="$ctrl.submitLabel"></button>
         </span>
     </div>
+    <script id="search-bar-match.tpl" type="text/ng-template">
+        <a ng-href="{% raw %}{{ match.model.url }}{% endraw %}"
+           tabindex="-1"
+           ng-bind-html="match.label | uibTypeaheadHighlight:query"
+           ng-attr-title="{{match.label}}"></a>
+    </script>
+    <script id="search-bar-popup.tpl" type="text/ng-template">
+        <ul class="dropdown-menu" ng-show="isOpen() && !moveInProgress" ng-style="{top: position().top+'px', left: position().left+'px'}" role="listbox" aria-hidden="{% raw %}{{!isOpen()}}{% endraw %}">
+            <li class="dropdown-header" ng-repeat-start="(group, groupMatches) in matches | groupBy: 'model.within'" ng-bind="$parent.$parent.$ctrl[group + 'Label']"></li>
+            <li class="uib-typeahead-match" ng-repeat="match in groupMatches track by $index" ng-repeat-end ng-class="{active: isActive(match.model.index) }" ng-mouseenter="selectActive(match.model.index)" ng-click="selectMatch(match.model.index, $event)" role="option" id="{% raw %}{{::match.id}}{% endraw %}">
+                <div uib-typeahead-match index="match.model.index" match="match" query="query" template-url="templateUrl"></div>
+            </li>
+        </ul>
+    </script>
 </form>
-<script id="search-bar-match.tpl" type="text/ng-template">
-    <a ng-href="{% raw %}{{ match.model.url }}{% endraw %}"
-       tabindex="-1"
-       ng-bind-html="match.label | uibTypeaheadHighlight:query"
-       ng-attr-title="{{match.label}}"></a>
-</script>
-<script id="search-bar-popup.tpl" type="text/ng-template">
-    <ul class="dropdown-menu" ng-show="isOpen() && !moveInProgress" ng-style="{top: position().top+'px', left: position().left+'px'}" role="listbox" aria-hidden="{% raw %}{{!isOpen()}}{% endraw %}">
-        <li class="dropdown-header" ng-repeat-start="(group, groupMatches) in matches | groupBy: 'model.within'" ng-bind="$parent.$parent.$ctrl[group + 'Label']"></li>
-        <li class="uib-typeahead-match" ng-repeat="match in groupMatches track by $index" ng-repeat-end ng-class="{active: isActive(match.model.index) }" ng-mouseenter="selectActive(match.model.index)" ng-click="selectMatch(match.model.index, $event)" role="option" id="{% raw %}{{::match.id}}{% endraw %}">
-            <div uib-typeahead-match index="match.model.index" match="match" query="query" template-url="templateUrl"></div>
-        </li>
-    </ul>
-</script>

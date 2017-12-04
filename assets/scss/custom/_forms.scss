@@ -19,11 +19,20 @@
 }
 
 .form-control:focus {
-  &,
-  .has-success &,
-  .has-warning &,
+  & {
+    box-shadow: 0 0 0 1px $input-border-focus inset;
+  }
+
+  .has-success & {
+    box-shadow: 0 0 0 1px $state-success-text inset;
+  }
+
+  .has-warning & {
+    box-shadow: 0 0 0 1px $state-warning-text inset;
+  }
+    
   .has-error & {
-    box-shadow: 0 0 0 1px $input-border-focus;
+    box-shadow: 0 0 0 1px $state-danger-text inset;
   }
 }
 

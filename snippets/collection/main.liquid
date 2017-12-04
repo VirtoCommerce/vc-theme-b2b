@@ -1,64 +1,66 @@
 ﻿{% paginate collection.products by settings.product_list_capacity %}
-    <div class="col-xs-12">
-        {% include 'shared/breadcrumb' %}
-    </div>
-    <ng-controller ng-controller="collectionController as $collection">
-        <div class="col-xs-12" ng-init="isAboutCollapsed = true">
-            <h1>{{ collection.title }}
-                {% if collection.description != blank %}
-                    <a href="" class="link-reset pull-right" ng-click="isAboutCollapsed = !isAboutCollapsed">
-                        <small>
-                            <i class="fa" ng-class="{'fa-question-circle': isAboutCollapsed, 'fa-times-circle': !isAboutCollapsed}"></i>
-                            <span ng-show="isAboutCollapsed">{{ 'collections.general.about_category' | t }}</span>
-                            <span ng-hide="isAboutCollapsed">{{ 'layout.general.close' | t }}</span>
-                        </small>
-                    </a>
-                {% endif %}
-            </h1>
-            {% assign variants_count = 0 %}
-            {% for product in collection.products %}
-                {% assign product_variant_count = product.variants | size %}
-                {% assign variants_count = variants_count | plus: product_variant_count %}
-            {% endfor %}
-            {% assign all_results_count = collection.products_count %}
-            {% assign displayed_results_count = collection.products | size %}
-            <p>{{ 'collections.general.products_count' | t, all_results_count: all_results_count, displayed_results_count: displayed_results_count, products_count: variants_count }}</p>
-            <p class="collapse" uib-collapse="isAboutCollapsed">{{ collection.description }}</p>
+    <main class="container" role="main">
+        <div class="col-xs-12">
+            {% include 'shared/breadcrumb' %}
         </div>
-        <div class="col-md-4">
-            {% include 'collection/sidebar', collection: collection %}
-        </div>
-        <div class="col-md-8">
-            <div class="container-fluid container-drain container-bordered">
-                {% include 'collection/nav', position: 'top' %}
-                {% include product_items %}
-                {% include 'collection/nav', position: 'bottom' %}
-                {% include 'shared/pagination' %}
-                <script>
-                    window.productList = [];
-                    {% for product in collection.products %}
-                        window.productList.push({
-                            id: "{{ product.id }}",
-                            catalogId: "{{ product.catalog_id }}",
-                            outline: "{{ product.outline }}",
-                            categoryId: "{{ product.category_id }}",
-                            taxType: "{{ product.tax_type }}"
-                        });
-                    {% endfor %}
-                </script>
+        <ng-controller ng-controller="collectionController as $collection">
+            <div class="col-xs-12" ng-init="isAboutCollapsed = true">
+                <h1>{{ collection.title }}
+                    {% if collection.description != blank %}
+                        <a href="" class="link-reset pull-right" ng-click="isAboutCollapsed = !isAboutCollapsed">
+                            <small>
+                                <i class="fa" ng-class="{'fa-question-circle': isAboutCollapsed, 'fa-times-circle': !isAboutCollapsed}"></i>
+                                <span ng-show="isAboutCollapsed">{{ 'collections.general.about_category' | t }}</span>
+                                <span ng-hide="isAboutCollapsed">{{ 'layout.general.close' | t }}</span>
+                            </small>
+                        </a>
+                    {% endif %}
+                </h1>
+                {% assign variants_count = 0 %}
+                {% for product in collection.products %}
+                    {% assign product_variant_count = product.variants | size %}
+                    {% assign variants_count = variants_count | plus: product_variant_count %}
+                {% endfor %}
+                {% assign all_results_count = collection.products_count %}
+                {% assign displayed_results_count = collection.products | size %}
+                <p>{{ 'collections.general.products_count' | t, all_results_count: all_results_count, displayed_results_count: displayed_results_count, products_count: variants_count }}</p>
+                <p class="collapse" uib-collapse="isAboutCollapsed">{{ collection.description }}</p>
             </div>
-        </div>    
-    </ng-controller>
-    <script>
-        window.productList = [];
-        {% for product in collection.products %}
-            window.productList.push({
-                id: "{{ product.id }}",
-                catalogId: "{{ product.catalog_id }}",
-                outline: "{{ product.outline }}",
-                categoryId: "{{ product.category_id }}",
-                taxType: "{{ product.tax_type }}"
-            });
-        {% endfor %}
-    </script>
+            <div class="col-md-4">
+                {% include 'collection/sidebar', collection: collection %}
+            </div>
+            <div class="col-md-8">
+                <div class="container-fluid container-drain container-bordered">
+                    {% include 'collection/nav', position: 'top' %}
+                    {% include product_items %}
+                    {% include 'collection/nav', position: 'bottom' %}
+                    {% include 'shared/pagination' %}
+                    <script>
+                        window.productList = [];
+                        {% for product in collection.products %}
+                            window.productList.push({
+                                id: "{{ product.id }}",
+                                catalogId: "{{ product.catalog_id }}",
+                                outline: "{{ product.outline }}",
+                                categoryId: "{{ product.category_id }}",
+                                taxType: "{{ product.tax_type }}"
+                            });
+                        {% endfor %}
+                    </script>
+                </div>
+            </div>    
+        </ng-controller>
+        <script>
+            window.productList = [];
+            {% for product in collection.products %}
+                window.productList.push({
+                    id: "{{ product.id }}",
+                    catalogId: "{{ product.catalog_id }}",
+                    outline: "{{ product.outline }}",
+                    categoryId: "{{ product.category_id }}",
+                    taxType: "{{ product.tax_type }}"
+                });
+            {% endfor %}
+        </script>
+    </main>
 {% endpaginate %}

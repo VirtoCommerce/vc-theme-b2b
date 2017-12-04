@@ -24,6 +24,7 @@ var gulp = require('gulp'),
     postcss = require('gulp-postcss'),
     sass = require('gulp-sass'),
     htmlmin = require('gulp-htmlmin'),
+    bootlint = require('gulp-bootlint'),
     imagemin = require('gulp-image'),
     sourcemaps = require('gulp-sourcemaps'),
 
@@ -73,7 +74,7 @@ gulp.task('min:js', function () {
         return gulp.src(bundle.inputFiles, { base: '.' })
             .pipe(sourcemaps.init())
             .pipe(concat(bundle.outputFileName))
-            .pipe(uglify({ mangle: false }))
+            //.pipe(uglify({ mangle: false }))
             .pipe(mapSources())
             .pipe(sourcemaps.write("."))
             .pipe(gulp.dest('.'));
@@ -208,7 +209,19 @@ function getDirectories() {
     });
 }
 
-gulp.task('lint', function () {
+gulp.task('lint', function(callback) {
+    sequence('bootlint', 'eslint', callback);
+});
+
+gulp.task('bootlint', function() {
+    return gulp.src(['./**/*.html', './**/*.liquid'])
+        .pipe(gitignore())
+        .pipe(bootlint({
+            disabledIds: ['E001']
+        }));
+});
+
+gulp.task('eslint', function () {
     var tasks = getBundles(regex.js).filter(function(bundle) { return !bundle.disableLint || bundle.disableLint === undefined }).map(function(bundle) {
         return gulp.src(bundle.inputFiles, { base: '.' })
             .pipe(eslint("./.eslintrc.json"))
@@ -221,7 +234,7 @@ gulp.task('compress', ['min'], function() {
     var package = getPackage();
     return gulp.src([].concat(['./*/**'], [].concat.apply([], getBundleConfig().map(function(bundle) {
             return bundle.inputFiles.map(function(inputFile) { return '!' + inputFile; })
-    }))))
+        }))))
         .pipe(gitignore())
         .pipe(rename(function(path) {
             path.dirname = 'default/' + path.dirname;

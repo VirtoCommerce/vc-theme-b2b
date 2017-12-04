@@ -1,9 +1,9 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.component('vcTotals', {
-    templateUrl: "themes/assets/js/common-components/totals.tpl.liquid",
+    templateUrl: "themes/assets/js/purchase/totals.tpl.liquid",
 	bindings: {
-		order: '<',
+        order: '<',
         isReview: '@',
         isComplete: '@'
 	}

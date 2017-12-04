@@ -6,8 +6,11 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
         //Base store url populated in layout and can be used for construction url inside controller
         $scope.baseUrl = {};
 
-        $scope.$watch(function () {
-            $scope.currentPath = $location.$$path.replace('/', '');
+        $rootScope.$on('$locationChangeSuccess', function () {
+            var path = $location.path();
+            if (path) {
+                $scope.currentPath = path.replace('/', '');
+            }
         });
 
         $rootScope.$on('storefrontError', function (event, data) {
