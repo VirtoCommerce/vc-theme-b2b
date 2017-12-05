@@ -577,7 +577,7 @@
         "register": {
             "step-personal": "Provide Your Registration Information",
             "step-address": "Provide Your Address",
-            "step3": "account",
+            "step-account": "Complete Your Registration",
             "company_name": "Organization Name",
             "first_name": "First Name",
             "last_name": "Last Name",
@@ -598,6 +598,8 @@
             "submit": "Create",
             "or": "or",
             "cancel": "Return to Store",
+            "password-length": "At least 5 characters required!",
+            "repeat-password": "Passwords doesn't match!",
             "registration_success_text": "Registration completed successfully",
             "registration_failed_text": "Registration failed",
             "registration_invite_revoked_text": "Your invitation is revoked",

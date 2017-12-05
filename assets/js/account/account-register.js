@@ -10,7 +10,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
         $ctrl.countries = accountApi.getCountries();
 
         $scope.isOrg = function () {
-            return $scope.member.type === 'Business';                
+            return $scope.member.type === 'Business';
         };
 
         $scope.$watch('member.address.countryCode', function () {
@@ -32,7 +32,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                         setAddressRegion(address, address.country.regions);
                     }
                     else {
-                        //ctrl.getCountryRegions({ country: address.country }).then(function (regions) {
+                        //$ctrl.getCountryRegions({ country: address.country }).then(function (regions) {
                         accountApi.getCountryRegions(address.country, function (regions) {
                             address.country.regions = regions;
                             setAddressRegion(address, regions);
@@ -57,7 +57,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
         function stringifyAddress(address) {
             var addressType = '';
 
-            //var type = _.find(ctrl.types, function (i) { return i.id == ctrl.address.addressType });
+            //var type = _.find($ctrl.types, function (i) { return i.id == $ctrl.address.addressType });
             //if (type)
             //    addressType = '[' + type.name + '] ';
 
@@ -116,8 +116,6 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
         $scope.init = function (storeId) {
             $scope.member = { storeId: storeId };
 
-            $scope.complete = false;
-
             var invite = getParams().invite;
             if (invite) {
                 $scope.registerMemberFieldsConfig[0] = {
@@ -148,28 +146,56 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
             }
         };
 
-        $scope.register = function () {
-            $scope.error = null;
+        //$scope.stepEntered = function () { };
 
-            if (this.memberComponent.validate()) {
-                if ($scope.member.invite) {
-                    $scope.loader.wrapLoading(function () {
-                        return corporateRegisterApi.registerByInvite({ invite: $scope.member.invite }, $scope.member, function (result) {
-                            $scope.complete = true;
-                            corporateApiErrorHelper.clearErrors($scope);
-                        }, function (rejection) {
-                            corporateApiErrorHelper.handleErrors($scope, rejection);
-                        }).$promise;
-                    });
-                } else {
-                    $scope.loader.wrapLoading(function () {
-                        return corporateRegisterApi.register($scope.member, function (result) {
-                            $scope.complete = true;
-                            corporateApiErrorHelper.clearErrors($scope);
-                        }, function (rejection) {
-                            corporateApiErrorHelper.handleErrors($scope, rejection);
-                        }).$promise;
-                    });
+        $scope.submit = function () {
+            $ctrl.error = {};
+
+            var hasError = false;
+            var errorMsg;
+
+            var member = $scope.member;
+            errorMsg = member.password.length < 5;
+            $ctrl.error.password = errorMsg;
+            hasError = hasError || errorMsg;
+
+            if (!hasError) {
+                errorMsg = member.password !== member.confirmPassword;
+                $ctrl.error.confirmPassword = errorMsg;
+                hasError = hasError || errorMsg;
+            }
+
+            if (!hasError) {
+                //loader.wrapLoading(function () {
+                //    return corporateRegisterApi.register(member, function (result) {
+                //        corporateApiErrorHelper.clearErrors($scope);
+
+                //    }, function (rejection) {
+                //        corporateApiErrorHelper.handleErrors($scope, rejection);
+                //        $scope.outerRedirect($scope.baseUrl + 'account');
+                //    }).$promise; 
+                //});
+
+                if (this.memberComponent.validate()) {
+                    if ($scope.member.invite) {
+                        $scope.loader.wrapLoading(function () {
+                            return corporateRegisterApi.registerByInvite({ invite: $scope.member.invite }, $scope.member, function (result) {
+                                $scope.complete = true;
+                                corporateApiErrorHelper.clearErrors($scope);
+                            }, function (rejection) {
+                                corporateApiErrorHelper.handleErrors($scope, rejection);
+                            }).$promise;
+                        });
+                    } else {
+                        $scope.loader.wrapLoading(function () {
+                            return corporateRegisterApi.register($scope.member, function (result) {
+                                $scope.complete = true;
+                                corporateApiErrorHelper.clearErrors($scope);
+                            }, function (rejection) {
+                                corporateApiErrorHelper.handleErrors($scope, rejection);
+                            }).$promise;
+                        });
+                    }
                 }
             }
         };
