@@ -84,8 +84,8 @@
         <span ng-if="organization"><small ng-bind="$ctrl.address.organization"></small></span>
     </div>
     <span ng-bind="$ctrl.address.line1"></span><span ng-if="fulfillmentCenter.line2">, <span ng-bind="$ctrl.address.line2"></span></span>
-    <span ng-bind="$ctrl.address.city"></span>, <span ng-bind="$ctrl.address.regionName"></span>, <span ng-bind="$ctrl.address.countryCode"></span> <span ng-bind="$ctrl.address.postalCode"></span>
-    <span ng-if="$ctrl.address.phone"><strong>{{ 'customer.addresses.phone' | t }}:</strong>&nbsp;<span ng-bind="$ctrl.address.phone"></span></span>
-    <span ng-if="$ctrl.address.email"><strong>{{ 'customer.addresses.email' | t }}:</strong>&nbsp;<span ng-bind="$ctrl.address.email"></span></span>
+    <span ng-bind="$ctrl.address.city"></span>, <span ng-bind="$ctrl.address.regionName"></span>, <span ng-bind="$ctrl.address.countryCode"></span> <span ng-bind="$ctrl.address.postalCode"></span><br>
+    <span ng-if="$ctrl.address.phone"><strong>{{ 'customer.addresses.phone' | t }}:</strong>&nbsp;<span ng-bind="$ctrl.address.phone"></span><br></span>
+    <span ng-if="$ctrl.address.email"><strong>{{ 'customer.addresses.email' | t }}:</strong>&nbsp;<span ng-bind="$ctrl.address.email"></span><br></span>
     <ng-transclude ng-transclude-slot="footer"></ng-transclude>
 </address>
