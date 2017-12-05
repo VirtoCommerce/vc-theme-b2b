@@ -1,15 +1,17 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('inventoryController', ['dialogService', 'fulfillmentCenterService', function (dialogService, fulfillmentCenterService) {
-    var $ctrl = this;
+storefrontApp.controller('inventoryController', ['$scope', 'dialogService', 'fulfillmentCenterService', function ($scope, dialogService, fulfillmentCenterService) {
+    $scope.searchFulfillmentCenters = function() {
+        fulfillmentCenterService.searchFulfillmentCenters({ searchPhrase: $scope.searchPhrase }).then(function(response) {
+            $scope.fulfillmentCenters = response.data.results;
+        });
+    };
 
-    $ctrl.selectFulfillmentCenter = function() {
+    $scope.selectFulfillmentCenter = function() {
         dialogService.showDialog({ isFilter: true }, 'universalDialogController', 'storefront.select-fulfillment-center-dialog.tpl');
     };
 
-    $ctrl.searchFulfillmentCenters = function() {
-        fulfillmentCenterService.searchFulfillmentCenters({ searchPhrase: $ctrl.searchPhrase }).then(function(response) {
-            $ctrl.fulfillmentCenters = response.data.results;
-        });
+    $scope.fulfillmentCenterToAddress = function (fulfillmentCenter) {
+        return fulfillmentCenterService.toAddress(fulfillmentCenter);
     };
 }]);

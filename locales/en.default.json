@@ -169,7 +169,6 @@
         "select_branch": {
             "title": "Select branch",
             "enter_search_phrase": "Enter a full address, city, state, country, ZIP code or branch name:",
-            "phone": "Phone:",
             "close": "Close branch selection"
         },
     },
@@ -408,6 +407,7 @@
             "province": "Province",
             "zip": "Postal/Zip Code",
             "phone": "Phone",
+            "email": "Email",
             "set_default": "Set as default address?",
             "add": "Add Address",
             "update": "Update Address",

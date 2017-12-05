@@ -60,34 +60,38 @@
                     <div class="col-xs-12 col-md-9">
                         <div class="container-drain container-bordered-horizontal">
                             <div class="row hidden-xs hidden-sm">
-                                <div class="col-xs-12">
-                                    <vc-shipping-type is-dropdown="false" pickup-method-code="{{ settings.pickup_shipping_method }}">
+                                <div class="col-xs-12" ng-controller="purchaseController">
+                                    <vc-shipment-type ctrl="$ctrl" shipment-type="::shipmentType" shipment-address="::shipmentAddress" shipment-fulfillment-center="::shipmentFulfillmentCenter" on-change="updateShipmentType(shipmentType, shipmentTypeInfo)" on-fulfillment-center-selection="$ctrl.change()">
                                         <div class="well container-bordered-vertical">
                                             <div class="row flexible">
                                                 <div class="col-md-3">
                                                     <h4>Delivery method</h4>
-                                                    <div class="radio">
-                                                        <label>
-                                                            <input type="radio" name="deliveryMethods" id="shipping" ng-model="$ctrl.shipmentType" value="shipping">
-                                                            <span class="switch"></span>
-                                                            <span class="name">Shipping</span>
-                                                        </label>
+                                                    <div class="form-group">
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input type="radio" name="deliveryMethods" id="shipping" ng-model="$ctrl.shipmentType" value="shipping" ng-click="$ctrl.change()">
+                                                                <span class="switch"></span>
+                                                                <span class="name">Shipping</span>
+                                                            </label>
+                                                        </div>
                                                     </div>
-                                                    <div class="radio">
-                                                        <label>
-                                                            <input type="radio" name="deliveryMethods" id="pickup" ng-model="$ctrl.shipmentType" value="pickup">
-                                                            <span class="switch"></span>
-                                                            <span class="name">Pickup</span>
-                                                        </label>
+                                                    <div class="form-group">
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input type="radio" name="deliveryMethods" id="pickup" ng-model="$ctrl.shipmentType" value="pickup" ng-click="$ctrl.change()">
+                                                                <span class="switch"></span>
+                                                                <span class="name">Pickup</span>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-9" ng-if="$ctrl.shipmentType == 'shipping'">
                                                     <h4>Check availability</h4>
                                                     <div class="form-inline">
                                                         <div class="input-group">
-                                                            <input type="text" class="form-control" />
+                                                            <input type="text" class="form-control" ng-model="$ctrl.shipmentAddress.postalCode" placeholder="ZIP code" />
                                                             <span class="input-group-btn">
-                                                                <button class="btn btn-default">Go</button>
+                                                                <button class="btn btn-default" ng-click="$ctrl.change()">Go</button>
                                                             </span>
                                                         </div>
                                                     </div>
@@ -99,35 +103,31 @@
                                                                 <h4>Find a branch</h4>
                                                                 <p>Enter an address, city & state, ZIP code, branch # or country.</p>
                                                                 <div class="input-group">
-                                                                    <input type="text" class="form-control" />
+                                                                    <input type="text" class="form-control" ng-model="$ctrl.shipmentFulfillmentCenter.postalCode" placeholder="ZIP code" />
                                                                     <span class="input-group-btn">
-                                                                        <button class="btn btn-default">Go</button>
+                                                                        <button class="btn btn-default" ng-click="$ctrl.selectFulfillmentCenter()">Go</button>
                                                                     </span>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
+                                                        <div class="row" ng-show="$ctrl.shipmentFulfillmentCenter">
                                                             <div class="col-md-12">
                                                                 <h4>My selected branch</h4>
-                                                                <a href="#">BROOKLYN Branch #556</a>
-                                                                <address>815 3rd Ave. BROOKLYN, NY 11232</address>
-                                                                <div class="row">
-                                                                    <div class="col-md-4">
-                                                                        <strong>Phone</strong>
-                                                                        <p>1-800-472-4643</p>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <strong>Hours</strong>
-                                                                        <p>M–F 7:00 AM - 5:00 PM EASTERN</p>
-                                                                    </div>
-                                                                </div>
+                                                                <vc-address address="shipmentFulfillmentCenterAddress">
+                                                                    <address-header>
+                                                                        <p><a href="#" ng-bind="$ctrl.shipmentFulfillmentCenter.name"></a></p>
+                                                                    </address-header>
+                                                                    <address-footer>
+                                                                        <strong>Hours:</strong> <span>M–F 7:00 AM - 5:00 PM EASTERN</span>
+                                                                    </address-footer>
+                                                                </vc-address>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </vc-shipping-type>
+                                    </vc-shipment-type>
                                 </div>
                                 <div class="col-xs-12">
                                     <div class="h2">
@@ -161,8 +161,8 @@
                                         <span>/ each</span>
                                     </p>
                                 </div>
-                                <div class="hidden-xs hidden-sm col-md-4">
-                                    <vc-payment-plan product-id="lineItem.productId"></vc-payment-plan>
+                                <div class="hidden-xs hidden-sm col-md-4" ng-controller="purchaseController" ng-init='loadPaymentPlan({{ settings.available_paymentPlans | json }}, "product", lineItem.productId)'>
+                                    <vc-payment-plan available-payment-plans="::availablePaymentPlans" payment-plan-type="::paymentPlanType" payment-plan="::paymentPlan" on-change="updatePaymentPlan('product', lineItem.productId, paymentPlanType, paymentPlan)"></vc-payment-plan>
                                 </div>
                                 <div class="col-xs-3 col-md-2">
                                     <div class="row">
@@ -189,6 +189,11 @@
                                             <strong class="text-success" ng-bind="lineItem.extendedPrice.formattedAmount"></strong>
                                         {% endif %}
                                     </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <p class="text-center"><strong>If you changed multiple quantities, </strong><a href="">Update All</a></p>
                                 </div>
                             </div>
                         </div>

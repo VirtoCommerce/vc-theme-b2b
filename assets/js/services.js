@@ -41,14 +41,6 @@ storefrontApp.service('customerService', ['$http', function ($http) {
     }
 }]);
 
-storefrontApp.service('fulfillmentCenterService', ['$http', 'apiBaseUrl', function($http, apiBaseUrl) {
-    return {
-        searchFulfillmentCenters: function (criteria) {
-            return $http.post(apiBaseUrl + 'api/fulfillment/search/centers', criteria);
-        }
-    }
-}]);
-
 storefrontApp.service('marketingService', ['$http', function ($http) {
     return {
         getDynamicContent: function (placeName) {

@@ -3,26 +3,24 @@
         <button class="close" type="button" ng-click="close()" title="{{ 'inventory.select_branch.close' | t }}" aria-label="{{ 'inventory.select_branch.close' | t }}"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">{{ 'inventory.select_branch.title' | t }}</h4>
     </div>
-    <div class="modal-body" ng-controller="inventoryController as $inventory" ng-init="$inventory.searchFulfillmentCenters()">
+    <div class="modal-body" ng-controller="inventoryController" ng-init="searchFulfillmentCenters()">
         <p>{{ 'inventory.select_branch.enter_search_phrase' | t }}</p>
-        <div class="input-group" vc-enter-source>
-            <input class="form-control" type="text" ng-model="$inventory.searchPhrase">
-            <span class="input-group-btn">
-                <a class="btn btn-default" href="" ng-click="$inventory.searchFulfillmentCenters()" vc-enter-target>{{ 'common.go' | t }}</a>
-            </span>
+        <div class="form-group">
+            <div class="input-group" vc-enter-source>
+                <input class="form-control" type="text" ng-model="searchPhrase">
+                <span class="input-group-btn">
+                    <a class="btn btn-default" href="" ng-click="searchFulfillmentCenters()" vc-enter-target>{{ 'common.go' | t }}</a>
+                </span>
+            </div>
         </div>
-        <div class="container-fluid container-drain">
-            <div class="row" ng-repeat="fulfillmentCenter in $inventory.fulfillmentCenters">
+        <div class="container-fluid">
+            <div class="row" ng-repeat="fulfillmentCenter in fulfillmentCenters">
                 <div class="col-md-5">
-                    {% raw %}
-                        <address>
-                            <h5>{{ fulfillmentCenter.name }}</h5>
-                            <span ng-if="fulfillmentCenter.description"><small>{{ fulfillmentCenter.description }}</small><br></span>
-                            {{ fulfillmentCenter.line1 }}<span ng-if="fulfillmentCenter.line2">, {{ fulfillmentCenter.line2 }}</span><br>
-                            {{ fulfillmentCenter.city }}, {{ fulfillmentCenter.stateProvince }}, {{ fulfillmentCenter.countryCode }} {{ fulfillmentCenter.postalCode }}<br>
-                            {% endraw %}{{ 'inventory.select_branch.phone' | t }}{% raw %}&nbsp;{{ fulfillmentCenter.daytimePhoneNumber }}
-                        </address>
-                    {% endraw %}
+                    <vc-address ng-init="address = fulfillmentCenterToAddress(fulfillmentCenter)" address="address">
+                        <address-header>
+                            <div class="h5" ng-bind="fulfillmentCenter.name"></div>
+                        </address-header>
+                    </vc-address>
                 </div>
                 <div class="col-md-2"><srong>1.3 mi</srong></div>
                 <div class="col-md-2">1000 items available</div>

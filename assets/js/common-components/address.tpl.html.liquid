@@ -77,4 +77,19 @@
     </div>
 </form>
 
-<div ng-if="!$ctrl.editMode" ng-bind="$ctrl.address.name"></div>
+<address ng-if="!$ctrl.editMode">
+    <ng-transclude ng-transclude-slot="header"></ng-transclude>
+    <div class="h5" ng-if="$ctrl.address.firstName || $ctrl.address.lastName || $ctrl.address.organization">
+        <span ng-if="$ctrl.address.firstName" ng-bind="$ctrl.address.firstName"></span> <span ng-if="$ctrl.address.lastName" ng-bind="$ctrl.address.lastName"></span>
+        <span ng-if="organization"><br><small ng-bind="$ctrl.address.organization"></small></span>
+    </div>
+    <p>
+        <span ng-bind="$ctrl.address.line1"></span><span ng-if="fulfillmentCenter.line2">, <span ng-bind="$ctrl.address.line2"></span></span><br>
+        <span ng-bind="$ctrl.address.city"></span>, <span ng-bind="$ctrl.address.regionName"></span>, <span ng-bind="$ctrl.address.countryCode"></span> <span ng-bind="$ctrl.address.postalCode"></span>
+    </p>
+    <p>
+        <span ng-if="$ctrl.address.phone"><strong>{{ 'customer.addresses.phone' | t }}:</strong>&nbsp;<span ng-bind="$ctrl.address.phone"></span><br></span>
+        <span ng-if="$ctrl.address.email"><strong>{{ 'customer.addresses.email' | t }}:</strong>&nbsp;<span ng-bind="$ctrl.address.email"></span></span>
+    </p>
+    <ng-transclude ng-transclude-slot="footer"></ng-transclude>
+</address>
