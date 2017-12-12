@@ -1,4 +1,6 @@
-﻿// based on https://github.com/angular/angular.js/blob/master/src/ng/directive/ngInclude.js
+﻿var storefrontApp = angular.module('storefrontApp');
+
+// based on https://github.com/angular/angular.js/blob/master/src/ng/directive/ngInclude.js
 storefrontApp.config(['$provide', function ($provide) {
     $provide.decorator('ngIncludeDirective', ['$delegate', function ($delegate) {
         var includeFillContentDirective = $delegate[1];

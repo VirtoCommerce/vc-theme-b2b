@@ -77,6 +77,7 @@ dl:only-child {
 
     dd {
       margin-left: $dl-horizontal-offset;
+      text-align: left;
     }
   }
 }
@@ -84,14 +85,17 @@ dl:only-child {
 .dl-horizontal-inverse {
   @media (min-width: $dl-horizontal-breakpoint) {
     dt {
-      float: right;
-      width: $dl-horizontal-offset * 0.75;
-      clear: right;
-      text-align: right;
+      font-weight: normal;
+      float: left;
+      width: 100% - $dl-horizontal-offset;
+      clear: left;
+      text-align: left;
     }
 
     dd {
-      margin-right: $dl-horizontal-offset;
+      font-weight: bold;
+      margin-left: 100% - $dl-horizontal-offset * 0.75;
+      text-align: right;
     }
   }
 }

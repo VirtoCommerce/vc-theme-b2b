@@ -61,7 +61,7 @@
    $font-family-condensed:  "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif; // not predefined
 
    $font-size-base:          14px; // 14px
-   $font-size-large:         $font-size-base; // =18px // ceil( ($font-size-base * 1.25)) // ~18px
+   $font-size-large:         $font-size-base; // =14px // ceil( ($font-size-base * 1.25)) // ~18px
    $font-size-small:         odd(($font-size-base * 0.85)); // =12px // ceil( ($font-size-base * 0.85)) // ~12px
 
    $font-size-h1:            odd(($font-size-base * 2.5));  // =34px // floor(($font-size-base * 2.6))  // ~36px

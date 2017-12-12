@@ -1,4 +1,6 @@
-﻿storefrontApp.directive('vcScope', ['$animate', '$compile', function ($animate) {
+﻿var storefrontApp = angular.module('storefrontApp');
+
+storefrontApp.directive('vcScope', ['$animate', '$compile', function ($animate) {
     return {
         multiElement: true,
         transclude: 'element',

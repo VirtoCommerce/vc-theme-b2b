@@ -39,7 +39,7 @@
                         {% raw %}{{ customer.firstName }} {{ customer.lastName }}{% endraw %}
                     </li>
                     <li class="dropdown" uib-dropdown auto-close="mouseleave" aria-haspopup="true">
-                        <a id="account-dropdown" href="{{ 'account' | absolute_url }}" uib-dropdown-toggle vc-toggle-on-mouse-enter>{{ 'layout.customer.account' | t }}&ensp;<i class="dropdown-ico fa fa-angle-down"></i></a>
+                        <a id="account-dropdown" href="{{ 'account' | absolute_url }}" uib-dropdown-toggle vc-dropdown-trigger="mouseenter">{{ 'layout.customer.account' | t }}&ensp;<i class="dropdown-ico fa fa-angle-down"></i></a>
                         <ul class="dropdown-menu" role="menu" uib-dropdown-menu aria-labelledby="account-dropdown">
                             <li>
                                 {{ 'layout.customer.log_out' | t | customer_logout_link | replace: 'href', 'role="menuitem" tabindex="-1" href' }}

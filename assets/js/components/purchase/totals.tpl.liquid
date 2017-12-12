@@ -1,0 +1,38 @@
+﻿<ol class="list-group" ng-init="$ctrl.showWithTaxes = '{{ settings.show_prices_with_taxes }}'">
+    <li class="list-group-item">
+        <dl class="dl-horizontal-inverse">
+            <dt ng-if-start="$ctrl.options.show.subtotal" ng-init="title = '{{ 'totals.subtotal' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
+            <dd ng-if-end ng-bind="$ctrl.order[$ctrl.fieldNames.subTotal].formattedAmount"></dd>
+
+            <dt ng-if-start="$ctrl.options.show.shipping" ng-init="title = '{{ 'totals.shipping' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
+            <dd ng-if-end ng-init="field = $ctrl.order[$ctrl.fieldNames.shippingPrice] || $ctrl.order[$ctrl.fieldNames.shippingTotal]" ng-include="'totals-field-with-free-template.tpl'"></dd>
+
+            <dt ng-if-start="$ctrl.options.show.payment" ng-init="title = '{{ 'totals.paymentFees' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
+            <dd ng-if-end ng-init="field = $ctrl.order[$ctrl.fieldNames.payment]" ng-include="'totals-field-with-free-template.tpl'"></dd>
+            
+            {% unless settings.show_prices_with_taxes %}
+                <dt ng-if-start="$ctrl.options.show.taxes" ng-init="title = '{{ 'totals.taxes' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
+                <dd ng-if-end ng-bind="$ctrl.order.taxTotal.formattedAmount"></dd>
+            {% endunless %}
+
+            <dt ng-if-start="$ctrl.options.show.discount" ng-init="title = '{{ 'totals.discount' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
+            <dd ng-if-end ng-bind="$ctrl.order[$ctrl.fieldNames.discount].formattedAmount"></dd>
+        </dl>
+    </li>
+    <li class="list-group-item">
+        <dl class="dl-horizontal-inverse">
+            <dt><strong><span ng-if="!$ctrl.options.complete">{{ 'totals.estimated' | t }}</span> {{ 'totals.total' | t }}</strong></dt>
+            <dd class="text-success" ng-bind="$ctrl.order.total.formattedAmount"></dd>
+        </dl>
+    </li>
+    <li class="list-group-item" ng-if="!$ctrl.options.complete">
+        <small><a href="#">{{ 'totals.estimated_fields' | t }}</a> {{ 'totals.estimated_notice' | t }}</small>
+    </li>
+</ol>
+<script id="totals-title-template.tpl" type="text/ng-template">
+    <span ng-if="!$ctrl.options.complete">{{ 'totals.estimated' | t }}</span> {% raw %} {{ title }} {% endraw %} {% if settings.show_prices_with_taxes %} {{ 'totals.withTax' | t }} {% endif %}
+</script>
+<script id="totals-field-with-free-template.tpl" type="text/ng-template">
+    <span ng-if="field.amount > 0" ng-bind="field.formattedAmount"></span>
+    <span ng-if="field.amount <= 0" class="text-uppercase">{{ 'totals.free' | t }}</span>
+</script>

@@ -85,6 +85,9 @@ storefrontApp.service('cartService', ['$http', function ($http) {
         changeLineItemQuantity: function (lineItemId, quantity) {
             return $http.put('storefrontapi/cart/items', { lineItemId: lineItemId, quantity: quantity });
         },
+        changeLineItemsQuantity: function(items) {
+            return $http.put('storefrontapi/cart/items', items);
+        },
         removeLineItem: function (lineItemId) {
             return $http.delete('storefrontapi/cart/items?lineItemId=' + lineItemId);
         },

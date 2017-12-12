@@ -21,9 +21,7 @@
   border-bottom: 1px solid transparent;
   font-weight: $link-font-weight;
   text-transform: none;
-  margin: (($input-height-base - $line-height-computed) / 2) $padding-base-horizontal;
-  padding: 0;
-  height: $line-height-computed;
+  @include button-link-size-fix($padding-base-horizontal, $font-size-base, $line-height-base, $input-height-base);
 
   &:hover,
   &:focus {
@@ -39,6 +37,18 @@
 
   &:disabled {
     border-bottom: 1px solid transparent;
+  }
+
+  &.btn-lg {
+    @include button-link-size-fix($padding-large-horizontal, $font-size-large, $line-height-large, $input-height-large);
+  }
+
+  &.btn-sm {
+    @include button-link-size-fix($padding-small-horizontal, $font-size-small, $line-height-small, $input-height-small);
+  }
+
+  &.btn-xs {
+    @include button-link-size-fix($padding-xs-horizontal, $font-size-small, $line-height-small, $input-height-xs);
   }
 }
 

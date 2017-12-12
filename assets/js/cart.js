@@ -1,7 +1,31 @@
-var storefrontApp = angular.module('storefrontApp');
+﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 'cartService', 'catalogService', function ($rootScope, $scope, $timeout, cartService, catalogService) {
+storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 'cartService', 'catalogService', 'availabilityService', 'loadingIndicatorService', function ($rootScope, $scope, $timeout, cartService, catalogService, availabilityService, loader) {
     var timer;
+
+    $scope.loader = loader;
+    $scope.coupon = {};
+
+    var reloadCart = $scope.reloadCart = function() {
+        loader.wrapLoading(function() {
+            return cartService.getCart().then(function(response) {
+                var cart = response.data;
+                cart.hasValidationErrors = _.some(cart.validationErrors) || _.some(cart.items, function(item) { return _.some(item.validationErrors) });
+                $scope.cart = cart;
+
+                var coupon = cart.coupon || $scope.coupon;
+                coupon.loader = $scope.coupon.loader;
+                $scope.coupon = coupon;
+                if ($scope.coupon.code && !$scope.coupon.appliedSuccessfully) {
+                    $scope.coupon.errorCode = 'InvalidCouponCode';
+                }
+
+                return availabilityService.getProductsAvailability(_.pluck(cart.items, 'productId')).then(function(response) {
+                    $scope.availability = _.object(_.pluck(response.data, 'productId'), response.data);
+                });
+            });
+        });
+    };
 
     initialize();
 
@@ -11,7 +35,7 @@ storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 
 
     $scope.changeLineItemQuantity = function (lineItemId, quantity) {
         var lineItem = _.find($scope.cart.items, function (i) { return i.id == lineItemId });
-        if (!lineItem || quantity < 1 || $scope.cartIsUpdating || $scope.formCart.$invalid) {
+        if (!lineItem || quantity < 1 || $scope.cartIsUpdating || $scope.loader.isLoading || $scope.formCart.$invalid) {
             return;
         }
         var initialQuantity = lineItem.quantity;
@@ -20,7 +44,7 @@ storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 
         timer = $timeout(function () {
             $scope.cartIsUpdating = true;
             cartService.changeLineItemQuantity(lineItemId, quantity).then(function (response) {
-                getCart();
+                reloadCart();
                 $rootScope.$broadcast('cartItemsChanged');
             }, function (response) {
                 lineItem.quantity = initialQuantity;
@@ -31,12 +55,12 @@ storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 
 
     $scope.changeLineItemPrice = function (lineItemId, newPrice) {
     	var lineItem = _.find($scope.cart.items, function (i) { return i.id == lineItemId });
-    	if (!lineItem || $scope.cartIsUpdating) {
+        if (!lineItem || $scope.cartIsUpdating || $scope.loader.isLoading) {
     		return;
     	}
     	$scope.cartIsUpdating = true;
     	cartService.changeLineItemPrice(lineItemId, newPrice).then(function (response) {
-    		getCart();
+    		reloadCart();
     		$rootScope.$broadcast('cartItemsChanged');
     	}, function (response) {
     		$scope.cart.items = initialItems;
@@ -45,7 +69,7 @@ storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 
     };
     $scope.removeLineItem = function (lineItemId) {
         var lineItem = _.find($scope.cart.items, function (i) { return i.id == lineItemId });
-        if (!lineItem || $scope.cartIsUpdating) {
+        if (!lineItem || $scope.cartIsUpdating || $scope.loader.isLoading) {
             return;
         }
         $scope.cartIsUpdating = true;
@@ -53,13 +77,22 @@ storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 
         $scope.recentCartItemModalVisible = false;
         $scope.cart.items = _.without($scope.cart.items, lineItem);
         cartService.removeLineItem(lineItemId).then(function (response) {
-            getCart();
+            reloadCart();
             $rootScope.$broadcast('cartItemsChanged');
         }, function (response) {
             $scope.cart.items = initialItems;
             $scope.cartIsUpdating = false;
         });
-    }   
+    }
+
+    $scope.clearCart = function() {
+        loader.wrapLoading(function() {
+            return cartService.clearCart().then(function() {
+                reloadCart();
+                $rootScope.$broadcast('cartItemsChanged');
+            });
+        });
+    };
 
     $scope.submitCart = function () {
         $scope.formCart.$setSubmitted();
@@ -103,27 +136,32 @@ storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 
     $scope.addProductToCart = function (product, quantity) {
         $scope.cartIsUpdating = true;
         cartService.addLineItem(product.id, quantity).then(function (response) {
-            getCart();
+            reloadCart();
             $scope.productSkuOrName = null;
             $scope.selectedSearchedProduct = null;
             $rootScope.$broadcast('cartItemsChanged');
         });
     }
-
-    function initialize() {
-        getCart();
+    
+    $scope.applyCoupon = function (coupon) {
+        coupon.loader.wrapLoading(function() {
+            return cartService.addCoupon(coupon.code).then(function() {
+                reloadCart();
+            });
+        });
     }
 
-    function getCart() {
-        $scope.cartIsUpdating = true;
-        cartService.getCart().then(function (response) {
-            var cart = response.data;
-            cart.hasValidationErrors = _.some(cart.validationErrors) || _.some(cart.items, function (item) { return _.some(item.validationErrors) });
-            $scope.cart = cart;
-            $scope.cartIsUpdating = false;
-        }, function (response) {
-            $scope.cartIsUpdating = false;
+    $scope.removeCoupon = function (coupon) {
+        coupon.loader.wrapLoading(function() {
+            return cartService.removeCoupon().then(function() {
+                $scope.coupon = { loader: $scope.coupon.loader };
+                reloadCart();
+            });
         });
+    }
+
+    function initialize() {
+        reloadCart();
     }
 }]);
 

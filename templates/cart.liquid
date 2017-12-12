@@ -4,7 +4,7 @@
         <strong class="text-success" ng-bind="cart.total.formattedAmount"></strong>
     </p>
     <form class="navbar-form navbar-right">
-        <button class="btn btn-primary" type="button" ng-disabled="cartIsUpdating || cart.hasValidationErrors" ng-click="submitCart()">
+        <button class="btn btn-primary" type="button" ng-disabled="cartIsUpdating || loader.isLoading || cart.hasValidationErrors" ng-click="submitCart()">
             Continue
         </button>
     </form>
@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12" ng-show="cart && cartIsUpdating">
+        <div class="col-xs-12" ng-show="cart && (cartIsUpdating || loader.isLoading)">
             <div class="row">
                 <div class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4">
                     <div class="alert alert-info" role="alert">
@@ -54,14 +54,14 @@
             <a href="collections" class="btn btn-lg btn-primary">{{ 'cart.general.continue_shopping' | t }}</a>
         </div>
         <div class="col-xs-12" ng-show="cart.itemsCount > 0" ng-cloak>
-            <div ng-init="setCartForm(formCart)"></div>
-            <form name="formCart" novalidate="novalidate">
-                <div class="row">
-                    <div class="col-xs-12 col-md-9">
+            <div class="row">
+                <div class="col-xs-12 col-md-9">
+                    <div ng-init="setCartForm(formCart)"></div>
+                    <form name="formCart" novalidate="novalidate">
                         <div class="container-drain container-bordered-horizontal">
                             <div class="row hidden-xs hidden-sm">
                                 <div class="col-xs-12" ng-controller="purchaseController">
-                                    <vc-shipment-type ctrl="$ctrl" shipment-type="::shipmentType" shipment-address="::shipmentAddress" shipment-fulfillment-center="::shipmentFulfillmentCenter" on-change="updateShipmentType(shipmentType, shipmentTypeInfo)" on-fulfillment-center-selection="$ctrl.change()">
+                                    <vc-shipment-type ctrl="$ctrl" shipment-type="::shipmentType" shipment-address="::shipmentAddress" shipment-fulfillment-center="::shipmentFulfillmentCenter" on-change="updateShipmentType(shipmentType, shipmentTypeInfo); reloadCart();" on-fulfillment-center-selection="$ctrl.change()">
                                         <div class="well container-bordered-vertical">
                                             <div class="row flexible">
                                                 <div class="col-md-3">
@@ -110,7 +110,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row" ng-show="$ctrl.shipmentFulfillmentCenter">
+                                                        <div class="row" ng-if="$ctrl.shipmentFulfillmentCenter.name">
                                                             <div class="col-md-12">
                                                                 <h4>My selected branch</h4>
                                                                 <vc-address address="shipmentFulfillmentCenterAddress">
@@ -137,7 +137,7 @@
                                                 <a href="">Show Reference Information</a>
                                             </li>
                                             <li>
-                                                <a href="">Clear Cart</a>
+                                                <a href="" ng-click="clearCart()">Clear Cart</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -162,6 +162,8 @@
                                     </p>
                                 </div>
                                 <div class="hidden-xs hidden-sm col-md-4" ng-controller="purchaseController" ng-init='loadPaymentPlan({{ settings.available_paymentPlans | json }}, "product", lineItem.productId)'>
+                                    <p ng-show="shipmentType == 'shipping' && shipmentAddress">Expected to arrive: <strong ng-bind="availability[lineItem.productId].expectedArrival | date: 'fullDate'"></strong></p>
+                                    <p ng-show="shipmentType == 'pickup' && shipmentFulfillmentCenter">Available for pickup: <strong ng-bind="availability[lineItem.productId].availableSince | date: 'fullDate'"></strong></p>
                                     <vc-payment-plan available-payment-plans="::availablePaymentPlans" payment-plan-type="::paymentPlanType" payment-plan="::paymentPlan" on-change="updatePaymentPlan('product', lineItem.productId, paymentPlanType, paymentPlan)"></vc-payment-plan>
                                 </div>
                                 <div class="col-xs-3 col-md-2">
@@ -197,158 +199,32 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="hidden-xs hidden-sm col-md-3" ng-if="cart.itemsCount > 0">
-                        <p>
-                            <button class="btn btn-lg btn-block btn-primary" type="button" ng-disabled="cartIsUpdating || cart.hasValidationErrors" ng-click="submitCart()">
-                                {{ 'cart.general.checkout' | t }}
-                            </button>
-                        </p>
-                        <div class="panel-group">
-                            <div class="panel panel-default panel-static">
-                                <div class="panel-heading">
-                                    Order summary
-                                </div>
-                                <vc-totals class="panel-collapse" order="cart"></vc-totals>
+                    </form>
+                </div>
+                <div class="hidden-xs hidden-sm col-md-3" ng-if="cart.itemsCount > 0">
+                    <p>
+                        <button class="btn btn-lg btn-block btn-primary" type="button" ng-disabled="cartIsUpdating || loader.isLoading || cart.hasValidationErrors" ng-click="submitCart()">
+                            {{ 'cart.general.checkout' | t }}
+                        </button>
+                    </p>
+                    <div class="panel-group">
+                        <div class="panel panel-default panel-static">
+                            <div class="panel-heading">
+                                Order summary
                             </div>
-                            <div class="panel panel-default panel-static">
-                                <div class="panel-heading">
-                                    Promotion code
-                                </div>
-                                <div class="panel-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <input class="form-control" type="text" placeholder="Promotional code">
-                                        </div>
-                                        <button class="btn btn-alt">Apply</button>
-                                    </form>
-                                </div>
+                            <vc-totals class="panel-collapse" order="cart" options="{ show: { payment: false, discount: {% if settings.show_prices_with_taxes %}cart.discountWithTaxes{% else %}cart.discount{% endif %}.amount > 0 } }"></vc-totals>
+                        </div>
+                        <div class="panel panel-default panel-static">
+                            <div class="panel-heading">
+                                Promotion code
+                            </div>
+                            <div class="panel-body">
+                                <vc-coupon coupon="coupon" loader="coupon.loader" on-apply-coupon="applyCoupon(coupon)" on-remove-coupon="removeCoupon(coupon)"></vc-coupon>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </main>
-
-{% comment %}
-<div ng-controller="cartController">
-    <div class="ajax-informer fade" ng-if="!cart">
-        <div class="loader"></div>
-        <span>{{ 'cart.general.loading_cart_message' | t }}</span>
-    </div>
-
-    <div class="ajax-informer" ng-if="cart" ng-class="{ 'fade': cartIsUpdating }">
-        <div class="loader"></div>
-        <span>{{ 'cart.general.updating_cart_message' | t }}</span>
-    </div>
-
-    <h1>{{ 'cart.general.title' | t }}</h1>
-    {% include 'quick-order-section' %}
-
-    <span ng-if="cart.itemsCount == 0" ng-cloak="">
-        <h2>{{ 'cart.general.empty' | t }}</h2>
-        <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
-    </span>
-
-    <div ng-show="cart.itemsCount > 0" ng-cloak="">
-        <div ng-init="setCartForm(formCart)"></div>
-        <form name="formCart" novalidate="novalidate">
-            <div class="cart-row" ng-repeat="lineItem in cart.items">
-                <div class="grid">
-                    <div class="grid-item large--seven-twelfths">
-                        <div class="grid">
-                            <div class="grid-item one-third large--one-quarter">
-                                <span class="cart-image">
-                                    <img ng-src="{% raw %}{{ lineItem.imageUrl }}{% endraw %}" ng-if="lineItem.imageUrl" />
-                                    <div class="no-product-image" ng-if="!lineItem.imageUrl">
-                                        <img src="{{ 'no-image.svg' | asset_url }}" />
-                                    </div>
-                                </span>
-                            </div>
-                            <div class="grid-item two-thirds large--three-quarters">
-                                <span ng-bind="lineItem.name"></span>
-                                {% if shop.subscription_enabled %}
-                                <div class="note" ng-if="lineItem.paymentPlan">
-                                    <span ng-bind="'Subscription with a period: ' + lineItem.paymentPlan.intervalCount + ' ' + lineItem.paymentPlan.interval"></span>
-                                </div>
-                                {% endif %}
-                                <div class="note" ng-class="{ 'form-error' : !lineItem.isValid }" ng-repeat="error in lineItem.validationErrors">
-                                    {% if settings.show_prices_with_taxes %}
-                                    <span ng-if="error.errorCode == 'PriceError'" ng-bind="'Product price has been changed. New price: ' + error.newPriceWithTax.formattedAmount"></span>
-                                    {% else %}
-                                    <span ng-if="error.errorCode == 'PriceError'" ng-bind="'Product price has been changed. New price: ' + error.newPrice.formattedAmount"></span>
-                                    {% endif %}
-                                    <span ng-if="error.errorCode == 'PriceError'" style="color: #204a80; cursor: pointer; margin-left: 10px;" ng-click="changeLineItemPrice(lineItem.id, error.newPrice.amount)">Apply new price</span>
-                                    <span ng-if="error.errorCode == 'UnavailableError'" ng-bind="'Product is currently unavailable!'"></span>
-                                    <span ng-if="error.errorCode == 'QuantityError'" ng-bind="'Product quantity exceeded! Available quantity is: ' + error.availableQuantity"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid-item large--five-twelfths medium--two-thirds push--medium--one-third">
-                        <div class="grid">
-                            <div class="grid-item one-half medium-down--one-third" style="text-align: center;">
-                                <div class="js-qty">
-                                    <input class="js-num" min="1" name="{% raw %}{{ 'item' + lineItem.id }}{% endraw %}" type="number" ng-model="lineItem.quantity" ng-blur="changeLineItemQuantity(lineItem.id, lineItem.quantity)" />
-                                    <span class="js--qty-adjuster js--add" ng-click="changeLineItemQuantity(lineItem.id, lineItem.quantity + 1)">+</span>
-                                    <span class="js--qty-adjuster js--minus" ng-click="changeLineItemQuantity(lineItem.id, lineItem.quantity - 1)">-</span>
-                                </div>
-                                <div class="alert alert-error" style="margin-top: 5px;" ng-if="formCart['item' + lineItem.id].$error.number">Please enter a number</div>
-                                <div class="alert alert-error" style="margin-top: 5px;" ng-if="formCart['item' + lineItem.id].$error.min">Quantity should be greater than 0</div>
-                            </div>
-                            <div class="grid-item one-third medium-down--one-third medium-down--text-left text-right">
-                                {% if settings.show_prices_with_taxes %}
-                                <span class="h2">
-                                    <small ng-bind="lineItem.placedPriceWithTax.formattedAmount"></small>
-                                </span>
-                                <span style="text-decoration: line-through;" ng-if="lineItem.listPriceWithTax.amount != lineItem.placedPriceWithTax.amount" ng-bind="lineItem.listPriceWithTax.formattedAmount"></span>
-                                {% else %}
-                                <span class="h2">
-                                    <small ng-bind="lineItem.placedPrice.formattedAmount"></small>
-                                </span>
-                                <span style="text-decoration: line-through;" ng-if="lineItem.listPrice.amount != lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></span>
-                                {% endif %}
-                            </div>
-                            <div class="grid-item one-sixth medium-down--one-third text-right">
-                                <a class="icon-fallback-text btn-secondary remove RemoveShopCart" href="" ng-click="removeLineItem(lineItem.id)" interactor-arg="{% raw %}{{ lineItem.id }}{% endraw %}">
-                                    <span class="icon icon-x" aria-hidden="true"></span>
-                                    <span class="fallback-text">{{ 'cart.general.remove' | t }}</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="cart-row">
-                <div class="grid">
-                    <div class="grid-item large--one-half">
-                        <label for="cartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
-                        <textarea class="input-full" ng-bind="cart.comment"></textarea>
-                    </div>
-                    <div class="grid-item text-right large--one-half">
-                        <div class="cart-subtotal">
-                            {% if settings.show_prices_with_taxes %}
-                            {{ 'cart.general.subtotalWithTax' | t }}
-                            <span class="h1 cart-subtotal--price">
-                                <small ng-bind="cart.extendedPriceTotalWithTax.formattedAmount"></small>
-                            </span>
-                            {% else %}
-                            {{ 'cart.general.subtotal' | t }}
-                            <span class="h1 cart-subtotal--price">
-                                <small ng-bind="cart.extendedPriceTotal.formattedAmount"></small>
-                            </span>
-                            {% endif %}
-                        </div>
-                        <button type="button" ng-class="{ 'btn': !cartIsUpdating, 'btn-secondary': cartIsUpdating || errorOccured || !cart.isValid }" ng-disabled="cartIsUpdating || cart.hasValidationErrors" ng-click="submitCart()">
-                            <span class="icon icon-cart"></span>
-                            {{ 'cart.general.checkout' | t }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>   
-</div>
-{% endcomment %}

@@ -1,4 +1,18 @@
 ﻿{
+    "totals": {
+        "subtotal": "Subtotal",
+        "shipping": "Shipping",
+        "paymentFees": "Payment fees",
+        "taxes": "Tax",
+        "discount": "Discount",
+        "total": "Total",
+        "estimated": "Estimated",
+        "withTax": "(inc VAT)",
+        "free": "Free",
+        "estimated_fields": "Availability, shipping, tax & promotions",
+        "estimated_notice": "are not final until you complete your order."
+    },
+
     "tags": {
         "price": {
             "label": "Price"
@@ -25,17 +39,7 @@
         "title": "Checkout",
         "description": "Description",
         "price": "Price",
-        "free": "Free",
-        "discount": "Estimated Discount",
         "apply": "Apply",
-        "subtotal": "Subtotal",
-        "subtotalWithTax": "Subtotal (inc VAT)",
-        "shipping": "Estimated Shipping",
-        "shippingWithTax": "Estimated Shipping (inc VAT)",
-        "paymentFees": "Payment fees",
-        "paymentFeesWithTax": "Payment fees (inc VAT)",
-        "taxes": "Estimated Tax",
-        "total": "Estimated Total",
         "cart": "Cart",
         "remove": "Remove",
         "coupon_code": "Coupon code",

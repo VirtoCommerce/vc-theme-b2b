@@ -1,0 +1,28 @@
+﻿<form class="form-horizontal">
+    <div class="form-group">
+        <div class="radio col-xs-7">
+            <label>
+                <input name="reorder" type="radio" ng-model="$ctrl.paymentPlanType" value="auto-reorder" ng-change="$ctrl.change()">
+                <span class="switch"></span>
+                <span class="name">Auto-Reorder Every&ensp;</span>
+            </label>
+        </div>
+        <div class="col-xs-5" uib-dropdown>
+            <button id="autoReorder" class="btn btn-alt" uib-dropdown-toggle ng-click="$ctrl.paymentPlanType='auto-reorder'" aria-haspopup="true" aria-expanded="false">{% raw %}{{ $ctrl.paymentPlan.intervalCount }}&nbsp;{{ $ctrl.paymentPlan.name }}{% endraw %} <span class="fa fa-angle-down"></span></button>
+            <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="autoReorder">
+                <li ng-repeat="paymentPlan in $ctrl.availablePaymentPlans">
+                    <a href="" ng-click="$ctrl.paymentPlan = paymentPlan; $ctrl.change()">{% raw %}{{ paymentPlan.intervalCount }}&nbsp;{{ paymentPlan.name }}{% endraw %}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="radio col-xs-12">
+            <label>
+                <input name="reorder" type="radio" ng-model="$ctrl.paymentPlanType" value="one-time" ng-change="$ctrl.change()">
+                <span class="switch"></span>
+                <span class="name">Deliver one time only</span>
+            </label>
+        </div>
+    </div>
+</form>

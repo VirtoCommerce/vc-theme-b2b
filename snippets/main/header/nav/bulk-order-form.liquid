@@ -28,7 +28,7 @@
                         {% include 'shared/bulk-order-fields' %}
                         <p><a class="small" href="{{ 'bulkorder' | absolute_url }}">Show More Entry Fields</a></p>
                         <!-- TODO: Replace mock with real method -->
-                        <button class="btn btn-primary" ng-click="addProductsToCartMock()" dropdown-close>{{ 'bulk_order.general.add_to_cart' | t }}</button>
+                        <button class="btn btn-primary" ng-click="addProductsToCartMock()" vc-dropdown-close>{{ 'bulk_order.general.add_to_cart' | t }}</button>
                     </div>
                 </form>
                 <dl ng-show="state == 'csv'">
@@ -39,7 +39,7 @@
                     <div class="form-group">
                         <textarea name="csv" placeholder="{{ 'bulk_order.general.csv_field_placeholder' | t }}" rows="10" class="form-control"></textarea>
                     </div>
-                    <button class="btn btn-primary" ng-click="addProductsToCartMock()" dropdown-close>{{ 'bulk_order.general.add_to_cart' | t }}</button>
+                    <button class="btn btn-primary" ng-click="addProductsToCartMock()" vc-dropdown-close>{{ 'bulk_order.general.add_to_cart' | t }}</button>
                 </form>
             </div>
         </div>

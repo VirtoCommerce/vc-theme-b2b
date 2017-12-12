@@ -73,3 +73,12 @@
 
   @include button-variant-states($color, $background, $border, $colorizer, $colorizer-multiplier);
 }
+
+@mixin button-link-size-fix($padding-horizontal, $font-size, $line-height, $height) {
+  border-radius: 0;
+  $line-height: floor($font-size * $line-height);
+  $padding-vertical: (($height - $line-height) / 2) - 2px;
+  margin: $padding-vertical $padding-horizontal ($padding-vertical + 1); // compensate bottom border
+  padding: 0;
+  height: $line-height + 2px;
+}

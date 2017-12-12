@@ -1,0 +1,16 @@
+﻿<form accept-charset="UTF-8" action="" name="$ctrl.form" ng-submit="$ctrl.onApplyCoupon({ coupon: $ctrl.coupon })" novalidate="novalidate">
+    <fieldset ng-class="{ 'has-error': $ctrl.coupon.errorCode === 'InvalidCouponCode' }" ng-if="!$ctrl.coupon.appliedSuccessfully">
+        <div class="alert alert-danger" ng-if="$ctrl.coupon.errorCode === 'InvalidCouponCode'">
+            <i class="fa fa-exclamation-circle"></i>&ensp;{{ 'checkout.invalid_coupon_code' | t }}
+        </div>
+        <div class="form-group">
+            <input class="form-control" id="CouponCode" name="CouponCode" placeholder="{{ 'checkout.coupon_code' | t }}" required="required" size="30" type="text" ng-model="$ctrl.coupon.code" ng-disabled="$ctrl.loader.isLoading" />
+        </div>
+        <button class="btn btn-default"  type="button" ng-click="$ctrl.onApplyCoupon({ coupon: $ctrl.coupon })" ng-disabled="$ctrl.form.$invalid || $ctrl.loader.isLoading">{{ 'checkout.apply' | t }}</button>
+    </fieldset>
+    <fieldset ng-if="$ctrl.coupon.code && $ctrl.coupon.appliedSuccessfully">
+        <div class="alert alert-success">{{ 'checkout.coupon_applied_sucessfuly' | t }}</div>
+        <strong class="h2 text-middle text-uppercase" ng-bind="$ctrl.coupon.code"></strong>&emsp;
+        <button class="btn btn-default" type="button" ng-click="$ctrl.onRemoveCoupon( { coupon : $ctrl.coupon })">{{ 'checkout.remove' | t }}</button>
+    </fieldset>
+</form>

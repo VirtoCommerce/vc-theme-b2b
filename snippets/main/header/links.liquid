@@ -25,7 +25,7 @@
                                 {% if linklists[child_list_handle].links != blank %}
                                     {% assign id = 'header-link-' | append: index %}
                                     <li uib-dropdown auto-close="mouseleave">
-                                        <a id="{{ id }}" class="navbar-link text-normal" href="{{ link.url }}" uib-dropdown-toggle vc-toggle-on-mouse-enter>{{ link.title }}&ensp;<i class="dropdown-ico fa fa-angle-down"></i></a>
+                                        <a id="{{ id }}" class="navbar-link text-normal" href="{{ link.url }}" uib-dropdown-toggle vc-dropdown-trigger="mouseenter">{{ link.title }}&ensp;<i class="dropdown-ico fa fa-angle-down"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-left dropdown-menu-square" role="menu" uib-dropdown-menu aria-labelledby="{{ link.name }}">
                                             {% for childlink in linklists[child_list_handle].links %}
                                                 <li>

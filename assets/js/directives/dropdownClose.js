@@ -1,6 +1,6 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.directive('dropdownClose', function () {
+storefrontApp.directive('vcDropdownClose', function () {
     return {
         require: ['?^uibDropdown'],
         link: function (scope, element, attrs, ctrls) {
