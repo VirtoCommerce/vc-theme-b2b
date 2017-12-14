@@ -20,6 +20,9 @@
             "bower_components/angular-component-router/angular_1_router.js",
             "bower_components/ng-wizard/dist/ngWizard.js",
             "bower_components/satellizer/dist/satellizer.js",
+            "bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js",
+            "bower_components/bootstrap-sass/assets/javascripts/bootstrap/scrollspy.js",
+            "bower_components/bootstrap-toc/dist/bootstrap-toc.js",
             "bower_components/prism/prism.js",
             "bower_components/prism/plugins/normalize-whitespace/prism-normalize-whitespace.js"
         ]
@@ -40,8 +43,13 @@
         "outputFileName": "assets/static/bundle/scripts.js",
         "inputFiles": [
             "assets/interactor.js",
-            "assets/js/*.js",
-            "assets/js/**/*.js"
+            "assets/js/app/app.js",
+            "assets/js/account/account.js",
+            "assets/js/app/!(app).js",
+            "assets/js/account/!(account).js",
+            "assets/js/!(app|account)/*.js",
+            "assets/js/!(app|account)/**/*.js",
+            "assets/js/*.js"
         ]
     },
     {
@@ -49,8 +57,9 @@
         "inputFiles": [
             "bower_components/font-awesome/scss/font-awesome.scss",
             "bower_components/ng-wizard/dist/ngWizard.css",
-            "assets/scss/main.scss",
-            "bower_components/prism/themes/prism.css"
+            "bower_components/bootstrap-toc/dist/bootstrap-toc.css",
+            "bower_components/prism/themes/prism.css",
+            "assets/scss/main.scss"
         ]
     },
     {

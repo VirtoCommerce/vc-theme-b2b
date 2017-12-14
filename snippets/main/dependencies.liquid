@@ -8,7 +8,7 @@
 {% include 'oldIE-js' %}
 
 {{ 'bundle/dependencies.js' | static_asset_url | append_version | script_tag }}
-{{ 'app.js' | asset_url | script_tag }}
+{{ 'consts.js' | asset_url | script_tag }}
 {{ 'bundle/scripts.js' | static_asset_url | append_version | script_tag }}
 
 {{ 'shop.js' | asset_url | script_tag }}

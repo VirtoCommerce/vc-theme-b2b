@@ -4,10 +4,10 @@
     {% endcomment %}
     {% assign product_index = forloop.index0 | modulo: 3 %}
     {% if product_index == 0 %}
-        <ul class="row flexible grid-items" ng-controller="productListController as $productList">
+        <div class="row flexible">
     {% endif %}
     {% include product_item, product: product %}
     {% if product_index == 2 or forloop.last %}
-        </ul>
+        </div>
     {% endif %}
 {% endfor %}

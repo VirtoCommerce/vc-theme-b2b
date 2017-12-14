@@ -1,5 +1,5 @@
 ﻿<div class="navbar navbar-default navbar-static-bottom hidden-xs hidden-sm">
-    <div class="container container-drain">
+    <div class="container">
         <div class="row">
             {% if settings.footer_mobile_apps_enable %}
                 <div class="col-md-3">
@@ -7,12 +7,14 @@
                         <a href="#">{{ 'layout.footer.mobile_apps_title' | t }}</a>
                     </h4>
                     <p>{{ 'layout.footer.mobile_apps_message' | t }}</p>
-                    <a href="#" class="">
-                        <img class="mobile-app" src="{{ 'app-store-badge.svg' | asset_url }}" />
-                    </a>
-                    <a href="#" class="">
-                        <img class="mobile-app" src="{{ 'google-play-badge.png' | asset_url }}" />
-                    </a>
+                    <p>
+                        <a href="#" class="">
+                            <img class="mobile-app" src="{{ 'app-store-badge.svg' | asset_url }}" />
+                        </a>
+                        <a href="#" class="">
+                            <img class="mobile-app" src="{{ 'google-play-badge.png' | asset_url }}" />
+                        </a>
+                    </p>
                 </div>
             {% endif %}
             {% if settings.footer_newsletter_enable %}
@@ -20,7 +22,9 @@
                     <h4>{{ 'layout.footer.newsletter_title' | t }}</h4>
                     <p>{{ 'blogs.newsletter.message' | t }}</p>
                     <!-- Show popup? -->
-                    <a href="" class="btn btn-primary btn-block">{{ 'blogs.newsletter.sign_up' | t }}</a>
+                    <p>
+                        <a href="" class="btn btn-primary btn-block">{{ 'blogs.newsletter.sign_up' | t }}</a>
+                    </p>
                 </div>
             {% endif %}
             {% if settings.footer_social_enable %}
@@ -31,7 +35,8 @@
             {% endif %}
             {% if settings.footer_support_number_enable %}
                 <div class="col-md-3">
-                    <p>{{ 'layout.footer.call_us' | t | append: settings.support_number }}</p>
+                    <h4>{{ 'layout.footer.call_us' | t }}</h4>
+                    <p>{{ settings.support_number }}</p>
                 </div>
             {% endif %}
         </div>

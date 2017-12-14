@@ -11,17 +11,12 @@
         {% include 'meta/open-graph-tags' %}
 
         <link rel="canonical" href="{{ canonical_url }}" />
-        <base href="{{ '/' | absolute_url }}" />
 
         {% include 'main/dependencies' %}
 
-        <script>
-            var BASE_URL = '{{ "/" | full_url }}';
-        </script>
-
         {% include 'third-party/zendesk' %}
     </head>
-    <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" ng-controller="mainController" ng-init="baseUrl='{{ '/' | absolute_url }}'">
+    <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" ng-controller="mainController" ng-init="baseUrl='{{ '/' | absolute_url }}'" data-target="#toc" data-spy="scroll">
         {% include 'third-party/google-tag-manager-body' %}
         {% include 'dialogs/sign-in-to-proceed' %}
         {% include 'dialogs/recently-added-cart-item' %}

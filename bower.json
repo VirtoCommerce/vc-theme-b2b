@@ -28,6 +28,7 @@
     "angular-ui-router": "^1.0.6",
     "bootstrap-sass": "^3.3.7",
     "bootstrap-social": "^5.1.1",
+    "bootstrap-toc": "^0.4.1", 
     "es5-shim": "*",
     "es6-shim": "*",
     "font-awesome": "^4.7.0",

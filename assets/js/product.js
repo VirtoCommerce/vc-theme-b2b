@@ -136,11 +136,11 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         }
 
         function initialize(filters) {
-            var productIds = _.map($window.products, function (product) { return product.id });
-            if (!productIds || !productIds.length) {
+            var product = $window.product;
+            if (!product || !product.id) {
                 return;
             }
-            catalogService.getProduct(productIds).then(function (response) {
+            catalogService.getProduct([product.id]).then(function (response) {
 				var product = response.data[0];
                 //Current product is also a variation (titular)
                 var allVariations = [product].concat(product.variations || []);

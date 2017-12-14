@@ -889,7 +889,7 @@
 //** Breadcrumb text color
 // $breadcrumb-color:              #ccc
 //** Text color of current page in the breadcrumb
-// $breadcrumb-active-color:       $gray-light
+   $breadcrumb-active-color:       $text-muted; // $gray-light
 //** Textual separator for between breadcrumb elements
 // $breadcrumb-separator:          "/"
 

@@ -4,58 +4,44 @@
 
 <!-- TODO: Badges -->
 
-<li class="col-md-4 flexible">
-    <div class="grid-inner">
-        {% assign product_url = product.url | within: current_collection %}
-        <div class="grid-img">
-            <a href="{{ product_url }}">
-                {% if product.featured_image %}
-                    <img class="img-responsive" ng-src="{{ product.featured_image.src | img_url: "168x168" }}" fallback-src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
-                {% else %}
-                    <img class="img-responsive" src="{{ 'no-image.svg' | asset_url }}" />
-                {% endif %}
-            </a>
-            <!-- TODO: Compare -->
-            <!--<div class="grid-compare">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox">
-                        <span class="switch"></span>
-                        <span class="name">Compare</span>
-                    </label>
-                </div>
-            </div>-->
-        </div>
-        {% include 'shared/item-response-group' %}
-        {% assign response_group = default_product_search_resp_group | plus: item_resp_group_variations %}
-        <div class="grid-name">
-            <a href="{{ product_url | append: '?resp_group=' | append: response_group }}">
-                {{ product.title }}
-            </a>
-        </div>
-        <div class="grid-sku">
-            {{ 'products.product.sku' | t }}&nbsp;<a href="{{ product_url| append: '?resp_group=' | append: response_group }}">{{ product.selected_variant.sku }}</a>
-        </div>
-        <div class="grid-brand">{{ product.metafields.properties['Brand'] }}</div>
-        <div class="grid-price">
-            {% if customer %}
-                <div class="price-label">{{ 'products.price.private' | t }}</div>
-            {% else %}
-                <div class="price-label">{{ 'products.price.public' | t }}</div>
-            {% endif %}
-            <div class="price-value">
-                {% if settings.show_prices_with_taxes %}
-                    {% include 'product/price', price: product.price_with_tax %}
-                {% else %}
-                    {% include 'product/price', price: product.price %}
-                {% endif %}
-            </div>
-            <!-- TODO: Replace with product unit -->
-            <div class="price-unit">/ each</div>
-        </div>
-        <div class="grid-other">
-            <input type="text" class="form-control" ng-init="product['{{product.id}}'].quantity = 1" ng-model="product['{{product.id}}'].quantity">
-            <button class="btn btn-alt btn-primary" title="{{ 'products.general.add_to_cart' | t }}" ng-click="addProductToCartById('{{ product.id }}', product['{{product.id}}'].quantity, $event)" ng-controller="productController">{{ 'products.general.add_to_cart' | t }}</button>
-        </div>
+<div class="col-md-4 flexible" ng-init="products.push('{{ product.id }}')">
+    {% assign product_url = product.url | within: current_collection %}
+    <a class="unstyled" href="{{ product_url }}">
+        {% if product.featured_image %}
+            <img class="img-responsive" ng-src="{{ product.featured_image.src | img_url: "168x168" }}" fallback-src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
+        {% else %}
+            <img class="img-responsive" src="{{ 'no-image.svg' | asset_url }}" />
+        {% endif %}
+    </a>
+    <!-- TODO: Compare -->
+    <div class="checkbox">
+        <label>
+            <input type="checkbox">
+            <span class="switch"></span>
+            <span class="name">Compare</span>
+        </label>
     </div>
-</li>
+    <div class="text-uppercase">{{ product.metafields.properties['Brand'] }}</div>
+    {% include 'shared/item-response-group' %}
+    {% assign response_group = default_product_search_resp_group | plus: item_resp_group_variations %}
+    <p>
+        <a class="text-truncate" href="{{ product_url | append: '?resp_group=' | append: response_group }}">{{ product.title }}</a><br>
+        <span>{{ 'products.product.sku' | t }}&nbsp;<a href="{{ product_url| append: '?resp_group=' | append: response_group }}">{{ product.selected_variant.sku }}</a></span>
+    </p>
+    {% if customer %}
+        <div>{{ 'products.price.private' | t }}</div>
+    {% else %}
+        <div>{{ 'products.price.public' | t }}</div>
+    {% endif %}
+    <p>
+        {% include 'product/price' %}
+        <!-- TODO: Replace with product unit -->
+        <span class="price-unit">/ each</span>
+    </p>
+    <div class="input-group">
+        <input type="text" class="form-control" ng-init="product['{{product.id}}'].quantity = 1" ng-model="product['{{product.id}}'].quantity">
+        <span class="input-group-btn">
+            <button class="btn btn-alt btn-primary" title="{{ 'products.general.add_to_cart' | t }}" ng-click="addProductToCartById('{{ product.id }}', product['{{product.id}}'].quantity, $event)" ng-controller="productController">{{ 'products.general.add_to_cart' | t }}</button>
+        </span>
+    </div>
+</div>

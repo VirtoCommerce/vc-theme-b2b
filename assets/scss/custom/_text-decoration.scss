@@ -1,6 +1,7 @@
 ﻿// Disable anchor border for controls which is not real link
 a,
 a[href=""] {
+  &.unstyled, // not predefined
   &.badge,
   .checkbox &,
   &.carousel-control,

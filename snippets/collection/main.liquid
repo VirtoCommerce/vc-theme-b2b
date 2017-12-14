@@ -26,19 +26,19 @@
                 <p>{{ 'collections.general.products_count' | t, all_results_count: all_results_count, displayed_results_count: displayed_results_count, products_count: variants_count }}</p>
                 <p class="collapse" uib-collapse="isAboutCollapsed">{{ collection.description }}</p>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 {% include 'collection/sidebar', collection: collection %}
             </div>
-            <div class="col-md-8">
-                <div class="container-fluid container-drain container-bordered">
+            <div class="col-md-9">
+                <div class="container-drain container-bordered" ng-controller="priceController">
                     {% include 'collection/nav', position: 'top' %}
                     {% include product_items %}
                     {% include 'collection/nav', position: 'bottom' %}
                     {% include 'shared/pagination' %}
                     <script>
-                        window.productList = [];
+                        window.products = [];
                         {% for product in collection.products %}
-                            window.productList.push({
+                            window.products.push({
                                 id: "{{ product.id }}",
                                 catalogId: "{{ product.catalog_id }}",
                                 outline: "{{ product.outline }}",

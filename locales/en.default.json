@@ -750,7 +750,7 @@
             "mobile_apps_title": "Check it out! We're mobile!",
             "mobile_apps_message": "<strong>Anytime. Anywhere.</strong> <br>{{ store.name }} helps you get it done.",
             "newsletter_title": "Let's Stick Together",
-            "call_us": "Questions? Call us<br>"
+            "call_us": "Questions? Call us"
         }
     },
     "products": {

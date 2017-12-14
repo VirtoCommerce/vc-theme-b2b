@@ -52,7 +52,7 @@ storefrontApp.service('marketingService', ['$http', function ($http) {
 storefrontApp.service('pricingService', ['$http', function ($http) {
 	return {
 		getActualProductPrices: function (products) {
-		    return $http.post('storefrontapi/pricing/actualprices', { products: products });
+		    return $http.post('storefrontapi/pricing/actualprices', products);
 		}
 	}
 }]);
