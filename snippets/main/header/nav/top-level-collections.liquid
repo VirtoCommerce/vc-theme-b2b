@@ -32,13 +32,15 @@
                 {% endcomment %}
                 {% assign index = 0 %}
                 {%- capture top_level_collection_strings_list -%}
-                    {%- for collection in collections -%}
-                        {%- assign parent_count = collection.parents | size -%}
-                        {%- if parent_count == 1 -%}
-                            {%- if index > 0 -%}&#x2063;&#x2063;{%- endif-%}{{ collection.url }}&#x2063;{{ collection.title }}
-                            {%- assign index = index | plus: 1 -%}
-                        {%- endif -%}
-                    {%- endfor -%}
+                    {% paginate collections by settings.collections_capacity %}
+                        {%- for collection in collections -%}
+                            {%- assign parent_count = collection.parents | size -%}
+                            {%- if parent_count == 1 -%}
+                                {%- if index > 0 -%}&#x2063;&#x2063;{%- endif-%}{{ collection.url }}&#x2063;{{ collection.title }}
+                                {%- assign index = index | plus: 1 -%}
+                            {%- endif -%}
+                        {%- endfor -%}
+                    {% endpaginate %}
                 {%- endcapture -%}
                 {% assign top_level_collection_strings = top_level_collection_strings_list | split: '&#x2063;&#x2063;' %}
                 <div class="row">
