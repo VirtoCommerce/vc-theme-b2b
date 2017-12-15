@@ -1,7 +1,7 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', '$timeout', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService',
-    function ($rootScope, $scope, $window, $timeout, dialogService, catalogService, cartService, quoteRequestService) {
+storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', '$timeout', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'availabilityService',
+    function ($rootScope, $scope, $window, $timeout, dialogService, catalogService, cartService, quoteRequestService, availabilityService) {
         //TODO: prevent add to cart not selected variation
         // display validator please select property
         // display price range
@@ -165,6 +165,10 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
                 //    $scope.checkProperty(propertyMap[x][0])
                 //});
                 $scope.selectedVariation = product;
+
+                return availabilityService.getProductsAvailability([product.id]).then(function(response) {
+                    $scope.availability = _.object(_.pluck(response.data, 'productId'), response.data);
+                });
             });
         };
 

@@ -45,7 +45,7 @@
                 {% assign top_level_collection_strings = top_level_collection_strings_list | split: '&#x2063;&#x2063;' %}
                 <div class="row">
                     {% for top_level_collection_string in top_level_collection_strings %}
-                        {% include 'shared/columns', collection: top_level_collection_strings, column_count: 3, index: forloop.index %}
+                        {% include 'shared/grid/columns', collection: top_level_collection_strings, column_count: 3 %}
                         {% if should_start_column %}
                             <div class="col-md-4">
                                 <ul class="nav nav-sm nav-pills nav-stacked">

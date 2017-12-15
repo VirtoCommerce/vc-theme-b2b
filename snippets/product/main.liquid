@@ -1,110 +1,89 @@
-﻿<main class="container" role="main">
-    <div class="toolbar hidden-print clearfix">
-        {% include 'shared/breadcrumb' %}
-        <ul class="toolbar-actions pull-right">
-            <li>
-                <i class="fa fa-envelope"></i>                
-                <a href="" ng-click="sendToEmail('{{ shop.id }}', '{{ product.id }}', '{{ product.url | absolute_url }}', '{{ current_language.culture_name }}')">Email</a>
-            </li>
-            <li>
-                {% include 'shared/print' %}
-            </li>
-        </ul>
-    </div>
-    <div class="product-page clearfix" itemscope itemtype="http://schema.org/Product">
-        <meta itemprop="url" content="{{ product.url | absolute_url}}">
-        <meta itemprop="image" content="{{ product.featured_image.src | img_url }}">
-
-        <div class="product-content">
-            <a href="#" class="product-brand">{{ product.metafields.properties['Brand'] }}</a>
-            <h1>{{ product.title }}</h1>
-            <ul class="product-sku list-unstyled">
-                <li>
-                    {{ 'products.product.sku' | t }}&nbsp;<span itemprop="productID">{{ product.selected_variant.sku }}</span>
+﻿<main class="container container-drain container-bordered-horizontal" role="main">
+    <div class="row">
+        <div class="col-xs-12">
+            {% include 'shared/breadcrumb' %}
+            <ul class="list-inline pull-right">
+                <li>                    
+                    <a href="" ng-click="sendToEmail('{{ shop.id }}', '{{ product.id }}', '{{ product.url | absolute_url }}', '{{ current_language.culture_name }}')"><i class="fa fa-envelope"></i>&ensp;Email</a>
                 </li>
                 <li>
-                    {{ 'products.product.mmn' | t }}&nbsp;<span itemprop="model">{{ product.metafields.properties['MMN'] }}</span>
-                </li>
-                <li>
-                    UNSPSC # <span>41112701</span>
+                    {% include 'shared/print' %}
                 </li>
             </ul>
-            <div class="product clearfix">
-                <div class="product-img col-md-4">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-10 container-drain container-bordered" itemscope itemtype="http://schema.org/Product">
+            <meta itemprop="url" content="{{ product.url | absolute_url}}">
+            <meta itemprop="image" content="{{ product.featured_image.src | img_url }}">
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <a href="#">{{ product.metafields.properties['Brand'] }}</a>
+                    <h1>{{ product.title }}</h1>
+                    <ul class="list-inline">
+                        <li>
+                            <span class="text-muted">{{ 'products.product.sku' | t }}</span>&nbsp;<strong itemprop="productID">{{ product.selected_variant.sku }}</strong>
+                        </li>
+                        <li>
+                            <span class="text-muted">{{ 'products.product.mmn' | t }}</span>&nbsp;<strong itemprop="model">{{ product.metafields.properties['MMN'] }}</strong>
+                        </li>
+                        <li>
+                            <span class="text-muted">UNSPSC</span>&nbsp;<strong>#41112701</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row flexible">
+                <div class="col-md-2">
                     {% if product.featured_image %}
-                        <img ng-src="{{ product.featured_image.src | img_url: "168x168" }}" fallback-src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
+                        <img class="img-responsive" ng-src="{{ product.featured_image.src | img_url: "168x168" }}" fallback-src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
                     {% else %}
-                        <img src="{{ 'no-image.svg' | asset_url }}" class="no-image" />
+                        <img class="img-responsive" src="{{ 'no-image.svg' | asset_url }}" class="no-image" />
                     {% endif %}
-                    <div class="compare">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox">
-                                <span class="switch"></span>
-                                <span class="name">Compare</span>
-                            </label>
+                </div>
+                <div class="col-md-2">
+                    <p>{% include 'product/price' %}</p>{% raw %}{{ product }}{% endraw %}
+                </div>
+                <div class="col-md-4" ng-controller="purchaseController" ng-init='loadPaymentPlan({{ settings.available_paymentPlans | json }}, "product", "{{ product.id }}")'>
+                    <p ng-show="shipmentType == 'shipping' && shipmentAddress">Expected to arrive: <strong ng-bind="availability['{{ product.id }}'].expectedArrival | date: 'fullDate'"></strong></p>
+                    <p ng-show="shipmentType == 'pickup' && shipmentFulfillmentCenter">Available for pickup: <strong ng-bind="availability['{{ product.id }}'].availableSince | date: 'fullDate'"></strong></p>
+                    <vc-payment-plan available-payment-plans="::availablePaymentPlans" payment-plan-type="::paymentPlanType" payment-plan="::paymentPlan" on-change="updatePaymentPlan('product', '{{ product.id }}', paymentPlanType, paymentPlan)"></vc-payment-plan>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-init="product['{{product.id}}'].quantity = 1" ng-model="product['{{product.id}}'].quantity">
+                            <span class="input-group-btn">
+                                <button class="btn btn-alt btn-block btn-primary" title="{{ 'products.general.add_to_cart' | t }}" ng-click="addProductToCartById('{{ product.id }}', product['{{product.id}}'].quantity, $event)" ng-controller="productController">{{ 'products.general.add_to_cart' | t }}</button>
+                            </span>
                         </div>
                     </div>
+                    <p><add-to-list-button selected-variation="selectedVariation"></add-to-list-button></p>
                 </div>
-                <div class="product-info col-md-8">
-                    <form>
-                        <div class="product-price clearfix">
-                            <div class="price col-md-2">
-                                {% if customer %}
-                                    <div class="price-label">{{ 'products.price.private' | t }}</div>
-                                {% else %}
-                                    <div class="price-label">{{ 'products.price.public' | t }}</div>
-                                {% endif %}
-                                <div class="price-value">
-                                    {% if settings.show_prices_with_taxes %}
-                                        {% include 'product/price', price: product.price_with_tax %}
-                                    {% else %}
-                                        {% include 'product/price', price: product.price %}
-                                    {% endif %}
-                                </div>
-                                <!-- TODO: Replace with product unit -->
-                                <div class="price-unit">/ each</div>
-                            </div>
-                            <div class="reorder col-md-6">
-                                <vc-payment-plan></vc-payment-plan>
-                                </br>
-                                <div class="form-group group-flex">
-                                    <input type="text" class="form-control" style="width: 100px" ng-init="product['{{product.id}}'].quantity = 1" ng-model="product['{{product.id}}'].quantity">
-                                    <button class="btn btn-primary" title="{{ 'products.general.add_to_cart' | t }}" ng-click="addProductToCartById('{{ product.id }}', product['{{product.id}}'].quantity, $event)" ng-controller="productController">{{ 'products.general.add_to_cart' | t }}</button>
-                                </div>
-                                <add-to-list-button selected-variation="selectedVariation"></add-to-list-button>
-                            </div>
-                            <div class="col-md-4">
-                                <vc-shipping-type is-dropdown="false" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
-                            </div>
-                        </div>
-                    </form>
+                <div class="col-md-4">
+                    <vc-shipping-type is-dropdown="false" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
                 </div>
             </div>
             {% if product.properties.size > 0  %}
-            <div class="tech-spec clearfix">
-                <h2>Technical Specs</h2>
-                {% assign remainder_of_properties_size = product.properties.size | modulo: 2 %}
-                {% assign half_of_properties_size = product.properties.size | divided_by: 2 | plus: remainder_of_properties_size %}
-                <ul class="col-md-6 col-xs-6">
-                    {% for property in product.properties limit:half_of_properties_size %}
-                    <li>
-                        <div class="tech-name col-md-4 col-xs-4">{{ property.name }}</div>
-                        <div class="tech-value col-md-8 col-xs-8">{{ property.value }}</div>
-                    </li>
-                    {% endfor %}
-                </ul>
-                <ul class="col-md-6col-xs-6">
-                    {% for property in product.properties offset:half_of_properties_size %}
-                    <li>
-                        <div class="tech-name col-md-4 col-xs-4">{{ property.name }}</div>
-                        <div class="tech-value col-md-8 col-xs-8">{{ property.value }}</div>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table class="table table-striped">
+                            <caption class="h2">Technical Specs</caption>
+                            {% for property in product.properties %}
+                                {% include 'shared/grid/rows', column_count: 2 %}
+                                {% if should_start_row %}
+                                    <tr>
+                                {% endif %}
+                                    <td><span class="text-muted">{{ property.name }}</span></td>
+                                    <td><strong>{{ property.value }}</strong></td>
+                                {% if should_end_row %}
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
             {% endif %}
         </div>
-        <div class="product-related hidden-print"></div>
+        <div class="product-related col-xs-2 hidden-print"></div>
     </div>
 </main>

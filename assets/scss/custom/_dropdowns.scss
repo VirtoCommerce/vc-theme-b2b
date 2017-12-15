@@ -1,4 +1,8 @@
-﻿.dropdown-menu {
+﻿.dropdown-inline {
+  display: inline-block;
+}
+
+.dropdown-menu {
   margin: 0;
 
   &.dropdown-menu-square {

@@ -4,7 +4,7 @@
 
 <!-- TODO: Badges -->
 
-<div class="col-md-4 flexible" ng-init="products.push('{{ product.id }}')">
+<div class="col-md-3 flexible" ng-init="products.push('{{ product.id }}')">
     {% assign product_url = product.url | within: current_collection %}
     <a class="unstyled" href="{{ product_url }}">
         {% if product.featured_image %}
@@ -23,21 +23,12 @@
     </div>
     <div class="text-uppercase">{{ product.metafields.properties['Brand'] }}</div>
     {% include 'shared/item-response-group' %}
-    {% assign response_group = default_product_search_resp_group | plus: item_resp_group_variations %}
+    {% assign response_group = default_product_search_resp_group | plus: item_resp_group_variations | plus: item_resp_group_item_properties %}
     <p>
         <a class="text-truncate" href="{{ product_url | append: '?resp_group=' | append: response_group }}">{{ product.title }}</a><br>
         <span>{{ 'products.product.sku' | t }}&nbsp;<a href="{{ product_url| append: '?resp_group=' | append: response_group }}">{{ product.selected_variant.sku }}</a></span>
     </p>
-    {% if customer %}
-        <div>{{ 'products.price.private' | t }}</div>
-    {% else %}
-        <div>{{ 'products.price.public' | t }}</div>
-    {% endif %}
-    <p>
-        {% include 'product/price' %}
-        <!-- TODO: Replace with product unit -->
-        <span class="price-unit">/ each</span>
-    </p>
+    <p>{% include 'product/price' %}</p>
     <div class="input-group">
         <input type="text" class="form-control" ng-init="product['{{product.id}}'].quantity = 1" ng-model="product['{{product.id}}'].quantity">
         <span class="input-group-btn">

@@ -1,9 +1,9 @@
 ﻿{% paginate collection.products by settings.product_list_capacity %}
     <main class="container" role="main">
-        <div class="col-xs-12">
-            {% include 'shared/breadcrumb' %}
-        </div>
-        <ng-controller ng-controller="collectionController as $collection">
+        <div class="row" ng-controller="collectionController as $collection">
+            <div class="col-xs-12">
+                {% include 'shared/breadcrumb' %}
+            </div>
             <div class="col-xs-12" ng-init="isAboutCollapsed = true">
                 <h1>{{ collection.title }}
                     {% if collection.description != blank %}
@@ -48,19 +48,19 @@
                         {% endfor %}
                     </script>
                 </div>
-            </div>    
-        </ng-controller>
-        <script>
-            window.productList = [];
-            {% for product in collection.products %}
-                window.productList.push({
-                    id: "{{ product.id }}",
-                    catalogId: "{{ product.catalog_id }}",
-                    outline: "{{ product.outline }}",
-                    categoryId: "{{ product.category_id }}",
-                    taxType: "{{ product.tax_type }}"
-                });
-            {% endfor %}
-        </script>
+            </div>
+            <script>
+                window.productList = [];
+                {% for product in collection.products %}
+                    window.productList.push({
+                        id: "{{ product.id }}",
+                        catalogId: "{{ product.catalog_id }}",
+                        outline: "{{ product.outline }}",
+                        categoryId: "{{ product.category_id }}",
+                        taxType: "{{ product.tax_type }}"
+                    });
+                {% endfor %}
+            </script>
+        </div>
     </main>
 {% endpaginate %}

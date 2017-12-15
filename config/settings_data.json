@@ -5,6 +5,7 @@
             "service_menu": "service-menu",
             "main_menu": "main-menu",
             "all_products_menu": "all-products-menu",
+            "collections_capacity":  100, 
             "suggestions_category_limit": 5,
             "suggestions_product_limit": 15,
             "footer_company_information_enable": true,
