@@ -1,10 +1,9 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateRegisterApi', 'storefront.corporateApiErrorHelper', 'storefront.accountApi', 'loadingIndicatorService',
-    function ($q, $scope, mainContext, corporateRegisterApi, corporateApiErrorHelper, accountApi, loader) {
+storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateRegisterApi', 'storefront.corporateApiErrorHelper', 'storefront.accountApi', 'loadingIndicatorService', 'vcRecaptchaService',
+    function ($q, $scope, mainContext, corporateRegisterApi, corporateApiErrorHelper, accountApi, loader, vcRecaptchaService) {
         $scope.loader = loader;
         $scope.memberComponent = null;
-        $scope.member = { type: 'Business', address: {} };
 
         var $ctrl = this;
         $ctrl.countries = accountApi.getCountries();
@@ -63,7 +62,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
 
             var stringifiedAddress = addressType;
             stringifiedAddress += address.firstName + ' ' + address.lastName + ', ';
-            stringifiedAddress += address.organization ? address.organization + ', ' : '';
+            stringifiedAddress += address.companyName ? address.companyName + ', ' : '';
             stringifiedAddress += address.countryName + ', ';
             stringifiedAddress += address.regionName ? address.regionName + ', ' : '';
             stringifiedAddress += address.city + ' ';
@@ -114,7 +113,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
         }
 
         $scope.init = function (storeId) {
-            $scope.member = { storeId: storeId };
+            $scope.member = { storeId: storeId, type: 'Business', address: {} };
 
             var invite = getParams().invite;
             if (invite) {
@@ -150,12 +149,9 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
 
         $scope.submit = function () {
             $ctrl.error = {};
-
             var hasError = false;
-            var errorMsg;
-
             var member = $scope.member;
-            errorMsg = member.password.length < 5;
+            var errorMsg = member.password.length < 5;
             $ctrl.error.password = errorMsg;
             hasError = hasError || errorMsg;
 
@@ -176,27 +172,31 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                 //    }).$promise; 
                 //});
 
-                if (this.memberComponent.validate()) {
-                    if ($scope.member.invite) {
-                        $scope.loader.wrapLoading(function () {
-                            return corporateRegisterApi.registerByInvite({ invite: $scope.member.invite }, $scope.member, function (result) {
-                                $scope.complete = true;
-                                corporateApiErrorHelper.clearErrors($scope);
-                            }, function (rejection) {
-                                corporateApiErrorHelper.handleErrors($scope, rejection);
-                            }).$promise;
-                        });
-                    } else {
-                        $scope.loader.wrapLoading(function () {
-                            return corporateRegisterApi.register($scope.member, function (result) {
-                                $scope.complete = true;
-                                corporateApiErrorHelper.clearErrors($scope);
-                            }, function (rejection) {
-                                corporateApiErrorHelper.handleErrors($scope, rejection);
-                            }).$promise;
-                        });
-                    }
+                corporateApiErrorHelper.clearErrors($scope);
+
+                //if (this.memberComponent.validate()) {
+                if ($scope.member.invite) {
+                    $scope.loader.wrapLoading(function () {
+                        return corporateRegisterApi.registerByInvite({ invite: $scope.member.invite }, $scope.member, function (result) {
+                            //$scope.complete = true;
+                        }, function (rejection) {
+                            corporateApiErrorHelper.handleErrors($scope, rejection);
+                        }).$promise;
+                    });
+                } else {
+                    $scope.loader.wrapLoading(function () {
+                        return corporateRegisterApi.register($scope.member, function (result) {
+                            $scope.userName = $scope.member.username;
+                            $scope.password = $scope.member.password
+                            $scope.login();
+                            //$scope.complete = true;
+                        }, function (rejection) {
+                            vcRecaptchaService.reload();
+                            corporateApiErrorHelper.handleErrors($scope, rejection);
+                        }).$promise;
+                    });
                 }
+                //}
             }
         };
     }]);
