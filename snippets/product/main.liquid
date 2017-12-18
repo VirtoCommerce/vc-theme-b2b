@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-10 container-drain container-bordered" itemscope itemtype="http://schema.org/Product">
+        <div class="col-xs-12 col-sm-12 col-md-10 container-drain container-bordered" itemscope itemtype="http://schema.org/Product">
             <meta itemprop="url" content="{{ product.url | absolute_url}}">
             <meta itemprop="image" content="{{ product.featured_image.src | img_url }}">
 
@@ -36,26 +36,16 @@
             </div>
             <div class="row flexible">
                 <div class="col-md-2">
-                    {% if product.featured_image %}
-                        <img class="img-responsive" ng-src="{{ product.featured_image.src | img_url: "168x168" }}" fallback-src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
-                    {% else %}
-                        <img class="img-responsive" src="{{ 'no-image.svg' | asset_url }}" class="no-image" />
-                    {% endif %}
+                    {% include 'product/image' %}
+                    {% include 'product/compare' %}
                 </div>
-                <div class="col-md-2">
-                    <p>{% include 'product/price' %}</p>{% raw %}{{ product }}{% endraw %}
-                </div>
+                <div class="col-md-2" ng-controller="priceController">{% include 'product/price', product: product %}</div>
                 <div class="col-md-4" ng-controller="purchaseController" ng-init='loadPaymentPlan({{ settings.available_paymentPlans | json }}, "product", "{{ product.id }}")'>
                     <p ng-show="shipmentType == 'shipping' && shipmentAddress">Expected to arrive: <strong ng-bind="availability['{{ product.id }}'].expectedArrival | date: 'fullDate'"></strong></p>
                     <p ng-show="shipmentType == 'pickup' && shipmentFulfillmentCenter">Available for pickup: <strong ng-bind="availability['{{ product.id }}'].availableSince | date: 'fullDate'"></strong></p>
                     <vc-payment-plan available-payment-plans="::availablePaymentPlans" payment-plan-type="::paymentPlanType" payment-plan="::paymentPlan" on-change="updatePaymentPlan('product', '{{ product.id }}', paymentPlanType, paymentPlan)"></vc-payment-plan>
                     <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-init="product['{{product.id}}'].quantity = 1" ng-model="product['{{product.id}}'].quantity">
-                            <span class="input-group-btn">
-                                <button class="btn btn-alt btn-block btn-primary" title="{{ 'products.general.add_to_cart' | t }}" ng-click="addProductToCartById('{{ product.id }}', product['{{product.id}}'].quantity, $event)" ng-controller="productController">{{ 'products.general.add_to_cart' | t }}</button>
-                            </span>
-                        </div>
+                        {% include 'product/quantity' %}
                     </div>
                     <p><add-to-list-button selected-variation="selectedVariation"></add-to-list-button></p>
                 </div>
@@ -84,6 +74,6 @@
                 </div>
             {% endif %}
         </div>
-        <div class="product-related col-xs-2 hidden-print"></div>
+        <div class="product-related hidden-xs hidden-sm col-md-10 hidden-print"></div>
     </div>
 </main>

@@ -32,15 +32,17 @@
                 {% endcomment %}
                 {% assign index = 0 %}
                 {%- capture top_level_collection_strings_list -%}
-                    {% paginate collections by settings.collections_capacity %}
+                    {%- paginate collections by settings.collections_capacity -%}
                         {%- for collection in collections -%}
                             {%- assign parent_count = collection.parents | size -%}
+                            {%- include 'shared/item-response-group' -%}
+                            {%- assign response_group = default_product_search_resp_group | plus: item_resp_group_item_properties | plus: item_resp_group_item_editorial_reviews -%}
                             {%- if parent_count == 1 -%}
-                                {%- if index > 0 -%}&#x2063;&#x2063;{%- endif-%}{{ collection.url }}&#x2063;{{ collection.title }}
+                                {%- if index > 0 -%}&#x2063;&#x2063;{%- endif-%}{{- collection.url | append: '?resp_group=' | append: response_group | append: '&view=list' -}}&#x2063;{{- collection.title -}}
                                 {%- assign index = index | plus: 1 -%}
                             {%- endif -%}
                         {%- endfor -%}
-                    {% endpaginate %}
+                    {%- endpaginate -%}
                 {%- endcapture -%}
                 {% assign top_level_collection_strings = top_level_collection_strings_list | split: '&#x2063;&#x2063;' %}
                 <div class="row">

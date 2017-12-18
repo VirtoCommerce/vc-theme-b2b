@@ -4,40 +4,13 @@
 
 <!-- TODO: Badges -->
 
-<div class="list-item clearfix">
-    {% assign product_url = product.url | within: current_collection %}
-    <div class="list-img col-md-3">
-        <a href="{{ product_url }}">
-            {% if product.featured_image %}
-                <img ng-src="{{ product.featured_image.src | img_url: "168x168" }}" fallback-src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
-            {% else %}
-                <img src="{{ 'no-image.svg' | asset_url }}" class="no-image" />
-            {% endif %}
-        </a>
-        <!-- TODO: Compare -->
-        <!--<div class="list-compare">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox">
-                    <span class="switch"></span>
-                    <span class="name">Compare</span>
-                </label>
-            </div>
-        </div>-->
+<div class="row">
+    <div class="col-md-3">
+        {% include 'product/item/image' %}
+        {% include 'product/compare' %}
     </div>
-    <div class="list-info col-md-4">
-        <div class="list-brand">{{ product.metafields.properties['Brand'] }}</div>
-        {% include 'shared/item-response-group' %}
-        {% assign response_group = default_product_search_resp_group | plus: item_resp_group_variations %}
-        <a class="list-name" href="{{ product_url | append: '?resp_group=' | append: response_group }}">
-            {{ product.title }}
-        </a>
-        <div class="list-sku">
-            {{ 'products.product.sku' | t }}&nbsp;<a href="{{ product_url| append: '?resp_group=' | append: response_group }}">{{ product.selected_variant.sku }}</a>
-        </div>
-        <div class="list-model">
-            {{ 'products.product.mmn' | t }}&nbsp;{{ product.metafields.properties['MMN'] }}
-        </div>
+    <div class="col-md-4">
+        {% include 'product/item/title-and-codes' %}
         <div class="list-descr" ng-init="product['{{product.id}}'].isDescriptionTruncated = true">
             {% for description in product.descriptions %}
                 {% if description.type == 'QuickReview' %}
@@ -45,37 +18,31 @@
                     {% break %}
                 {% endif %}
             {% endfor %}
-            <div ng-if="product['{{product.id}}'].isDescriptionTruncated">{{ quick_review | strip_html | truncatewords: 30 }}</div><a href="" ng-show="product['{{product.id}}'].isDescriptionTruncated" ng-click="product['{{product.id}}'].isDescriptionTruncated = false">{{ 'common.more' | t }}</a>
+            <div ng-if="product['{{product.id}}'].isDescriptionTruncated">
+                {% if quick_review contains '</ul>' %}
+                    {% assign separated_list = quick_review | replace: '</li>', '&#x2063;&#x2063;' | replace: '<li> ', '&#x2063;' | split: '&#x2063;&#x2063;' %}
+                    {%- capture short_quick_review -%}
+                        {%- for item in separated_list | limit: 3 -%}
+                            {{ item }}
+                        {%- endfor -%}
+                        {{ separated_list.last }}
+                    {%- endcapture -%}
+                    {% assign short_quick_review = short_quick_review | replace: '&#x2063;&#x2063;', '</li>' | replace:  '&#x2063;', '<li> ' %}
+                {% else %}
+                    {% assign short_quick_review = quick_review | strip_html | truncatewords: 30 %}
+                {% endif %}
+                {{ short_quick_review }}
+            </div>
+            <a href="" ng-show="product['{{product.id}}'].isDescriptionTruncated" ng-click="product['{{product.id}}'].isDescriptionTruncated = false">{{ 'common.more' | t }}</a>
             <div ng-if="!product['{{product.id}}'].isDescriptionTruncated">{{ quick_review }}</div>
         </div>
     </div>
-    <div class="list-other col-md-5">
-        <div class="list-price col-md-4">
-            {% if customer %}
-                <div class="price-label">{{ 'products.price.private' | t }}</div>
-            {% else %}
-                <div class="price-label">{{ 'products.price.public' | t }}</div>
-            {% endif %}
-            <div class="price-value">
-                {% if settings.show_prices_with_taxes %}
-                    {% include 'product/price', price: product.price_with_tax %}
-                {% else %}
-                    {% include 'product/price', price: product.price %}
-                {% endif %}
-            </div>
-            <!-- TODO: Replace with product unit -->
-            <div class="price-unit">/ each</div>
-        </div>
-        <div class="col-md-8">
-            <div class="list-cart">
-                <label>{{ 'products.product.quantity' | t }}</label>
-                <div class="form-group group-flex">
-                    <input type="text" class="form-control qty" ng-init="product['{{product.id}}'].quantity = 1" ng-model="product['{{product.id}}'].quantity">
-                    <button class="btn btn-alt btn-primary" title="{{ 'products.general.add_to_cart' | t }}" ng-click="addProductToCartById('{{ product.id }}', product['{{product.id}}'].quantity, $event)" ng-controller="productController">{{ 'products.general.add_to_cart' | t }}</button>
-                </div>
-                <a class="add-to-list" href="#"><i class="fa fa-plus"></i> {{ 'products.list.add_to_myList' | t }}</a>
+    <div class="col-md-5">
+        <div class="row">
+            <div class="col-md-4">{% include 'product/price' %}</div>
+            <div class="col-md-8">
+                {% include 'product/quantity', show_label: true %}
                 <vc-shipping-type is-dropdown="true" title="Ship or pickup" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
-                <p>Catalog Page # NA </p>
             </div>
         </div>
     </div>
