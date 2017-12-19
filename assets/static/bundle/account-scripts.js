@@ -2442,8 +2442,6 @@ var storefrontApp = angular.module('storefrontApp');
 storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateRegisterApi', 'storefront.corporateApiErrorHelper', 'storefront.accountApi', 'loadingIndicatorService', 'vcRecaptchaService',
     function ($q, $scope, mainContext, corporateRegisterApi, corporateApiErrorHelper, accountApi, loader, vcRecaptchaService) {
         $scope.loader = loader;
-        $scope.memberComponent = null;
-
         var $ctrl = this;
         $ctrl.countries = accountApi.getCountries();
 
@@ -2511,32 +2509,32 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
             return stringifiedAddress;
         }
 
-        $scope.registerMemberFieldsConfig = [
-            {
-                field: 'CompanyName',
-                disabled: false,
-                visible: true,
-                required: true
-            },
-            {
-                field: 'Email',
-                disabled: false,
-                visible: true,
-                required: true
-            },
-            {
-                field: 'UserName',
-                disabled: false,
-                visible: true,
-                required: true
-            },
-            {
-                field: 'Password',
-                disabled: false,
-                visible: true,
-                required: true
-            }
-        ];
+        //$scope.registerMemberFieldsConfig = [
+        //    {
+        //        field: 'CompanyName',
+        //        disabled: false,
+        //        visible: true,
+        //        required: true
+        //    },
+        //    {
+        //        field: 'Email',
+        //        disabled: false,
+        //        visible: true,
+        //        required: true
+        //    },
+        //    {
+        //        field: 'UserName',
+        //        disabled: false,
+        //        visible: true,
+        //        required: true
+        //    },
+        //    {
+        //        field: 'Password',
+        //        disabled: false,
+        //        visible: true,
+        //        required: true
+        //    }
+        //];
 
         function getParams() {
             var params = window.location.search.substring(1).split("&"), result = {}, param, i;
@@ -2584,9 +2582,8 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
             }
         };
 
-        //$scope.stepEntered = function () { };
-
         $scope.submit = function () {
+            corporateApiErrorHelper.clearErrors($scope);
             $ctrl.error = {};
             var hasError = false;
             var member = $scope.member;
@@ -2601,41 +2598,26 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
             }
 
             if (!hasError) {
-                //loader.wrapLoading(function () {
-                //    return corporateRegisterApi.register(member, function (result) {
-                //        corporateApiErrorHelper.clearErrors($scope);
-
-                //    }, function (rejection) {
-                //        corporateApiErrorHelper.handleErrors($scope, rejection);
-                //        $scope.outerRedirect($scope.baseUrl + 'account');
-                //    }).$promise; 
-                //});
-
-                corporateApiErrorHelper.clearErrors($scope);
-
-                //if (this.memberComponent.validate()) {
                 if ($scope.member.invite) {
                     $scope.loader.wrapLoading(function () {
                         return corporateRegisterApi.registerByInvite({ invite: $scope.member.invite }, $scope.member, function (result) {
-                            //$scope.complete = true;
                         }, function (rejection) {
                             corporateApiErrorHelper.handleErrors($scope, rejection);
                         }).$promise;
                     });
                 } else {
                     $scope.loader.wrapLoading(function () {
-                        return corporateRegisterApi.register($scope.member, function (result) {
-                            $scope.userName = $scope.member.username;
-                            $scope.password = $scope.member.password
+                        var apiMethodToCall = $scope.isOrg() ? corporateRegisterApi.register : corporateRegisterApi.registerPersonal;
+                        return apiMethodToCall($scope.member, function (result) {
+                            $scope.$parent.userName = $scope.member.username;
+                            $scope.$parent.password = $scope.member.password
                             $scope.login();
-                            //$scope.complete = true;
                         }, function (rejection) {
                             vcRecaptchaService.reload();
                             corporateApiErrorHelper.handleErrors($scope, rejection);
                         }).$promise;
                     });
                 }
-                //}
             }
         };
     }]);
@@ -2896,10 +2878,11 @@ angular.module('storefront.account')
 }])
 .factory('storefront.corporateRegisterApi', ['$resource', 'apiBaseUrl', function ($resource, apiBaseUrl) {
     return $resource(apiBaseUrl + 'api/b2b/register', {}, {
-        register: { url: apiBaseUrl + 'api/b2b/register', method: 'POST' },
+        register: { method: 'POST' },
         registerMember: { url: apiBaseUrl + 'api/b2b/registerMember', method: 'POST' },
         getRegisterInfoByInvite: { url: apiBaseUrl + 'api/b2b/registerMember/:invite' },
-        registerByInvite: { url: apiBaseUrl + 'api/b2b/registerMember/:invite', method: 'POST' }
+        registerByInvite: { url: apiBaseUrl + 'api/b2b/registerMember/:invite', method: 'POST' },
+        registerPersonal: { url: apiBaseUrl + 'api/b2b/registerPersonal', method: 'POST' }
     });
 }])
 .factory('storefront.corporateApiErrorHelper', ['$rootScope', function ($rootScope) {
@@ -2917,6 +2900,7 @@ angular.module('storefront.account')
         }
     };
 }]);
+
 angular.module('storefrontApp')
     .component('vcAccountLists', {
         templateUrl: "lists-manager.tpl",
