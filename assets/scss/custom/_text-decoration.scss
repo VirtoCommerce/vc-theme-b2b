@@ -17,6 +17,10 @@ a[href=""] {
   .pager > li > &
   // .pagination > li & // overrides
   {
-    border-bottom: 0;
+    &,
+    &:hover,
+    &:focus {
+      border-bottom: 0;
+    }
   }
 }

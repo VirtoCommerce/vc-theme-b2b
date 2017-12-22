@@ -72,7 +72,7 @@ function mapSources(isDynamic) {
 gulp.task('min:js', function () {
     var tasks = getBundles(regex.js).map(function (bundle) {
         return gulp.src(bundle.inputFiles, { base: '.' })
-            .pipe(sourcemaps.init())
+            .pipe(sourcemaps.init({ loadMaps: true }))
             .pipe(concat(bundle.outputFileName))
             .pipe(uglify({ compress: { drop_console: true}, mangle: false }))
             .pipe(mapSources())
@@ -101,8 +101,8 @@ function autoprefix() {
 
 gulp.task('min:scss', function () {
     var tasks = getBundles(regex.scss).map(function(bundle) {
-            return gulp.src(bundle.inputFiles, { base: '.' })
-            .pipe(sourcemaps.init())
+        return gulp.src(bundle.inputFiles, { base: '.' })
+            .pipe(sourcemaps.init({ loadMaps: true }))
             //.pipe(postcss([
             //    partialsimport({
             //        path: bundle.inputFiles.map(function(inputFile) {
@@ -110,7 +110,7 @@ gulp.task('min:scss', function () {
             //        }),
             //        prefix: "_",
             //        extension: ".scss",
-            //        glob: false
+            //        glob: false 
             //    }),
             //    autoprefix()
             //], { syntax: scss }))
@@ -136,7 +136,7 @@ gulp.task('min:scss', function () {
 gulp.task('min:css', function () {
     var tasks = getBundles(regex.css).map(function (bundle) {
         return gulp.src(bundle.inputFiles, { base: '.' })
-            .pipe(sourcemaps.init())
+            .pipe(sourcemaps.init({loadMaps: true}))
             .pipe(concat(bundle.outputFileName))
             .pipe(postcss([autoprefix(), cssnano()]))
             .pipe(mapSources())

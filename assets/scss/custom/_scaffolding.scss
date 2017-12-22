@@ -1,4 +1,7 @@
-﻿a {
+﻿// Disable anchor border for controls which is not real link
+@import "_text-decoration.scss";
+
+a {
   font-family: $link-font-family;
   font-weight: $link-font-weight;
   border-bottom: 1px solid transparent;
@@ -15,9 +18,6 @@
     }
   }
 }
-
-// Disable anchor border for controls which is not real link
-@import "_text-decoration.scss";
 
 a.primary-link {
   color: $primary-link-color;

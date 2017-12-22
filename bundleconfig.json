@@ -53,12 +53,17 @@
         ]
     },
     {
-        "outputFileName": "assets/static/bundle/styles.scss.css",
+        "outputFileName": "assets/static/bundle/styles.css",
         "inputFiles": [
-            "bower_components/font-awesome/scss/font-awesome.scss",
+            "bower_components/font-awesome/css/font-awesome.css",
             "bower_components/ng-wizard/dist/ngWizard.css",
             "bower_components/bootstrap-toc/dist/bootstrap-toc.css",
-            "bower_components/prism/themes/prism.css",
+            "bower_components/prism/themes/prism.css"
+        ]
+    },
+    {
+        "outputFileName": "assets/static/bundle/styles.scss.css",
+        "inputFiles": [
             "assets/scss/main.scss"
         ]
     },
