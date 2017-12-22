@@ -35,7 +35,7 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards',
 }])
 
 .component('vcAccountManager', {
-    templateUrl: "/assets/static/bundle/account-manager.tpl",
+    templateUrl: "account-manager.tpl",
     bindings: {
         baseUrl: '<',
         customer: '<'
@@ -89,12 +89,12 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards',
             return mainContext.customer;
         }, function (customer) {
             if (customer) {
-                loader.wrapLoading(function () {
-                    return corporateAccountApi.getCompanyMember({ id: customer.id }, function (member) {
-                        customer.companyId = _.first(member.organizations);
-                        customer.email = _.first(member.emails);
-                    }).$promise;
-                });
+                //loader.wrapLoading(function () {
+                //    return corporateAccountApi.getCompanyMember({ id: customer.id, memberType: 'CompanyMember' }, function (member) {
+                //        customer.companyId = _.first(member.organizations);
+                //        customer.email = _.first(member.emails);
+                //    }).$promise;
+                //});
                 authService.fillAuthData();
             }
         });

@@ -4,7 +4,7 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['$q', '$scope', 'storefrontApp.mainContext', 'roleService', 'storefront.corporateAccountApi', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService', function ($q, $scope, mainContext, roleService, corporateAccountApi, corporateApiErrorHelper, loader) {
+    controller: ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateAccountApi', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService', function ($q, $scope, mainContext, corporateAccountApi, corporateApiErrorHelper, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
 
