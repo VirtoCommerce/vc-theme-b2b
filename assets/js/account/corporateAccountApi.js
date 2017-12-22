@@ -1,4 +1,4 @@
-angular.module('storefront.account')
+﻿angular.module('storefront.account')
 .factory('storefront.corporateAccountApi', ['$resource', 'apiBaseUrl', function ($resource, apiBaseUrl) {
     return $resource(apiBaseUrl + 'api/b2b/companyMembers', {}, {
         getCompanyById: { url: apiBaseUrl + 'api/b2b/company/:id' },
@@ -18,10 +18,11 @@ angular.module('storefront.account')
 }])
 .factory('storefront.corporateRegisterApi', ['$resource', 'apiBaseUrl', function ($resource, apiBaseUrl) {
     return $resource(apiBaseUrl + 'api/b2b/register', {}, {
-        register: { url: apiBaseUrl + 'api/b2b/register', method: 'POST' },
+        register: { method: 'POST' },
         registerMember: { url: apiBaseUrl + 'api/b2b/registerMember', method: 'POST' },
         getRegisterInfoByInvite: { url: apiBaseUrl + 'api/b2b/registerMember/:invite' },
-        registerByInvite: { url: apiBaseUrl + 'api/b2b/registerMember/:invite', method: 'POST' }
+        registerByInvite: { url: apiBaseUrl + 'api/b2b/registerMember/:invite', method: 'POST' },
+        registerPersonal: { url: apiBaseUrl + 'api/b2b/registerPersonal', method: 'POST' }
     });
 }])
 .factory('storefront.corporateApiErrorHelper', ['$rootScope', function ($rootScope) {
