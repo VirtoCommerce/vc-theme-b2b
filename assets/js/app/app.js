@@ -54,7 +54,7 @@ storefrontApp.factory('themeInterceptor', ['$q', 'baseUrl', function ($q, baseUr
     }
 ]);
 
-storefrontApp.config(['$locationProvider', '$httpProvider', 'baseUrl', '$translateProvider', 'wizardConfigProviderProvider', 'vcRecaptchaServiceProvider', function ($locationProvider, $httpProvider, baseUrl, $translateProvider, wizardConfigProvider, vcRecaptchaServiceProvider) {
+storefrontApp.config(['$locationProvider', '$httpProvider', 'baseUrl', '$translateProvider', 'wizardConfigProviderProvider', 'vcRecaptchaServiceProvider', 'reCaptchaKey', function ($locationProvider, $httpProvider, baseUrl, $translateProvider, wizardConfigProvider, vcRecaptchaServiceProvider, reCaptchaKey) {
     $locationProvider.html5Mode({ enabled: true, requireBase: false, rewriteLinks: false });
     $httpProvider.interceptors.push('httpErrorInterceptor');
     $httpProvider.interceptors.push('themeInterceptor');
@@ -67,7 +67,7 @@ storefrontApp.config(['$locationProvider', '$httpProvider', 'baseUrl', '$transla
     wizardConfigProvider.nextString = 'Continue';
     wizardConfigProvider.submitString = 'Complete';
 
-    vcRecaptchaServiceProvider.setSiteKey('6LeBhjsUAAAAAM-avRbZPkcbsu9eME8-8Na9_bYD');
+    vcRecaptchaServiceProvider.setSiteKey(reCaptchaKey);
 }]);
 
 storefrontApp.run(['$rootScope', '$window', function($rootScope, $window) {
