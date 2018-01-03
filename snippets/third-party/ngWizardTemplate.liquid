@@ -1,34 +1,38 @@
 ﻿{% raw %}
 <script type="text/ng-template" id="ngWizardTemplate.html">
-    <div class="row wizard-container">
-        <!--<div class="col-md-3 col-xs-12">
-            <ul class="nav nav-pills nav-stacked wizard-sidebar">
-                <li tooltip="{{getProgressPercentage() | number : 2}}%">
-                    <progressbar value="getProgressPercentage()" type="{{getProgressPercentage() == 100 ? 'success' : 'default'}}"></progressbar>
-                </li>
-                <li ng-repeat="step in steps" ng-class="{disabled: getStepState(step) == stepStatesEnum.disabled, active: getCurrentStep() == step}"
-                    ng-click="goToStepByReference(step)" ng-disabled="getStepState(step) == stepStatesEnum.disabled">
-                    <a>
-                        {{step.title}} <i class="fa fa-check" ng-show="getStepState(step) == stepStatesEnum.complete"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>-->
-        <div class="col-md-8 col-md-offset-2 col-xs-12 wizard-main">
-            <ul class="pager">
-                <li class="previous" ng-class="{disabled: !hasPrevious()}"><a ng-click="goToPrevious()"><i class="fa fa-arrow-circle-left"></i> {{prevString}}</a></li>
-                <li ng-repeat="step in steps">
-                    <i class="fa" ng-class="{'fa-circle-o disabled': getStepState(step) == stepStatesEnum.disabled, 'fa-circle': getStepState(step) == stepStatesEnum.complete, 'fa-circle-o': getStepState(step) == stepStatesEnum.ready, selected: getCurrentStep() == step}"
-                       ng-click="goToStepByReference(step)" tooltips tooltip-template="{{step.title}}" tooltip-side="top"></i>
-                </li>
-                <li class="next" ng-class="{disabled: !hasNext()}"><a ng-click="goToNext()">{{nextString}} <i class="fa fa-arrow-circle-right"></i></a></li>
-            </ul>
-            <h3>{{ getCurrentStep().title }}</h3>            
-            <div class="wizard-step-container" ng-transclude></div>
-        </div>
+    <div class="wizard-container">
         <div class="row">
-            <div class="col-xs-12">
-                <button class="btn btn-primary btn-block submit animate fade-in-out" ng-hide="!isSubmittable()" ng-click="onSubmitClicked()" ng-disabled="submitting">{{submitString}} <i class="fa fa-circle-o-notch fa-spin" ng-show="submitting"></i></button>
+            <!--<div class="col-md-3 col-xs-12">
+                <ul class="nav nav-pills nav-stacked wizard-sidebar">
+                    <li tooltip="{{getProgressPercentage() | number : 2}}%">
+                        <progressbar value="getProgressPercentage()" type="{{getProgressPercentage() == 100 ? 'success' : 'default'}}"></progressbar>
+                    </li>
+                    <li ng-repeat="step in steps" ng-class="{disabled: getStepState(step) == stepStatesEnum.disabled, active: getCurrentStep() == step}"
+                        ng-click="goToStepByReference(step)" ng-disabled="getStepState(step) == stepStatesEnum.disabled">
+                        <a>
+                            {{step.title}} <i class="fa fa-check" ng-show="getStepState(step) == stepStatesEnum.complete"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>-->
+            <div class="col-md-8 col-md-offset-2 col-xs-12 wizard-main">
+                <ul class="pager">
+                    <li ng-repeat="step in steps">
+                        <i class="fa" ng-class="{'fa-circle-o disabled': getStepState(step) == stepStatesEnum.disabled, 'fa-circle': getStepState(step) == stepStatesEnum.complete, 'fa-circle-o': getStepState(step) == stepStatesEnum.ready, selected: getCurrentStep() == step}"
+                           ng-click="goToStepByReference(step)" tooltips tooltip-template="{{step.title}}" tooltip-side="top"></i>
+                    </li>
+                </ul>
+                <h3>{{ getCurrentStep().title }}</h3>
+                <div class="wizard-step-container" ng-transclude></div>
+            </div>
+        </div>
+        <div class="row wizard-main">
+            <div class="col-md-2 col-md-offset-6 col-xs-6">
+                <button class="btn btn-default btn-block previous" ng-click="goToPrevious()" ng-if="hasPrevious()">{{prevString}} <i class="fa fa-arrow-circle-left"></i></button>
+            </div>
+            <div class="col-md-2 col-md-offset-0 col-xs-6">
+                <button class="btn btn-primary btn-block next" ng-click="goToNext()" ng-if="currentStepNumber < steps.length - 1" ng-class="{disabled: !hasNext()}">{{nextString}} <i class="fa fa-arrow-circle-right"></i></button>
+                <button class="btn btn-primary btn-block submit animate fade-in-out" ng-if="currentStepNumber == steps.length - 1" ng-click="onSubmitClicked()" ng-disabled="!isSubmittable()">{{submitString}} <i class="fa fa-circle-o-notch fa-spin"></i></button>
             </div>
         </div>
     </div>

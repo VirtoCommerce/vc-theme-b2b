@@ -108,8 +108,8 @@
                                     <span>{{ 'customer.register.repeat-password' | t }}</span>
                                 </div>-->
 
-                                <div class="form-group" ng-class="{'keyuped': stepForm.ConfirmPassword.$viewValue.length, 'error': (stepForm.ConfirmPassword.$dirty || stepForm.$submitted) && stepForm.ConfirmPassword.$invalid }">
-                                    <label for="ConfirmPassword" class="form-label">{{ 'customer.register.confirm_password' | t }}</label>
+                                <div class="form-group" ng-class="{'keyuped': stepForm.ConfirmPassword.$viewValue.length, 'has-error has-feedback': (stepForm.ConfirmPassword.$dirty || stepForm.$submitted) && stepForm.ConfirmPassword.$invalid }">
+                                    <label for="ConfirmPassword" class="control-label">{{ 'customer.register.confirm_password' | t }}</label>
                                     <input ng-model="member.confirmPassword"
                                            name="ConfirmPassword"
                                            id="ConfirmPassword"
