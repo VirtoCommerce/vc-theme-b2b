@@ -32,7 +32,7 @@
             </div>
             <div class="col-md-2 col-md-offset-0 col-xs-6">
                 <button class="btn btn-primary btn-block next" ng-click="goToNext()" ng-if="currentStepNumber < steps.length - 1" ng-class="{disabled: !hasNext()}">{{nextString}} <i class="fa fa-arrow-circle-right"></i></button>
-                <button class="btn btn-primary btn-block submit animate fade-in-out" ng-if="currentStepNumber == steps.length - 1" ng-click="onSubmitClicked()" ng-disabled="!isSubmittable()">{{submitString}} <i class="fa fa-circle-o-notch fa-spin"></i></button>
+                <button class="btn btn-primary btn-block submit animate fade-in-out" ng-if="currentStepNumber == steps.length - 1" ng-click="onSubmitClicked()" ng-disabled="!isSubmittable()">{{submitString}} <i class="fa fa-circle-o-notch" ng-class="{'fa-spin': loader.isLoading}"></i></button>
             </div>
         </div>
     </div>
