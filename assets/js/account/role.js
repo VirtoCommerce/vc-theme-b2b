@@ -1,5 +1,5 @@
-angular.module('storefront.account')
-.factory('roleService', ['$q', '$http', 'storefront.corporateAccountApi', function ($q, $http, corporateAccountApi) {
+﻿angular.module('storefront.account')
+.factory('roleService', ['$q', '$http', 'storefront.corporateAccountApi', 'availableRoles', function ($q, $http, corporateAccountApi, availableRoles) {
     var service = {
         available: null,
         get: null,
@@ -7,7 +7,7 @@ angular.module('storefront.account')
     };
 
     // get all available roles from settings
-    service._roles = {{ settings.available_roles | json }};
+    service._roles = availableRoles;
     corporateAccountApi.getRoles(function (roles) {
         service.available = _.map(service._roles, function(role) {
             var realRole = _.findWhere(roles, { name: role });
