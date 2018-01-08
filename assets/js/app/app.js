@@ -12,10 +12,10 @@
 var storefrontApp = angular.module('storefrontApp', storefrontAppDependencies);
 
 storefrontApp.factory('httpErrorInterceptor', [
-    '$q', '$rootScope', function($q, $rootScope) {
-        var httpErrorInterceptor = { };
+    '$q', '$rootScope', function ($q, $rootScope) {
+        var httpErrorInterceptor = {};
 
-        httpErrorInterceptor.responseError = function(rejection) {
+        httpErrorInterceptor.responseError = function (rejection) {
             if (rejection.data && rejection.data.message) {
                 $rootScope.$broadcast('storefrontError', {
                     type: 'error',
@@ -25,7 +25,7 @@ storefrontApp.factory('httpErrorInterceptor', [
             }
             return $q.reject(rejection);
         };
-        httpErrorInterceptor.requestError = function(rejection) {
+        httpErrorInterceptor.requestError = function (rejection) {
             if (rejection.data && rejection.data.message) {
                 $rootScope.$broadcast('storefrontError', {
                     type: 'error',
@@ -41,21 +41,21 @@ storefrontApp.factory('httpErrorInterceptor', [
 ]);
 
 storefrontApp.factory('themeInterceptor', ['$q', 'baseUrl', function ($q, baseUrl) {
-        var themeInterceptor = {};
-        
-        themeInterceptor.request = function (config) {
-            if (config.url.startsWith('storefrontapi') || config.url.startsWith('themes')) {
-                config.url = baseUrl + config.url;
-            }
-            return config || $q.when(config);
-        };
+    var themeInterceptor = {};
 
-        return themeInterceptor;
-    }
+    themeInterceptor.request = function (config) {
+        if (config.url.startsWith('storefrontapi') || config.url.startsWith('themes')) {
+            config.url = baseUrl + config.url;
+        }
+        return config || $q.when(config);
+    };
+
+    return themeInterceptor;
+}
 ]);
 
 storefrontApp.config(['$locationProvider', '$httpProvider', 'baseUrl', '$translateProvider', 'wizardConfigProviderProvider', 'vcRecaptchaServiceProvider', 'reCaptchaKey', function ($locationProvider, $httpProvider, baseUrl, $translateProvider, wizardConfigProvider, vcRecaptchaServiceProvider, reCaptchaKey) {
-    $locationProvider.html5Mode({ enabled: true, requireBase: false, rewriteLinks: false });
+    //$locationProvider.html5Mode({ enabled: true, requireBase: false, rewriteLinks: false });
     $httpProvider.interceptors.push('httpErrorInterceptor');
     $httpProvider.interceptors.push('themeInterceptor');
 
@@ -70,8 +70,8 @@ storefrontApp.config(['$locationProvider', '$httpProvider', 'baseUrl', '$transla
     vcRecaptchaServiceProvider.setSiteKey(reCaptchaKey);
 }]);
 
-storefrontApp.run(['$rootScope', '$window', function($rootScope, $window) {
-    $rootScope.print = function() {
+storefrontApp.run(['$rootScope', '$window', function ($rootScope, $window) {
+    $rootScope.print = function () {
         $window.print();
     };
 }]);

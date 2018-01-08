@@ -5,7 +5,7 @@
         updateCompany: { url: apiBaseUrl + 'api/b2b/company', method: 'POST' },
 
         getCompanyMembers: { url: apiBaseUrl + 'api/b2b/companyMembers', method: 'POST' },
-        getCompanyMember: { url: apiBaseUrl + 'api/b2b/companyMember/:id' },
+        getCompanyMember: { url: apiBaseUrl + 'api/members/:id' },
         updateCompanyMember: { url: apiBaseUrl + 'api/b2b/companyMember', method: 'POST' },
         deleteCompanyMember: { url: apiBaseUrl + 'api/b2b/companyMembers', method: 'DELETE' },
 

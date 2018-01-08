@@ -1,6 +1,6 @@
 ﻿angular.module('storefrontApp')
-.factory('authService', ['storefrontApp.mainContext', '$auth', '$httpParamSerializerJQLike', '$interpolate', '$rootScope', 'storefront.corporateAccountApi',
-    function (mainContext, $auth, $httpParamSerializerJQLike, $interpolate, $rootScope, corporateAccountApi) {
+    .factory('authService', ['storefrontApp.mainContext', '$auth', '$httpParamSerializerJQLike', '$interpolate', '$rootScope', 'storefront.accountApi',
+        function (mainContext, $auth, $httpParamSerializerJQLike, $interpolate, $rootScope, accountApi) {
     
     var authContext = {
         userId: null,
@@ -23,7 +23,8 @@
     };
 
     authContext.fillAuthData = function () {
-        return corporateAccountApi.getUser({ userName: mainContext.customer.userName },
+        //return corporateAccountApi.getUser({ userName: mainContext.customer.userName },
+        return accountApi.get(
             function (result) {
                 changeAuth(result)
                 $rootScope.$broadcast('loginStatusChanged', authContext);

@@ -5,7 +5,7 @@
 
 <script id="account-manager.tpl" type="text/ng-template">
     <div class="vc-form grid">
-        <div class="ajax-informer" ng-class="{ 'fade': $ctrl.loader.isLoading }">
+        <div class="ajax-informer" ng-class="{ 'fade': !$ctrl.loader.isLoading }">
             <div class="loader"></div>
             <span>{{ 'general.loading' | t }}</span>
         </div>
