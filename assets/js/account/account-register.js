@@ -2,8 +2,8 @@
 
 storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateRegisterApi', 'storefront.corporateApiErrorHelper', 'storefront.accountApi', 'loadingIndicatorService', 'vcRecaptchaService',
     function ($q, $scope, mainContext, corporateRegisterApi, corporateApiErrorHelper, accountApi, loader, vcRecaptchaService) {
-        $scope.loader = loader;
         var $ctrl = this;
+        $ctrl.loader = loader;
         $ctrl.countries = accountApi.getCountries();
 
         $scope.isOrg = function () {
@@ -115,21 +115,21 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
 
             var invite = getParams().invite;
             if (invite) {
-                $scope.registerMemberFieldsConfig[0] = {
-                    field: 'CompanyName',
-                    disabled: true,
-                    visible: true,
-                    required: true
-                };
-                $scope.registerMemberFieldsConfig[1] = {
-                    field: 'Email',
-                    disabled: true,
-                    visible: true,
-                    required: true
-                };
+                //$scope.registerMemberFieldsConfig[0] = {
+                //    field: 'CompanyName',
+                //    disabled: true,
+                //    visible: true,
+                //    required: true
+                //};
+                //$scope.registerMemberFieldsConfig[1] = {
+                //    field: 'Email',
+                //    disabled: true,
+                //    visible: true,
+                //    required: true
+                //};
 
                 $scope.member.invite = invite;
-                $scope.loader.wrapLoading(function () {
+                $ctrl.loader.wrapLoading(function () {
                     return corporateRegisterApi.getRegisterInfoByInvite({ invite: invite }).$promise
                         .then(function (result) {
                             if (result.message) {
@@ -160,14 +160,14 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
 
             if (!hasError) {
                 if ($scope.member.invite) {
-                    $scope.loader.wrapLoading(function () {
+                    $ctrl.loader.wrapLoading(function () {
                         return corporateRegisterApi.registerByInvite({ invite: $scope.member.invite }, $scope.member, function (result) {
                         }, function (rejection) {
                             corporateApiErrorHelper.handleErrors($scope, rejection);
                         }).$promise;
                     });
                 } else {
-                    $scope.loader.wrapLoading(function () {
+                    $ctrl.loader.wrapLoading(function () {
                         var apiMethodToCall = $scope.isOrg() ? corporateRegisterApi.register : corporateRegisterApi.registerPersonal;
                         return apiMethodToCall($scope.member, function (result) {
                             $scope.$parent.userName = $scope.member.username;
