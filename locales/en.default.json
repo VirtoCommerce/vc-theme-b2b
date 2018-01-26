@@ -139,7 +139,7 @@
         "month_day_year": "%b %d, %Y"
     },
     "notification": {
-        "error_title": "Ooops! An error is occured!",
+        "error_title": "Ooops! An error has occurred!",
         "error_message": "Please tell us technical details for this error and we will be better!",
         "show_error_details_link_text": "Show me the technical details!",
         "hide_error_details_link_text": "Hide the technical details",
@@ -228,7 +228,7 @@
             "update": "Update cart",
             "updating_cart_message": "Updating cart...",
             "loading_cart_message": "Loading cart...",
-            "updating_cart_error_message": "An error occured while updating cart",
+            "updating_cart_error_message": "An error has occurred while updating the cart",
             "checkout": "Proceed to checkout",
             "empty": "Your cart is currently empty.",
             "adding": "Adding product to cart...",
@@ -636,11 +636,11 @@
             "title": "Edit company info",
             "company_name": "Company name",
             "company_addresses": "Company Addresses",
-            "no_addresses_message": "Company have no addresses yet."
+            "no_addresses_message": "Company has no addresses yet."
         },
         "edit_company_members": {
             "title": "Company members",
-            "none": "There is no any members yet.",
+            "none": "There is no members yet.",
             "name": "Name",
             "job_title": "Title",
             "email": "Email",
