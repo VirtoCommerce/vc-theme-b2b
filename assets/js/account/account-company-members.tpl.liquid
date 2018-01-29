@@ -45,10 +45,10 @@
 			<h3>{{ 'customer.edit_company_member.invite.title' | t }}</h3>
 			<vc-errors message="errorMessage" errors="errors"></vc-errors>
 			<form accept-charset="UTF8" name="inviteForm" ng-submit="$ctrl.invite()" novalidate="novalidate">
-				<h5>{{ 'customer.edit_company_member.invite.emails_title' | t }}</h5>
-				<vc-labeled-text-area name="inviteEmails" form="inviteForm" label="{{ 'customer.edit_company_member.invite.emails_placeholder' | t }}" value="$ctrl.inviteInfo.rawEmails" required="true" pattern="$ctrl.inviteEmailsValidationPattern" autofocus="true"></vc-labeled-text-area>
-				<h5>{{ 'customer.edit_company_member.invite.message_title' | t }}</h5>
-				<vc-labeled-text-area name="inviteMessage" form="inviteForm" label="{{ 'customer.edit_company_member.invite.message_placeholder' | t }}" value="$ctrl.inviteInfo.message" required="false"></vc-labeled-text-area>
+				<!--<h5>{{ 'customer.edit_company_member.invite.emails_placeholder' | t }}</h5>-->
+				<vc-labeled-text-area name="inviteEmails" form="inviteForm" label="{{ 'customer.edit_company_member.invite.emails_title' | t }}" value="$ctrl.inviteInfo.rawEmails" required="true" pattern="$ctrl.inviteEmailsValidationPattern" autofocus="true"></vc-labeled-text-area>
+				<!--<h5>{{ 'customer.edit_company_member.invite.message_title' | t }}</h5>-->
+				<vc-labeled-text-area name="inviteMessage" form="inviteForm" label="{{ 'customer.edit_company_member.invite.message_title' | t }}" value="$ctrl.inviteInfo.message" required="false"></vc-labeled-text-area>
 				<button ng-click="$ctrl.cancel()" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
 					<span class="btn-text">{{ 'customer.edit_company_member.cancel' | t }}</span>
 					<span class="btn-loading"></span>
