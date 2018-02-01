@@ -104,7 +104,7 @@
                 adminEmail: mainContext.customer.email,
                 message: $ctrl.inviteInfo.message,
                 language: $ctrl.cultureName,
-                callbackUrl: $location.protocol() + "://" + $location.host() + ":" + $location.port() + $ctrl.registrationUrl
+                callbackUrl: $ctrl.registrationUrl
               }, function(response) {
                   $ctrl.cancel();
                   $ctrl.pageSettings.pageChanged();
