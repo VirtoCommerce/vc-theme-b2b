@@ -296,3 +296,34 @@ table th[class*="col-"] {
 .sample-show-hide.ng-hide {
     opacity: 0;
   }
+
+.compare-table
+{
+  td
+  {
+    max-width: 160px;
+    min-width: 160px;
+  }
+
+  > tbody > tr > td
+  {
+    border: none;
+  }
+
+  > tbody > tr:nth-child(even)
+  {
+    background: $gray-lighter;
+  }
+
+  .product-t
+  {
+    background: $gray-base;
+    color: #fff;
+    padding: 10px;
+  }
+
+  img
+  {
+    max-width: 100%;
+  }
+}
