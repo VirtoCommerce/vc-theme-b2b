@@ -1,12 +1,3 @@
-{% comment %} <button id="addToCompareList"
-        ng-disabled="$ctrl.containProduct"  
-        ng-class="[$ctrl.showButtonName ? '' : [$ctrl.customClass, 'btn-secondary'], $ctrl.containProduct ? 'disabled-compare-button':'']"
-        class="btn btn-clearfix"
-        type="button"
-        ng-click="$ctrl.addProductToCompareList($event);">
-    <span class="fa fa-bar-chart"></span>
-    <span ng-if="$ctrl.showButtonName">{{ 'products.compare_list.add_to_compare' | t }}</span>
-</button> {% endcomment %}
 <div class="checkbox">
     <label>
         <input type="checkbox" title="Compare" ng-click="$ctrl.addProductToCompareList($event);" ng-checked="$ctrl.containProduct">

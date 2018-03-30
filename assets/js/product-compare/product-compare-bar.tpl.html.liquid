@@ -1,5 +1,8 @@
-<a class="text-uppercase text-condensed sample-show-hide" href="{{ 'compare' | absolute_url }}" ng-show="$ctrl.itemsCount > 0">
+<a class="text-uppercase text-condensed sample-show-hide" style="position:fixed; left:50%; bottom:0; width:100%" href="{{ 'compare' | absolute_url }}" ng-show="$ctrl.itemsCount > 0">
     <span class="fa fa-bar-chart"></span>
     {{ 'products.compare_list.compare' | t }} 
     <span class="visible-count" id="productCompareListCount" ng-bind="$ctrl.itemsCount"></span>
 </a>
+
+<div class="sample-show-hide" ng-show="$ctrl.itemsCount === 0">
+</div>
