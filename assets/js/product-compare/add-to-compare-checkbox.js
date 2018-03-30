@@ -9,6 +9,7 @@ angular.module('storefrontApp')
         },
         controller: ['$rootScope', '$scope', 'catalogService', 'dialogService', 'compareProductService', function($rootScope, $scope, catalogService, dialogService, compareProductService) {
             var $ctrl = this;
+            $ctrl.containProduct = false;
 
             $ctrl.$onInit = function () {
                 $ctrl.containProduct = compareProductService.isInProductCompareList($ctrl.productId);
@@ -18,6 +19,7 @@ angular.module('storefrontApp')
                 event.preventDefault();
                 catalogService.getProduct($ctrl.productId).then(function(response) {
                     var product = response.data[0];
+                    $ctrl.containProduct = true;
                     event.preventDefault();
                     var isInProductList = compareProductService.isInProductCompareList($ctrl.productId);
                     if (!isInProductList) {
