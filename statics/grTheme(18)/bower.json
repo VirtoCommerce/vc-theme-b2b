@@ -1,0 +1,21 @@
+{
+  "name": "grainger-theme",
+  "description": "",
+  "main": "gulpfile.js",
+  "authors": [
+    "Aleksandr Vishnyakov <asvishnyakov@hotmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass": "^3.3.7"
+  }
+}
