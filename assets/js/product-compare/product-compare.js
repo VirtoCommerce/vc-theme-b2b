@@ -81,14 +81,15 @@ function ($rootScope, $scope, $localStorage, $window, catalogService, dialogServ
     }
 
     $scope.clearCompareList = function () {
-        $localStorage['productCompareList'] = [];
+        compareProductService.clearComapreList();
+        $scope.products = [];
         $rootScope.$broadcast('productCompareListChanged');
-        $scope.products = $localStorage['productCompareList'];
+        $scope.properties = [];
     }
 
     $scope.removeProduct = function (product) {
-        $localStorage['productCompareList'] = _.without($localStorage['productCompareList'], product);
-        $scope.products = $localStorage['productCompareList'];
+        compareProductService.removeProduct(product.id)
+        $scope.products = _.without($scope.products, product);
         $rootScope.$broadcast('productCompareListChanged');
         $scope.getProductProperties();
     }

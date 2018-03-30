@@ -2,7 +2,10 @@ angular.module('storefrontApp')
     .component('addToCompareCheckbox', {
         templateUrl: 'themes/assets/js/product-compare/add-to-compare-checkbox.tpl.html',
         bindings: {
-            productId: '<'
+            productId: '<',
+            buttonType: '<',
+            customClass: '<',
+            buttonWidth: '<'
         },
         controller: ['$rootScope', '$scope', 'catalogService', 'dialogService', 'compareProductService', function($rootScope, $scope, catalogService, dialogService, compareProductService) {
             var $ctrl = this;

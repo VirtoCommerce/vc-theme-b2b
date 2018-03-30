@@ -23,37 +23,58 @@
                         </div>
                     </div>
                     <hr />
-                    <div class="container">
-                        <div class="row">&nbsp;</div>
-                        <div class="row justify-content-center">
-                            <div class="col-6 col-md-4 grid-item one-fifth text-center" style="padding: 10px;" ng-repeat="product in products">
-                                <div class="compare-list-inner">
-                                    <a class="icon-fallback-text btn-secondary remove ajaxifyCart--remove" ng-click="removeProduct(product)">
-                                        <span class="icon icon-x" aria-hidden="true"></span>
-                                        <span class="fallback-text">{{ 'products.compare_list.remove' | t }}</span>
-                                    </a>
-                                    <a ng-href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}">
-                                        <img style="max-width: 150px;" ng-src="{% raw %}{{ product.primaryImage.url }}{% endraw %}" ng-if="product.primaryImage.url" />
-                                        <div class="no-product-image" ng-if="!product.primaryImage.url">
-                                            <img src="{{ 'no-image.svg' | asset_url }}" />
+                    <div class="table-items">
+                        <div class="table-head">&nbsp;</div>
+                        <div class="table-body">
+                            <div class="table-row clearfix">
+                                <div class="table-content">
+                                    <div class="col-md-3">
+                                        <div class="table-item">&nbsp;</div>
+                                    </div>
+                                    <div class="col-md-6">    
+                                        <div class="table-item one-fifth text-center" style="padding: 10px;" ng-repeat="product in products">
+                                            <div class="compare-list-inner">
+                                                <a class="icon-fallback-text btn-secondary remove ajaxifyCart--remove" ng-click="removeProduct(product)">
+                                                    <span class="icon icon-x" aria-hidden="true"></span>
+                                                    <span class="fallback-text">{{ 'products.compare_list.remove' | t }}</span>
+                                                </a>
+                                                <a ng-href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}">
+                                                    <img style="max-width: 150px;" ng-src="{% raw %}{{ product.primaryImage.url }}{% endraw %}" ng-if="product.primaryImage.url" />
+                                                    <div class="no-product-image" ng-if="!product.primaryImage.url">
+                                                        <img src="{{ 'no-image.svg' | asset_url }}" />
+                                                    </div>
+                                                    <div ng-bind="product.name"></div>
+                                                </a>
+                                            </div>
                                         </div>
-                                        <div ng-bind="product.name"></div>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {% comment %} <div class="row" style="margin-top: 25px;">
-                    <div class="grid-item one-fifth compare-list-cell" style="border-top: 1px solid #dcdcdc;">
-                        <strong>Price</strong>
-                    </div>
-                    <div class="grid-item one-fifth compare-list-cell value" style="border-top: 1px solid #dcdcdc;" ng-repeat="product in products">
-                        {% if customer %}
-                        <strong style="margin: 0 auto;" ng-bind="product.price.actualPrice.formattedAmount"></strong>
-                        {% else %}
-                        <strong style="margin: 0 auto;">{{ 'products.product.sign_in_to_see_price' | t }}</strong>
-                        {% endif %}
+                
+                <div class="table-items" style="margin-top: 25px;">
+                    <div class="table-head">&nbsp;</div>
+                    <div class="table-body">
+                        <div class="table-row clearfix">
+                            <div class="table-content">
+                                <div class="col-md-3">
+                                    <div class="table-item one-fifth text-center" style="border-top: 1px solid #dcdcdc;">
+                                        <strong>Price</strong>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">    
+                                    <div class="table-item one-fifth text-center" style="border-top: 1px solid #dcdcdc;" ng-repeat="product in products">
+                                        {% if customer %}
+                                        <strong style="margin: 0 auto;" ng-bind="product.price.actualPrice.formattedAmount"></strong>
+                                        {% else %}
+                                        <strong style="margin: 0 auto;">{{ 'products.product.sign_in_to_see_price' | t }}</strong>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row compare-list-row" ng-repeat="(displayName, values) in properties" ng-if="hasValues(values, showShowOnlyDifferences)">
@@ -67,7 +88,7 @@
                         </div>
                         <i class="fa fa-check" aria-hidden="true" style="margin: 0 auto;" ng-if="value.valueType.toLowerCase() === 'boolean'"></i>
                     </div>
-                </div> {% endcomment %}
+                </div>
             </div>
         </div>
     </div>

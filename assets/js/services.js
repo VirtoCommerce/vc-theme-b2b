@@ -62,6 +62,9 @@ storefrontApp.service('catalogService', ['$http', function ($http) {
         getProduct: function (productIds) {
             return $http.get('storefrontapi/products?productIds=' + productIds + '&t=' + new Date().getTime());
         },
+        getProducts: function(productIds) {
+            return $http.get('storefrontapi/products?' + productIds + '&t=' + new Date().getTime());
+        },
         search: function (criteria) {
             return $http.post('storefrontapi/catalog/search', criteria);
         },
@@ -287,6 +290,48 @@ storefrontApp.service('orderService', ['$http', function ($http) {
     return {
         getOrder: function (orderNumber) {
             return $http.get('storefrontapi/orders/' + orderNumber + '?t=' + new Date().getTime());
+        }
+    }
+}]);
+
+storefrontApp.service('compareProductService', ['$http', '$localStorage', function($http, $localStorage) {
+    return {
+        isInProductCompareList: function(productId) {
+            var containProduct;
+            if (!_.some($localStorage['productCompareListIds'], function(id) { return id === productId })) {
+                containProduct = false;
+            }
+            else
+                containProduct = true
+            return containProduct;
+        },
+        addProduct: function(productId) {
+            if (!$localStorage['productCompareListIds']) {
+                $localStorage['productCompareListIds'] = [];
+            }
+            $localStorage['productCompareListIds'].push(productId);
+            _.uniq($localStorage['productCompareListIds']);
+        },
+        getProductsIds: function() {
+            if (!$localStorage['productCompareListIds']) {
+                $localStorage['productCompareListIds'] = [];
+                return;
+            }
+            var ids = [];
+            for (i = 0; i < $localStorage['productCompareListIds'].length; i++) {
+                ids.push('productIds=' + $localStorage['productCompareListIds'][i]);
+            }
+            return ids.join("&");
+        },
+        getProductsCount: function() {
+            var count = $localStorage['productCompareListIds'] ? $localStorage['productCompareListIds'].length : 0;
+            return count;
+        },
+        clearComapreList: function() {
+            $localStorage['productCompareListIds'] = [];
+        },
+        removeProduct: function(productId) {
+            $localStorage['productCompareListIds'] = _.without($localStorage['productCompareListIds'], productId);
         }
     }
 }]);
