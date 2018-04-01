@@ -23,177 +23,58 @@
                         </div>
                     </div>
                     <hr />
-                    <!-- <div class="table-items">
-                        <div class="table-head">&nbsp;</div>
-                        <div class="table-body">
-                            <div class="table-row clearfix">
-                                <div class="table-content">
-                                    <div class="col-md-3">
-                                        <div class="table-item">&nbsp;</div>
-                                    </div>
-                                    <div class="col-md-6">    
-                                        <div class="table-item one-fifth text-center" style="padding: 10px;" ng-repeat="product in products">
-                                            <div class="compare-list-inner">
-                                                <a class="icon-fallback-text btn-secondary remove ajaxifyCart--remove" ng-click="removeProduct(product)">
-                                                    <span class="icon icon-x" aria-hidden="true"></span>
-                                                    <span class="fallback-text">{{ 'products.compare_list.remove' | t }}</span>
-                                                </a>
-                                                <a ng-href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}">
-                                                    <img style="max-width: 150px;" ng-src="{% raw %}{{ product.primaryImage.url }}{% endraw %}" ng-if="product.primaryImage.url" />
-                                                    <div class="no-product-image" ng-if="!product.primaryImage.url">
-                                                        <img src="{{ 'no-image.svg' | asset_url }}" />
-                                                    </div>
-                                                    <div ng-bind="product.name"></div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="table-responsive">
                         <table class="table compare-table">
                             <tr>
                                 <td>
                                     
                                 </td>
-                                <td>
+                                <td ng-repeat="product in products">
                                     <div class="product-actions">
-                                        <a>
+                                        <a class="" ng-click="removeProduct(product)">
                                             <i class="fa fa-remove"></i>
                                             Remove
                                         </a>
                                     </div>
-                                    <img src="http://localhost/admin/assets/catalog/DJP3P/1428511277000_1133098.jpg">
-                                    <div class="product-name">
-                                        DJI Phantom 3 Professional Quadcopter with 4K Camera and 3-Axis Gimbal
-                                    </div>
+                                    <a ng-href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}">
+                                        <img style="max-width: 150px;" ng-src="{% raw %}{{ product.primaryImage.url }}{% endraw %}" ng-if="product.primaryImage.url" />
+                                        <div class="no-product-image" ng-if="!product.primaryImage.url">
+                                            <img src="{{ 'images/no-image.svg' | asset_url }}" />
+                                        </div>
+                                        <div class="product-name" ng-bind="product.name"></div>
+                                    </a>
                                 </td>
+                            </tr>
+                            <tr>
                                 <td>
-                                    <div class="product-actions">
-                                        <a>
-                                            <i class="fa fa-remove"></i>
-                                            Remove
-                                        </a>
-                                    </div>
-                                    <img src="http://localhost/admin/assets/catalog/DJP3P/1428511277000_1133098.jpg">
-                                    <div class="product-name">
-                                        DJI Phantom 3 Professional Quadcopter with 4K Camera and 3-Axis Gimbal
-                                    </div>
+                                    <strong>Price</strong>
                                 </td>
-                                <td>
-                                    <div class="product-actions">
-                                        <a>
-                                            <i class="fa fa-remove"></i>
-                                            Remove
-                                        </a>
-                                    </div>
-                                    <img src="http://localhost/admin/assets/catalog/DJP3P/1428511277000_1133098.jpg">
-                                    <div class="product-name">
-                                        DJI Phantom 3 Professional Quadcopter with 4K Camera and 3-Axis Gimbal
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="product-actions">
-                                        <a>
-                                            <i class="fa fa-remove"></i>
-                                            Remove
-                                        </a>
-                                    </div>
-                                    <img src="http://localhost/admin/assets/catalog/DJP3P/1428511277000_1133098.jpg">
-                                    <div class="product-name">
-                                        DJI Phantom 3 Professional Quadcopter with 4K Camera and 3-Axis Gimbal
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="product-actions">
-                                        <a>
-                                            <i class="fa fa-remove"></i>
-                                            Remove
-                                        </a>
-                                    </div>
-                                    <img src="http://localhost/admin/assets/catalog/DJP3P/1428511277000_1133098.jpg">
-                                    <div class="product-name">
-                                        DJI Phantom 3 Professional Quadcopter with 4K Camera and 3-Axis Gimbal
-                                    </div>
+                                <td ng-repeat="product in products">
+                                    {% if customer %}
+                                    <strong style="margin: 0 auto;" ng-bind="product.price.actualPrice.formattedAmount"></strong>
+                                    {% else %}
+                                    <a ng-href="account/login"><strong style="margin: 0 auto;">{{ 'products.product.sign_in_to_see_price' | t }}</strong></a>
+                                    {% endif %}
                                 </td>
                             </tr>
                             <tr>
                                 <td class="product-t" colspan="6">TECHNICAL SPECS</td>
                             </tr>
-                            <tr>
-                                <td>Brand</td>
-                                <td>DJI</td>
-                                <td>3DR</td>
-                                <td>3DR</td>
-                                <td>DJI</td>
-                                <td>3DR</td>
-                            </tr>
-                            <tr>
-                                <td>Camera</td>
-                                <td>4K</td>
-                                <td>GoPro HERO3+, HERO4</td>
-                                <td>Canon PowerShot S100</td>
-                                <td>4k</td>
-                                <td>Canon PowerShot S100</td>
-                            </tr>
-                            <tr>
-                                <td>Brand</td>
-                                <td>DJI</td>
-                                <td>3DR</td>
-                                <td>3DR</td>
-                                <td>DJI</td>
-                                <td>3DR</td>
-                            </tr>
-                            <tr>
-                                <td>Camera</td>
-                                <td>4K</td>
-                                <td>GoPro HERO3+, HERO4</td>
-                                <td>Canon PowerShot S100</td>
-                                <td>4k</td>
-                                <td>Canon PowerShot S100</td>
+                            <tr ng-repeat="(displayName, values) in properties" ng-if="hasValues(values, showShowOnlyDifferences)">
+                                <td class="property-name" title="{% raw %}{{ displayName }}{% endraw %}">
+                                    <strong ng-bind="displayName"></strong>
+                                </td>
+                                <td class="value" ng-repeat="value in values">
+                                    <div style="margin: 0 auto;" ng-if="value.valueType.toLowerCase() === 'shorttext' || value.valueType.toLowerCase() === 'number'">
+                                        <span ng-if="value.value" ng-bind="value.value"></span>
+                                        <span ng-if="!value.value">-</span>
+                                    </div>
+                                    <i class="fa fa-check" aria-hidden="true" style="margin: 0 auto;" ng-if="value.valueType.toLowerCase() === 'boolean'"></i>
+                                </td>
                             </tr>
                         </table>
                     </div>
                 </div>
-
-                
-                <!-- <div class="table-items" style="margin-top: 25px;">
-                    <div class="table-head">&nbsp;</div>
-                    <div class="table-body">
-                        <div class="table-row clearfix">
-                            <div class="table-content">
-                                <div class="col-md-3">
-                                    <div class="table-item one-fifth text-center" style="border-top: 1px solid #dcdcdc;">
-                                        <strong>Price</strong>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">    
-                                    <div class="table-item one-fifth text-center" style="border-top: 1px solid #dcdcdc;" ng-repeat="product in products">
-                                        {% if customer %}
-                                        <strong style="margin: 0 auto;" ng-bind="product.price.actualPrice.formattedAmount"></strong>
-                                        {% else %}
-                                        <strong style="margin: 0 auto;">{{ 'products.product.sign_in_to_see_price' | t }}</strong>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row compare-list-row" ng-repeat="(displayName, values) in properties" ng-if="hasValues(values, showShowOnlyDifferences)">
-                    <div class="grid-item one-fifth compare-list-cell property-name" title="{% raw %}{{ displayName }}{% endraw %}">
-                        <strong ng-bind="displayName"></strong>
-                    </div>
-                    <div class="grid-item one-fifth compare-list-cell value" ng-repeat="value in values">
-                        <div style="margin: 0 auto;" ng-if="value.valueType.toLowerCase() === 'shorttext' || value.valueType.toLowerCase() === 'number'">
-                            <span ng-if="value.value" ng-bind="value.value"></span>
-                            <span ng-if="!value.value">-</span>
-                        </div>
-                        <i class="fa fa-check" aria-hidden="true" style="margin: 0 auto;" ng-if="value.valueType.toLowerCase() === 'boolean'"></i>
-                    </div>
-                </div> -->
             </div>
         </div>
     </div>
