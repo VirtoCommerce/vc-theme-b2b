@@ -1,0 +1,96 @@
+@media (min-width: 768px) and (max-width: 1019px)
+	img
+		width: 100%
+	.img-ico
+		max-width: 100%
+		width: auto
+
+	.cvp-module
+		display: block
+		.cvp-point + .cvp-point
+			border-left: none
+	.footer
+		border: none
+		padding: 0
+		.footer-inner
+			display: none
+		.footer-legal
+			ul
+				display: none
+			p
+				font-size: 12px
+
+@media (max-width: 767px)
+	img
+		width: 100%
+	.img-ico
+		max-width: 100%
+		width: auto
+
+	.top
+		display: none
+	.header
+		left: 0
+		position: fixed
+		right: 0
+		top: 0
+		z-index: 500
+		.header-inner
+			justify-content: center
+		.header-links
+			display: none
+		.header-links-mobile
+			display: block
+			position: absolute
+			right: 10px
+			li
+				float: left
+				position: relative
+				text-align: center
+				width: 40px
+			a
+				color: $grayColor
+				font-size: 11px
+				.count
+					background: $brand-primary
+					border-radius: 50px
+					font-size: 8px
+					font-weight: 700
+					height: 14px
+					line-height: 14px
+					position: absolute
+					right: 0
+					text-align: center
+					top: 0
+					width: 14px
+			.fa
+				display: block
+				font-size: 20px
+		.header-search-mobile
+			background: $grayColor
+			display: block
+			padding: 10px
+	.navbar
+		display: none
+	.main
+		padding: 130px 0 0
+	.cvp-module
+		display: block
+		.cvp-point + .cvp-point
+			border-left: none
+	.footer
+		border: none
+		padding: 0
+		.footer-inner
+			display: none
+		.footer-legal
+			ul
+				display: none
+			p
+				font-size: 12px
+
+@media(max-width: 480px)
+	.header
+		.header-brand
+			svg
+				width: 100px
