@@ -385,6 +385,7 @@ table th[class*="col-"] {
           box-sizing: border-box;
   display: inline-block;
   padding: 0 10px 0 0;
+  position: relative;
   vertical-align: top;
   width: 20%;
   word-spacing: 0; }
@@ -400,7 +401,7 @@ table th[class*="col-"] {
 .modal-compare .compare-body .list-remove {
   background: #fff;
   position: absolute;
-  right: 0;
+  left: 38px;
   top: 0; }
 .modal-compare .compare-body .placeholder {
   background: #eee;
