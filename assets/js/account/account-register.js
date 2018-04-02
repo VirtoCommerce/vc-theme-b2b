@@ -144,41 +144,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
         };
 
         $scope.submit = function () {
-            corporateApiErrorHelper.clearErrors($scope);
-            $ctrl.error = {};
-            var hasError = false;
-            var member = $scope.member;
-            var errorMsg = member.password.length < 5;
-            $ctrl.error.password = errorMsg;
-            hasError = hasError || errorMsg;
-
-            if (!hasError) {
-                errorMsg = member.password !== member.confirmPassword;
-                $ctrl.error.confirmPassword = errorMsg;
-                hasError = hasError || errorMsg;
-            }
-
-            if (!hasError) {
-                if ($scope.member.invite) {
-                    $ctrl.loader.wrapLoading(function () {
-                        return corporateRegisterApi.registerByInvite({ invite: $scope.member.invite }, $scope.member, function (result) {
-                        }, function (rejection) {
-                            corporateApiErrorHelper.handleErrors($scope, rejection);
-                        }).$promise;
-                    });
-                } else {
-                    $ctrl.loader.wrapLoading(function () {
-                        var apiMethodToCall = $scope.isOrg() ? corporateRegisterApi.register : corporateRegisterApi.registerPersonal;
-                        return apiMethodToCall($scope.member, function (result) {
-                            $scope.$parent.userName = $scope.member.username;
-                            $scope.$parent.password = $scope.member.password
-                            $scope.login();
-                        }, function (rejection) {
-                            vcRecaptchaService.reload();
-                            corporateApiErrorHelper.handleErrors($scope, rejection);
-                        }).$promise;
-                    });
-                }
-            }
-        };
+            //TODO: Find another solution to submit form without this
+            angular.element(document.querySelector('#create_customer')).submit();
+        }
     }]);
