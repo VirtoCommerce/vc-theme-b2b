@@ -19,7 +19,7 @@
   .product-t
   {
     background: $gray-base;
-    color: #fff;
+    color: $text-contrast;
     padding: 10px;
   }
 
@@ -41,10 +41,16 @@
   transform: translateX(-50%);
 
   .compare-head {
-    background: $navbar-default-bg;
-    color: #fff;
+    background: $gray-darker;
+    color: $text-contrast;
     height: 50px;
     line-height: 50px;
+
+    a
+    {
+      border-bottom: 0;
+      color: $text-contrast;
+    }
   }
 
   .compare-add {
@@ -74,7 +80,7 @@
   .compare-add,
   .compare-clear,
   .compare-hide {
-    border-left: 1px solid $navbar-default-border;
+    border-left: 1px solid $gray-dark;
     text-align: center;
   }
 
@@ -84,6 +90,7 @@
     padding: 10px;
 
     .list {
+      padding: 0;
       word-spacing: -6px;
     }
 
@@ -91,34 +98,29 @@
       box-sizing: border-box;
       display: inline-block;
       padding: 0 10px 0 0;
+      position: relative;
       vertical-align: top;
       width: 20%;
       word-spacing: 0;
     }
 
     .list-link {
-      float: left;
+      display: inline-block;
       margin: 0 5px 0 0;
       position: relative;
     }
 
     .list-pic {
-      border: 1px solid $grayColor;
+      border: 1px solid $gray-light;
       max-width: 50px;
+      min-width: 50px;
     }
 
     .list-remove {
-      background: #fff;
+      background: $text-contrast;
       position: absolute;
-      right: 0;
+      left: 38px;
       top: 0;
-    }
-
-    .placeholder {
-      background: $grayLightColor;
-      border: 1px solid #ccc;
-      height: 50px;
-      width: 50px;
     }
   }
 }
