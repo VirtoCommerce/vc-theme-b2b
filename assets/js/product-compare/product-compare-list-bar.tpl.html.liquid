@@ -1,0 +1,36 @@
+<div class="modal-compare" ng-show="$ctrl.itemsCount > 0">
+    <div class="compare-head">
+        <div class="col-md-7">
+            You have <span class="visible-count" id="productCompareListCount" ng-bind="$ctrl.itemsCount"></span> out of 5 products to compare selected.
+        </div>
+        <div class="col-md-5">
+            <div class="col-md-6 compare-clear">
+                <a href="#" ng-click="$ctrl.clearCompareList()" >Clear all</a>
+            </div>
+            <div class="col-md-3 compare-hide">
+                <a href="#" ng-click="$ctrl.showBody()">Hide <i class="fa fa-angle-down"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="compare-body" ng-show="$ctrl.showedBody">
+        <div class="col-md-8">
+            <ul class="list">
+                <li class="list-item" ng-repeat="product in $ctrl.products">
+                    <div class="list-img">
+                        <a class="list-link" ng-href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}">
+                            <img src="https://static.grainger.com/rp/s/is/image/Grainger/6ZA41_AS01?$smmain$" alt="" class="list-pic">
+                            <i class="list-remove fa fa-times-circle"></i>
+                        </a>
+                        <div class="list-t">
+                            <span ng-bind="product.name"></span>
+                             <a href="#" ng-bind="product.sku"></a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="pull-right">
+            <a href="{{ 'compare' | absolute_url }}" class="btn btn-default">View compare</a>
+        </div>
+    </div>
+</div>

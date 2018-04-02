@@ -9,9 +9,11 @@ function ($rootScope, $scope, $localStorage, $window, catalogService, dialogServ
 
     function initialize() {
         $scope.loaded = false;
+        $ctrl.loading = true;
         var productsIds = compareProductService.getProductsIds();
         if (_.isEmpty(productsIds)) {
             $scope.loaded = true;
+            $ctrl.loading = false;
             return;
         }
         catalogService.getProducts(productsIds).then(function(response) {
@@ -28,6 +30,7 @@ function ($rootScope, $scope, $localStorage, $window, catalogService, dialogServ
             }
             $scope.getProductProperties();
             $scope.loaded = true;
+            $ctrl.loading = false;
         })
     };
 

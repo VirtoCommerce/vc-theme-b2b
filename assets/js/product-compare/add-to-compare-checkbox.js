@@ -19,11 +19,19 @@ angular.module('storefrontApp')
                 event.preventDefault();
                 catalogService.getProduct($ctrl.productId).then(function(response) {
                     var product = response.data[0];
-                    $ctrl.containProduct = true;
                     event.preventDefault();
                     var isInProductList = compareProductService.isInProductCompareList($ctrl.productId);
                     if (!isInProductList) {
+                        var count = compareProductService.getProductsCount();
+                        if (count < 5) {
+                        $ctrl.containProduct = true;
                         compareProductService.addProduct($ctrl.productId);
+                        $rootScope.$broadcast('productCompareListChanged');
+                        }
+                    }
+                    else {
+                        $ctrl.containProduct = false;
+                        compareProductService.removeProduct($ctrl.productId);
                         $rootScope.$broadcast('productCompareListChanged');
                     }
                 })
