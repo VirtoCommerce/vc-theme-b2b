@@ -6,14 +6,14 @@ angular.module('storefrontApp')
                 var $ctrl = this;
                 $ctrl.showedBody = true;
                 $ctrl.products = [];
+                $ctrl.showBodyText = "Hide";
+                $ctrl.showBodyIcon = "fa fa-angle-down";
 
                 function initialize() {
                     var productsIds = compareProductService.getProductsIds();
                     if (!_.isEmpty(productsIds)) {
                         catalogService.getProducts(productsIds).then(function(response) {
-                            if (_.indexOf(productsIds, '&') != -1) {
-                                $ctrl.products = response.data;
-                            }
+                            $ctrl.products = response.data;
                         });
                     };
                 }
@@ -36,6 +36,14 @@ angular.module('storefrontApp')
 
                 $ctrl.showBody = function () {
                     $ctrl.showedBody = !$ctrl.showedBody;
+                    if ($ctrl.showedBody) {
+                        $ctrl.showBodyText = "Hide";
+                        $ctrl.showBodyIcon = "fa fa-angle-down";
+                    }
+                    else {
+                        $ctrl.showBodyText = "Show";
+                        $ctrl.showBodyIcon = "fa fa-angle-up";
+                    }
                 }
             
                 $ctrl.removeProduct = function (product) {

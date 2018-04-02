@@ -1,19 +1,22 @@
 <div class="modal-compare" ng-show="$ctrl.itemsCount > 0">
     <div class="compare-head">
-        <div class="col-md-7">
+        <div class="col-md-8">
             You have <span class="visible-count" id="productCompareListCount" ng-bind="$ctrl.itemsCount"></span> out of 5 products to compare selected.
         </div>
-        <div class="col-md-5">
-            <div class="col-md-6 compare-clear">
+        <div class="col-md-4">
+            <div class="col-md-5 compare-clear">
                 <a href="#" ng-click="$ctrl.clearCompareList()" >Clear all</a>
             </div>
-            <div class="col-md-3 compare-hide">
-                <a href="#" ng-click="$ctrl.showBody()">Hide <i class="fa fa-angle-down"></i></a>
+            <div class="col-md-4 compare-hide">
+                <a href="#" ng-click="$ctrl.showBody()">
+                    <span ng-bind="$ctrl.showBodyText"></span>
+                    <i ng-class="$ctrl.showBodyIcon"></i>
+                </a>
             </div>
         </div>
     </div>
     <div class="compare-body" ng-show="$ctrl.showedBody">
-        <div class="col-md-8">
+        <div class="col-md-9">
             <ul class="list">
                 <li class="list-item" ng-repeat="product in $ctrl.products">
                     <div class="list-img">
