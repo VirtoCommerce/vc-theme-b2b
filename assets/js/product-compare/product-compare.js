@@ -84,7 +84,7 @@ function ($rootScope, $scope, $localStorage, $window, catalogService, dialogServ
     }
 
     $scope.clearCompareList = function () {
-        compareProductService.clearComapreList();
+        compareProductService.clearCompareList();
         $scope.products = [];
         $rootScope.$broadcast('productCompareListChanged');
         $scope.properties = [];

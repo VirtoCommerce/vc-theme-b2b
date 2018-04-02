@@ -19,7 +19,9 @@
                     <div class="list-img">
                         <a class="list-link" ng-href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}">
                             <img src="/images/no-image.svg" alt="" class="list-pic">
-                            <i class="list-remove fa fa-times-circle"></i>
+                            <a href="#" ng-click="$ctrl.removeProduct(product)">
+                                <i class="list-remove fa fa-times-circle"></i>
+                            </a>    
                         </a>
                         <div class="list-t">
                             Item #<a href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}" ng-bind="product.sku"></a>

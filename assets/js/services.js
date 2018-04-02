@@ -327,7 +327,7 @@ storefrontApp.service('compareProductService', ['$http', '$localStorage', functi
             var count = $localStorage['productCompareListIds'] ? $localStorage['productCompareListIds'].length : 0;
             return count;
         },
-        clearComapreList: function() {
+        clearCompareList: function() {
             $localStorage['productCompareListIds'] = [];
         },
         removeProduct: function(productId) {
