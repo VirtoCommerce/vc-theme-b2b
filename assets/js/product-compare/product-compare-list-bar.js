@@ -1,15 +1,25 @@
 angular.module('storefrontApp')
     .component('productCompareListBar', {
         templateUrl: "product-compare-list-bar.tpl.html",
-        controller: ['compareProductService', 'catalogService', '$scope', '$rootScope',
-            function(compareProductService, catalogService, $scope, $rootScope) {
+        controller: ['compareProductService', 'catalogService', '$scope', '$rootScope', '$location',
+            function(compareProductService, catalogService, $scope, $rootScope, $location) {
                 var $ctrl = this;
                 $ctrl.showedBody = true;
                 $ctrl.products = [];
                 $ctrl.showBodyText = "Hide";
                 $ctrl.showBodyIcon = "fa fa-angle-down";
+                function canShowBar() {
+                    var path = $location.absUrl();
+                    if (path.indexOf("/compare") !== -1) {
+                        return false;
+                    }
+                    return true;
+                }
+
+                $ctrl.showBar = canShowBar();
 
                 function initialize() {
+                    if (!$ctrl.showBar) return;
                     var productsIds = compareProductService.getProductsIds();
                     if (!_.isEmpty(productsIds)) {
                         catalogService.getProducts(productsIds).then(function(response) {

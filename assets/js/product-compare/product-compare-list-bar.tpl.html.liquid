@@ -1,4 +1,4 @@
-<div class="modal-compare" ng-show="$ctrl.itemsCount > 0">
+<div class="modal-compare" ng-show="$ctrl.itemsCount > 0 && $ctrl.showBar">
     <div class="compare-head">
         <div class="col-md-8">
             You have <span class="visible-count" id="productCompareListCount" ng-bind="$ctrl.itemsCount"></span> out of 5 products to compare selected.
@@ -21,7 +21,7 @@
                 <li class="list-item" ng-repeat="product in $ctrl.products">
                     <div class="list-img">
                         <a class="list-link" ng-href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}">
-                            <img src="/images/no-image.svg" alt="" class="list-pic">
+                            <img ng-src="{% raw %}{{ product.primaryImage.url }}{% endraw %}" alt="" class="list-pic">
                             <a href="#" ng-click="$ctrl.removeProduct(product)">
                                 <i class="list-remove fa fa-times-circle"></i>
                             </a>    
