@@ -5,14 +5,16 @@ angular.module('storefrontApp')
             function(compareProductService, catalogService, $scope, $rootScope) {
                 var $ctrl = this;
                 $ctrl.showedBody = true;
+                $ctrl.products = [];
 
                 function initialize() {
-                    $ctrl.products = [];
                     var productsIds = compareProductService.getProductsIds();
                     if (!_.isEmpty(productsIds)) {
                         catalogService.getProducts(productsIds).then(function(response) {
                             if (_.indexOf(productsIds, '&') != -1) {
+                                console.log('sss');
                                 $ctrl.products = response.data;
+                                
                             }
                         });
                     };
@@ -21,12 +23,11 @@ angular.module('storefrontApp')
                 $ctrl.$onInit = function() {
                     $ctrl.itemsCount = compareProductService.getProductsCount();
                     initialize();
-                    console.log($ctrl.products);
                 }
 
                 $scope.$on('productCompareListChanged', function(event, data) {
                     $ctrl.itemsCount = compareProductService.getProductsCount();
-                    console.log($ctrl.products);
+                    initialize();
                 });
 
                 $ctrl.clearCompareList = function () {

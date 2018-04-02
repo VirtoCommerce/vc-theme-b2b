@@ -18,12 +18,11 @@
                 <li class="list-item" ng-repeat="product in $ctrl.products">
                     <div class="list-img">
                         <a class="list-link" ng-href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}">
-                            <img src="https://static.grainger.com/rp/s/is/image/Grainger/6ZA41_AS01?$smmain$" alt="" class="list-pic">
+                            <img src="/images/no-image.svg" alt="" class="list-pic">
                             <i class="list-remove fa fa-times-circle"></i>
                         </a>
                         <div class="list-t">
-                            <span ng-bind="product.name"></span>
-                             <a href="#" ng-bind="product.sku"></a>
+                            Item #<a href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}" ng-bind="product.sku"></a>
                         </div>
                     </div>
                 </li>
