@@ -12,9 +12,7 @@ angular.module('storefrontApp')
                     if (!_.isEmpty(productsIds)) {
                         catalogService.getProducts(productsIds).then(function(response) {
                             if (_.indexOf(productsIds, '&') != -1) {
-                                console.log('sss');
                                 $ctrl.products = response.data;
-                                
                             }
                         });
                     };
@@ -31,7 +29,7 @@ angular.module('storefrontApp')
                 });
 
                 $ctrl.clearCompareList = function () {
-                    compareProductService.clearComapreList();
+                    compareProductService.clearCompareList();
                     $ctrl.products = [];
                     $rootScope.$broadcast('productCompareListChanged');
                 }
@@ -42,9 +40,8 @@ angular.module('storefrontApp')
             
                 $ctrl.removeProduct = function (product) {
                     compareProductService.removeProduct(product.id)
-                    $scope.products = _.without($ctrl.products, product);
+                    $ctrl.products = _.without($ctrl.products, product);
                     $rootScope.$broadcast('productCompareListChanged');
-                    $scope.getProductProperties();
                 }
             }]
     });
