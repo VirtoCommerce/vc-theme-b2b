@@ -345,6 +345,10 @@ table th[class*="col-"] {
   color: #fff;
   height: 50px;
   line-height: 50px; }
+.modal-compare .compare-head a
+{
+  color: #fff;
+}
 .modal-compare .compare-add {
   position: relative; }
 .modal-compare .compare-add .form-group {
@@ -373,6 +377,7 @@ table th[class*="col-"] {
   overflow: hidden;
   padding: 10px; }
 .modal-compare .compare-body .list {
+  padding: 0;
   word-spacing: -6px; }
 .modal-compare .compare-body .list-item {
   -webkit-box-sizing: border-box;
@@ -384,12 +389,14 @@ table th[class*="col-"] {
   width: 20%;
   word-spacing: 0; }
 .modal-compare .compare-body .list-link {
-  float: left;
+  display: inline-block;
   margin: 0 5px 0 0;
   position: relative; }
 .modal-compare .compare-body .list-pic {
   border: 1px solid #d8d8d8;
-  max-width: 50px; }
+  max-width: 50px;
+  min-width: 50px;
+}
 .modal-compare .compare-body .list-remove {
   background: #fff;
   position: absolute;
