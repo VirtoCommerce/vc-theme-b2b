@@ -9,7 +9,9 @@
            ]"></ng-outlet>
 
 <script id="account-orders-list.tpl" type="text/ng-template">
-    <h4>{{ 'customer.orders.title' | t }}</h4>
+    <div class="page-header">
+        <h3>{{ 'customer.orders.title' | t }}</h3>
+    </div>
     <table class="full" ng-if="$ctrl.entries.length">
         <thead>
             <tr>
@@ -62,7 +64,7 @@
               </div>
             </div>
             <div class="col col-33 text-right">
-              <button class="vc-btn" ng-class="{'loading': showLoading }" ng-click="showLoading=true && $ctrl.getInvoicePdf()">
+              <button class="btn btn-primary" ng-class="{'loading': showLoading }" ng-click="showLoading=true && $ctrl.getInvoicePdf()">
                 <span class="btn-text">{{ 'customer.order.get_invoice' | t }}</span>
                 <span class="btn-loading"></span>
               </button>
@@ -97,7 +99,7 @@
                 </div>
             </div>
 
-            <button ng-click="showLoading=true && $ctrl.showPayment()" class="vc-btn" ng-class="{'loading': showLoading }" ng-if="$ctrl.amountToPay > 0">
+            <button ng-click="showLoading=true && $ctrl.showPayment()" class="btn btn-primary" ng-class="{'loading': showLoading }" ng-if="$ctrl.amountToPay > 0">
                 <span class="btn-text">{{ 'customer.order.new_payment' | t }}</span>
                 <span class="btn-text" ng-bind="$ctrl.amountToPay"></span>
                 <span class="btn-text" ng-bind="$ctrl.order.total.currency.code"></span>
@@ -158,12 +160,12 @@
                 </div>
             </div>
 
-            <button ng-click="$ctrl.cancel()" ng-if="$ctrl.canCancelPayment" class="vc-btn secondary" ng-class="{'loading': $ctrl.loader.isLoading }">
+            <button ng-click="$ctrl.cancel()" ng-if="$ctrl.canCancelPayment" class="btn btn-primary secondary" ng-class="{'loading': $ctrl.loader.isLoading }">
                 <span class="btn-text">{{ 'customer.order_payment.cancel' | t }}</span>
                 <span class="btn-loading"></span>
             </button>
 
-            <button ng-click="$ctrl.submit()" class="vc-btn" ng-class="{'loading': $ctrl.loader.isLoading }">
+            <button ng-click="$ctrl.submit()" class="btn btn-primary" ng-class="{'loading': $ctrl.loader.isLoading }">
                 <span class="btn-text">{{ 'customer.order_payment.submit' | t }}</span>
                 <span class="btn-loading"></span>
             </button>
