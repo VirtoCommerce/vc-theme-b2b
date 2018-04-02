@@ -1,0 +1,485 @@
+/* Forms */
+.form-t
+  font-size: 14px
+  font-family: 'Roboto Condensed'
+  margin: 0 0 5px
+.form-group.group-flex
+  display: flex
+  .btn
+    flex-grow: 1
+    margin: 0 0 0 10px
+vc-labeled-input:last-child .form-group,
+.form-group:last-child
+  margin-bottom: 0
+.form-group:only-child
+  margin-bottom: $form-group-margin-bottom
+.form-control.qty
+  width: 35px
+.form-list
+  .form-group
+    margin-bottom: 5px
+
+vc-labeled-input
+  display: block
+  margin: 10px 0 20px
+  .form-group
+    position: relative
+  label
+    background: #fff
+    color: $graySecondaryColor
+    font-size: 14px
+    font-weight: normal
+    left: 8px
+    margin: 0
+    padding: 0 5px
+    position: absolute
+    top: 10px
+    transition: top .25s ease
+  label.focused
+    color: $link-color
+  label.focused ~ input
+    border-width: 2px
+    border-color: $link-color
+vc-labeled-input .form-group.keyuped
+  label
+    font-size: 12px
+    line-height: 1.7
+    top: -13px
+vc-labeled-input:last-child
+  margin-bottom: 0
+
+.radio,
+.checkbox
+  margin: 0
+  label
+    font-size: 12px
+    line-height: 20px
+    padding: 0
+    &:hover
+      .switch
+        border-color: darken($link-color, 5%)
+.radio input[type="radio"],
+.radio-inline input[type="radio"],
+.checkbox input[type="checkbox"],
+.checkbox-inline input[type="checkbox"]
+  margin: 0
+  visibility: hidden
+
+.radio + .radio,
+.checkbox + .checkbox
+  margin-top: 10px
+.radio-inline,
+.checkbox-inline
+  padding: 0
+.radio-inline + .radio-inline,
+.checkbox-inline + .checkbox-inline
+  margin-top: 0
+
+.radio,
+.checkbox
+  .switch
+    background: #fff
+    border: 2px solid $grayColor
+    display: inline-block
+    height: 20px
+    margin: 0 10px 0 0
+    position: relative
+    vertical-align: top
+    width: 20px
+  input:checked ~ .switch
+    background: $link-color
+    border-color: darken($link-color, 5%)
+    &::after
+      color: #fff
+      content: ""
+      font-family: "FontAwesome"
+      font-size: 10px
+      font-weight: normal
+      left: 50%
+      position: absolute
+      top: 50%
+      transform: translate(-50%, -50%)
+  .name
+    display: inline-block
+    line-height: normal
+    vertical-align: baseline
+  .count
+    font-size: 12px
+    margin: 0 0 0 3px
+
+.radio
+  .switch
+    border-radius: 50%
+  input:checked ~ .switch::after
+    background: #fff
+    border-radius: 50%
+    content: ' '
+    height: 6px
+    width: 6px
+
+.checkbox,
+.radio
+  input:disabled ~ .switch
+    opacity: .5
+
+/* Aside box */
+.aside-box
+  border-color: $asideAccentBrdColor $asideBrdColor $asideBrdColor
+  border-style: solid
+  border-width: 3px 1px 1px
+  font-family: 'Roboto Condensed'
+  padding: $asidePadding
+  margin-top: $asideMargin
+  .aside-t
+    font-size: 20px
+    font-weight: 700
+    line-height: 1.2
+    margin: 0 0 10px
+    text-transform: uppercase
+  .account-links
+    background: $grayLightSecondaryColor
+    margin: 0 -15px
+    padding: 20px 15px
+    a
+      font-family: 'Roboto Condensed'
+  .aside-links
+    font-size: 12px
+    font-weight: 700
+    margin: 10px 0 0
+    > *
+      margin: 0 10px 0 0
+  .aside-actions
+    margin-top: 15px
+    a
+      font-weight: 700
+    .btn
+      width: 100%
+    .register
+      display: block
+      font-size: 14px
+      font-weight: 700
+      padding: 9px 0
+      text-transform: uppercase
+  .aside-img
+    margin: -$asidePadding
+    margin-bottom: 0
+  .aside-pic
+    display: block
+    margin: 0 0 15px
+    width: 100%
+.aside-box.border-bottom
+  border-color: $asideBrdColor $asideBrdColor $asideAccentBrdColor
+  border-width: 1px 1px 3px
+.aside-box.industry-trends
+  .learn-more
+    margin: 15px 0 0
+  .btn
+    width: 80%
+.aside-box.email-offers
+  p
+    font-size: 16px
+    text-align: center
+  .form-group
+    display: flex
+    margin: 0
+  .btn
+    margin: 0 0 0 10px
+
+/* Cvp module */
+.cvp-module
+  background: $cvpBg
+  display: flex
+  margin: 20px 0
+  padding: 15px 0
+  text-align: center
+  .cvp-point + .cvp-point
+    border-left: 1px solid $grayColor
+  .cvp-t
+    font-size: 12px
+    font-family: 'Roboto Condensed'
+    font-weight: 700
+    margin: 0 0 10px
+    text-transform: uppercase
+  p
+    font-size: 12px
+
+/* Popular categories  */
+.popular-categories
+  ul,
+  li
+    border-color: $grayColor
+    border-style: solid
+  ul
+    border-width: 0 1px 1px 0
+  li
+    border-width: 1px 0 0 1px
+    height: $popularItemHeight
+    padding: 0
+  img
+    float: left
+    margin: 15px 30px
+    max-height: 80px
+    max-width: 80px
+  p
+    color: $popularColor
+    float: left
+    font-family: 'Roboto Condensed'
+    font-size: 16px
+    font-weight: 700
+    line-height: $popularItemHeight
+    margin: 0
+    max-width: 50%
+    span
+      display: inline-block
+      line-height: normal
+      vertical-align: middle
+
+/* Product list */
+.product-list
+  .list-item
+    font-family: 'Roboto Condensed'
+  .list-inner
+    border-color: $grayColor
+    border-style: solid
+    border-width: 1px 1px 4px
+    padding: 15px 10px
+    > div
+      margin: 0 0 10px
+  .list-pic
+    display: block
+    margin: auto
+    width: 120px
+  .list-name,
+  .list-sku a
+    font-weight: 700
+  .list-other
+    display: flex
+    .btn
+      margin: 0 0 0 10px
+    *
+      display: inline-block
+      vertical-align: middle
+
+/* List filters */
+.list-filters
+  margin: 5px 0
+  .list-item + .list-item
+    margin: 5px 0 0
+  .list-ico
+    cursor: pointer
+    font-weight: normal
+    margin: 0 5px 0 0
+
+/* List items */
+.list-items
+  .list-item
+    padding: 15px 0
+  .list-item + .list-item
+    border-top: 1px solid $grayColor
+  [class*="col-md-"]
+    padding: 0
+  [class*="col-md-"] + [class*="col-md-"]
+    padding: 0 0 0 10px
+  .list-info
+    font-family: 'Roboto Condensed'
+  .list-brand
+    color: $graySecondaryColor
+  .list-name
+    font-weight: 700
+    margin: 0 0 5px
+  .list-sku
+    margin: 0 0 5px
+  .list-model
+    margin: 0 0 10px
+  .list-descr
+    font-size: 12px
+  .list-cart
+    border-color: $grayColor
+    border-style: solid
+    border-width: 1px 1px 3px
+    font-size: 12px
+    padding: 10px
+    label
+      font-weight: normal
+    a
+      font-weight: 700
+    p
+      margin: 0
+    .ship-pickup
+      border-bottom: 1px solid $grayColor
+      margin: 10px 0
+      padding: 10px 0 5px
+      .fa
+        font-size: 16px
+        margin: 0 0 0 5px
+        vertical-align: bottom
+      .dropdown-menu
+        font-size: 12px
+        padding: 0
+        width: 220px
+      .dropdown-head
+        padding: 10px
+      .dropdown-body
+        padding: 0 10px 10px
+      .dropdown-foot
+        background: $grayLightColor
+        text-align: right
+        padding: 10px
+        .btn
+          margin: 0 0 0 10px
+
+/* Tech spec */
+.tech-spec
+  background: $grayLightColor
+  margin: 20px 0
+  h2
+    padding: 20px
+  [class*="col-md-"]
+    padding: 0 10px
+  li
+    border-top: 1px solid $grayColor
+    color: #666
+    font-size: 12px
+    overflow: hidden
+  .tech-value
+    color: #333
+    font-weight: 700
+  .tech-name,
+  .tech-value
+    padding: 10px
+
+/* Search items */
+.search-terms
+  .list-item
+    border: 1px solid $link-color
+    border-radius: 5px
+    display: inline-block
+    font-size: 12px
+    margin: 0 10px 10px 0
+    padding: 10px
+
+/* Modals */
+.modal-header .close
+  font-family: Arial
+.modal-footer p
+  color: #666
+  font-family: 'Roboto Condensed'
+  font-weight: 700
+  line-height: 38px
+
+/* Alert */
+.alert
+  font-family: 'Roboto Condensed'
+
+/* Table items */
+.table-items
+  font-family: 'Roboto Condensed'
+  font-size: 12px
+  margin: 50px 0 0
+  .table-controls
+    border-bottom: 1px solid $grayColor
+    border-top: 1px solid $grayColor
+    padding: 10px 0
+  .compare-controls
+    margin: 10px 0 0
+  .purchase,
+  .product-controls
+    display: inline-block
+  .product-controls
+    border-left: 1px solid $grayColor
+    margin: 0 0 0 15px
+    padding: 0 0 0 15px
+    a
+      font-weight: 700
+    .btn
+      margin: 0 0 0 10px
+  .table-row
+    border-bottom: 1px solid $grayColor
+    padding: 10px 0
+    [class*="col-md"]
+      display: flex
+      padding: 0
+    .table-item
+      padding: 0 0 0 10px
+      width: 100%
+  .table-head
+    .table-row
+      background: $grayLightColor
+  .table-pic
+    border: 1px solid $grayColor
+    margin: 0 0 10px
+    max-width: 80px
+
+.table-items.fixed
+  padding: 115px 0 0
+  .table-head
+    background: #fff
+    position: fixed
+    top: 0
+    z-index: 50
+
+/* Modal compare */
+.modal-compare
+  bottom: 0
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3)
+  font-family: 'Roboto Condensed'
+  left: 50%
+  position: fixed
+  width: 910px
+  z-index: 50
+
+  transform: translateX(-50%)
+  .compare-head
+    background: $navbar-default-bg
+    color: #fff
+    height: 50px
+    line-height: 50px
+  .compare-add
+    position: relative
+    .form-group
+      display: none
+      left: 5px
+      position: absolute
+      right: 5px
+      top: 5px
+    .form-control
+      width: 50%
+  .compare-add.opened
+    font-size: 0
+    .form-group
+      display: flex
+  .compare-add,
+  .compare-clear,
+  .compare-hide
+    border-left: 1px solid $navbar-default-border
+    text-align: center
+  .compare-body
+    background: #fff
+    overflow: hidden
+    padding: 10px
+    .list
+      word-spacing: -6px
+    .list-item
+      box-sizing: border-box
+      display: inline-block
+      padding: 0 10px 0 0
+      vertical-align: top
+      width: 20%
+      word-spacing: 0
+    .list-link
+      float: left
+      margin: 0 5px 0 0
+      position: relative
+    .list-pic
+      border: 1px solid $grayColor
+      max-width: 50px
+    .list-remove
+      background: #fff
+      position: absolute
+      right: 0
+      top: 0
+    .placeholder
+      background: $grayLightColor
+      border: 1px solid #ccc
+      height: 50px
+      width: 50px
