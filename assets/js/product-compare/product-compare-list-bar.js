@@ -1,6 +1,6 @@
 angular.module('storefrontApp')
     .component('productCompareListBar', {
-        templateUrl: "product-compare-list-bar.tpl.html",
+        templateUrl: "themes/assets/js/product-compare/product-compare-list-bar.tpl.html",
         controller: ['compareProductService', 'catalogService', '$scope', '$rootScope', '$location',
             function(compareProductService, catalogService, $scope, $rootScope, $location) {
                 var $ctrl = this;
