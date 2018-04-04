@@ -13,32 +13,24 @@
 .component('vcAccountCompanyMembersList', {
     templateUrl: "account-company-members-list.tpl",
     bindings: { $router: '<' },
-    controller: ['storefrontApp.mainContext', '$scope', 'storefront.corporateAccountApi', 'storefront.corporateRegisterApi', 'storefront.corporateApiErrorHelper', 'roleService', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, $scope, corporateAccountApi, corporateRegisterApi, corporateApiErrorHelper, roleService, loader, confirmService, $location, $translate) {
+    controller: ['storefrontApp.mainContext', '$scope', 'accountService', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, $scope, accountService, loader, confirmService, $location, $translate) {
         var $ctrl = this;
         $ctrl.currentMemberId = mainContext.customer.id;
         $ctrl.newMemberComponent = null;
         $ctrl.loader = loader;
         $ctrl.pageSettings = { currentPage: 1, itemsPerPageCount: 5, numPages: 10 };
-        $ctrl.pageSettings.pageChanged = function () {
-            loader.wrapLoading(function () {
-                return corporateAccountApi.getCompanyMembers({
-                    memberId: mainContext.customer.companyId,
+        $ctrl.pageSettings.pageChanged = function () { refresh(); };
+
+        function refresh() {
+                 loader.wrapLoading(function () {
+                 return accountService.searchUserOrganizationContacts({
                     skip: ($ctrl.pageSettings.currentPage - 1) * $ctrl.pageSettings.itemsPerPageCount,
                     take: $ctrl.pageSettings.itemsPerPageCount,
                     sortInfos: $ctrl.sortInfos
-                }, function (data) {
-                    $ctrl.entries = data.results;
-                    $ctrl.pageSettings.totalItems = data.totalCount;
-
-                    $scope.$watch(function(){
-                        return roleService.available;
-                    }, function() {
-                        angular.forEach($ctrl.entries, function(member){
-                            var role = roleService.get(member.securityAccounts);
-                            member.role = role ? role.name : null;
-                        });
-                    });
-                }).$promise;
+                }).then(function (response) {
+                    $ctrl.entries = response.data.results;
+                    $ctrl.pageSettings.totalItems = response.data.totalCount;
+                });
             });
         };
         
@@ -81,55 +73,35 @@
 
         this.$routerOnActivate = function (next) {
             $ctrl.pageSettings.currentPage = next.params.pageNumber || $ctrl.pageSettings.currentPage;
+            refresh();
         };
-
-        $scope.$watch(
-            function () { return mainContext.customer.companyId; },
-            function (companyId) {
-                if (companyId) {
-                    $ctrl.pageSettings.pageChanged();
-                }
-            }
-        );
 
         $ctrl.inviteEmailsValidationPattern = new RegExp(/((^|((?!^)([,;]|\r|\r\n|\n)))([a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*))+$/);
         $ctrl.invite = function () {
             $ctrl.inviteInfo.emails = $ctrl.inviteInfo.rawEmails.split(/[,;]|\r|\r\n|\n/g);
             loader.wrapLoading(function(){
-              return corporateAccountApi.invite({
-                storeId: $ctrl.storeId,
-                companyId: mainContext.customer.companyId,
-                emails: $ctrl.inviteInfo.emails,
-                adminName: mainContext.customer.fullName,
-                adminEmail: mainContext.customer.email,
-                message: $ctrl.inviteInfo.message,
-                language: $ctrl.cultureName,
-                callbackUrl: $ctrl.registrationUrl
-              }, function(response) {
-                  $ctrl.cancel();
-                  $ctrl.pageSettings.pageChanged();
-                  corporateApiErrorHelper.clearErrors($scope);
-              }, function (rejection) {
-                  corporateApiErrorHelper.handleErrors($scope, rejection);
-                }).$promise;
+                return accountService.createInvitation({
+                    emails: $ctrl.inviteInfo.emails,
+                    message: $ctrl.inviteInfo.message
+                }).then(function (response) {
+                    $ctrl.cancel();
+                    $ctrl.pageSettings.pageChanged();
+                });
             });
         };
 
         $ctrl.addNewMember = function () {
             if ($ctrl.newMemberComponent.validate()) {
                 $ctrl.newMember.companyId = mainContext.customer.companyId;
-                $ctrl.newMember.role = $ctrl.newMember.role.name;
+                $ctrl.newMember.role = $ctrl.newMember.role;
                 $ctrl.newMember.storeId = $ctrl.storeId;
 
                 loader.wrapLoading(function () {
-                    return corporateRegisterApi.registerMember($ctrl.newMember, function(response) {
+                    return accountService.registerNewUser($ctrl.newMember).then(function (response) {
                         $ctrl.cancel();
                         $ctrl.pageSettings.currentPage = 1;
                         $ctrl.pageSettings.pageChanged();
-                        corporateApiErrorHelper.clearErrors($scope);
-                    }, function (rejection){
-                        corporateApiErrorHelper.handleErrors($scope, rejection);
-                    }).$promise;
+                    });
                 });
             }
         };
@@ -139,19 +111,13 @@
             $ctrl.newMember = null;
         };
 
-        $ctrl.changeStatus = function (memberId) {
+        $ctrl.changeStatus = function (member) {
             loader.wrapLoading(function () {
-                return corporateAccountApi.getCompanyMember({ id: memberId }, function (member) {
-                    member.isActive = !member.isActive;
-                    loader.wrapLoading(function () {
-                        return corporateAccountApi.updateCompanyMember(companyMember, function(response) {
-                            $ctrl.pageSettings.pageChanged();
-                            corporateApiErrorHelper.clearErrors($scope);
-                        }, function (rejection){
-                            corporateApiErrorHelper.handleErrors($scope, rejection);
-                        }).$promise;
-                    });
-                }).$promise;
+                var action = member.isActive ? accountService.lockUser : accountService.unlockUser;
+                member.isActive = !member.isActive;                
+                loader.wrapLoading(function () {
+                    return action(member.securityAccounts[0].userName);
+                });
             });
         };
 
@@ -159,17 +125,15 @@
             this.$router.navigate(['MemberDetail', {member: memberId, pageNumber: $ctrl.pageSettings.currentPage}]);
         }
 
-        $ctrl.delete = function (memberId) {
+        $ctrl.delete = function (member) {
             var showDialog = function (text) {
                 confirmService.confirm(text).then(function (confirmed) {
                     if (confirmed) {
                         loader.wrapLoading(function () {
-                            return corporateAccountApi.deleteCompanyMember({ ids: memberId }, function(response) {
+                            return accountService.deleteUser(member.securityAccounts[0].userName).then(function (response) {
                                 $ctrl.pageSettings.pageChanged();
-                                corporateApiErrorHelper.clearErrors($scope);
-                            }, function (rejection){
-                                corporateApiErrorHelper.handleErrors($scope, rejection);
-                            }).$promise;
+                                //TODO: errors handling
+                            });
                         });
                     }
                 });
@@ -194,7 +158,7 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['$q', '$rootScope', '$scope', '$window', 'roleService', 'storefront.corporateAccountApi', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService', 'confirmService', function ($q, $rootScope, $scope, $window, roleService, corporateAccountApi, corporateApiErrorHelper, loader, confirmService) {
+    controller: ['$q', '$rootScope', '$scope', '$window', 'accountService', 'loadingIndicatorService', function ($q, $rootScope, $scope, $window, accountService, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.fieldsConfig =[
@@ -235,17 +199,18 @@
 
         function refresh() {
             loader.wrapLoading(function () {
-                return corporateAccountApi.getCompanyMember({ id: $ctrl.memberNumber }, function (member) {
+                return accountService.getOrganizationMember({ id: $ctrl.memberNumber }).then(function (response) {
+                    var member = response.data;
                     $ctrl.member = {
                         id: member.id,
                         firstName: member.firstName,
                         lastName: member.lastName,
                         email: _.first(member.emails),
-                        organizations: member.organizations,
+                        organizations: [member.organization],
                         title: member.title,
                         securityAccounts: member.securityAccounts
                     };
-                }).$promise;
+                });
             });
         }
 
