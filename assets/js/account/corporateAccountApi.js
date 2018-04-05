@@ -32,11 +32,14 @@
             $scope.errors = null;
         },
         handleErrors: function ($scope, rejection) {
-            if (rejection.status == 400) {
-                $scope.errorMessage = rejection.data.message;
-                $scope.errors = rejection.data.modelState;
+            //if (rejection.status == 400) {
+                var errors = _.map(rejection.data.errors, function(currentObject) {
+                    return currentObject["description"];
+                });    
+                //$scope.errorMessage = errors.join();
+                $scope.errors = errors;
                 $rootScope.closeNotification();
-            }
+            //}
         }
     };
 }]);

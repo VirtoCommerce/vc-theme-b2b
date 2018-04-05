@@ -953,8 +953,8 @@ angular.module('storefront.account')
 
 var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateRegisterApi', 'storefront.corporateApiErrorHelper', 'storefront.accountApi', 'loadingIndicatorService', 'vcRecaptchaService',
-    function ($q, $scope, mainContext, corporateRegisterApi, corporateApiErrorHelper, accountApi, loader, vcRecaptchaService) {
+storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateRegisterApi', 'storefront.corporateApiErrorHelper', 'storefront.accountApi', 'loadingIndicatorService', 'vcRecaptchaService', 'accountService',
+    function ($q, $scope, mainContext, corporateRegisterApi, corporateApiErrorHelper, accountApi, loader, vcRecaptchaService, accountService) {
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.countries = accountApi.getCountries();
@@ -1116,22 +1116,27 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                 //member.address.name = addressService.stringify(member.address);
 
                 $ctrl.loader.wrapLoading(function () {
-                    var urlParam, apiMethodToCall;
-                    if (member.invite) {
-                        urlParam = { invite: member.invite };
-                        apiMethodToCall = corporateRegisterApi.registerByInvite;
-                    } else {
-                        apiMethodToCall = $scope.isOrg() ? corporateRegisterApi.register : corporateRegisterApi.registerPersonal;
-                    }
+                    accountService.registerNewUser(member).then(function(result) {
+                        if (!result.data.succeeded) {
+                            corporateApiErrorHelper.handleErrors($scope, result);
+                        }
+                    });
+                    // var urlParam, apiMethodToCall;
+                    // if (member.invite) {
+                    //     urlParam = { invite: member.invite };
+                    //     apiMethodToCall = corporateRegisterApi.registerByInvite;
+                    // } else {
+                    //     apiMethodToCall = $scope.isOrg() ? accountService.registerNewUser : corporateRegisterApi.registerPersonal;
+                    // }
 
-                    return apiMethodToCall(urlParam, member, function (result) {
-                        $scope.$parent.userName = member.username;
-                        $scope.$parent.password = member.password;
-                        $scope.login();
-                    }, function (rejection) {
-                        vcRecaptchaService.reload();
-                        corporateApiErrorHelper.handleErrors($scope, rejection);
-                    }).$promise;
+                    // return apiMethodToCall(urlParam, member, function (result) {
+                    //     $scope.$parent.userName = member.username;
+                    //     $scope.$parent.password = member.password;
+                    //     $scope.login();
+                    // }, function (rejection) {
+                    //     vcRecaptchaService.reload();
+                    //     corporateApiErrorHelper.handleErrors($scope, rejection);
+                    // }).$promise;
                 });
             }
         }
@@ -1291,11 +1296,14 @@ angular.module('storefront.account')
             $scope.errors = null;
         },
         handleErrors: function ($scope, rejection) {
-            if (rejection.status == 400) {
-                $scope.errorMessage = rejection.data.message;
-                $scope.errors = rejection.data.modelState;
+            //if (rejection.status == 400) {
+                var errors = _.map(rejection.data.errors, function(currentObject) {
+                    return currentObject["description"];
+                });    
+                //$scope.errorMessage = errors.join();
+                $scope.errors = errors;
                 $rootScope.closeNotification();
-            }
+            //}
         }
     };
 }]);
