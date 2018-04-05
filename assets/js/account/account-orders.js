@@ -13,20 +13,20 @@
 
 .component('vcAccountOrdersList', {
     templateUrl: "account-orders-list.tpl",
-    controller: ['storefront.orderApi', 'loadingIndicatorService', function (orderApi, loader) {
+    controller: ['accountApi', 'loadingIndicatorService', function (accountApi, loader) {
         var ctrl = this;
         ctrl.loader = loader;
         ctrl.pageSettings = { currentPage: 1, itemsPerPageCount: 5, numPages: 10 };
         ctrl.pageSettings.pageChanged = function () {
             loader.wrapLoading(function () {
-                return orderApi.search({
+                return accountApi.searchUserOrders({
                     pageNumber: ctrl.pageSettings.currentPage,
                     pageSize: ctrl.pageSettings.itemsPerPageCount,
                     sortInfos: ctrl.sortInfos
-                }, function (data) {
+                }).then(function (data) {
                     ctrl.entries = data.results;
                     ctrl.pageSettings.totalItems = data.totalCount;
-                }).$promise;
+                });
             });
         };
 
@@ -42,30 +42,30 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefront.orderApi', '$rootScope', '$window', 'loadingIndicatorService', 'confirmService', 'orderHelper', function (orderApi, $rootScope, $window, loader, confirmService, orderHelper) {
+    controller: ['accountApi', '$rootScope', '$window', 'loadingIndicatorService', 'confirmService', 'orderHelper', function (orderApi, $rootScope, $window, loader, confirmService, orderHelper) {
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.hasPhysicalProducts = true;
 
         function refresh() {
             loader.wrapLoading(function () {
-                $ctrl.order = orderApi.get({ number: $ctrl.orderNumber }, function (result) {
+                return accountApi.getUserOrder($ctrl.orderNumber).then(function (result) {
+                    $ctrl.order = result.data;
+                    return $ctrl.order;
+                }).then(function (order) {
                     $ctrl.isShowPayment = false;
-                    var lastPayment = _.last(_.sortBy($ctrl.order.inPayments, 'createdDate'));
+                    var lastPayment = _.last(_.sortBy(order.inPayments, 'createdDate'));
                     $ctrl.billingAddress = (lastPayment && lastPayment.billingAddress) ||
-                            _.findWhere($ctrl.order.addresses, { type: 'billing' }) ||
-                            _.first($ctrl.order.addresses);
-                    $ctrl.amountToPay = orderHelper.getNewPayment($ctrl.order).sum.amount;
-
+                        _.findWhere(order.addresses, { type: 'billing' }) ||
+                        _.first(order.addresses);
+                    $ctrl.amountToPay = orderHelper.getNewPayment(order).sum.amount;
                     if ($ctrl.amountToPay > 0) {
                         $ctrl.billingAddressEqualsShipping = true;
-                        loadPromise = orderApi.getNewPaymentData({ number: $ctrl.orderNumber }, function (result) {
-                            //$ctrl.order = result.order;
-                            configurePayment(result.paymentMethods, result.payment);
-                        }).$promise;
+                        return orderApi.getNewPaymentData(order.orderNumber, function (result) {
+                            configurePayment(result.data.paymentMethods, result.data.payment);
+                        });
                     }
                 });
-                return $ctrl.order.$promise;
             });
         }
 
@@ -94,7 +94,6 @@
                 if ($ctrl.payment.gatewayCode) {
                     preselectedMaymentMethod = _.findWhere(result.paymentMethods, { code: $ctrl.payment.gatewayCode });
                 }
-
                 return preselectedMaymentMethod ? [preselectedMaymentMethod] : result.paymentMethods;
             });
         };

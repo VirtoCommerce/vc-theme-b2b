@@ -5,7 +5,7 @@
      { path: '/', name: 'MemberList', component: 'vcAccountCompanyMembersList', useAsDefault: true },
      { path: '/:member', name: 'MemberDetail', component: 'vcAccountCompanyMemberDetail' }
     ],
-    controller: ['storefront.accountApi', function (accountApi) {
+    controller: ['storefrontApp.mainContext', function (mainContext) {
         var $ctrl = this;
     }]
 })
@@ -13,7 +13,7 @@
 .component('vcAccountCompanyMembersList', {
     templateUrl: "account-company-members-list.tpl",
     bindings: { $router: '<' },
-    controller: ['storefrontApp.mainContext', '$scope', 'accountService', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, $scope, accountService, loader, confirmService, $location, $translate) {
+    controller: ['storefrontApp.mainContext', '$scope', 'accountApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, $scope, accountApi, loader, confirmService, $location, $translate) {
         var $ctrl = this;
         $ctrl.currentMemberId = mainContext.customer.id;
         $ctrl.newMemberComponent = null;
@@ -23,7 +23,7 @@
 
         function refresh() {
                  loader.wrapLoading(function () {
-                 return accountService.searchUserOrganizationContacts({
+                     return accountApi.searchOrganizationUsers({
                     skip: ($ctrl.pageSettings.currentPage - 1) * $ctrl.pageSettings.itemsPerPageCount,
                     take: $ctrl.pageSettings.itemsPerPageCount,
                     sortInfos: $ctrl.sortInfos
@@ -80,7 +80,7 @@
         $ctrl.invite = function () {
             $ctrl.inviteInfo.emails = $ctrl.inviteInfo.rawEmails.split(/[,;]|\r|\r\n|\n/g);
             loader.wrapLoading(function(){
-                return accountService.createInvitation({
+                return accountApi.createInvitation({
                     emails: $ctrl.inviteInfo.emails,
                     message: $ctrl.inviteInfo.message
                 }).then(function (response) {
@@ -97,7 +97,7 @@
                 $ctrl.newMember.storeId = $ctrl.storeId;
 
                 loader.wrapLoading(function () {
-                    return accountService.registerNewUser($ctrl.newMember).then(function (response) {
+                    return accountApi.registerNewUser($ctrl.newMember).then(function (response) {
                         $ctrl.cancel();
                         $ctrl.pageSettings.currentPage = 1;
                         $ctrl.pageSettings.pageChanged();
@@ -113,10 +113,10 @@
 
         $ctrl.changeStatus = function (member) {
             loader.wrapLoading(function () {
-                var action = member.isActive ? accountService.lockUser : accountService.unlockUser;
+                var action = member.isActive ? accountApi.lockUser : accountApi.unlockUser;
                 member.isActive = !member.isActive;                
                 loader.wrapLoading(function () {
-                    return action(member.securityAccounts[0].userName);
+                    return action(member.id);
                 });
             });
         };
@@ -130,7 +130,7 @@
                 confirmService.confirm(text).then(function (confirmed) {
                     if (confirmed) {
                         loader.wrapLoading(function () {
-                            return accountService.deleteUser(member.securityAccounts[0].userName).then(function (response) {
+                            return accountApi.deleteUser(member.securityAccounts[0].userName).then(function (response) {
                                 $ctrl.pageSettings.pageChanged();
                                 //TODO: errors handling
                             });
@@ -158,7 +158,7 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['$q', '$rootScope', '$scope', '$window', 'accountService', 'loadingIndicatorService', function ($q, $rootScope, $scope, $window, accountService, loader) {
+    controller: ['$q', '$rootScope', '$scope', '$window', 'accountApi', 'loadingIndicatorService', function ($q, $rootScope, $scope, $window, accountApi, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.fieldsConfig =[
@@ -199,17 +199,8 @@
 
         function refresh() {
             loader.wrapLoading(function () {
-                return accountService.getOrganizationMember({ id: $ctrl.memberNumber }).then(function (response) {
-                    var member = response.data;
-                    $ctrl.member = {
-                        id: member.id,
-                        firstName: member.firstName,
-                        lastName: member.lastName,
-                        email: _.first(member.emails),
-                        organizations: [member.organization],
-                        title: member.title,
-                        securityAccounts: member.securityAccounts
-                    };
+                return accountApi.getUserById($ctrl.memberNumber).then(function (response) {
+                    $ctrl.member = response.data;
                 });
             });
         }
@@ -217,7 +208,6 @@
         this.$routerOnActivate = function (next) {
             $ctrl.pageNumber = next.params.pageNumber || 1;
             $ctrl.memberNumber = next.params.member;
-
             refresh();
         };
 
@@ -225,15 +215,10 @@
             if ($ctrl.memberComponent.validate()) {
                 loader.wrapLoading(function () {
                     $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;
-                    $ctrl.member.emails = [ $ctrl.member.email ];
-                    return $q.all([
-                        roleService.set($ctrl.member.securityAccounts, $ctrl.member.role),
-                        corporateAccountApi.updateCompanyMember($ctrl.member, function(response) {
-                            corporateApiErrorHelper.clearErrors($scope);
-                        }, function (rejection){
-                            corporateApiErrorHelper.handleErrors($scope, rejection);
-                        }).$promise
-                    ]);
+                    $ctrl.member.emails = [$ctrl.member.email];
+                    return accountApi.updateUser($ctrl.member).then(function (response) {
+                        refresh();
+                    });
                 });
             };
         };

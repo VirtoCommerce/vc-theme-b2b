@@ -33,14 +33,6 @@ storefrontApp.service('feedbackService', ['$http', function ($http) {
     }
 }]);
 
-storefrontApp.service('customerService', ['$http', function ($http) {
-    return {
-        getCurrentCustomer: function () {
-            return $http.get('storefrontapi/account?t=' + new Date().getTime());
-        }
-    }
-}]);
-
 storefrontApp.service('marketingService', ['$http', function ($http) {
     return {
         getDynamicContent: function (placeName) {
@@ -99,13 +91,7 @@ storefrontApp.service('cartService', ['$http', function ($http) {
         },
         clearCart: function () {
             return $http.post('storefrontapi/cart/clear');
-        },
-        getCountries: function () {
-            return $http.get('storefrontapi/countries?t=' + new Date().getTime());
-        },
-        getCountryRegions: function (countryCode) {
-        	return $http.get('storefrontapi/countries/' + countryCode + '/regions?t=' + new Date().getTime());
-        },
+        },     
         addCoupon: function (couponCode) {
             return $http.post('storefrontapi/cart/coupons/' + couponCode);
         },
@@ -136,7 +122,7 @@ storefrontApp.service('cartService', ['$http', function ($http) {
     }
 }]);
 
-storefrontApp.service('listService', ['$q', '$http', '$localStorage', 'customerService', function ($q, $http, $localStorage, customerService) {
+storefrontApp.service('listService', ['$q', '$http', '$localStorage', 'accountApi', function ($q, $http, $localStorage, accountApi) {
     return {
         getOrCreateMyLists: function (userName, lists) {
             if (!$localStorage['lists']) {
@@ -336,32 +322,14 @@ storefrontApp.service('compareProductService', ['$http', '$localStorage', functi
     }
 }]);
 
-storefrontApp.service('accountService', ['$http', function ($http) {
+
+storefrontApp.service('commonService', ['$http', function ($http) {
     return {
-        getUserOrganization: function () {
-            return $http.get('storefrontapi/account/organization?t=' + new Date().getTime());
+        getCountries: function () {
+            return $http.get('storefrontapi/countries?t=' + new Date().getTime());
         },
-        updateUserOrganization: function (organization) {
-            return $http.put('storefrontapi/account/organization', organization);
-        },
-        searchUserOrganizationContacts: function (criteria) {
-            return $http.post('storefrontapi/account/organization/contacts/search', criteria);
-        },
-        createInvitation: function (invitation) {
-            return $http.post('storefrontapi/account/invitation', invitation);
-        },
-        registerNewUser: function (user) {
-            return $http.post('storefrontapi/account/user', user);
-        },
-        lockUser: function (userName) {
-            return $http.post('storefrontapi/account/' + userName + '/lock');
-        },
-        unlockUser: function (userName) {
-            return $http.post('storefrontapi/account/' + userName + '/unlock');
-        },
-        deleteUser: function (userName) {
-            return $http.delete('storefrontapi/account/' + userName);
-        },
-     
+        getCountryRegions: function (countryCode) {
+            return $http.get('storefrontapi/countries/' + countryCode + '/regions?t=' + new Date().getTime());
+        }
     }
 }]);

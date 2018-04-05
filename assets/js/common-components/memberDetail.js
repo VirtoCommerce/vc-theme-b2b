@@ -1,4 +1,4 @@
-var storefrontApp = angular.module('storefrontApp');
+﻿var storefrontApp = angular.module('storefrontApp');
 storefrontApp.component('vcMemberDetail', {
     templateUrl: "themes/assets/memberDetail.tpl.html",
     bindings: {
@@ -6,7 +6,7 @@ storefrontApp.component('vcMemberDetail', {
         memberComponent: '=',
         fieldsConfig: '<'
     },
-    controller: ['$scope', function ($scope) {
+    controller: ['$scope', 'availableRoles', function ($scope, availableRoles) {
         var $ctrl = this;
         
         $ctrl.config = [
@@ -41,7 +41,7 @@ storefrontApp.component('vcMemberDetail', {
 
         if ($ctrl.fieldsConfig)
             angular.extend($ctrl.config, $ctrl.fieldsConfig);
-
+        $ctrl.availableRoles = availableRoles;
         $ctrl.rolesComponent = null;
 
         this.$onInit = function () {

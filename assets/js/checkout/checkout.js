@@ -5,8 +5,8 @@ if (storefrontAppDependencies != undefined) {
     storefrontAppDependencies.push(moduleName);
 }
 angular.module(moduleName, ['credit-cards', 'angular.filter'])
-.controller('checkoutController', ['$rootScope', '$scope', '$window', 'cartService',
-    function ($rootScope, $scope, $window, cartService) {
+.controller('checkoutController', ['$rootScope', '$scope', '$window', 'cartService', 'commonService',
+    function ($rootScope, $scope, $window, cartService, commonService) {
         $scope.checkout = {
             wizard: {},
             paymentMethod: {},
@@ -67,13 +67,13 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
 
         function getAvailCountries() {
             //Load avail countries
-            return cartService.getCountries().then(function (response) {
+            return commonService.getCountries().then(function (response) {
                 return response.data;
             });
         };
 
         $scope.getCountryRegions = function (country) {
-            return cartService.getCountryRegions(country.code3).then(function (response) {
+            return commonService.getCountryRegions(country.code3).then(function (response) {
                 return response.data;
             });
         };

@@ -1,7 +1,7 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('quoteRequestController', ['$rootScope', '$scope', '$window', '$location', 'quoteRequestService', 'cartService',
-    function ($rootScope, $scope, $window, $location, quoteRequestService, cartService) {
+storefrontApp.controller('quoteRequestController', ['$rootScope', '$scope', '$window', '$location', 'quoteRequestService', 'commonService',
+    function ($rootScope, $scope, $window, $location, quoteRequestService, commonService) {
     initialize();
 
     $scope.setQuoteRequestForm = function (form) {
@@ -226,13 +226,13 @@ storefrontApp.controller('quoteRequestController', ['$rootScope', '$scope', '$wi
     }
 
     function getCountries() {
-        cartService.getCountries().then(function (response) {
+        commonService.getCountries().then(function (response) {
             $scope.countries = response.data;
         });
     }
 
     function getCountryRegions(addressType, countryCode) {
-        cartService.getCountryRegions(countryCode).then(function (response) {
+        commonService.getCountryRegions(countryCode).then(function (response) {
             var countryRegions = response.data;
             if (addressType == 'Billing') {
                 $scope.billingCountryRegions = countryRegions || [];

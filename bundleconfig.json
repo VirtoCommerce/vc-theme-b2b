@@ -19,7 +19,6 @@
             "bower_components/angular-translate-loader-url/angular-translate-loader-url.js",
             "bower_components/angular-component-router/angular_1_router.js",
             "bower_components/ng-wizard/dist/ngWizard.js",
-            "bower_components/satellizer/dist/satellizer.js",
             "bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js",
             "bower_components/bootstrap-sass/assets/javascripts/bootstrap/scrollspy.js",
             "bower_components/bootstrap-toc/dist/bootstrap-toc.js",

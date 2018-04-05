@@ -5,7 +5,7 @@
     </div>
 </aside>
 <aside class="panel panel-default" ng-if="customer && !customer.isRegisteredUser">
-    <div class="panel-body" ng-controller="accountLoginController">
+    <div class="panel-body">
         <h4>{{ 'customer.sign-in.title' | t }}</h4>
         {% include 'customers/login-form' %}
     </div>

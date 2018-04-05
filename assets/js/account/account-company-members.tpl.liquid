@@ -21,9 +21,9 @@
                 <tbody>
                     <tr ng-repeat="member in $ctrl.entries">
                         <td ng-bind="member.fullName"></td>
-                        <td ng-bind="member.emails"></td>
+                        <td ng-bind="member.email"></td>
                         <td ng-bind="member.title"></td>
-                        <td ng-bind="member.securityAccounts[0].roles"></td>
+                        <td ng-bind="member.roles"></td>
                         <td ng-bind="member.isActive?'Active':'Not active'"></td>
                         <td>
                             <span ng-show="$ctrl.showActions(member)">

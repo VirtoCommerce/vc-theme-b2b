@@ -1,6 +1,6 @@
-var storefrontApp = angular.module('storefrontApp');
+﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope', '$scope', '$window', '$uibModalInstance', 'customerService', 'dialogData', 'listService', '$localStorage', 'loadingIndicatorService', '$translate', function($rootScope, $scope, $window, $uibModalInstance, customerService, dialogData, listService, $localStorage, loader, $translate) {
+storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope', '$scope', '$window', '$uibModalInstance', 'accountApi', 'dialogData', 'listService', '$localStorage', 'loadingIndicatorService', '$translate', function ($rootScope, $scope, $window, $uibModalInstance, accountApi, dialogData, listService, $localStorage, loader, $translate) {
 
     if (dialogData.sharedLink)
         $scope.sharedLink = dialogData.sharedLink;
@@ -17,7 +17,7 @@ storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope',
             $scope.dialogData.permission = 'private';
 
         $scope.dialogData.id = Math.floor(Math.random() * 230910443210623294 + 1).toString();
-        customerService.getCurrentCustomer().then(function (user) {
+        accountApi.getCurrentUser().then(function (user) {
             $scope.userName = user.data.userName;
             listService.getWishlist($scope.dialogData.listName, $scope.dialogData.permission, $scope.dialogData.id, user.data.userName);
             $uibModalInstance.close();

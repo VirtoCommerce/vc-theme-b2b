@@ -6,7 +6,6 @@
     'ui.bootstrap',
     'ngWizard',
     'vcRecaptcha',
-    'satellizer',
     'storefrontApp.consts'
 ];
 var storefrontApp = angular.module('storefrontApp', storefrontAppDependencies);

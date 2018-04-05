@@ -1,10 +1,12 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateRegisterApi', 'storefront.corporateApiErrorHelper', 'storefront.accountApi', 'loadingIndicatorService', 'vcRecaptchaService', 'accountService',
-    function ($q, $scope, mainContext, corporateRegisterApi, corporateApiErrorHelper, accountApi, loader, vcRecaptchaService, accountService) {
+storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'loadingIndicatorService', 'vcRecaptchaService', 'commonService',
+    function ($q, $scope, mainContext, loader, vcRecaptchaService, commonService) {
         var $ctrl = this;
         $ctrl.loader = loader;
-        $ctrl.countries = accountApi.getCountries();
+        commonService.getCountries().then(function (response) {
+            $ctrl.countries = response.data;
+        });
 
         $scope.isOrg = function () {
             return $scope.member.type === 'Business';
@@ -30,9 +32,9 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                     }
                     else {
                         //$ctrl.getCountryRegions({ country: address.country }).then(function (regions) {
-                        accountApi.getCountryRegions(address.country, function (regions) {
-                            address.country.regions = regions;
-                            setAddressRegion(address, regions);
+                        commonService.getCountryRegions(address.country.code3).then(function (response) {
+                            address.country.regions = response.data;
+                            setAddressRegion(address, response.data);
                         });
                     }
                 }
