@@ -15,7 +15,7 @@ storefrontApp.service('accountApi', ['$http', function ($http) {
             return $http.post('storefrontapi/account/addresses', addresses);
         },
         getUserOrganization: function () {
-            return $http.get('storefrontapi/account/organization?t=' + new Date().getTime());
+            return $http.get('storefrontapi/account/organization/current?t=' + new Date().getTime());
         },
         updateUserOrganization: function (organization) {
             return $http.put('storefrontapi/account/organization', organization);
