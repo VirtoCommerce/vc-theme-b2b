@@ -5,8 +5,8 @@ storefrontApp.service('accountApi', ['$http', function ($http) {
         getCurrentUser: function () {
             return $http.get('storefrontapi/account?t=' + new Date().getTime());
         },
-        getUserOrganizationContactById: function (contactId) {
-            return $http.get('storefrontapi/account/organization/contacts/' + contactId + '?t=' + new Date().getTime());
+        getUserById: function (userId) {
+            return $http.get('storefrontapi/account/' + userId + '?t=' + new Date().getTime());
         },
         updateUser: function (user) {
             return $http.post('storefrontapi/account', user);
@@ -20,8 +20,8 @@ storefrontApp.service('accountApi', ['$http', function ($http) {
         updateUserOrganization: function (organization) {
             return $http.put('storefrontapi/account/organization', organization);
         },
-        searchUserOrganizationContacts: function (criteria) {
-            return $http.post('storefrontapi/account/organization/contacts/search', criteria);
+        searchOrganizationUsers: function (criteria) {
+            return $http.post('storefrontapi/account/organization/users/search', criteria);
         },
         createInvitation: function (invitation) {
             return $http.post('storefrontapi/account/invitation', invitation);
@@ -29,11 +29,11 @@ storefrontApp.service('accountApi', ['$http', function ($http) {
         registerNewUser: function (user) {
             return $http.post('storefrontapi/account/user', user);
         },
-        lockUser: function (userName) {
-            return $http.post('storefrontapi/account/' + userName + '/lock');
+        lockUser: function (userId) {
+            return $http.post('storefrontapi/account/' + userId + '/lock');
         },
-        unlockUser: function (userName) {
-            return $http.post('storefrontapi/account/' + userName + '/unlock');
+        unlockUser: function (userId) {
+            return $http.post('storefrontapi/account/' + userId + '/unlock');
         },
         deleteUser: function (userName) {
             return $http.delete('storefrontapi/account/' + userName);

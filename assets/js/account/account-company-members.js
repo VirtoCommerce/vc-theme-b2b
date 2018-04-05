@@ -23,7 +23,7 @@
 
         function refresh() {
                  loader.wrapLoading(function () {
-                     return accountApi.searchUserOrganizationContacts({
+                     return accountApi.searchOrganizationUsers({
                     skip: ($ctrl.pageSettings.currentPage - 1) * $ctrl.pageSettings.itemsPerPageCount,
                     take: $ctrl.pageSettings.itemsPerPageCount,
                     sortInfos: $ctrl.sortInfos
@@ -116,7 +116,7 @@
                 var action = member.isActive ? accountApi.lockUser : accountApi.unlockUser;
                 member.isActive = !member.isActive;                
                 loader.wrapLoading(function () {
-                    return action(member.securityAccounts[0].userName);
+                    return action(member.id);
                 });
             });
         };
@@ -199,7 +199,7 @@
 
         function refresh() {
             loader.wrapLoading(function () {
-                return accountApi.getUserOrganizationContactById($ctrl.memberNumber).then(function (response) {
+                return accountApi.getUserById($ctrl.memberNumber).then(function (response) {
                     $ctrl.member = response.data;
                 });
             });

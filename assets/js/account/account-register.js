@@ -1,7 +1,7 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService', 'vcRecaptchaService', 'commonService',
-    function ($q, $scope, mainContext, corporateApiErrorHelper, loader, vcRecaptchaService, commonService) {
+storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'loadingIndicatorService', 'vcRecaptchaService', 'commonService',
+    function ($q, $scope, mainContext, loader, vcRecaptchaService, commonService) {
         var $ctrl = this;
         $ctrl.loader = loader;
         commonService.getCountries().then(function (response) {
@@ -32,7 +32,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                     }
                     else {
                         //$ctrl.getCountryRegions({ country: address.country }).then(function (regions) {
-                        commonService.getCountryRegions(address.country).then(function (response) {
+                        commonService.getCountryRegions(address.country.code3).then(function (response) {
                             address.country.regions = response.data;
                             setAddressRegion(address, response.data);
                         });
