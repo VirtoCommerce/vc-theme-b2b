@@ -14,6 +14,7 @@
             </div>
         </div>
         <vc-errors message="errorMessage" errors="errors"></vc-errors>
+        
         <wizard current-step-number="currentStepNumber" submit="submit()" >
             <wizard-step title="{{ 'customer.register.step-personal' | t }}">
                 <form name="stepForm" novalidate="novalidate" >
@@ -155,7 +156,6 @@
                 </form>
             </wizard-step>
         </wizard>
-           
     </div>
 
 

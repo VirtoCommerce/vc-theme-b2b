@@ -2519,8 +2519,43 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
         };
 
         $scope.submit = function () {
-            //TODO: Find another solution to submit form without this
-            angular.element(document.querySelector('#create_customer')).submit();
+            corporateApiErrorHelper.clearErrors($scope);
+            $ctrl.error = {};
+            var hasError = false;
+            var member = $scope.member;
+            var errorMsg = member.password.length < 5;
+            $ctrl.error.password = errorMsg;
+            hasError = hasError || errorMsg;
+
+            if (!hasError) {
+                errorMsg = member.password !== member.confirmPassword;
+                $ctrl.error.confirmPassword = errorMsg;
+                hasError = hasError || errorMsg;
+            }
+
+            if (!hasError) {
+                populateRegionalDataForAddress(member.address);
+                //member.address.name = addressService.stringify(member.address);
+
+                $ctrl.loader.wrapLoading(function () {
+                    var urlParam, apiMethodToCall;
+                    if (member.invite) {
+                        urlParam = { invite: member.invite };
+                        apiMethodToCall = corporateRegisterApi.registerByInvite;
+                    } else {
+                        apiMethodToCall = $scope.isOrg() ? corporateRegisterApi.register : corporateRegisterApi.registerPersonal;
+                    }
+
+                    return apiMethodToCall(urlParam, member, function (result) {
+                        $scope.$parent.userName = member.username;
+                        $scope.$parent.password = member.password;
+                        $scope.login();
+                    }, function (rejection) {
+                        vcRecaptchaService.reload();
+                        corporateApiErrorHelper.handleErrors($scope, rejection);
+                    }).$promise;
+                });
+            }
         }
     }]);
 
