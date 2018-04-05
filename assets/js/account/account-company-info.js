@@ -4,30 +4,23 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefrontApp.mainContext', '$scope', '$translate', 'storefront.corporateAccountApi', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService', 'confirmService', function (mainContext, $scope, $translate, corporateAccountApi, corporateApiErrorHelper, loader, confirmService) {
+    controller: ['storefrontApp.mainContext', '$scope', '$translate', 'accountService', 'loadingIndicatorService', 'confirmService', function (mainContext, $scope, $translate, accountService, loader, confirmService) {
         var $ctrl = this;
         $ctrl.loader = loader;
 
-        $scope.$watch(
-            function () { return mainContext.customer.companyId; },
-            function (companyId) {
-                if (companyId) {
-                    loader.wrapLoading(function () {
-                        return corporateAccountApi.getCompanyById({ id: companyId }, function (company) {
-                            $ctrl.company = company;
-                        }).$promise;
-                    });
-                }
-            }
-        );
+        function refresh() {
+            loader.wrapLoading(function () {
+                return accountService.getUserOrganization().then(function (response) {
+                    $ctrl.company = response.data;
+                });
+            });
+        };
+
+      
 
         $ctrl.updateCompanyInfo = function (company) {
             return loader.wrapLoading(function () {
-                return corporateAccountApi.updateCompany(company, function(response) {
-                    corporateApiErrorHelper.clearErrors($scope);
-                }, function (rejection){
-                    corporateApiErrorHelper.handleErrors($scope, rejection);
-                }).$promise;
+                return accountService.updateUserOrganization(company).then(function () { refresh(); });
             });
         };
 

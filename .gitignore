@@ -81,5 +81,5 @@ $RECYCLE.BIN/
 
 # Mac crap
 .DS_Store
-
 wwwroot/lib
+assets/static
