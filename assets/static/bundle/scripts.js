@@ -1039,8 +1039,8 @@ angular.module('storefront.account')
 
 var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'loadingIndicatorService', 'vcRecaptchaService', 'commonService',
-    function ($q, $scope, mainContext, loader, vcRecaptchaService, commonService) {
+storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'loadingIndicatorService', 'vcRecaptchaService', 'commonService', 'accountApi',
+    function ($q, $scope, mainContext, loader, vcRecaptchaService, commonService, accountApi) {
         var $ctrl = this;
         $ctrl.loader = loader;
         commonService.getCountries().then(function (response) {
@@ -1169,23 +1169,22 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                 //};
 
                 $scope.member.invite = invite;
-                $ctrl.loader.wrapLoading(function () {
-                    return corporateRegisterApi.getRegisterInfoByInvite({ invite: invite }).$promise
-                        .then(function (result) {
-                            if (result.message) {
-                                $scope.error = result.message;
-                                return $q.reject("Invite is invalid");
-                            }
-                            $scope.member.companyName = result.companyName;
-                            $scope.member.email = result.email;
-                        });
-                });
+                // $ctrl.loader.wrapLoading(function () {
+                //     return accountApi.getRegisterInfoByInvite({ invite: invite }).$promise
+                //         .then(function (result) {
+                //             if (result.message) {
+                //                 $scope.error = result.message;
+                //                 return $q.reject("Invite is invalid");
+                //             }
+                //             $scope.member.companyName = result.companyName;
+                //             $scope.member.email = result.email;
+                //         });
+                // });
             }
-            
         };
 
         $scope.submit = function () {
-            corporateApiErrorHelper.clearErrors($scope);
+            $scope.errors = null;
             $ctrl.error = {};
             var hasError = false;
             var member = $scope.member;
@@ -1204,9 +1203,14 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                 //member.address.name = addressService.stringify(member.address);
 
                 $ctrl.loader.wrapLoading(function () {
-                    accountService.registerNewUser(member).then(function(result) {
+                    return accountApi.registerNewUser(member).then(function(result) {
                         if (!result.data.succeeded) {
-                            corporateApiErrorHelper.handleErrors($scope, result);
+                            var errors = _.map(result.data.errors, function(currentObject) {
+                                return currentObject["description"];
+                            });    
+                            $scope.errors = errors;
+                        } else {
+                            $scope.outerRedirect($scope.baseUrl);
                         }
                     });
                     // var urlParam, apiMethodToCall;

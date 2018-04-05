@@ -70,9 +70,9 @@
                 <form name="stepForm" novalidate="novalidate">
                     <div class="form-group">
                         <div class="row" ng-if="isOrg()">
-                            <div class="col-md-12" ng-class="{'has-error': stepForm['customer[organizationName]'].$invalid && !stepForm['customer[organizationName]'].$pristine }">
-                                <input ng-model="member.companyName" class="form-control" name="customer[organizationName]" type="text" required placeholder="{{ 'customer.register.company_name' | t }}" />
-                                <span class="help-block text-danger" ng-show="!stepForm['customer[organizationName]'].$pristine && stepForm['customer[organizationName]'].$error.required">{{ 'common.required' | t }}</span>
+                            <div class="col-md-12" ng-class="{'has-error': stepForm['customer[organization_name]'].$invalid && !stepForm['customer[organization_name]'].$pristine }">
+                                <input ng-model="member.companyName" class="form-control" name="customer[organization_name]" type="text" required placeholder="{{ 'customer.register.company_name' | t }}" />
+                                <span class="help-block text-danger" ng-show="!stepForm['customer[organization_name]'].$pristine && stepForm['customer[organization_name]'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
                         </div>
                     </div>
