@@ -111,8 +111,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
         }
 
         $scope.init = function (storeId) {
-            $scope.member = { storeId: storeId, type: 'Business', address: {} };
-
+            $scope.member = { storeId: storeId, type: 'Business', address: {}, email: null };
             var invite = getParams().invite;
             if (invite) {
                 //$scope.registerMemberFieldsConfig[0] = {
@@ -141,6 +140,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                         });
                 });
             }
+            
         };
 
         $scope.submit = function () {

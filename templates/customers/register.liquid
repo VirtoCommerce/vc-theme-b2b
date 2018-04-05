@@ -14,10 +14,10 @@
             </div>
         </div>
         <vc-errors message="errorMessage" errors="errors"></vc-errors>
-        {% form 'create_customer' %}
-        <wizard current-step-number="currentStepNumber" submit="submit()">
+        <wizard current-step-number="currentStepNumber" submit="submit()" >
             <wizard-step title="{{ 'customer.register.step-personal' | t }}">
-                    <div class="form-group">
+                <form name="stepForm" novalidate="novalidate" >
+                    <div class="form-group" >
                         <label class="radio-inline">
                             <input ng-model="member.type" value="Business" name="customer[type]" type="radio">
                             <span class="switch"></span>
@@ -31,23 +31,28 @@
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6" ng-class="{'has-error': stepForm['customer[first_name]'].$invalid && !stepForm['customer[first_name]'].$pristine }">
                                 <input ng-model="member.firstName" class="form-control" name="customer[first_name]" type="text" required placeholder="{{ 'customer.register.first_name' | t }}" />
+                                <span class="help-block text-danger" ng-show="!stepForm['customer[first_name]'].$pristine && stepForm['customer[first_name]'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" ng-class="{'has-error': stepForm['customer[last_name]'].$invalid && !stepForm['customer[last_name]'].$pristine }">
                                 <input ng-model="member.lastName" class="form-control" name="customer[last_name]" type="text" required placeholder="{{ 'customer.register.last_name' | t }}" />
+                                <span class="help-block text-danger" ng-show="!stepForm['customer[last_name]'].$pristine && stepForm['customer[last_name]'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
                         </div>
-
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6" ng-class="{'has-error': stepForm['customer[email]'].$invalid && !stepForm['customer[email]'].$pristine }">
                                 <input class="form-control" ng-model="member.email" name="customer[email]" type="email" required placeholder="{{ 'customer.register.email-work' | t }}" ng-if="isOrg()" />
                                 <input class="form-control" ng-model="member.email" name="customer[email]" type="email" required placeholder="{{ 'customer.register.email' | t }}" ng-if="!isOrg()" />
+                                <span class="help-block text-danger" ng-show="stepForm['customer[email]'].$invalid && !stepForm['customer[email]'].$pristine">{{ 'common.invalid' | t }}</span>
+                                <span class="help-block text-danger" ng-show="!stepForm['customer[email]'].$pristine && stepForm['customer[email]'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" ng-class="{'has-error': stepForm['customer[address].phone'].$invalid && !stepForm['customer[address].phone'].$pristine }">
                                 <input class="form-control" ng-model="member.phone" name="customer[address].phone" type="tel" required ng-pattern="/^[0-9]{1,12}$/" placeholder="{{ 'customer.register.phone' | t }}" />
+                                <span class="help-block text-danger" ng-show="stepForm['customer[address].phone'].$invalid && !stepForm['customer[address].phone'].$pristine">{{ 'common.invalid' | t }}</span>
+                                <span class="help-block text-danger" ng-show="!stepForm['customer[address].phone'].$pristine && stepForm['customer[address].phone'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
                         </div>
                     </div>
@@ -55,101 +60,102 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <input class="form-control" ng-model="member.accountNo" name="AccountNo" placeholder="{{ 'customer.register.account-number' | t }}" />
-
                             </div>
                         </div>
-                        </div>
+                    </div>
+                </form>        
             </wizard-step>
             <wizard-step title="{{ 'customer.register.step-address' | t }}" required-step-number="0">
-                <div class="form-group">
-                    <div class="row" ng-if="isOrg()">
-                        <div class="col-md-12">
-                            <input class="form-control" ng-model="member.companyName" name="customer[organization_name]" required placeholder="{{ 'customer.register.company_name' | t }}" />
-                        </div>
-                        </div>
-                    </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group form-select" ng-class="{'keyuped': stepForm.Country.$modelValue, 'error': stepForm.$submitted && stepForm.Country.$invalid }">
-                                <label for="#" class="form-label" ng-bind="isOrg() ? '{{ 'customer.register.work-country' | t }}' : '{{ 'checkout.address.country' | t }}'"></label>
-                                <select ng-model="member.address.countryCode" ng-options="x.code3 as x.name for x in $ctrl.countries" name="customer[address].countryCode" required="required" class="form-control" size="1">
-                                    <option value="">{{ 'checkout.address.country_select_placeholder' | t }}</option>
-                                </select>
+                <form name="stepForm" novalidate="novalidate">
+                    <div class="form-group">
+                        <div class="row" ng-if="isOrg()">
+                            <div class="col-md-12" ng-class="{'has-error': stepForm['customer[organization_name]'].$invalid && !stepForm['customer[organization_name]'].$pristine }">
+                                <input ng-model="member.companyName" class="form-control" name="customer[organization_name]" type="text" required placeholder="{{ 'customer.register.company_name' | t }}" />
+                                <span class="help-block text-danger" ng-show="!stepForm['customer[organization_name]'].$pristine && stepForm['customer[organization_name]'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
-                            <p class="form-error" ng-if="stepForm.$submitted && stepForm.Country.$error.required">
-                                {{ 'checkout.country_required_message' | t }}
-                            </p>
                         </div>
-
-                        <div class="col-md-6" ng-if="member.address.country.regions.length">
-                            <div class="form-group form-select" ng-class="{'keyuped': member.address.regionId.length }">
-                                <label for="#" class="form-label" ng-bind="(isOrg() ? '{{ 'customer.register.work-region' | t }}' : '') + member.address.country.regionType"></label>
-                                <select ng-model="member.address.regionId" ng-options="x.code as x.name for x in member.address.country.regions" name="customer[address].region" required="required" class="form-control" size="1">
-                                    <option value="" ng-bind="'Select ' + member.address.country.regionType"></option>
-                                </select>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group form-select" ng-class="{'keyuped': stepForm.Country.$modelValue, 'error': stepForm.$submitted && stepForm.Country.$invalid }">
+                                    <label for="#" class="form-label" ng-bind="isOrg() ? '{{ 'customer.register.work-country' | t }}' : '{{ 'checkout.address.country' | t }}'"></label>
+                                    <select ng-model="member.address.countryCode" ng-options="x.code3 as x.name for x in $ctrl.countries" name="customer[address].countryCode" required="required" class="form-control" size="1">
+                                        <option value="">{{ 'checkout.address.country_select_placeholder' | t }}</option>
+                                    </select>
+                                </div>
+                                <p class="form-error" ng-if="stepForm.$submitted && stepForm.Country.$error.required">
+                                    {{ 'checkout.country_required_message' | t }}
+                                </p>
                             </div>
-                            <p class="form-error" ng-if="stepForm.Region.$dirty && stepForm.Region.$error.required" ng-bind="'Please select ' + member.address.country.regionType"></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input class="form-control" ng-model="member.address.postalCode" name="customer[address].postalCode" required pattern="\d{4,32}" placeholder="{{ 'checkout.address.zip' | t }}" />
-                        </div>
-                        <div class="col-md-6">
-                            <input class="form-control" ng-model="member.address.city" name="customer[address].city" type="text" required placeholder="{{ 'customer.addresses.city' | t }}" />
-                        </div>
 
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input class="form-control" ng-model="member.address.line1" name="customer[address].line1" type="text" required placeholder="{{ 'customer.register.address1' | t }}" />
+                            <div class="col-md-6" ng-if="member.address.country.regions.length">
+                                <div class="form-group form-select" ng-class="{'keyuped': member.address.regionId.length }">
+                                    <label for="#" class="form-label" ng-bind="(isOrg() ? '{{ 'customer.register.work-region' | t }}' : '') + member.address.country.regionType"></label>
+                                    <select ng-model="member.address.regionId" ng-options="x.code as x.name for x in member.address.country.regions" name="customer[address].region" required="required" class="form-control" size="1">
+                                        <option value="" ng-bind="'Select ' + member.address.country.regionType"></option>
+                                    </select>
+                                </div>
+                                <p class="form-error" ng-if="stepForm.Region.$dirty && stepForm.Region.$error.required" ng-bind="'Please select ' + member.address.country.regionType"></p>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <input class="form-control" ng-model="member.address.line2" name="customer[address].line2" type="text" placeholder="{{ 'customer.register.address2' | t }}" />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6" ng-class="{'has-error': stepForm['customer[address].postalCode'].$invalid && !stepForm['customer[address].postalCode'].$pristine }">
+                                <input class="form-control" ng-model="member.address.postalCode" name="customer[address].postalCode" required pattern="\d{4,32}" placeholder="{{ 'checkout.address.zip' | t }}" />
+                                <span class="help-block text-danger" ng-show="stepForm['customer[address].postalCode'].$invalid && !stepForm['customer[address].postalCode'].$pristine">{{ 'common.invalid' | t }}</span>
+                                <span class="help-block text-danger" ng-show="!stepForm['customer[address].postalCode'].$pristine && stepForm['customer[address].postalCode'].$error.required">{{ 'common.required' | t }}</span>
+                            </div>
+                            <div class="col-md-6" ng-class="{'has-error': stepForm['customer[address].city'].$invalid && !stepForm['customer[address].city'].$pristine }">
+                                <input class="form-control" ng-model="member.address.city" name="customer[address].city" type="text" required placeholder="{{ 'customer.addresses.city' | t }}" />
+                                <span class="help-block text-danger" ng-show="!stepForm['customer[address].city'].$pristine && stepForm['customer[address].city'].$error.required">{{ 'common.required' | t }}</span>
+                            </div>
+
                         </div>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6" ng-class="{'has-error': stepForm['customer[address].line1'].$invalid && !stepForm['customer[address].line1'].$pristine }">
+                                <input class="form-control" ng-model="member.address.line1" name="customer[address].line1" type="text" required placeholder="{{ 'customer.register.address1' | t }}" />
+                                <span class="help-block text-danger" ng-show="!stepForm['customer[address].line1'].$pristine && stepForm['customer[address].line1'].$error.required">{{ 'common.required' | t }}</span>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control" ng-model="member.address.line2" name="customer[address].line2" type="text" placeholder="{{ 'customer.register.address2' | t }}" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </wizard-step>
             <wizard-step title="{{ 'customer.register.step-account' | t }}" required-step-number="1">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <input class="form-control" ng-model="member.username" name="customer[user_name]" required placeholder="{{ 'customer.register.user_name' | t }}" />
+                <form name="stepForm" novalidate="novalidate">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12" ng-class="{'has-error': stepForm['customer[user_name]'].$invalid && !stepForm['customer[user_name]'].$pristine }">
+                                <input class="form-control" ng-model="member.username" name="customer[user_name]" required placeholder="{{ 'customer.register.user_name' | t }}" />
+                                <span class="help-block text-danger" ng-show="!stepForm['customer[user_name]'].$pristine && stepForm['customer[user_name]'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
                         </div>
                     </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input class="form-control" ng-model="member.password" name="customer[password]" placeholder="{{ 'customer.register.password' | t }}" required type="password" />
-                            <div class="form-error" ng-if="$ctrl.error.password && !stepForm.Password.$pristine">
-                                <span>{{ 'customer.register.password-length' | t }}</span>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6" ng-class="{'has-error': $ctrl.error.password && stepForm['customer[password]'].$dirty && stepForm['customer[password]'].$invalid }">
+                                <input class="form-control" ng-model="member.password" name="customer[password]" placeholder="{{ 'customer.register.password' | t }}" required type="password" />
+                                <div class="form-error" ng-if="$ctrl.error.password && !stepForm['customer[password]'].$dirty && stepForm['customer[password]'].$invalid ">
+                                    <span>{{ 'customer.register.password-length' | t }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6" ng-class="{'has-error': stepForm['customer[confirmPassword]'].$invalid && !stepForm['customer[confirmPassword]'].$pristine }">
+                                <input class="form-control" ng-model="member.confirmPassword" name="customer[confirmPassword]" placeholder="{{ 'customer.register.confirm_password' | t }}" required confirm-password-validation type="password" />
+                                <span class="help-block text-danger" ng-show="stepForm['customer[confirmPassword]'].$pristine && !stepForm['customer[confirmPassword]'].$error.required && stepForm['customer[confirmPassword]'].$invalid && stepForm['customer[confirmPassword]'].$error.confirmPasswordValidation">{{ 'common.not_match' | t }}</span>
+                                <span class="help-block text-danger" ng-show="(stepForm['customer[confirmPassword]'].$dirty || stepForm.$submitted) && !stepForm['customer[confirmPassword]'].$error.required && stepForm['customer[confirmPassword]'].$invalid && stepForm['customer[confirmPassword]'].$error.confirmPasswordValidation">{{ 'common.not_match' | t }}</span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <input class="form-control" ng-model="member.password" name="customer[password]" placeholder="{{ 'customer.register.confirm_password' | t }}" type="password" />
-                        </div>
                     </div>
-                </div>
-                <!--<div class="form-group" ng-class="{'keyuped': stepForm.ConfirmPassword.$viewValue.length, 'has-error has-feedback': (stepForm.ConfirmPassword.$dirty || stepForm.$submitted) && stepForm.ConfirmPassword.$invalid }">
-                <label for="ConfirmPassword" class="control-label">{{ 'customer.register.confirm_password' | t }}</label>
-                <input ng-model="member.confirmPassword"
-                       name="ConfirmPassword"
-                       id="ConfirmPassword"
-                       placeholder="{{ 'customer.register.confirm_password' | t }}"
-                       type="password" required="required" class="form-control"
-                       confirm-password-validation />
-                <span class="form-error" ng-if="(stepForm.ConfirmPassword.$dirty || stepForm.$submitted) && stepForm.ConfirmPassword.$error.required" ng-bind="$ctrl.requiredError || '{{ 'common.required' | t }}'"></span>
-                <span class="form-error" ng-if="(stepForm.ConfirmPassword.$dirty || stepForm.$submitted) && !stepForm.ConfirmPassword.$error.required && stepForm.ConfirmPassword.$invalid && stepForm.ConfirmPassword.$error.confirmPasswordValidation">{{ 'common.not_match' | t }}</span>
-            </div>-->
+                </form>
             </wizard-step>
         </wizard>
-     {% endform %}
+           
     </div>
 
 
