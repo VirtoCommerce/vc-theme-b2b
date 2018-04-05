@@ -1,113 +1,3 @@
-<<<<<<< HEAD
-angular.module('storefrontApp')
-    .factory('authService', ['storefrontApp.mainContext', '$auth', '$httpParamSerializerJQLike', '$interpolate', '$rootScope', 'storefront.corporateAccountApi',
-        function (mainContext, $auth, $httpParamSerializerJQLike, $interpolate, $rootScope, corporateAccountApi) {
-
-            var authContext = {
-                userId: null,
-                userLogin: null,
-                fullName: null,
-                userType: null,
-                roles: null,
-                permissions: null,
-                isAuthenticated: false
-            };
-
-            authContext.login = function (login, password) {
-                return $auth.login($httpParamSerializerJQLike({
-                    userName: login,
-                    password: password,
-                    grant_type: "password"
-                }),
-                    {
-                        headers: { 'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' }
-                    });
-            };
-
-            authContext.fillAuthData = function () {
-                return corporateAccountApi.getUser({ userName: mainContext.customer.userName },
-                    function (result) {
-                        changeAuth(result)
-                        $rootScope.$broadcast('loginStatusChanged', authContext);
-                    },
-                    function (error) { });
-            };
-
-            authContext.checkPermission = function (permission, securityScopes) {
-                //first check admin permission
-                // var hasPermission = $.inArray('admin', authContext.permissions) > -1;
-                var hasPermission = authContext.isAdministrator;
-                if (!hasPermission && permission) {
-                    permission = permission.trim();
-                    //first check global permissions
-                    hasPermission = $.inArray(permission, authContext.permissions) > -1;
-                    if (!hasPermission && securityScopes) {
-                        if (typeof securityScopes === 'string' || angular.isArray(securityScopes)) {
-                            securityScopes = angular.isArray(securityScopes) ? securityScopes : securityScopes.split(',');
-                            //Check permissions in scope
-                            hasPermission = _.some(securityScopes, function (x) {
-                                var permissionWithScope = permission + ":" + x;
-                                var retVal = $.inArray(permissionWithScope, authContext.permissions) > -1;
-                                //console.log(permissionWithScope + "=" + retVal);
-                                return retVal;
-                            });
-                        }
-                    }
-                }
-                return hasPermission;
-            };
-
-            function changeAuth(results) {
-                authContext.userId = results.id;
-                authContext.roles = results.roles;
-                authContext.permissions = results.permissions;
-                authContext.userLogin = results.userName;
-                authContext.fullName = results.userLogin;
-                authContext.isAuthenticated = results.userName != null;
-                authContext.userType = results.userType;
-                authContext.isAdministrator = results.isAdministrator;
-                //Interpolate permissions to replace some template to real value
-                if (authContext.permissions) {
-                    authContext.permissions = _.map(authContext.permissions, function (x) {
-                        return $interpolate(x)(authContext);
-                    });
-                }
-            };
-
-            return authContext;
-        }])
-    .constant('tokenExpirationName', 'platform_access_token_expiration_time')
-    .config(['$authProvider', '$provide', 'apiBaseUrl', function ($authProvider, $provide, apiBaseUrl) {
-        $authProvider.loginUrl = apiBaseUrl + 'Token';
-        $authProvider.tokenName = 'access_token';
-        $authProvider.tokenPrefix = 'platform';
-        $authProvider.oauth2({
-            name: 'platform',
-            clientId: 'web'
-        });
-        $provide.decorator('SatellizerShared', ['$delegate', 'tokenExpirationName', function ($delegate, tokenExpirationName) {
-            var service = $delegate;
-            var originalSetToken = service.setToken;
-            service.setToken = function (response) {
-                originalSetToken.apply(service, arguments);
-                var expirationTime = Date.parse(response.data['.expires']);
-                this.SatellizerStorage.set(tokenExpirationName, expirationTime);;
-            };
-            return service;
-        }]);
-    }])
-    .run(['$auth', 'SatellizerConfig', 'SatellizerStorage', 'tokenExpirationName', '$timeout', '$window', '$location', function ($auth, $authProvider, $authStorage, tokenExpirationName, $timeout, $window, $location) {
-        var logOut = function () {
-            $auth.logout();
-            $authStorage.remove(tokenExpirationName);
-            $window.location.href = $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/account/logout';
-        };
-
-        if ($auth.isAuthenticated()) {
-            $timeout(logOut, parseFloat($authStorage.get(tokenExpirationName)) - Date.now());
-        }
-    }]);
-
 var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.service('dialogService', ['$uibModal', function ($uibModal) {
@@ -139,14 +29,6 @@ storefrontApp.service('feedbackService', ['$http', function ($http) {
     return {
         postFeedback: function (data) {
             return $http.post('storefrontapi/feedback', { model: data });
-        }
-    }
-}]);
-
-storefrontApp.service('customerService', ['$http', function ($http) {
-    return {
-        getCurrentCustomer: function () {
-            return $http.get('storefrontapi/account?t=' + new Date().getTime());
         }
     }
 }]);
@@ -209,13 +91,7 @@ storefrontApp.service('cartService', ['$http', function ($http) {
         },
         clearCart: function () {
             return $http.post('storefrontapi/cart/clear');
-        },
-        getCountries: function () {
-            return $http.get('storefrontapi/countries?t=' + new Date().getTime());
-        },
-        getCountryRegions: function (countryCode) {
-        	return $http.get('storefrontapi/countries/' + countryCode + '/regions?t=' + new Date().getTime());
-        },
+        },     
         addCoupon: function (couponCode) {
             return $http.post('storefrontapi/cart/coupons/' + couponCode);
         },
@@ -246,7 +122,7 @@ storefrontApp.service('cartService', ['$http', function ($http) {
     }
 }]);
 
-storefrontApp.service('listService', ['$q', '$http', '$localStorage', 'customerService', function ($q, $http, $localStorage, customerService) {
+storefrontApp.service('listService', ['$q', '$http', '$localStorage', 'accountApi', function ($q, $http, $localStorage, accountApi) {
     return {
         getOrCreateMyLists: function (userName, lists) {
             if (!$localStorage['lists']) {
@@ -446,40 +322,22 @@ storefrontApp.service('compareProductService', ['$http', '$localStorage', functi
     }
 }]);
 
-storefrontApp.service('accountService', ['$http', function ($http) {
+
+storefrontApp.service('commonService', ['$http', function ($http) {
     return {
-        getUserOrganization: function () {
-            return $http.get('storefrontapi/account/organization?t=' + new Date().getTime());
+        getCountries: function () {
+            return $http.get('storefrontapi/countries?t=' + new Date().getTime());
         },
-        updateUserOrganization: function (organization) {
-            return $http.put('storefrontapi/account/organization', organization);
-        },
-        searchUserOrganizationContacts: function (criteria) {
-            return $http.post('storefrontapi/account/organization/contacts/search', criteria);
-        },
-        createInvitation: function (invitation) {
-            return $http.post('storefrontapi/account/invitation', invitation);
-        },
-        registerNewUser: function (user) {
-            return $http.post('storefrontapi/account/user', user);
-        },
-        lockUser: function (userName) {
-            return $http.post('storefrontapi/account/' + userName + '/lock');
-        },
-        unlockUser: function (userName) {
-            return $http.post('storefrontapi/account/' + userName + '/unlock');
-        },
-        deleteUser: function (userName) {
-            return $http.delete('storefrontapi/account/' + userName);
-        },
-     
+        getCountryRegions: function (countryCode) {
+            return $http.get('storefrontapi/countries/' + countryCode + '/regions?t=' + new Date().getTime());
+        }
     }
 }]);
 
 var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location', '$window', 'customerService', 'storefrontApp.mainContext',
-    function ($rootScope, $scope, $location, $window, customerService, mainContext) {
+storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location', '$window', 'accountApi', 'storefrontApp.mainContext',
+    function ($rootScope, $scope, $location, $window, accountApi, mainContext) {
 
         //Base store url populated in layout and can be used for construction url inside controller
         $scope.baseUrl = {};
@@ -537,8 +395,8 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
             return size;
         }
 
-        mainContext.getCustomer = $scope.getCustomer = function () {
-            customerService.getCurrentCustomer().then(function (response) {
+       mainContext.loadCustomer = $scope.loadCustomer = function () {
+           return accountApi.getCurrentUser().then(function (response) {
                 var addressId = 1;
                 _.each(response.data.addresses, function (address) {
                     address.id = addressId;
@@ -546,15 +404,19 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
                 });
                 response.data.isContact = response.data.memberType === 'Contact';
                 mainContext.customer = $scope.customer = response.data;
+                return response.data;
             });
         };
 
-        $scope.getCustomer();
+       $scope.loadCustomer();
     }])
 
-.factory('storefrontApp.mainContext', function () {
-    return {};
-});
+    .factory('storefrontApp.mainContext', ['accountApi', function (accountApi) {
+        var result = {
+            customer: {}
+        };
+        return result;
+}]);
 
 var storefrontApp = angular.module('storefrontApp');
 
@@ -751,8 +613,8 @@ storefrontApp.controller('recentlyAddedCartItemDialogController', ['$scope', '$w
 
 var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('quoteRequestController', ['$rootScope', '$scope', '$window', '$location', 'quoteRequestService', 'cartService',
-    function ($rootScope, $scope, $window, $location, quoteRequestService, cartService) {
+storefrontApp.controller('quoteRequestController', ['$rootScope', '$scope', '$window', '$location', 'quoteRequestService', 'commonService',
+    function ($rootScope, $scope, $window, $location, quoteRequestService, commonService) {
     initialize();
 
     $scope.setQuoteRequestForm = function (form) {
@@ -977,13 +839,13 @@ storefrontApp.controller('quoteRequestController', ['$rootScope', '$scope', '$wi
     }
 
     function getCountries() {
-        cartService.getCountries().then(function (response) {
+        commonService.getCountries().then(function (response) {
             $scope.countries = response.data;
         });
     }
 
     function getCountryRegions(addressType, countryCode) {
-        cartService.getCountryRegions(countryCode).then(function (response) {
+        commonService.getCountryRegions(countryCode).then(function (response) {
             var countryRegions = response.data;
             if (addressType == 'Billing') {
                 $scope.billingCountryRegions = countryRegions || [];
@@ -1058,6 +920,7 @@ storefrontApp.controller('recentlyAddedActualQuoteRequestItemDialogController', 
         $window.location = url;
     }
 }]);
+
 var storefrontApp = angular.module('storefrontApp');
 storefrontApp.component('vcAddress', {
     templateUrl: "themes/assets/address.tpl.html",
@@ -1369,7 +1232,7 @@ storefrontApp.component('vcMemberDetail', {
         memberComponent: '=',
         fieldsConfig: '<'
     },
-    controller: ['$scope', function ($scope) {
+    controller: ['$scope', 'availableRoles', function ($scope, availableRoles) {
         var $ctrl = this;
         
         $ctrl.config = [
@@ -1404,7 +1267,7 @@ storefrontApp.component('vcMemberDetail', {
 
         if ($ctrl.fieldsConfig)
             angular.extend($ctrl.config, $ctrl.fieldsConfig);
-
+        $ctrl.availableRoles = availableRoles;
         $ctrl.rolesComponent = null;
 
         this.$onInit = function () {
@@ -1516,23 +1379,6 @@ storefrontApp.component('vcPaymentMethods', {
 });
 
 var storefrontApp = angular.module('storefrontApp');
-storefrontApp.component('vcRoles', {
-    templateUrl: "themes/assets/roles.tpl.html.liquid",
-    bindings: {
-        value: '=',
-        availableRoles: "<",
-        form: '=',
-        name: "@",
-        required: "<",
-        disabled: "<"
-    },
-    controller: ['$scope', function ($scope) {
-        var $ctrl = this;
-        $ctrl.loader = loader;
-    }]
-});
-
-var storefrontApp = angular.module('storefrontApp');
 storefrontApp.component('vcSearchBar', {
     templateUrl: "themes/assets/js/common-components/searchBar.tpl.html",
     bindings: {
@@ -1585,27 +1431,22 @@ angular.module('storefront.account')
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefrontApp.mainContext', 'confirmService', '$translate', '$scope', 'storefront.corporateAccountApi', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService', function (mainContext, confirmService, $translate, $scope, corporateAccountApi, corporateApiErrorHelper, loader) {
+    controller: ['storefrontApp.mainContext', 'confirmService', '$translate', '$scope', 'accountApi', 'loadingIndicatorService', function (mainContext, confirmService, $translate, $scope, accountApi, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
-        
+
+        $ctrl.currentMember = mainContext.customer;
         $scope.$watch(
             function () { return mainContext.customer; },
             function (customer) {
-                if (customer) {
-                    loader.wrapLoading(function() {
-                        return corporateAccountApi.getCompanyMember({ id: customer.id }, function (member) {
-                            $ctrl.currentMember = member;
-                        }).$promise;
-                    });
-                }
+                $ctrl.currentMember = customer;
             });
-
+      
         $ctrl.addNewAddress = function () {
             if (_.last(components).validate()) {
                 $ctrl.currentMember.addresses.push($ctrl.newAddress);
                 $ctrl.newAddress = null;
-                $ctrl.updateCompanyMember($ctrl.currentMember);
+                $ctrl.updateCompanyMember($ctrl.currentMember);              
             }
         };
 
@@ -1641,9 +1482,14 @@ angular.module('storefront.account')
 
         $ctrl.updateCompanyMember = function (companyMember, handler) {
             return loader.wrapLoading(function () {
-                return corporateAccountApi.updateCompanyMember(companyMember, handler, function (response) {
-                    corporateApiErrorHelper.clearErrors($scope);
-                }).$promise;
+                return accountApi.updateUserAddresses(companyMember.addresses).then(function (response) {
+                    return mainContext.loadCustomer().then(function (customer) {
+                        $ctrl.currentMember = customer;
+                        if (handler) {
+                            handler();
+                        }
+                    });
+                });
             });
         };
 
@@ -1663,23 +1509,21 @@ angular.module('storefront.account')
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefrontApp.mainContext', '$scope', '$translate', 'accountService', 'loadingIndicatorService', 'confirmService', function (mainContext, $scope, $translate, accountService, loader, confirmService) {
+    controller: ['storefrontApp.mainContext', '$scope', '$translate', 'accountApi', 'loadingIndicatorService', 'confirmService', function (mainContext, $scope, $translate, accountApi, loader, confirmService) {
         var $ctrl = this;
         $ctrl.loader = loader;
 
         function refresh() {
             loader.wrapLoading(function () {
-                return accountService.getUserOrganization().then(function (response) {
+                return accountApi.getUserOrganization().then(function (response) {
                     $ctrl.company = response.data;
                 });
             });
         };
 
-      
-
         $ctrl.updateCompanyInfo = function (company) {
             return loader.wrapLoading(function () {
-                return accountService.updateUserOrganization(company).then(function () { refresh(); });
+                return accountApi.updateUserOrganization(company).then(function () { refresh(); });
             });
         };
 
@@ -1728,6 +1572,8 @@ angular.module('storefront.account')
         $ctrl.removeComponent = function (component) {
             components = _.without(components, component);
         };
+
+        refresh();
     }]
 });
 
@@ -1738,7 +1584,7 @@ angular.module('storefront.account')
      { path: '/', name: 'MemberList', component: 'vcAccountCompanyMembersList', useAsDefault: true },
      { path: '/:member', name: 'MemberDetail', component: 'vcAccountCompanyMemberDetail' }
     ],
-    controller: ['storefront.accountApi', function (accountApi) {
+    controller: ['storefrontApp.mainContext', function (mainContext) {
         var $ctrl = this;
     }]
 })
@@ -1746,7 +1592,7 @@ angular.module('storefront.account')
 .component('vcAccountCompanyMembersList', {
     templateUrl: "account-company-members-list.tpl",
     bindings: { $router: '<' },
-    controller: ['storefrontApp.mainContext', '$scope', 'accountService', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, $scope, accountService, loader, confirmService, $location, $translate) {
+    controller: ['storefrontApp.mainContext', '$scope', 'accountApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, $scope, accountApi, loader, confirmService, $location, $translate) {
         var $ctrl = this;
         $ctrl.currentMemberId = mainContext.customer.id;
         $ctrl.newMemberComponent = null;
@@ -1756,7 +1602,7 @@ angular.module('storefront.account')
 
         function refresh() {
                  loader.wrapLoading(function () {
-                 return accountService.searchUserOrganizationContacts({
+                     return accountApi.searchOrganizationUsers({
                     skip: ($ctrl.pageSettings.currentPage - 1) * $ctrl.pageSettings.itemsPerPageCount,
                     take: $ctrl.pageSettings.itemsPerPageCount,
                     sortInfos: $ctrl.sortInfos
@@ -1813,7 +1659,7 @@ angular.module('storefront.account')
         $ctrl.invite = function () {
             $ctrl.inviteInfo.emails = $ctrl.inviteInfo.rawEmails.split(/[,;]|\r|\r\n|\n/g);
             loader.wrapLoading(function(){
-                return accountService.createInvitation({
+                return accountApi.createInvitation({
                     emails: $ctrl.inviteInfo.emails,
                     message: $ctrl.inviteInfo.message
                 }).then(function (response) {
@@ -1830,7 +1676,7 @@ angular.module('storefront.account')
                 $ctrl.newMember.storeId = $ctrl.storeId;
 
                 loader.wrapLoading(function () {
-                    return accountService.registerNewUser($ctrl.newMember).then(function (response) {
+                    return accountApi.registerNewUser($ctrl.newMember).then(function (response) {
                         $ctrl.cancel();
                         $ctrl.pageSettings.currentPage = 1;
                         $ctrl.pageSettings.pageChanged();
@@ -1846,10 +1692,10 @@ angular.module('storefront.account')
 
         $ctrl.changeStatus = function (member) {
             loader.wrapLoading(function () {
-                var action = member.isActive ? accountService.lockUser : accountService.unlockUser;
+                var action = member.isActive ? accountApi.lockUser : accountApi.unlockUser;
                 member.isActive = !member.isActive;                
                 loader.wrapLoading(function () {
-                    return action(member.securityAccounts[0].userName);
+                    return action(member.id);
                 });
             });
         };
@@ -1863,7 +1709,7 @@ angular.module('storefront.account')
                 confirmService.confirm(text).then(function (confirmed) {
                     if (confirmed) {
                         loader.wrapLoading(function () {
-                            return accountService.deleteUser(member.securityAccounts[0].userName).then(function (response) {
+                            return accountApi.deleteUser(member.securityAccounts[0].userName).then(function (response) {
                                 $ctrl.pageSettings.pageChanged();
                                 //TODO: errors handling
                             });
@@ -1891,7 +1737,7 @@ angular.module('storefront.account')
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['$q', '$rootScope', '$scope', '$window', 'accountService', 'loadingIndicatorService', function ($q, $rootScope, $scope, $window, accountService, loader) {
+    controller: ['$q', '$rootScope', '$scope', '$window', 'accountApi', 'loadingIndicatorService', function ($q, $rootScope, $scope, $window, accountApi, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.fieldsConfig =[
@@ -1932,17 +1778,8 @@ angular.module('storefront.account')
 
         function refresh() {
             loader.wrapLoading(function () {
-                return accountService.getOrganizationMember({ id: $ctrl.memberNumber }).then(function (response) {
-                    var member = response.data;
-                    $ctrl.member = {
-                        id: member.id,
-                        firstName: member.firstName,
-                        lastName: member.lastName,
-                        email: _.first(member.emails),
-                        organizations: [member.organization],
-                        title: member.title,
-                        securityAccounts: member.securityAccounts
-                    };
+                return accountApi.getUserById($ctrl.memberNumber).then(function (response) {
+                    $ctrl.member = response.data;
                 });
             });
         }
@@ -1950,7 +1787,6 @@ angular.module('storefront.account')
         this.$routerOnActivate = function (next) {
             $ctrl.pageNumber = next.params.pageNumber || 1;
             $ctrl.memberNumber = next.params.member;
-
             refresh();
         };
 
@@ -1958,35 +1794,187 @@ angular.module('storefront.account')
             if ($ctrl.memberComponent.validate()) {
                 loader.wrapLoading(function () {
                     $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;
-                    $ctrl.member.emails = [ $ctrl.member.email ];
-                    return $q.all([
-                        roleService.set($ctrl.member.securityAccounts, $ctrl.member.role),
-                        corporateAccountApi.updateCompanyMember($ctrl.member, function(response) {
-                            corporateApiErrorHelper.clearErrors($scope);
-                        }, function (rejection){
-                            corporateApiErrorHelper.handleErrors($scope, rejection);
-                        }).$promise
-                    ]);
+                    $ctrl.member.emails = [$ctrl.member.email];
+                    return accountApi.updateUser($ctrl.member).then(function (response) {
+                        refresh();
+                    });
                 });
             };
         };
     }]
 });
 
- var storefrontApp = angular.module('storefrontApp');
+angular.module('storefrontApp')
+    .component('vcAccountLists', {
+        templateUrl: "lists-manager.tpl",
+        $routeConfig: [
+            { path: '/', name: 'Lists', component: 'vcAccountLists' },
+            { path: '/friendsLists', name: 'FriendsLists', component: 'vcAccountFriendsLists' },
+            { path: '/myLists', name: 'MyLists', component: 'vcAccountMyLists', useAsDefault: true }
+        ],
+        controller: ['listService', '$rootScope', '$location', 'accountApi', 'cartService', '$translate', 'loadingIndicatorService', '$timeout', 'dialogService', '$localStorage', function (listService, $rootScope, $location, accountApi, cartService, $translate, loader, $timeout, dialogService, $localStorage) {
+        	var $ctrl = this;
 
- storefrontApp
- .controller('accountLoginController', ['$scope', 'authService', function ($scope, authService) {
-     $scope.login = function ($event) {
-         if (!$event || $event.keyCode === 13){
-             var submit = function(){
-                angular.element(document.querySelector('#customer_login')).submit();
+            $ctrl.getCustomer = function () {
+                accountApi.getCurrentUser().then(function (user) {
+                    $ctrl.userName = user.data.userName;
+                    $ctrl.initialize();
+                })
             };
-            // submit form even when error occurs
-            authService.login($scope.userName, $scope.password).then(submit, submit);
-         }
-     };
- }]);
+
+            $ctrl.selectTab = function (tabName) {
+                $ctrl.selectedList = [];
+                $ctrl.selectedTab = tabName;
+                $ctrl.getCustomer();
+            };
+
+            $ctrl.initialize = function (lists) {     
+				if ($ctrl.selectedTab === 'myLists') {
+					loader.wrapLoading(function () {
+						return listService.getOrCreateMyLists($ctrl.userName).then(function (result) {
+							$ctrl.lists = result;
+							selectDefault($ctrl.lists);
+						});
+					})
+				}
+
+				else if ($ctrl.selectedTab === 'friendsLists') {
+					loader.wrapLoading(function () {
+						return listService.getSharedLists($ctrl.userName).then(function (result) {
+							$ctrl.lists = result;
+							selectDefault($ctrl.lists);
+						});
+					})
+				}
+            };
+
+			function selectDefault(lists) {
+				if (_.find(lists, { default: true })) {
+					var selected = _.find(lists, { default: true });
+					$ctrl.selectList(selected);
+				}
+				else if (!_.isEmpty(lists)) {
+					_.first(lists).default = true;
+					$ctrl.selectList(_.first(lists));
+				}
+			}
+
+            $ctrl.selectList = function (list) {
+                $ctrl.selectedList = list;
+            };
+
+            $ctrl.addToCart = function (lineItem) {
+                loader.wrapLoading(function () {
+                    return cartService.addLineItem(lineItem.productId, 1).then(function (response) {
+                        $ctrl.productAdded = true;
+                        $timeout(function () {
+                            $ctrl.productAdded = false;
+                        }, 2000);
+                    });
+                });
+            };
+
+            $ctrl.removeList = function (listName) {
+				loader.wrapLoading(function () {
+					return listService.clearList(listName, $ctrl.userName).then(function (response) {
+						document.location.reload();
+					});
+                });
+            };
+
+            $ctrl.removeLineItem = function (lineItem) {
+				loader.wrapLoading(function () {
+					return listService.removeLineItem(lineItem.id, $ctrl.selectedList.id, $ctrl.userName).then(function (result) {
+					});
+				});
+            };
+
+            $ctrl.generateLink = function () {
+                $ctrl.sharedLink = $location.absUrl().substr(0, _.lastIndexOf($location.absUrl(), '/')) + '/friendsLists?id=' + $ctrl.selectedList.id;
+                $ctrl.selectedList.permission = 'public';
+                var dialogData = {sharedLink:$ctrl.sharedLink};
+                dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.list-shared-link-dialog.tpl');
+            };
+
+            $ctrl.addToCartAllProducts = function () {
+                _.each($ctrl.selectedList.items, function (item) {
+                    loader.wrapLoading(function () {
+                        return cartService.addLineItem(item.productId, 1).then(function (response) {
+                            $ctrl.productAdded = true;
+                            $timeout(function () {
+                                $ctrl.productAdded = false;
+                            }, 6000);
+                        });
+                    });
+                })
+            }
+
+            $ctrl.createList = function () {
+                var dialogData = $ctrl.lists;
+                dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.recently-create-new-list-dialog.tpl');
+            };
+
+            $ctrl.listSettings = function () {
+                var dialogData = {};
+                dialogData.lists = $ctrl.lists;
+                dialogData.userName = $ctrl.userName;
+                dialogData.selectedTab = $ctrl.selectedTab;
+                dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.list-settings-dialog.tpl');
+            };
+
+        }]
+    })
+    .component('vcAccountMyLists', {
+        templateUrl: 'themes/assets/js/account/account-lists.tpl.liquid',
+        require: {
+            accountLists: '^^vcAccountLists'
+        },
+        controller: ['$rootScope', 'listService', 'accountApi', 'loadingIndicatorService', '$timeout', 'accountDialogService', '$localStorage', function ($rootScope, listService, accountApi, loader, $timeout, dialogService, $localStorage) {
+			var $ctrl = this;
+			$ctrl.listPreSetting = function (lists) {
+                accountApi.getCurrentUser().then(function (user) {
+					var userName = user.data.userName;
+					loader.wrapLoading(function () {
+						return listService.getOrCreateMyLists(userName, lists).then(function (result) {
+						})
+					})
+				})
+			};
+
+            $ctrl.$onInit = function (lists) {
+                $ctrl.accountLists.selectTab('myLists');
+            }
+        }]
+    })
+    .component('vcAccountFriendsLists', {
+        templateUrl: "themes/assets/js/account/account-lists.tpl.liquid",
+        require: {
+            accountLists: '^^vcAccountLists'
+        },
+        controller: ['$rootScope', 'listService', '$location', 'accountApi', 'loadingIndicatorService', '$timeout', 'accountDialogService', '$localStorage', function ($rootScope, listService, $location, accountApi, loader, $timeout, dialogService, $localStorage) {
+            var $ctrl = this;
+
+            function checkLocation() {
+                var sharedCartId = $location.search().id.toString();
+                accountApi.getCurrentUser().then(function (user) {
+                    var userName = user.data.userName;
+				    var myLists = listService.getOrCreateMyLists(userName);
+					loader.wrapLoading(function () {
+                        return listService.addSharedList(userName, myLists, sharedCartId).then(function (result) {
+                            $ctrl.accountLists.selectTab('friendsLists');
+						});
+					})
+                })
+            }
+
+            $ctrl.$onInit = function () {
+                if ($location.search().id)
+                    checkLocation();               
+                $ctrl.accountLists.selectTab('friendsLists');
+            }
+        }]
+    });
+
 angular.module('storefront.account')
 .component('vcAccountOrders', {
     templateUrl: "themes/assets/js/account/account-orders.tpl.liquid",
@@ -2002,20 +1990,20 @@ angular.module('storefront.account')
 
 .component('vcAccountOrdersList', {
     templateUrl: "account-orders-list.tpl",
-    controller: ['storefront.orderApi', 'loadingIndicatorService', function (orderApi, loader) {
+    controller: ['accountApi', 'loadingIndicatorService', function (accountApi, loader) {
         var ctrl = this;
         ctrl.loader = loader;
         ctrl.pageSettings = { currentPage: 1, itemsPerPageCount: 5, numPages: 10 };
         ctrl.pageSettings.pageChanged = function () {
             loader.wrapLoading(function () {
-                return orderApi.search({
+                return accountApi.searchUserOrders({
                     pageNumber: ctrl.pageSettings.currentPage,
                     pageSize: ctrl.pageSettings.itemsPerPageCount,
                     sortInfos: ctrl.sortInfos
-                }, function (data) {
+                }).then(function (data) {
                     ctrl.entries = data.results;
                     ctrl.pageSettings.totalItems = data.totalCount;
-                }).$promise;
+                });
             });
         };
 
@@ -2031,30 +2019,30 @@ angular.module('storefront.account')
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefront.orderApi', '$rootScope', '$window', 'loadingIndicatorService', 'confirmService', 'orderHelper', function (orderApi, $rootScope, $window, loader, confirmService, orderHelper) {
+    controller: ['accountApi', '$rootScope', '$window', 'loadingIndicatorService', 'confirmService', 'orderHelper', function (orderApi, $rootScope, $window, loader, confirmService, orderHelper) {
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.hasPhysicalProducts = true;
 
         function refresh() {
             loader.wrapLoading(function () {
-                $ctrl.order = orderApi.get({ number: $ctrl.orderNumber }, function (result) {
+                return accountApi.getUserOrder($ctrl.orderNumber).then(function (result) {
+                    $ctrl.order = result.data;
+                    return $ctrl.order;
+                }).then(function (order) {
                     $ctrl.isShowPayment = false;
-                    var lastPayment = _.last(_.sortBy($ctrl.order.inPayments, 'createdDate'));
+                    var lastPayment = _.last(_.sortBy(order.inPayments, 'createdDate'));
                     $ctrl.billingAddress = (lastPayment && lastPayment.billingAddress) ||
-                            _.findWhere($ctrl.order.addresses, { type: 'billing' }) ||
-                            _.first($ctrl.order.addresses);
-                    $ctrl.amountToPay = orderHelper.getNewPayment($ctrl.order).sum.amount;
-
+                        _.findWhere(order.addresses, { type: 'billing' }) ||
+                        _.first(order.addresses);
+                    $ctrl.amountToPay = orderHelper.getNewPayment(order).sum.amount;
                     if ($ctrl.amountToPay > 0) {
                         $ctrl.billingAddressEqualsShipping = true;
-                        loadPromise = orderApi.getNewPaymentData({ number: $ctrl.orderNumber }, function (result) {
-                            //$ctrl.order = result.order;
-                            configurePayment(result.paymentMethods, result.payment);
-                        }).$promise;
+                        return orderApi.getNewPaymentData(order.orderNumber, function (result) {
+                            configurePayment(result.data.paymentMethods, result.data.payment);
+                        });
                     }
                 });
-                return $ctrl.order.$promise;
             });
         }
 
@@ -2083,7 +2071,6 @@ angular.module('storefront.account')
                 if ($ctrl.payment.gatewayCode) {
                     preselectedMaymentMethod = _.findWhere(result.paymentMethods, { code: $ctrl.payment.gatewayCode });
                 }
-
                 return preselectedMaymentMethod ? [preselectedMaymentMethod] : result.paymentMethods;
             });
         };
@@ -2234,7 +2221,7 @@ angular.module('storefront.account')
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['loadingIndicatorService', function (loader) {
+    controller: ['loadingIndicatorService', 'accountApi', function (loader, accountApi) {
         var ctrl = this;
         ctrl.loader = loader;
         ctrl.passwordChangeData = {};
@@ -2257,14 +2244,15 @@ angular.module('storefront.account')
             }
 
             if (!hasError) {
-                ctrl.accountManager.changePassword(ctrl.passwordChangeData).then(function (result) {
-                    angular.extend(ctrl, result);
-                    ctrl.passwordChangeData = {};
-                    ctrl.form.$setPristine();
+                loader.wrapLoading(function () {
+                    accountApi.changeUserPassword(ctrl.passwordChangeData).then(function (result) {
+                        angular.extend(ctrl, result);
+                        ctrl.passwordChangeData = {};
+                        ctrl.form.$setPristine();
+                    });
                 });
             }
         };
-
         ctrl.setForm = function (frm) { ctrl.form = frm; };
     }]
 });
@@ -2275,41 +2263,28 @@ angular.module('storefront.account')
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateAccountApi', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService', function ($q, $scope, mainContext, corporateAccountApi, corporateApiErrorHelper, loader) {
+    controller: ['$q', '$scope', 'storefrontApp.mainContext', 'accountApi', 'loadingIndicatorService', 'availableRoles', function ($q, $scope, mainContext, accountApi, loader, availableRoles) {
         var $ctrl = this;
         $ctrl.loader = loader;
-
+        $ctrl.availableRoles = availableRoles;
+        $ctrl.member = mainContext.customer;
         $scope.$watch(
             function () { return mainContext.customer; },
             function (customer) {
-                if (customer) {
-                    loader.wrapLoading(function() {
-                        return corporateAccountApi.getCompanyMember({ id: customer.id }, function(member) {
-                            $ctrl.member = {
-                                id: member.id,
-                                firstName: member.firstName,
-                                lastName: member.lastName,
-                                email: _.first(member.emails),
-                                organizations: member.organizations,
-                                title: member.title,
-                                addresses: member.addresses,
-                                securityAccounts: member.securityAccounts
-                            };
-                        }).$promise;
-                    });
-                }
+                $ctrl.member = customer;
             });
+
 
         $ctrl.submit = function () {
             $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;
             $ctrl.member.emails = [$ctrl.member.email];
 
             return loader.wrapLoading(function () {
-                return corporateAccountApi.updateCompanyMember($ctrl.member, function(response) {
-                    corporateApiErrorHelper.clearErrors($scope);
-                }, function (rejection){
-                    corporateApiErrorHelper.handleErrors($scope, rejection);
-                }).$promise;
+                return accountApi.updateUser($ctrl.member).then(function (response) {
+                    return mainContext.loadCustomer().then(function (customer) {
+                        $ctrl.member = customer;                      
+                    });
+                });
             });
         };
     }]
@@ -2340,11 +2315,13 @@ angular.module('storefront.account')
 
 var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'storefront.corporateRegisterApi', 'storefront.corporateApiErrorHelper', 'storefront.accountApi', 'loadingIndicatorService', 'vcRecaptchaService', 'accountService',
-    function ($q, $scope, mainContext, corporateRegisterApi, corporateApiErrorHelper, accountApi, loader, vcRecaptchaService, accountService) {
+storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'loadingIndicatorService', 'vcRecaptchaService', 'commonService',
+    function ($q, $scope, mainContext, loader, vcRecaptchaService, commonService) {
         var $ctrl = this;
         $ctrl.loader = loader;
-        $ctrl.countries = accountApi.getCountries();
+        commonService.getCountries().then(function (response) {
+            $ctrl.countries = response.data;
+        });
 
         $scope.isOrg = function () {
             return $scope.member.type === 'Business';
@@ -2370,9 +2347,9 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                     }
                     else {
                         //$ctrl.getCountryRegions({ country: address.country }).then(function (regions) {
-                        accountApi.getCountryRegions(address.country, function (regions) {
-                            address.country.regions = regions;
-                            setAddressRegion(address, regions);
+                        commonService.getCountryRegions(address.country.code3).then(function (response) {
+                            address.country.regions = response.data;
+                            setAddressRegion(address, response.data);
                         });
                     }
                 }
@@ -2629,7 +2606,7 @@ var moduleName = "storefront.account";
 if (storefrontAppDependencies !== undefined) {
     storefrontAppDependencies.push(moduleName);
 }
-angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards', */'pascalprecht.translate', 'ngSanitize', 'satellizer', 'storefrontApp', 'storefrontApp.consts'])
+angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards', */'pascalprecht.translate', 'ngSanitize', 'storefrontApp', 'storefrontApp.consts'])
 
     .config(['$translateProvider', 'baseUrl', function ($translateProvider, baseUrl) {
         $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
@@ -2676,59 +2653,17 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards',
             { path: '/companyMembers/...', name: 'CompanyMembers', component: 'vcAccountCompanyMembers' },
             { path: '/lists/...', name: 'Lists', component: 'vcAccountLists' }
         ],
-        controller: ['$scope', '$timeout', 'storefront.accountApi', 'storefrontApp.mainContext', 'authService', 'storefront.corporateAccountApi', 'loadingIndicatorService', function ($scope, $timeout, accountApi, mainContext, authService, corporateAccountApi, loader) {
+        controller: ['$scope', '$timeout', 'storefrontApp.mainContext', 'loadingIndicatorService', 'commonService', function ($scope, $timeout, mainContext, loader, commonService) {
             var $ctrl = this;
-            $ctrl.loader = loader;
-
-            $ctrl.getQuotes = function (pageNumber, pageSize, sortInfos, callback) {
-                loader.wrapLoading(function () {
-                    return accountApi.getQuotes({ pageNumber: pageNumber, pageSize: pageSize, sortInfos: sortInfos }, callback).$promise;
-                });
-            };
-
-            $ctrl.updateProfile = function (updateRequest) {
-                loader.wrapLoading(function () {
-                    return accountApi.updateAccount(updateRequest, mainContext.getCustomer).$promise;
-                });
-            };
-
-            $ctrl.updateAddresses = function (data) {
-                return loader.wrapLoading(function () {
-                    return accountApi.updateAddresses(data, mainContext.getCustomer).$promise;
-                });
-            };
-
-            $ctrl.availCountries = accountApi.getCountries();
+            $ctrl.availCountries = [];
+            commonService.getCountries().then(function (response) {
+                $ctrl.availCountries = response.data;
+            });
 
             $ctrl.getCountryRegions = function (country) {
-                return accountApi.getCountryRegions(country).$promise;
+                return commonService.getCountryRegions(country.code3).then(function (response) { return response.data; });
             };
 
-            $ctrl.changePassword = function (changePasswordData) {
-                return loader.wrapLoading(function () {
-                    return accountApi.changePassword(changePasswordData).$promise;
-                });
-            };
-
-            $scope.$watch(function () {
-                return mainContext.customer;
-            }, function (customer) {
-                if (customer) {
-                    loader.wrapLoading(function () {
-                        return corporateAccountApi.getCompanyMember({ id: customer.id, memberType: 'CompanyMember' }, function (member) {
-                            customer.companyId = _.first(member.organizations);
-                            customer.email = _.first(member.emails);
-                        }).$promise;
-                    });
-                    authService.fillAuthData();
-                }
-            });
-
-            $scope.$on('loginStatusChanged', function () {
-                $timeout(function () {
-                    $(".nav *:hidden").parent().prev().find(".nav-title").hide();
-                });
-            });
         }]
     })
 
@@ -2739,291 +2674,60 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards',
     }])
 
 
-angular.module('storefront.account')
-    .factory('storefront.accountApi', ['$resource', function ($resource) {
-        return $resource('storefrontapi/account', null, {
-            updateAccount: { url: 'storefrontapi/account', method: 'POST' },
-            changePassword: { url: 'storefrontapi/account/password', method: 'POST' },
-            getQuotes: { url: 'storefrontapi/account/quotes' },
-            updateAddresses: { url: 'storefrontapi/account/addresses', method: 'POST' },
-            getCountries: { url: 'storefrontapi/countries', isArray: true },
-            getCountryRegions: { url: 'storefrontapi/countries/:code3/regions', isArray: true }
-        });
-    }])
-    .factory('storefront.orderApi', ['$resource', function ($resource) {
-        return $resource('storefrontapi/orders/:number', null, {
-            search: { url: 'storefrontapi/orders/search', method: 'POST' },
-            getNewPaymentData: { url: 'storefrontapi/orders/:number/newpaymentdata' },
-            addOrUpdatePayment: { url: 'storefrontapi/orders/:number/payments', method: 'POST' },
-            processPayment: { url: 'storefrontapi/orders/:number/payments/:paymentNumber/process', method: 'POST' },
-            cancelPayment: { url: 'storefrontapi/orders/:number/payments/:paymentNumber/cancel', method: 'POST' }
-        });
-    }])
-    .factory('storefront.subscriptionApi', ['$resource', function ($resource) {
-        return $resource('storefrontapi/subscriptions/:number', null, {
-            search: { url: 'storefrontapi/subscriptions/search', method: 'POST' },
-            cancel: { url: 'storefrontapi/subscriptions/:number/cancel', method: 'POST' }
-        });
-    }]);
-angular.module('storefront.account')
-.factory('storefront.corporateAccountApi', ['$resource', 'apiBaseUrl', function ($resource, apiBaseUrl) {
-    return $resource(apiBaseUrl + 'api/b2b/companyMembers', {}, {
-        getCompanyById: { url: apiBaseUrl + 'api/b2b/company/:id' },
-        updateCompany: { url: apiBaseUrl + 'api/b2b/company', method: 'POST' },
+var storefrontApp = angular.module('storefrontApp');
 
-        getCompanyMembers: { url: apiBaseUrl + 'api/b2b/companyMembers', method: 'POST' },
-        getCompanyMember: { url: apiBaseUrl + 'api/b2b/companyMember/:id' },
-        updateCompanyMember: { url: apiBaseUrl + 'api/b2b/companyMember', method: 'POST' },
-        deleteCompanyMember: { url: apiBaseUrl + 'api/b2b/companyMembers', method: 'DELETE' },
-
-        invite: { url: apiBaseUrl + 'api/b2b/invite', method: 'POST' },
-
-        getUser: { url: apiBaseUrl + 'api/b2b/users/:userName' },
-        updateUser: { url: apiBaseUrl + 'api/b2b/users', method: 'PUT' },
-        getRoles: { url: apiBaseUrl + 'api/b2b/roles', isArray: true }
-    });
-}])
-.factory('storefront.corporateRegisterApi', ['$resource', 'apiBaseUrl', function ($resource, apiBaseUrl) {
-    return $resource(apiBaseUrl + 'api/b2b/register', {}, {
-        register: { method: 'POST' },
-        registerMember: { url: apiBaseUrl + 'api/b2b/registerMember', method: 'POST' },
-        getRegisterInfoByInvite: { url: apiBaseUrl + 'api/b2b/registerMember/:invite' },
-        registerByInvite: { url: apiBaseUrl + 'api/b2b/registerMember/:invite', method: 'POST' },
-        registerPersonal: { url: apiBaseUrl + 'api/b2b/registerPersonal', method: 'POST' }
-    });
-}])
-.factory('storefront.corporateApiErrorHelper', ['$rootScope', function ($rootScope) {
+storefrontApp.service('accountApi', ['$http', function ($http) {
     return {
-        clearErrors: function($scope) {
-            $scope.errorMessage = null;
-            $scope.errors = null;
+        getCurrentUser: function () {
+            return $http.get('storefrontapi/account?t=' + new Date().getTime());
         },
-        handleErrors: function ($scope, rejection) {
-            //if (rejection.status == 400) {
-                var errors = _.map(rejection.data.errors, function(currentObject) {
-                    return currentObject["description"];
-                });    
-                //$scope.errorMessage = errors.join();
-                $scope.errors = errors;
-                $rootScope.closeNotification();
-            //}
-        }
-    };
+        getUserById: function (userId) {
+            return $http.get('storefrontapi/account/' + userId + '?t=' + new Date().getTime());
+        },
+        updateUser: function (user) {
+            return $http.post('storefrontapi/account', user);
+        },
+        updateUserAddresses: function (addresses) {
+            return $http.post('storefrontapi/account/addresses', addresses);
+        },
+        getUserOrganization: function () {
+            return $http.get('storefrontapi/account/organization/current?t=' + new Date().getTime());
+        },
+        updateUserOrganization: function (organization) {
+            return $http.put('storefrontapi/account/organization', organization);
+        },
+        searchOrganizationUsers: function (criteria) {
+            return $http.post('storefrontapi/account/organization/users/search', criteria);
+        },
+        createInvitation: function (invitation) {
+            return $http.post('storefrontapi/account/invitation', invitation);
+        },
+        registerNewUser: function (user) {
+            return $http.post('storefrontapi/account/user', user);
+        },
+        lockUser: function (userId) {
+            return $http.post('storefrontapi/account/' + userId + '/lock');
+        },
+        unlockUser: function (userId) {
+            return $http.post('storefrontapi/account/' + userId + '/unlock');
+        },
+        deleteUser: function (userName) {
+            return $http.delete('storefrontapi/account/' + userName);
+        },
+        searchUserOrders: function (searchCriteria) {
+            return $http.post('storefrontapi/orders/search', searchCriteria);
+        },
+        getUserOrder: function (orderNumber) {            
+            return $http.get('storefrontapi/orders/' + orderNumber + '?t=' + new Date().getTime());
+        },
+        getUserOrderNewPaymentData: function (orderNumber) {
+            return $http.get('storefrontapi/orders/' + orderNumber + '/newpaymentdata?t=' + new Date().getTime());
+        },
+        changeUserPassword: function (passwordChangeData) {
+            return $http.post('storefrontapi/account/password', passwordChangeData);
+        },
+    }
 }]);
-
-angular.module('storefront.account')
-.factory('roleService', ['$q', '$http', 'storefront.corporateAccountApi', 'availableRoles', function ($q, $http, corporateAccountApi, availableRoles) {
-    var service = {
-        available: null,
-        get: null,
-        set: null
-    };
-
-    // get all available roles from settings
-    service._roles = availableRoles;
-    corporateAccountApi.getRoles(function (roles) {
-        service.available = _.map(service._roles, function(role) {
-            var realRole = _.findWhere(roles, { name: role });
-            return angular.extend({}, realRole, { description: 'customer.roles.descriptions.' + role.toLowerCase().replace(" ", "_") });
-        });
-    });
-
-    service.get = function(accounts){
-        var availableRoles = angular.copy(service.available);
-        _.each(availableRoles, function(availableRole) {            
-            // role is assigned to member if any of member's security accounts has this role assigned
-            var roles = _.chain(accounts).map(function(account) { return account.roles; }).flatten().value();
-            availableRole.assigned = _.some(roles,
-            function(assignedRole) {
-                return availableRole.name === assignedRole.name;
-            });
-        });
-        // if multiple roles assigned, return the role with minimal privilidges
-        return _.last(_.where(availableRoles, { assigned: true }));
-    };
-
-    service.set = function(accounts, role) {
-        // assign current role to all member's security accounts
-        return $q.all(_.map(accounts, function(account) {
-            account.roles = _.without.apply(_, [account.roles].concat(_.filter(account.roles, function(role) { return _.contains(service._roles, role.name); })));
-            account.roles.push(role);
-            return corporateAccountApi.updateUser(account).$promise;
-        }));
-    };
-
-    return service;
-}]);
-
-angular.module('storefrontApp')
-    .component('vcAccountLists', {
-        templateUrl: "lists-manager.tpl",
-        $routeConfig: [
-            { path: '/', name: 'Lists', component: 'vcAccountLists' },
-            { path: '/friendsLists', name: 'FriendsLists', component: 'vcAccountFriendsLists' },
-            { path: '/myLists', name: 'MyLists', component: 'vcAccountMyLists', useAsDefault: true }
-        ],
-        controller: ['listService', '$rootScope', '$location', 'customerService', 'cartService', '$translate', 'loadingIndicatorService', '$timeout', 'dialogService', '$localStorage', function (listService, $rootScope, $location, customerService, cartService, $translate, loader, $timeout, dialogService, $localStorage) {
-        	var $ctrl = this;
-
-            $ctrl.getCustomer = function () {
-                customerService.getCurrentCustomer().then(function (user) {
-                    $ctrl.userName = user.data.userName;
-                    $ctrl.initialize();
-                })
-            };
-
-            $ctrl.selectTab = function (tabName) {
-                $ctrl.selectedList = [];
-                $ctrl.selectedTab = tabName;
-                $ctrl.getCustomer();
-            };
-
-            $ctrl.initialize = function (lists) {     
-				if ($ctrl.selectedTab === 'myLists') {
-					loader.wrapLoading(function () {
-						return listService.getOrCreateMyLists($ctrl.userName).then(function (result) {
-							$ctrl.lists = result;
-							selectDefault($ctrl.lists);
-						});
-					})
-				}
-
-				else if ($ctrl.selectedTab === 'friendsLists') {
-					loader.wrapLoading(function () {
-						return listService.getSharedLists($ctrl.userName).then(function (result) {
-							$ctrl.lists = result;
-							selectDefault($ctrl.lists);
-						});
-					})
-				}
-            };
-
-			function selectDefault(lists) {
-				if (_.find(lists, { default: true })) {
-					var selected = _.find(lists, { default: true });
-					$ctrl.selectList(selected);
-				}
-				else if (!_.isEmpty(lists)) {
-					_.first(lists).default = true;
-					$ctrl.selectList(_.first(lists));
-				}
-			}
-
-            $ctrl.selectList = function (list) {
-                $ctrl.selectedList = list;
-            };
-
-            $ctrl.addToCart = function (lineItem) {
-                loader.wrapLoading(function () {
-                    return cartService.addLineItem(lineItem.productId, 1).then(function (response) {
-                        $ctrl.productAdded = true;
-                        $timeout(function () {
-                            $ctrl.productAdded = false;
-                        }, 2000);
-                    });
-                });
-            };
-
-            $ctrl.removeList = function (listName) {
-				loader.wrapLoading(function () {
-					return listService.clearList(listName, $ctrl.userName).then(function (response) {
-						document.location.reload();
-					});
-                });
-            };
-
-            $ctrl.removeLineItem = function (lineItem) {
-				loader.wrapLoading(function () {
-					return listService.removeLineItem(lineItem.id, $ctrl.selectedList.id, $ctrl.userName).then(function (result) {
-					});
-				});
-            };
-
-            $ctrl.generateLink = function () {
-                $ctrl.sharedLink = $location.absUrl().substr(0, _.lastIndexOf($location.absUrl(), '/')) + '/friendsLists?id=' + $ctrl.selectedList.id;
-                $ctrl.selectedList.permission = 'public';
-                var dialogData = {sharedLink:$ctrl.sharedLink};
-                dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.list-shared-link-dialog.tpl');
-            };
-
-            $ctrl.addToCartAllProducts = function () {
-                _.each($ctrl.selectedList.items, function (item) {
-                    loader.wrapLoading(function () {
-                        return cartService.addLineItem(item.productId, 1).then(function (response) {
-                            $ctrl.productAdded = true;
-                            $timeout(function () {
-                                $ctrl.productAdded = false;
-                            }, 6000);
-                        });
-                    });
-                })
-            }
-
-            $ctrl.createList = function () {
-                var dialogData = $ctrl.lists;
-                dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.recently-create-new-list-dialog.tpl');
-            };
-
-            $ctrl.listSettings = function () {
-                var dialogData = {};
-                dialogData.lists = $ctrl.lists;
-                dialogData.userName = $ctrl.userName;
-                dialogData.selectedTab = $ctrl.selectedTab;
-                dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.list-settings-dialog.tpl');
-            };
-
-        }]
-    })
-    .component('vcAccountMyLists', {
-        templateUrl: 'themes/assets/js/lists/account-lists.tpl.liquid',
-        require: {
-            accountLists: '^^vcAccountLists'
-        },
-        controller: ['$rootScope', 'listService', 'customerService', 'loadingIndicatorService', '$timeout', 'accountDialogService', '$localStorage', function ($rootScope, listService, customerService, loader, $timeout, dialogService, $localStorage) {
-			var $ctrl = this;
-			$ctrl.listPreSetting = function (lists) {
-				customerService.getCurrentCustomer().then(function (user) {
-					var userName = user.data.userName;
-					loader.wrapLoading(function () {
-						return listService.getOrCreateMyLists(userName, lists).then(function (result) {
-						})
-					})
-				})
-			};
-
-            $ctrl.$onInit = function (lists) {
-                $ctrl.accountLists.selectTab('myLists');
-            }
-        }]
-    })
-    .component('vcAccountFriendsLists', {
-        templateUrl: "themes/assets/js/lists/account-lists.tpl.liquid",
-        require: {
-            accountLists: '^^vcAccountLists'
-        },
-        controller: ['$rootScope', 'listService', '$location', 'customerService', 'loadingIndicatorService', '$timeout', 'accountDialogService', '$localStorage', function ($rootScope, listService, $location, customerService, loader, $timeout, dialogService, $localStorage) {
-            var $ctrl = this;
-
-            function checkLocation() {
-                var sharedCartId = $location.search().id.toString();
-                customerService.getCurrentCustomer().then(function (user) {
-                    var userName = user.data.userName;
-				    var myLists = listService.getOrCreateMyLists(userName);
-					loader.wrapLoading(function () {
-                        return listService.addSharedList(userName, myLists, sharedCartId).then(function (result) {
-                            $ctrl.accountLists.selectTab('friendsLists');
-						});
-					})
-                })
-            }
-
-            $ctrl.$onInit = function () {
-                if ($location.search().id)
-                    checkLocation();               
-                $ctrl.accountLists.selectTab('friendsLists');
-            }
-        }]
-    });
 
 angular.module('storefrontApp')
 	.component('addToListButton', {
@@ -3031,7 +2735,7 @@ angular.module('storefrontApp')
 		bindings: {
 			selectedVariation: '<'
 		},
-		controller: ['customerService', 'listService', 'dialogService', function (customerService, listService, dialogService) {
+        controller: ['accountApi', 'listService', 'dialogService', function (accountApi, listService, dialogService) {
 			var $ctrl = this;
 			$ctrl.$onInit = function () {
 				compareProductInLists();
@@ -3039,7 +2743,7 @@ angular.module('storefrontApp')
 
 			function compareProductInLists() {
 				$ctrl.buttonInvalid = true;
-			    customerService.getCurrentCustomer().then(function(user) {
+                accountApi.getCurrentUser().then(function(user) {
 			        listService.getOrCreateMyLists(user.data.userName, $ctrl.lists).then(function(result) {
 			            $ctrl.lists = result;
 			            angular.forEach($ctrl.lists, function(list) {
@@ -3075,7 +2779,7 @@ angular.module('storefrontApp')
 
 var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', 'listService', '$translate', '$localStorage', 'customerService', function ($scope, $window, $uibModalInstance, dialogData, listService, $translate, $localStorage, customerService) {
+storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', 'listService', '$translate', '$localStorage', 'accountApi', function ($scope, $window, $uibModalInstance, dialogData, listService, $translate, $localStorage, accountApi) {
     $scope.availableLists = [];
     $scope.selectedList = {};
     dialogData.product.imageUrl = dialogData.product.primaryImage.url;
@@ -3113,7 +2817,7 @@ storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$w
     }
 
     $scope.initialize = function (lists) {
-        customerService.getCurrentCustomer().then(function (user) {
+        accountApi.getCurrentUser().then(function (user) {
             $scope.userName = user.data.userName;
 			listService.getOrCreateMyLists($scope.userName, lists).then(function (result) {
                 $scope.lists = result;
@@ -3142,7 +2846,7 @@ storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$w
 
 var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope', '$scope', '$window', '$uibModalInstance', 'customerService', 'dialogData', 'listService', '$localStorage', 'loadingIndicatorService', '$translate', function($rootScope, $scope, $window, $uibModalInstance, customerService, dialogData, listService, $localStorage, loader, $translate) {
+storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope', '$scope', '$window', '$uibModalInstance', 'accountApi', 'dialogData', 'listService', '$localStorage', 'loadingIndicatorService', '$translate', function ($rootScope, $scope, $window, $uibModalInstance, accountApi, dialogData, listService, $localStorage, loader, $translate) {
 
     if (dialogData.sharedLink)
         $scope.sharedLink = dialogData.sharedLink;
@@ -3159,7 +2863,7 @@ storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope',
             $scope.dialogData.permission = 'private';
 
         $scope.dialogData.id = Math.floor(Math.random() * 230910443210623294 + 1).toString();
-        customerService.getCurrentCustomer().then(function (user) {
+        accountApi.getCurrentUser().then(function (user) {
             $scope.userName = user.data.userName;
             listService.getWishlist($scope.dialogData.listName, $scope.dialogData.permission, $scope.dialogData.id, user.data.userName);
             $uibModalInstance.close();
@@ -3210,7 +2914,7 @@ storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope',
 }]);
 
 angular.module('storefrontApp')
-.directive('vaPermission', ['authService', function (authService) {
+    .directive('vaPermission', ['storefrontApp.mainContext', function (mainContext) {
     return {
         link: function (scope, element, attrs) {
             if (attrs.vaPermission) {
@@ -3223,23 +2927,42 @@ angular.module('storefrontApp')
                     }
                 });
 
+                function checkPermission(user, permission, securityScopes) {
+                    //first check admin permission
+                    // var hasPermission = $.inArray('admin', authContext.permissions) > -1;
+                    var hasPermission = user.isAdministrator;
+                    if (!hasPermission && permission) {
+                        permission = permission.trim();
+                        //first check global permissions
+                        hasPermission = $.inArray(permission, user.permissions) > -1;
+                        if (!hasPermission && securityScopes) {
+                            if (typeof securityScopes === 'string' || angular.isArray(securityScopes)) {
+                                securityScopes = angular.isArray(securityScopes) ? securityScopes : securityScopes.split(',');
+                                //Check permissions in scope
+                                hasPermission = _.some(securityScopes, function (x) {
+                                    var permissionWithScope = permission + ":" + x;
+                                    var retVal = $.inArray(permissionWithScope, user.permissions) > -1;
+                                    //console.log(permissionWithScope + "=" + retVal);
+                                    return retVal;
+                                });
+                            }
+                        }
+                    }
+                    return hasPermission;
+                };
+
                 function toggleVisibilityBasedOnPermission(securityScopes) {
-                    var hasPermission = authService.checkPermission(permissionValue, securityScopes);
+                    var hasPermission = checkPermission(mainContext.user, permissionValue, securityScopes);
                     if (hasPermission)
                         angular.element(element).show();
                     else
                         angular.element(element).hide();
                 }
-
                 toggleVisibilityBasedOnPermission();
                 scope.$on('loginStatusChanged', toggleVisibilityBasedOnPermission);
             }
         }
     };
 }]);
-=======
-var storefrontApp=angular.module("storefrontApp");storefrontApp.service("dialogService",["$uibModal",function($uibModal){return{showDialog:function(dialogData,controller,templateUrl){return $uibModal.open({controller:controller,templateUrl:templateUrl,resolve:{dialogData:function(){return dialogData}}})}}}]),storefrontApp.service("mailingService",["$http","apiBaseUrl",function($http,apiBaseUrl){return{sendProduct:function(id,data){return $http.post(apiBaseUrl+"api/b2b/send/product/"+id,data)}}}]),storefrontApp.service("feedbackService",["$http",function($http){return{postFeedback:function(data){return $http.post("storefrontapi/feedback",{model:data})}}}]),storefrontApp.service("marketingService",["$http",function($http){return{getDynamicContent:function(placeName){return $http.get("storefrontapi/marketing/dynamiccontent/"+placeName+"?t="+(new Date).getTime())}}}]),storefrontApp.service("pricingService",["$http",function($http){return{getActualProductPrices:function(products){return $http.post("storefrontapi/pricing/actualprices",products)}}}]),storefrontApp.service("catalogService",["$http",function($http){return{getProduct:function(productIds){return $http.get("storefrontapi/products?productIds="+productIds+"&t="+(new Date).getTime())},getProducts:function(productIds){return $http.get("storefrontapi/products?"+productIds+"&t="+(new Date).getTime())},search:function(criteria){return $http.post("storefrontapi/catalog/search",criteria)},searchCategories:function(criteria){return $http.post("storefrontapi/categories/search",criteria)}}}]),storefrontApp.service("cartService",["$http",function($http){return{getCart:function(){return $http.get("storefrontapi/cart?t="+(new Date).getTime())},getCartItemsCount:function(){return $http.get("storefrontapi/cart/itemscount?t="+(new Date).getTime())},addLineItem:function(productId,quantity){return $http.post("storefrontapi/cart/items",{id:productId,quantity:quantity})},changeLineItemQuantity:function(lineItemId,quantity){return $http.put("storefrontapi/cart/items",{lineItemId:lineItemId,quantity:quantity})},changeLineItemsQuantity:function(items){return $http.put("storefrontapi/cart/items",items)},removeLineItem:function(lineItemId){return $http.delete("storefrontapi/cart/items?lineItemId="+lineItemId)},changeLineItemPrice:function(lineItemId,newPrice){return $http.put("storefrontapi/cart/items/price",{lineItemId:lineItemId,newPrice:newPrice})},clearCart:function(){return $http.post("storefrontapi/cart/clear")},addCoupon:function(couponCode){return $http.post("storefrontapi/cart/coupons/"+couponCode)},removeCoupon:function(){return $http.delete("storefrontapi/cart/coupons")},addOrUpdateShipment:function(shipment){return $http.post("storefrontapi/cart/shipments",shipment)},addOrUpdatePayment:function(payment){return $http.post("storefrontapi/cart/payments",payment)},getAvailableShippingMethods:function(shipmentId){return $http.get("storefrontapi/cart/shipments/"+shipmentId+"/shippingmethods?t="+(new Date).getTime())},getAvailablePaymentMethods:function(){return $http.get("storefrontapi/cart/paymentmethods?t="+(new Date).getTime())},addOrUpdatePaymentPlan:function(plan){return $http.post("storefrontapi/cart/paymentPlan",plan)},removePaymentPlan:function(){return $http.delete("storefrontapi/cart/paymentPlan")},createOrder:function(bankCardInfo){return $http.post("storefrontapi/cart/createorder",{bankCardInfo:bankCardInfo})}}}]),storefrontApp.service("listService",["$q","$http","$localStorage","accountApi",function($q,$http,$localStorage,accountApi){return{getOrCreateMyLists:function(userName,lists){return $localStorage.lists||($localStorage.lists={},$localStorage.lists[userName]=[],$localStorage.sharedListsIds={},$localStorage.sharedListsIds[userName]=[],_.each(lists,function(list){list.author=userName,list.id=Math.floor(0x3345bd31e7f4940*Math.random()+1).toString()}),_.extend($localStorage.lists[userName],lists)),$q(function(resolve,reject){resolve($localStorage.lists[userName])})},getSharedLists:function(userName){var lists=$localStorage.lists,sharedLists=[];return $localStorage.sharedListsIds&&_.each($localStorage.sharedListsIds[userName],function(cartId){_.each(lists,function(list){angular.isDefined(_.find(list,{id:cartId.toString()}))&&sharedLists.push(_.find(list,{id:cartId}))})}),$q(function(resolve,reject){resolve(sharedLists)})},getWishlist:function(listName,permission,id,userName){return _.contains($localStorage.lists[userName],_.find($localStorage.lists[userName],{name:listName}))&&angular.isDefined(userName)?$localStorage.lists[userName].push({name:listName+1,permission:permission,id:id,items:[],author:userName}):$localStorage.lists[userName].push({name:listName,permission:permission,id:id,items:[],author:userName}),_.find($localStorage.lists[userName],{name:listName})},addItemToList:function(listId,product){_.each($localStorage.lists,function(list){if(angular.isDefined(_.find(list,{id:listId}))){_.find(list,{id:listId}).items.push(product)}})},containsInList:function(productId,cartId){var contains,lists=angular.copy($localStorage.lists);return _.each(lists,function(list){if(angular.isDefined(_.find(list,{id:cartId}))){var currentList=_.find(list,{id:cartId});contains=!!angular.isDefined(_.find(currentList.items,{productId:productId}))}}),$q(function(resolve,reject){resolve({contains:contains})})},addSharedList:function(userName,myLists,sharedCartId){return _.some($localStorage.sharedListsIds[userName],function(x){return x===sharedCartId})||_.find(myLists,{id:sharedCartId})?$q(function(resolve,reject){resolve()}):($localStorage.sharedListsIds[userName].push(sharedCartId),$q(function(resolve,reject){resolve()}))},contains:function(productId,listName){return $http.get("storefrontapi/lists/"+listName+"/items/"+productId+"/contains?t="+(new Date).getTime())},addLineItem:function(productId,listName){return $http.post("storefrontapi/lists/"+listName+"/items",{productId:productId})},removeLineItem:function(lineItemId,listId,userName){var searchedList=_.find($localStorage.lists[userName],{id:listId});return searchedList.items=_.filter(searchedList.items,function(item){return item.id!=lineItemId}),$q(function(resolve,reject){resolve(searchedList)})},clearList:function(cartId,userName){$localStorage.lists[userName]=_.filter($localStorage.lists[userName],function(x){return x.id!=cartId})},removeFromFriendsLists:function(currentId,userName){$localStorage.sharedListsIds[userName]=_.filter($localStorage.sharedListsIds[userName],function(cartId){return $q(function(resolve,reject){resolve(cartId!==currentId)})})}}}]),storefrontApp.service("quoteRequestService",["$http",function($http){return{getCurrentQuoteRequest:function(){return $http.get("storefrontapi/quoterequest/current?t="+(new Date).getTime())},getQuoteRequest:function(number){return $http.get("storefrontapi/quoterequests/"+number+"?t="+(new Date).getTime())},getQuoteRequestItemsCount:function(number){return $http.get("storefrontapi/quoterequests/"+number+"/itemscount?t="+(new Date).getTime())},addProductToQuoteRequest:function(productId,quantity){return $http.post("storefrontapi/quoterequests/current/items",{productId:productId,quantity:quantity})},removeProductFromQuoteRequest:function(quoteRequestNumber,quoteItemId){return $http.delete("storefrontapi/quoterequests/"+quoteRequestNumber+"/items/"+quoteItemId)},submitQuoteRequest:function(quoteRequestNumber,quoteRequest){return $http.post("storefrontapi/quoterequests/"+quoteRequestNumber+"/submit",{quoteForm:quoteRequest})},rejectQuoteRequest:function(quoteRequestNumber){return $http.post("storefrontapi/quoterequests/"+quoteRequestNumber+"/reject")},updateQuoteRequest:function(quoteRequestNumber,quoteRequest){return $http.put("storefrontapi/quoterequests/"+quoteRequestNumber+"/update",{quoteRequest:quoteRequest})},getTotals:function(quoteRequestNumber,quoteRequest){return $http.post("storefrontapi/quoterequests/"+quoteRequestNumber+"/totals",{quoteRequest:quoteRequest})},confirmQuoteRequest:function(quoteRequestNumber,quoteRequest){return $http.post("storefrontapi/quoterequests/"+quoteRequestNumber+"/confirm",{quoteRequest:quoteRequest})}}}]),storefrontApp.service("recommendationService",["$http",function($http){return{getRecommendedProducts:function(requestData){return $http.post("storefrontapi/recommendations",requestData)}}}]),storefrontApp.service("orderService",["$http",function($http){return{getOrder:function(orderNumber){return $http.get("storefrontapi/orders/"+orderNumber+"?t="+(new Date).getTime())}}}]),storefrontApp.service("compareProductService",["$http","$localStorage",function($http,$localStorage){return{isInProductCompareList:function(productId){return!!_.some($localStorage.productCompareListIds,function(id){return id===productId})},addProduct:function(productId){$localStorage.productCompareListIds||($localStorage.productCompareListIds=[]),$localStorage.productCompareListIds.push(productId),_.uniq($localStorage.productCompareListIds)},getProductsIds:function(){if(!$localStorage.productCompareListIds)return void($localStorage.productCompareListIds=[]);var ids=[];for(i=0;i<$localStorage.productCompareListIds.length;i++)ids.push("productIds="+$localStorage.productCompareListIds[i]);return ids.join("&")},getProductsCount:function(){return $localStorage.productCompareListIds?$localStorage.productCompareListIds.length:0},clearCompareList:function(){$localStorage.productCompareListIds=[]},removeProduct:function(productId){$localStorage.productCompareListIds=_.without($localStorage.productCompareListIds,productId)}}}]),storefrontApp.service("commonService",["$http",function($http){return{getCountries:function(){return $http.get("storefrontapi/countries?t="+(new Date).getTime())},getCountryRegions:function(countryCode){return $http.get("storefrontapi/countries/"+countryCode+"/regions?t="+(new Date).getTime())}}}]);var storefrontApp=angular.module("storefrontApp");storefrontApp.controller("mainController",["$rootScope","$scope","$location","$window","accountApi","storefrontApp.mainContext",function($rootScope,$scope,$location,$window,accountApi,mainContext){$scope.baseUrl={},$rootScope.$on("$locationChangeSuccess",function(){var path=$location.path();path&&($scope.currentPath=path.replace("/",""))}),$rootScope.$on("storefrontError",function(event,data){$rootScope.storefrontNotification=data,$rootScope.storefrontNotification.detailsVisible=!1}),$rootScope.toggleNotificationDetails=function(){$rootScope.storefrontNotification.detailsVisible=!$rootScope.storefrontNotification.detailsVisible},$rootScope.closeNotification=function(){$rootScope.storefrontNotification=null},$scope.outerRedirect=function(absUrl){$window.location.href=absUrl},$scope.innerRedirect=function(path){$location.path(path),$scope.currentPath=$location.$$path.replace("/","")},$scope.stringifyAddress=function(address){var stringifiedAddress=address.firstName+" "+address.lastName+", ";return stringifiedAddress+=address.organization?address.organization+", ":"",stringifiedAddress+=address.countryName+", ",stringifiedAddress+=address.regionName?address.regionName+", ":"",stringifiedAddress+=address.city+" ",stringifiedAddress+=address.line1+", ",stringifiedAddress+=address.line2?address.line2:"",stringifiedAddress+=address.postalCode},$scope.getObjectSize=function(obj){var key,size=0;for(key in obj)obj.hasOwnProperty(key)&&size++;return size},mainContext.loadCustomer=$scope.loadCustomer=function(){return accountApi.getCurrentUser().then(function(response){var addressId=1;return _.each(response.data.addresses,function(address){address.id=addressId,addressId++}),response.data.isContact="Contact"===response.data.memberType,mainContext.customer=$scope.customer=response.data,response.data})},$scope.loadCustomer()}]).factory("storefrontApp.mainContext",["accountApi",function(accountApi){return{customer:{}}}]);var storefrontApp=angular.module("storefrontApp");storefrontApp.controller("cartController",["$rootScope","$scope","$timeout","cartService","catalogService","availabilityService","loadingIndicatorService",function($rootScope,$scope,$timeout,cartService,catalogService,availabilityService,loader){var timer;$scope.loader=loader,$scope.coupon={};var reloadCart=$scope.reloadCart=function(){loader.wrapLoading(function(){return cartService.getCart().then(function(response){var cart=response.data;cart.hasValidationErrors=_.some(cart.validationErrors)||_.some(cart.items,function(item){return _.some(item.validationErrors)}),$scope.cart=cart;var coupon=cart.coupon||$scope.coupon;return coupon.loader=$scope.coupon.loader,$scope.coupon=coupon,$scope.coupon.code&&!$scope.coupon.appliedSuccessfully&&($scope.coupon.errorCode="InvalidCouponCode"),availabilityService.getProductsAvailability(_.pluck(cart.items,"productId")).then(function(response){$scope.availability=_.object(_.pluck(response.data,"productId"),response.data)})})})};!function(){reloadCart()}(),$scope.setCartForm=function(form){$scope.formCart=form},$scope.changeLineItemQuantity=function(lineItemId,quantity){var lineItem=_.find($scope.cart.items,function(i){return i.id==lineItemId});if(!(!lineItem||quantity<1||$scope.cartIsUpdating||$scope.loader.isLoading||$scope.formCart.$invalid)){var initialQuantity=lineItem.quantity;lineItem.quantity=quantity,$timeout.cancel(timer),timer=$timeout(function(){$scope.cartIsUpdating=!0,cartService.changeLineItemQuantity(lineItemId,quantity).then(function(response){reloadCart(),$rootScope.$broadcast("cartItemsChanged")},function(response){lineItem.quantity=initialQuantity,$scope.cartIsUpdating=!1})},300)}},$scope.changeLineItemPrice=function(lineItemId,newPrice){!_.find($scope.cart.items,function(i){return i.id==lineItemId})||$scope.cartIsUpdating||$scope.loader.isLoading||($scope.cartIsUpdating=!0,cartService.changeLineItemPrice(lineItemId,newPrice).then(function(response){reloadCart(),$rootScope.$broadcast("cartItemsChanged")},function(response){$scope.cart.items=initialItems,$scope.cartIsUpdating=!1}))},$scope.removeLineItem=function(lineItemId){var lineItem=_.find($scope.cart.items,function(i){return i.id==lineItemId});if(lineItem&&!$scope.cartIsUpdating&&!$scope.loader.isLoading){$scope.cartIsUpdating=!0;var initialItems=angular.copy($scope.cart.items);$scope.recentCartItemModalVisible=!1,$scope.cart.items=_.without($scope.cart.items,lineItem),cartService.removeLineItem(lineItemId).then(function(response){reloadCart(),$rootScope.$broadcast("cartItemsChanged")},function(response){$scope.cart.items=initialItems,$scope.cartIsUpdating=!1})}},$scope.clearCart=function(){loader.wrapLoading(function(){return cartService.clearCart().then(function(){reloadCart(),$rootScope.$broadcast("cartItemsChanged")})})},$scope.submitCart=function(){$scope.formCart.$setSubmitted(),$scope.formCart.$invalid||($scope.cart.hasPhysicalProducts,$scope.outerRedirect($scope.baseUrl+"cart/checkout"))},$scope.searchProduct=function(){$scope.productSearchResult=null,$scope.productSkuOrName&&($timeout.cancel(timer),timer=$timeout(function(){$scope.productSearchProcessing=!0;var criteria={keyword:$scope.productSkuOrName,start:0,pageSize:5};catalogService.search(criteria).then(function(response){$scope.productSearchProcessing=!1,$scope.productSearchResult=response.data.products},function(response){$scope.productSearchProcessing=!1})},300))},$scope.selectSearchedProduct=function(product){$scope.productSearchResult=null,$scope.selectedSearchedProduct=product,$scope.productSkuOrName=product.name},$scope.addProductToCart=function(product,quantity){$scope.cartIsUpdating=!0,cartService.addLineItem(product.id,quantity).then(function(response){reloadCart(),$scope.productSkuOrName=null,$scope.selectedSearchedProduct=null,$rootScope.$broadcast("cartItemsChanged")})},$scope.applyCoupon=function(coupon){coupon.loader.wrapLoading(function(){return cartService.addCoupon(coupon.code).then(function(){reloadCart()})})},$scope.removeCoupon=function(coupon){coupon.loader.wrapLoading(function(){return cartService.removeCoupon().then(function(){$scope.coupon={loader:$scope.coupon.loader},reloadCart()})})}}]),storefrontApp.controller("cartBarController",["$scope","cartService",function($scope,cartService){function getCartItemsCount(){cartService.getCartItemsCount().then(function(response){$scope.cartItemsCount=response.data})}getCartItemsCount(),$scope.$on("cartItemsChanged",function(event,data){getCartItemsCount()})}]),storefrontApp.controller("recentlyAddedCartItemDialogController",["$scope","$window","$uibModalInstance","dialogData",function($scope,$window,$uibModalInstance,dialogData){$scope.dialogData=dialogData,$scope.close=function(){$uibModalInstance.close()},$scope.redirect=function(url){$window.location=url}}]);var storefrontApp=angular.module("storefrontApp");storefrontApp.controller("quoteRequestController",["$rootScope","$scope","$window","$location","quoteRequestService","commonService",function($rootScope,$scope,$window,$location,quoteRequestService,commonService){function getQuoteRequest(number){quoteRequestService.getQuoteRequest(number).then(function(response){var quoteRequest=response.data;quoteRequest.billingAddress||($scope.customer.addresses.length?(quoteRequest.billingAddress=angular.copy($scope.customer.addresses[0]),quoteRequest.billingAddress.type="Billing",quoteRequest.billingAddress.countryCode&&getCountryRegions("Billing",quoteRequest.billingAddress.countryCode)):quoteRequest.billingAddress={firstName:$scope.customer.firstName,lastName:$scope.customer.lastName}),_.each(quoteRequest.items,function(quoteItem){var i=1;_.each(quoteItem.proposalPrices,function(tierPrice){tierPrice.id=i,quoteItem.selectedTierPrice.quantity==tierPrice.quantity&&(quoteItem.selectedTierPrice=tierPrice),i++})}),quoteRequest.requestShippingQuote=!0,$scope.quoteRequest=quoteRequest})}function getCountries(){commonService.getCountries().then(function(response){$scope.countries=response.data})}function getCountryRegions(addressType,countryCode){commonService.getCountryRegions(countryCode).then(function(response){var countryRegions=response.data;"Billing"==addressType&&($scope.billingCountryRegions=countryRegions||[]),"Shipping"==addressType&&($scope.shippingCountryRegions=countryRegions||[])})}function toFormModel(quoteRequest){var quoteRequestFormModel={id:quoteRequest.id,tag:quoteRequest.tag,status:quoteRequest.status,comment:quoteRequest.comment,billingAddress:quoteRequest.billingAddress,shippingAddress:quoteRequest.shippingAddress,items:[]};return _.each(quoteRequest.items,function(quoteItem){var quoteItemFormModel={id:quoteItem.id,comment:quoteItem.comment,selectedTierPrice:{price:quoteItem.selectedTierPrice.price.amount,quantity:quoteItem.selectedTierPrice.quantity},proposalPrices:[]};_.each(quoteItem.proposalPrices,function(tierPrice){quoteItemFormModel.proposalPrices.push({price:tierPrice.price.amount,quantity:tierPrice.quantity})}),quoteRequestFormModel.items.push(quoteItemFormModel)}),quoteRequestFormModel}!function(){var quoteRequestNumber=$location.url().replace("/","")||$window.currentQuoteRequestNumber;$scope.billingCountry=null,$scope.shippingCountry=null,getCountries(),quoteRequestNumber?getQuoteRequest(quoteRequestNumber):$scope.quoteRequest={itemsCount:0}}(),$scope.setQuoteRequestForm=function(form){$scope.formQuoteRequest=form},$scope.displayForStatuses=function(statuses){return _.contains(statuses,$scope.quoteRequest.status)},$scope.addTierPrice=function(quoteItem){quoteItem.proposalPrices.push({id:quoteItem.proposalPrices.length+1,price:quoteItem.salePrice,quantity:1})},$scope.changeTierPriceQuantity=function(tierPrice,quantity){quantity<1||quantity.isNaN||(tierPrice.quantity=quantity)},$scope.removeTierPrice=function(quoteItem,tierPrice){quoteItem.proposalPrices=_.without(quoteItem.proposalPrices,tierPrice)},$scope.removeProductFromQuoteRequest=function(quoteItem){var initialQuoteItems=angular.copy($scope.quoteRequest.items);$scope.quoteRequest.items=_.without($scope.quoteRequest.items,quoteItem),quoteRequestService.removeProductFromQuoteRequest($scope.quoteRequest.id,quoteItem.id).then(function(response){getQuoteRequest($scope.quoteRequest.id),$rootScope.$broadcast("actualQuoteRequestItemsChanged")},function(response){$scope.quoteRequest.items=initialQuoteItems})},$scope.setCountry=function(addressType,countryName){var country=_.find($scope.countries,function(c){return c.name==countryName});country&&("Billing"==addressType&&($scope.billingCountry=country,$scope.billingCountryRegions=[],$scope.quoteRequest.billingAddress.countryCode=country.code3||country.code2,$scope.quoteRequest.billingAddress.regionId=null,$scope.quoteRequest.billingAddress.regionName=null),"Shipping"==addressType&&($scope.shippingCountry=country,$scope.shippingCountryRegions=[],$scope.quoteRequest.shippingAddress.countryCode=country.code3||country.code2,$scope.quoteRequest.shippingAddress.regionId=null,$scope.quoteRequest.shippingAddress.regionName=null),country.code3&&getCountryRegions(addressType,country.code3))},$scope.setCountryRegion=function(addressType){if("Billing"==addressType){var countryRegion=_.find($scope.billingCountryRegions,function(r){return r.name==$scope.quoteRequest.billingAddress.regionName});if(!countryRegion)return;$scope.quoteRequest.billingAddress.regionId=countryRegion.code}if("Shipping"==addressType){var countryRegion=_.find($scope.shippingCountryRegions,function(r){return r.name==$scope.quoteRequest.shippingAddress.regionName});if(!countryRegion)return;$scope.quoteRequest.shippingAddress.regionId=countryRegion.code}},$scope.selectCustomerAddress=function(addressType){if("Billing"===addressType){var billingAddress=_.find($scope.customer.addresses,function(a){return a.id===$scope.quoteRequest.billingAddress.id});billingAddress&&(billingAddress.type="Billing",billingAddress.countryCode&&getCountryRegions("Billing",billingAddress.countryCode),$scope.quoteRequest.billingAddress=angular.copy(billingAddress))}if("Shipping"===addressType){var shippingAddress=_.find($scope.customer.addresses,function(a){return a.id===$scope.quoteRequest.shippingAddress.id});shippingAddress&&(shippingAddress.type="Shipping",shippingAddress.countryCode&&getCountryRegions("Shipping",shippingAddress.countryCode),$scope.quoteRequest.shippingAddress=angular.copy(shippingAddress))}},$scope.stringifyAddress=function(address){if(address){var stringifiedAddress=address.firstName+" "+address.lastName+", ";return stringifiedAddress+=address.organization?address.organization+", ":"",stringifiedAddress+=address.countryName+", ",stringifiedAddress+=address.regionName?address.regionName+", ":"",stringifiedAddress+=address.city+" ",stringifiedAddress+=address.line1+", ",stringifiedAddress+=address.line2?address.line2:"",stringifiedAddress+=address.postalCode}},$scope.submitQuoteRequest=function(){$scope.formQuoteRequest.$setSubmitted(),$scope.formQuoteRequest.$invalid||($scope.quoteRequest.billingAddress.email=$scope.quoteRequest.email,$scope.quoteRequest.shippingAddress&&($scope.quoteRequest.shippingAddress.email=$scope.quoteRequest.email),quoteRequestService.submitQuoteRequest($scope.quoteRequest.id,toFormModel($scope.quoteRequest)).then(function(response){$scope.customer.isRegisteredUser?$scope.outerRedirect($scope.baseUrl+"account/quoterequests"):$scope.outerRedirect($scope.baseUrl+"account/login")}))},$scope.rejectQuoteRequest=function(){quoteRequestService.rejectQuoteRequest($scope.quoteRequest.id).then(function(response){quoteRequestService.getQuoteRequest($scope.quoteRequest.id).then(function(response){$scope.quoteRequest=response.data})})},$scope.selectTierPrice=function(){quoteRequestService.getTotals($scope.quoteRequest.id,toFormModel($scope.quoteRequest)).then(function(response){$scope.quoteRequest.totals=response.data})},$scope.confirmQuoteRequest=function(){quoteRequestService.confirmQuoteRequest($scope.quoteRequest.id,toFormModel($scope.quoteRequest)).then(function(response){$scope.outerRedirect($scope.baseUrl+"cart/checkout/#/shipping-address")})},$scope.setRequestShippingQuote=function(){$scope.quoteRequest.requestShippingQuote||($scope.quoteRequest.shippingAddress=null)},$scope.setShippingAddressEqualsBilling=function(){$scope.quoteRequest.shippingAddressEqualsBilling&&($scope.quoteRequest.shippingAddress=angular.copy($scope.quoteRequest.billingAddress),$scope.quoteRequest.shippingAddress.type="Shipping",$scope.quoteRequest.shippingAddress.countryCode&&($scope.shippingCountry=$scope.billingCountry,getCountryRegions("Shipping",$scope.quoteRequest.shippingAddress.countryCode)))},$scope.tierPricesUnique=function(quoteItem){var quantities=_.map(quoteItem.proposalPrices,function(p){return p.quantity});return _.uniq(quantities).length==quoteItem.proposalPrices.length}}]),storefrontApp.controller("actualQuoteRequestBarController",["$scope","quoteRequestService",function($scope,quoteRequestService){function getCurrentQuoteRequest(){quoteRequestService.getCurrentQuoteRequest().then(function(response){$scope.actualQuoteRequest=response.data})}getCurrentQuoteRequest(),$scope.$on("actualQuoteRequestItemsChanged",function(event,data){getCurrentQuoteRequest()})}]),storefrontApp.controller("recentlyAddedActualQuoteRequestItemDialogController",["$scope","$window","$uibModalInstance","dialogData",function($scope,$window,$uibModalInstance,dialogData){$scope.$on("actualQuoteRequestItemsChanged",function(event,data){dialogData.updated=!0}),$scope.dialogData=dialogData,$scope.close=function(){$uibModalInstance.close()},$scope.redirect=function(url){$window.location=url}}]);var storefrontApp=angular.module("storefrontApp");storefrontApp.component("vcAddress",{templateUrl:"themes/assets/address.tpl.html",bindings:{address:"=",addresses:"<",countries:"=",validationContainer:"=",getCountryRegions:"&",editMode:"<",onUpdate:"&"},require:{checkoutStep:"?^vcCheckoutWizardStep"},transclude:{header:"?addressHeader",footer:"?addressFooter"},controller:["$scope",function($scope){function populateRegionalDataForAddress(address){address&&(address.country=_.findWhere(ctrl.countries,{code3:address.countryCode}),null!=address.country&&(ctrl.address.countryName=ctrl.address.country.name,ctrl.address.countryCode=ctrl.address.country.code3),address.country&&(address.country.regions?setAddressRegion(address,address.country.regions):ctrl.getCountryRegions({country:address.country}).then(function(regions){address.country.regions=regions,setAddressRegion(address,regions)})))}function setAddressRegion(address,regions){address.region=_.findWhere(regions,{code:address.regionId}),address.region?(ctrl.address.regionId=ctrl.address.region.code,ctrl.address.regionName=ctrl.address.region.name):(ctrl.address.regionId=void 0,ctrl.address.regionName=void 0)}function stringifyAddress(address){var addressType="",type=_.find(ctrl.types,function(i){return i.id==ctrl.address.addressType});type&&(addressType="["+type.name+"] ");var stringifiedAddress=addressType;return stringifiedAddress+=address.firstName+" "+address.lastName+", ",stringifiedAddress+=address.organization?address.organization+", ":"",stringifiedAddress+=address.countryName+", ",stringifiedAddress+=address.regionName?address.regionName+", ":"",stringifiedAddress+=address.city+" ",stringifiedAddress+=address.line1+", ",stringifiedAddress+=address.line2?address.line2:"",stringifiedAddress+=address.postalCode}var ctrl=this;ctrl.types=[{id:"Billing",name:"Billing"},{id:"Shipping",name:"Shipping"},{id:"BillingAndShipping",name:"Billing and Shipping"}],this.$onInit=function(){ctrl.validationContainer&&ctrl.validationContainer.addComponent(this),ctrl.checkoutStep&&ctrl.checkoutStep.addComponent(this)},this.$onDestroy=function(){ctrl.validationContainer&&ctrl.validationContainer.removeComponent(this),ctrl.checkoutStep&&ctrl.checkoutStep.removeComponent(this)},ctrl.setForm=function(frm){ctrl.form=frm},ctrl.validate=function(){return!ctrl.form||(ctrl.form.$setSubmitted(),ctrl.form.$valid)},$scope.$watch("$ctrl.address",function(){ctrl.address&&(populateRegionalDataForAddress(ctrl.address),ctrl.address.name=stringifyAddress(ctrl.address)),ctrl.onUpdate({address:ctrl.address})},!0)}]});var storefrontApp=angular.module("storefrontApp");storefrontApp.component("vcCreditCard",{templateUrl:"themes/assets/js/common-components/creditCard.tpl.html",require:{checkoutStep:"?^vcCheckoutWizardStep"},bindings:{card:"=",validationContainer:"="},controller:["$scope","$filter",function($scope,$filter){var ctrl=this;this.$onInit=function(){ctrl.validationContainer&&ctrl.validationContainer.addComponent(this),ctrl.checkoutStep&&ctrl.checkoutStep.addComponent(this)},this.$onDestroy=function(){ctrl.validationContainer&&ctrl.validationContainer.removeComponent(this),ctrl.checkoutStep&&ctrl.checkoutStep.removeComponent(this)},$scope.$watch("$ctrl.card.bankCardHolderName",function(val){ctrl.card&&(ctrl.card.bankCardHolderName=$filter("uppercase")(val))},!0),ctrl.validate=function(){return ctrl.form.$setSubmitted(),!ctrl.form.$invalid}}]});var storefrontApp=angular.module("storefrontApp");storefrontApp.component("vcErrors",{templateUrl:"themes/assets/errors.tpl.html",bindings:{level:"<",message:"<",errors:"<"},controller:[function(){var $ctrl=this;$ctrl.level=$ctrl.level||"danger"}]}),angular.module("storefrontApp").component("vcLabeledInput",{templateUrl:"themes/assets/labeled-input.tpl.html",bindings:{value:"=",form:"=",name:"@",inputClass:"<",placeholder:"@",type:"@?",required:"<",requiredError:"@?",autofocus:"<",pattern:"@",disabled:"<"},controller:[function(){var $ctrl=this;$ctrl.validate=function(){return $ctrl.form.$setSubmitted(),$ctrl.form.$valid}}]}),angular.module("storefrontApp").component("vcLabeledSelect",{templateUrl:"themes/assets/labeled-select.tpl.html",require:{ngModel:"?ngModel"},bindings:{options:"<",select:"&",form:"=",name:"@",placeholder:"<",required:"<",requiredError:"@?",autofocus:"<",disabled:"<"},controller:["$scope",function($scope){var $ctrl=this;$ctrl.$onInit=function(){$ctrl.required&&$ctrl.ngModel.$setValidity("required",!1),$ctrl.ngModel.$render=function(){$ctrl.value=$ctrl.ngModel.$viewValue}},$ctrl.validate=function(){return $ctrl.form.$setSubmitted(),$ctrl.form.$valid};var select=$ctrl.select;$ctrl.select=function(option){select(option),$ctrl.value=option,$ctrl.required&&$ctrl.ngModel.$setValidity("required",!1),$ctrl.ngModel.$setViewValue($ctrl.value)}}]}),angular.module("storefrontApp").component("vcLabeledTextArea",{templateUrl:"themes/assets/labeled-textarea.tpl.html",bindings:{value:"=",form:"=",name:"@",label:"@",required:"<",requiredError:"@?",pattern:"<?",autofocus:"<"},controller:[function(){var $ctrl=this;$ctrl.validate=function(){return $ctrl.form.$setSubmitted(),$ctrl.form.$valid}}]});var storefrontApp=angular.module("storefrontApp");storefrontApp.component("vcLineItems",{templateUrl:"themes/assets/js/common-components/lineItems.tpl.liquid",bindings:{items:"="}});var storefrontApp=angular.module("storefrontApp");storefrontApp.component("vcMember",{templateUrl:"themes/assets/member.tpl.html",bindings:{member:"=",memberComponent:"="},controller:["$scope",function($scope){var $ctrl=this;this.$onInit=function(){$ctrl.memberComponent=this},this.$onDestroy=function(){$ctrl.memberComponent=null},$ctrl.setForm=function(frm){$ctrl.form=frm},$ctrl.validate=function(){return!$ctrl.form||($ctrl.form.$setSubmitted(),$ctrl.form.$valid)}}]});var storefrontApp=angular.module("storefrontApp");storefrontApp.component("vcMemberDetail",{templateUrl:"themes/assets/memberDetail.tpl.html",bindings:{member:"=",memberComponent:"=",fieldsConfig:"<"},controller:["$scope","availableRoles",function($scope,availableRoles){function getFieldConfig(field){return _.first(_.filter($ctrl.config,function(configItem){return configItem.field===field}))}var $ctrl=this;$ctrl.config=[{field:"CompanyName",disabled:!1,visible:!0,required:!0},{field:"Email",disabled:!1,visible:!0,required:!0},{field:"UserName",disabled:!1,visible:!0},{field:"Password",disabled:!1,visible:!0},{field:"Roles",disabled:!1,visible:!1}],
-$ctrl.fieldsConfig&&angular.extend($ctrl.config,$ctrl.fieldsConfig),$ctrl.availableRoles=availableRoles,$ctrl.rolesComponent=null,this.$onInit=function(){$ctrl.memberComponent=this},this.$onDestroy=function(){$ctrl.memberComponent=null},$ctrl.setForm=function(frm){$ctrl.form=frm},$ctrl.validate=function(){return!$ctrl.form||($ctrl.form.$setSubmitted(),$ctrl.form.$valid)},$ctrl.showField=function(field){return 1==getFieldConfig(field).visible},$ctrl.disableField=function(field){return 1==getFieldConfig(field).disabled},$ctrl.requiredField=function(field){return 1==getFieldConfig(field).required}}]}),storefrontApp.directive("confirmPasswordValidation",function(){return{require:"ngModel",link:function(scope,elem,attr,ngModel){ngModel.$parsers.unshift(function(value,scope){var isValid=!0,password=ngModel.$$parentForm.Password.$viewValue;return password&&(isValid=password===value),ngModel.$setValidity("confirmPasswordValidation",isValid),value})}}});var storefrontApp=angular.module("storefrontApp");storefrontApp.component("vcPaymentMethods",{templateUrl:"themes/assets/js/common-components/paymentMethods.tpl.html",require:{checkoutStep:"?^vcCheckoutWizardStep"},bindings:{getAvailPaymentMethods:"&",onSelectMethod:"&",paymentMethod:"=",validationContainer:"="},controller:["$scope",function($scope){var ctrl=this;this.$onInit=function(){ctrl.getAvailPaymentMethods().then(function(methods){ctrl.availPaymentMethods=_.sortBy(methods,function(x){return x.priority}),ctrl.paymentMethod&&(ctrl.paymentMethod=_.findWhere(ctrl.availPaymentMethods,{code:ctrl.paymentMethod.code})),!ctrl.paymentMethod&&ctrl.availPaymentMethods.length>0&&ctrl.selectMethod(ctrl.availPaymentMethods[0])}),ctrl.validationContainer&&ctrl.validationContainer.addComponent(this),ctrl.checkoutStep&&ctrl.checkoutStep.addComponent(this)},this.$onDestroy=function(){ctrl.validationContainer&&ctrl.validationContainer.removeComponent(this),ctrl.checkoutStep&&ctrl.checkoutStep.removeComponent(this)},ctrl.validate=function(){return ctrl.paymentMethod},ctrl.selectMethod=function(method){ctrl.paymentMethod=method,ctrl.onSelectMethod({paymentMethod:method})}}]});var storefrontApp=angular.module("storefrontApp");storefrontApp.component("vcSearchBar",{templateUrl:"themes/assets/js/common-components/searchBar.tpl.html",bindings:{placeholder:"<",searching:"<",noResults:"<",query:"@",categoriesLabel:"<",productsLabel:"<",submitLabel:"<",categoryLimit:"@",productLimit:"@"},controller:["$scope","$q","catalogService",function($scope,$q,catalogService){var $ctrl=this;$ctrl.hasHint=!1,$scope.$watch("$ctrl.isOpen",function(isOpen){$ctrl.hasHint=!!$ctrl.query&&!isOpen}),$scope.$watch("$ctrl.query",function(query){$ctrl.hasHint=!!query&&!$ctrl.isOpen}),$ctrl.getSuggestions=function(){var searchCriteria={keyword:$ctrl.query,start:0};return $q.all([catalogService.searchCategories(angular.extend({},searchCriteria,{pageSize:$ctrl.categoryLimit})),catalogService.search(angular.extend({},searchCriteria,{pageSize:$ctrl.productLimit}))]).then(function(results){var process=function(within){return(results[0].data[within]||results[1].data[within]).map(function(suggestion){return suggestion.within=within,suggestion})};return process("categories").concat(process("products")).map(function(suggestion,index){return suggestion.index=index,suggestion})})}}]}),angular.module("storefront.account").component("vcAccountAddresses",{templateUrl:"themes/assets/account-addresses.tpl.liquid",require:{accountManager:"^vcAccountManager"},controller:["storefrontApp.mainContext","confirmService","$translate","$scope","accountApi","loadingIndicatorService",function(mainContext,confirmService,$translate,$scope,accountApi,loader){var $ctrl=this;$ctrl.loader=loader,$ctrl.currentMember=mainContext.customer,$scope.$watch(function(){return mainContext.customer},function(customer){$ctrl.currentMember=customer}),$ctrl.addNewAddress=function(){_.last(components).validate()&&($ctrl.currentMember.addresses.push($ctrl.newAddress),$ctrl.newAddress=null,$ctrl.updateCompanyMember($ctrl.currentMember))},$ctrl.submit=function(){components[$ctrl.editIdx].validate()&&(angular.copy($ctrl.editItem,$ctrl.currentMember.addresses[$ctrl.editIdx]),$ctrl.updateCompanyMember($ctrl.currentMember,$ctrl.cancel))},$ctrl.cancel=function(){$ctrl.editIdx=-1,$ctrl.editItem=null},$ctrl.edit=function($index){$ctrl.editIdx=$index,$ctrl.editItem=angular.copy($ctrl.currentMember.addresses[$ctrl.editIdx])},$ctrl.delete=function($index){var showDialog=function(text){confirmService.confirm(text).then(function(confirmed){confirmed&&($ctrl.currentMember.addresses.splice($index,1),$ctrl.updateCompanyMember($ctrl.currentMember))})};$translate("customer.addresses.delete_confirm").then(showDialog,showDialog)},$ctrl.updateCompanyMember=function(companyMember,handler){return loader.wrapLoading(function(){return accountApi.updateUserAddresses(companyMember.addresses).then(function(response){return mainContext.loadCustomer().then(function(customer){$ctrl.currentMember=customer,handler&&handler()})})})};var components=[];$ctrl.addComponent=function(component){components.push(component)},$ctrl.removeComponent=function(component){components=_.without(components,component)}}]}),angular.module("storefront.account").component("vcAccountCompanyInfo",{templateUrl:"themes/assets/account-company-info.tpl.liquid",require:{accountManager:"^vcAccountManager"},controller:["storefrontApp.mainContext","$scope","$translate","accountApi","loadingIndicatorService","confirmService",function(mainContext,$scope,$translate,accountApi,loader,confirmService){function refresh(){loader.wrapLoading(function(){return accountApi.getUserOrganization().then(function(response){$ctrl.company=response.data})})}var $ctrl=this;$ctrl.loader=loader,$ctrl.updateCompanyInfo=function(company){return loader.wrapLoading(function(){return accountApi.updateUserOrganization(company).then(function(){refresh()})})},$ctrl.addNewAddress=function(){_.last(components).validate()&&($ctrl.company.addresses.push($ctrl.newAddress),$ctrl.newAddress=null,$ctrl.updateCompanyInfo($ctrl.company))},$ctrl.submitCompanyAddress=function(){components[$ctrl.editIdx].validate()&&(angular.copy($ctrl.editItem,$ctrl.company.addresses[$ctrl.editIdx]),$ctrl.updateCompanyInfo($ctrl.company).then($ctrl.cancel))},$ctrl.cancel=function(){$ctrl.editIdx=-1,$ctrl.editItem=null},$ctrl.edit=function($index){$ctrl.editIdx=$index,$ctrl.editItem=angular.copy($ctrl.company.addresses[$ctrl.editIdx])},$ctrl.delete=function($index){var showDialog=function(text){confirmService.confirm(text).then(function(confirmed){confirmed&&($ctrl.company.addresses.splice($index,1),$ctrl.updateCompanyInfo($ctrl.company))})};$translate("customer.addresses.delete_confirm").then(showDialog,showDialog)};var components=[];$ctrl.addComponent=function(component){components.push(component)},$ctrl.removeComponent=function(component){components=_.without(components,component)},refresh()}]}),angular.module("storefront.account").component("vcAccountCompanyMembers",{templateUrl:"themes/assets/account-company-members.tpl.liquid",$routeConfig:[{path:"/",name:"MemberList",component:"vcAccountCompanyMembersList",useAsDefault:!0},{path:"/:member",name:"MemberDetail",component:"vcAccountCompanyMemberDetail"}],controller:["storefrontApp.mainContext",function(mainContext){}]}).component("vcAccountCompanyMembersList",{templateUrl:"account-company-members-list.tpl",bindings:{$router:"<"},controller:["storefrontApp.mainContext","$scope","accountApi","loadingIndicatorService","confirmService","$location","$translate",function(mainContext,$scope,accountApi,loader,confirmService,$location,$translate){function refresh(){loader.wrapLoading(function(){return accountApi.searchOrganizationUsers({skip:($ctrl.pageSettings.currentPage-1)*$ctrl.pageSettings.itemsPerPageCount,take:$ctrl.pageSettings.itemsPerPageCount,sortInfos:$ctrl.sortInfos}).then(function(response){$ctrl.entries=response.data.results,$ctrl.pageSettings.totalItems=response.data.totalCount})})}var $ctrl=this;$ctrl.currentMemberId=mainContext.customer.id,$ctrl.newMemberComponent=null,$ctrl.loader=loader,$ctrl.pageSettings={currentPage:1,itemsPerPageCount:5,numPages:10},$ctrl.pageSettings.pageChanged=function(){refresh()},$ctrl.addNewMemberFieldsConfig=[{field:"CompanyName",disabled:!0,visible:!1,required:!1},{field:"Email",disabled:!1,visible:!0,required:!0},{field:"UserName",disabled:!1,visible:!0},{field:"Password",disabled:!1,visible:!0},{field:"Roles",disabled:!1,visible:!0,required:!0}],$scope.init=function(storeId,cultureName,registrationUrl){$ctrl.storeId=storeId,$ctrl.cultureName=cultureName,$ctrl.registrationUrl=registrationUrl},this.$routerOnActivate=function(next){$ctrl.pageSettings.currentPage=next.params.pageNumber||$ctrl.pageSettings.currentPage,refresh()},$ctrl.inviteEmailsValidationPattern=new RegExp(/((^|((?!^)([,;]|\r|\r\n|\n)))([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*))+$/),$ctrl.invite=function(){$ctrl.inviteInfo.emails=$ctrl.inviteInfo.rawEmails.split(/[,;]|\r|\r\n|\n/g),loader.wrapLoading(function(){return accountApi.createInvitation({emails:$ctrl.inviteInfo.emails,message:$ctrl.inviteInfo.message}).then(function(response){$ctrl.cancel(),$ctrl.pageSettings.pageChanged()})})},$ctrl.addNewMember=function(){$ctrl.newMemberComponent.validate()&&($ctrl.newMember.companyId=mainContext.customer.companyId,$ctrl.newMember.role=$ctrl.newMember.role,$ctrl.newMember.storeId=$ctrl.storeId,loader.wrapLoading(function(){return accountApi.registerNewUser($ctrl.newMember).then(function(response){$ctrl.cancel(),$ctrl.pageSettings.currentPage=1,$ctrl.pageSettings.pageChanged()})}))},$ctrl.cancel=function(){$ctrl.inviteInfo=null,$ctrl.newMember=null},$ctrl.changeStatus=function(member){loader.wrapLoading(function(){var action=member.isActive?accountApi.lockUser:accountApi.unlockUser;member.isActive=!member.isActive,loader.wrapLoading(function(){return action(member.id)})})},$ctrl.edit=function(memberId){this.$router.navigate(["MemberDetail",{member:memberId,pageNumber:$ctrl.pageSettings.currentPage}])},$ctrl.delete=function(member){var showDialog=function(text){confirmService.confirm(text).then(function(confirmed){confirmed&&loader.wrapLoading(function(){return accountApi.deleteUser(member.securityAccounts[0].userName).then(function(response){$ctrl.pageSettings.pageChanged()})})})};$translate("customer.edit_company_members.delete_confirm").then(showDialog,showDialog)},$ctrl.validate=function(){return $ctrl.inviteForm.$setSubmitted(),$ctrl.inviteForm.valid},$ctrl.showActions=function(member){return member.id!=mainContext.customer.id}}]}).component("vcAccountCompanyMemberDetail",{templateUrl:"account-company-members-detail.tpl",require:{accountManager:"^vcAccountManager"},controller:["$q","$rootScope","$scope","$window","accountApi","loadingIndicatorService",function($q,$rootScope,$scope,$window,accountApi,loader){function refresh(){loader.wrapLoading(function(){return accountApi.getUserById($ctrl.memberNumber).then(function(response){$ctrl.member=response.data})})}var $ctrl=this;$ctrl.loader=loader,$ctrl.fieldsConfig=[{field:"CompanyName",disabled:!0,visible:!1,required:!1},{field:"Email",disabled:!1,visible:!0,required:!0},{field:"UserName",disabled:!0,visible:!1},{field:"Password",disabled:!0,visible:!1},{field:"Roles",disabled:!1,visible:!0}],$ctrl.memberComponent=null,$scope.init=function(storeId){$ctrl.storeId=storeId},this.$routerOnActivate=function(next){$ctrl.pageNumber=next.params.pageNumber||1,$ctrl.memberNumber=next.params.member,refresh()},$ctrl.submitMember=function(){$ctrl.memberComponent.validate()&&loader.wrapLoading(function(){return $ctrl.member.fullName=$ctrl.member.firstName+" "+$ctrl.member.lastName,$ctrl.member.emails=[$ctrl.member.email],accountApi.updateUser($ctrl.member).then(function(response){refresh()})})}}]}),angular.module("storefrontApp").component("vcAccountLists",{templateUrl:"lists-manager.tpl",$routeConfig:[{path:"/",name:"Lists",component:"vcAccountLists"},{path:"/friendsLists",name:"FriendsLists",component:"vcAccountFriendsLists"},{path:"/myLists",name:"MyLists",component:"vcAccountMyLists",useAsDefault:!0}],controller:["listService","$rootScope","$location","accountApi","cartService","$translate","loadingIndicatorService","$timeout","dialogService","$localStorage",function(listService,$rootScope,$location,accountApi,cartService,$translate,loader,$timeout,dialogService,$localStorage){function selectDefault(lists){if(_.find(lists,{default:!0})){var selected=_.find(lists,{default:!0});$ctrl.selectList(selected)}else _.isEmpty(lists)||(_.first(lists).default=!0,$ctrl.selectList(_.first(lists)))}var $ctrl=this;$ctrl.getCustomer=function(){accountApi.getCurrentUser().then(function(user){$ctrl.userName=user.data.userName,$ctrl.initialize()})},$ctrl.selectTab=function(tabName){$ctrl.selectedList=[],$ctrl.selectedTab=tabName,$ctrl.getCustomer()},$ctrl.initialize=function(lists){"myLists"===$ctrl.selectedTab?loader.wrapLoading(function(){return listService.getOrCreateMyLists($ctrl.userName).then(function(result){$ctrl.lists=result,selectDefault($ctrl.lists)})}):"friendsLists"===$ctrl.selectedTab&&loader.wrapLoading(function(){return listService.getSharedLists($ctrl.userName).then(function(result){$ctrl.lists=result,selectDefault($ctrl.lists)})})},$ctrl.selectList=function(list){$ctrl.selectedList=list},$ctrl.addToCart=function(lineItem){loader.wrapLoading(function(){return cartService.addLineItem(lineItem.productId,1).then(function(response){$ctrl.productAdded=!0,$timeout(function(){$ctrl.productAdded=!1},2e3)})})},$ctrl.removeList=function(listName){loader.wrapLoading(function(){return listService.clearList(listName,$ctrl.userName).then(function(response){document.location.reload()})})},$ctrl.removeLineItem=function(lineItem){loader.wrapLoading(function(){return listService.removeLineItem(lineItem.id,$ctrl.selectedList.id,$ctrl.userName).then(function(result){})})},$ctrl.generateLink=function(){$ctrl.sharedLink=$location.absUrl().substr(0,_.lastIndexOf($location.absUrl(),"/"))+"/friendsLists?id="+$ctrl.selectedList.id,$ctrl.selectedList.permission="public";var dialogData={sharedLink:$ctrl.sharedLink};dialogService.showDialog(dialogData,"recentlyCreateNewListDialogController","storefront.list-shared-link-dialog.tpl")},$ctrl.addToCartAllProducts=function(){_.each($ctrl.selectedList.items,function(item){loader.wrapLoading(function(){return cartService.addLineItem(item.productId,1).then(function(response){$ctrl.productAdded=!0,$timeout(function(){$ctrl.productAdded=!1},6e3)})})})},$ctrl.createList=function(){var dialogData=$ctrl.lists;dialogService.showDialog(dialogData,"recentlyCreateNewListDialogController","storefront.recently-create-new-list-dialog.tpl")},$ctrl.listSettings=function(){var dialogData={};dialogData.lists=$ctrl.lists,dialogData.userName=$ctrl.userName,dialogData.selectedTab=$ctrl.selectedTab,dialogService.showDialog(dialogData,"recentlyCreateNewListDialogController","storefront.list-settings-dialog.tpl")}}]}).component("vcAccountMyLists",{templateUrl:"themes/assets/js/account/account-lists.tpl.liquid",require:{accountLists:"^^vcAccountLists"},controller:["$rootScope","listService","accountApi","loadingIndicatorService","$timeout","accountDialogService","$localStorage",function($rootScope,listService,accountApi,loader,$timeout,dialogService,$localStorage){var $ctrl=this;$ctrl.listPreSetting=function(lists){accountApi.getCurrentUser().then(function(user){var userName=user.data.userName;loader.wrapLoading(function(){return listService.getOrCreateMyLists(userName,lists).then(function(result){})})})},$ctrl.$onInit=function(lists){$ctrl.accountLists.selectTab("myLists")}}]}).component("vcAccountFriendsLists",{templateUrl:"themes/assets/js/account/account-lists.tpl.liquid",require:{accountLists:"^^vcAccountLists"},controller:["$rootScope","listService","$location","accountApi","loadingIndicatorService","$timeout","accountDialogService","$localStorage",function($rootScope,listService,$location,accountApi,loader,$timeout,dialogService,$localStorage){function checkLocation(){var sharedCartId=$location.search().id.toString();accountApi.getCurrentUser().then(function(user){var userName=user.data.userName,myLists=listService.getOrCreateMyLists(userName);loader.wrapLoading(function(){return listService.addSharedList(userName,myLists,sharedCartId).then(function(result){$ctrl.accountLists.selectTab("friendsLists")})})})}var $ctrl=this;$ctrl.$onInit=function(){$location.search().id&&checkLocation(),$ctrl.accountLists.selectTab("friendsLists")}}]}),angular.module("storefront.account").component("vcAccountOrders",{templateUrl:"themes/assets/js/account/account-orders.tpl.liquid",$routeConfig:[{path:"/",name:"OrderList",component:"vcAccountOrdersList",useAsDefault:!0},{path:"/:number",name:"OrderDetail",component:"vcAccountOrderDetail"}],controller:["orderHelper",function(orderHelper){this.orderHelper=orderHelper}]}).component("vcAccountOrdersList",{templateUrl:"account-orders-list.tpl",controller:["accountApi","loadingIndicatorService",function(accountApi,loader){var ctrl=this;ctrl.loader=loader,ctrl.pageSettings={currentPage:1,itemsPerPageCount:5,numPages:10},ctrl.pageSettings.pageChanged=function(){loader.wrapLoading(function(){return accountApi.searchUserOrders({pageNumber:ctrl.pageSettings.currentPage,pageSize:ctrl.pageSettings.itemsPerPageCount,sortInfos:ctrl.sortInfos}).then(function(data){ctrl.entries=data.results,ctrl.pageSettings.totalItems=data.totalCount})})},this.$routerOnActivate=function(next){ctrl.pageSettings.currentPage=next.params.pageNumber||ctrl.pageSettings.currentPage,ctrl.pageSettings.pageChanged()}}]}).component("vcAccountOrderDetail",{templateUrl:"account-order-detail.tpl",require:{accountManager:"^vcAccountManager"},controller:["accountApi","$rootScope","$window","loadingIndicatorService","confirmService","orderHelper",function(orderApi,$rootScope,$window,loader,confirmService,orderHelper){function refresh(){loader.wrapLoading(function(){return accountApi.getUserOrder($ctrl.orderNumber).then(function(result){return $ctrl.order=result.data,$ctrl.order}).then(function(order){$ctrl.isShowPayment=!1;var lastPayment=_.last(_.sortBy(order.inPayments,"createdDate"));if($ctrl.billingAddress=lastPayment&&lastPayment.billingAddress||_.findWhere(order.addresses,{type:"billing"})||_.first(order.addresses),$ctrl.amountToPay=orderHelper.getNewPayment(order).sum.amount,$ctrl.amountToPay>0)return $ctrl.billingAddressEqualsShipping=!0,orderApi.getNewPaymentData(order.orderNumber,function(result){configurePayment(result.data.paymentMethods,result.data.payment)})})})}function configurePayment(paymentMethods,newPaymentTemplate){$ctrl.payment=orderHelper.getNewPayment($ctrl.order,paymentMethods,newPaymentTemplate),$ctrl.payment.purpose=$ctrl.payment.purpose||"Repeated payment",$ctrl.amountToPay=$ctrl.payment.sum.amount,$ctrl.canCancelPayment=$ctrl.payment.id!==newPaymentTemplate.id,$ctrl.canCancelPayment&&$ctrl.selectPaymentMethod(_.findWhere(paymentMethods,{code:$ctrl.payment.gatewayCode})),_.some($ctrl.order.shipments)||($ctrl.hasPhysicalProducts=!1,$ctrl.billingAddressEqualsShipping=!1)}function outerRedirect(absUrl){$window.location.href=absUrl}var $ctrl=this;$ctrl.loader=loader,$ctrl.hasPhysicalProducts=!0,this.$routerOnActivate=function(next){$ctrl.pageNumber=next.params.pageNumber||1,$ctrl.orderNumber=next.params.number,refresh()},$ctrl.getInvoicePdf=function(){var url=$window.BASE_URL+"storefrontapi/orders/"+$ctrl.orderNumber+"/invoice";$window.open(url,"_blank")},$ctrl.showPayment=function(){loadPromise.then(function(result){$ctrl.isShowPayment=!0})};var loadPromise;$ctrl.getAvailPaymentMethods=function(){return loadPromise.then(function(result){var preselectedMaymentMethod;return $ctrl.payment.gatewayCode&&(preselectedMaymentMethod=_.findWhere(result.paymentMethods,{code:$ctrl.payment.gatewayCode})),preselectedMaymentMethod?[preselectedMaymentMethod]:result.paymentMethods})},$ctrl.selectPaymentMethod=function(paymentMethod){angular.extend($ctrl.payment,paymentMethod),$ctrl.payment.gatewayCode=paymentMethod.code,$ctrl.validate()},$ctrl.validate=function(){return $ctrl.isValid=$ctrl.payment&&$ctrl.payment.gatewayCode&&$ctrl.payment.sum&&$ctrl.payment.sum.amount>0&&_.every(components,function(x){return"function"!=typeof x.validate||x.validate()}),$ctrl.isValid},$ctrl.submit=function(){$ctrl.validate()&&loader.wrapLoading(function(){return $ctrl.payment.bankCardInfo=$ctrl.paymentMethod.card,orderApi.addOrUpdatePayment({number:$ctrl.orderNumber},$ctrl.payment,function(payment){orderApi.processPayment({number:$ctrl.orderNumber,paymentNumber:payment.number},$ctrl.paymentMethod.card,function(result){var orderProcessingResult=result.orderProcessingResult,paymentMethod=result.paymentMethod;if(!orderProcessingResult.isSuccess)return void $rootScope.$broadcast("storefrontError",{type:"error",title:["Error in new payment processing: ",orderProcessingResult.error,"New Payment status: "+orderProcessingResult.newPaymentStatus].join(" "),message:orderProcessingResult.error});paymentMethod.paymentMethodType&&"preparedform"===paymentMethod.paymentMethodType.toLowerCase()&&orderProcessingResult.htmlForm?outerRedirect($ctrl.accountManager.baseUrl+"cart/checkout/paymentform?orderNumber="+$ctrl.orderNumber):paymentMethod.paymentMethodType&&"redirection"===paymentMethod.paymentMethodType.toLowerCase()&&orderProcessingResult.redirectUrl?outerRedirect(orderProcessingResult.redirectUrl):$ctrl.accountManager.customer.isRegisteredUser?refresh():outerRedirect($ctrl.accountManager.baseUrl+"cart/thanks/"+$ctrl.orderNumber)})}).$promise})},$ctrl.cancel=function(){confirmService.confirm("Cancel this payment?").then(function(confirmed){confirmed&&loader.wrapLoading(function(){return orderApi.cancelPayment({number:$ctrl.orderNumber,paymentNumber:$ctrl.payment.number},null,refresh).$promise})})};var components=[];$ctrl.addComponent=function(component){components.push(component)},$ctrl.removeComponent=function(component){components=_.without(components,component)}}]}).factory("orderHelper",function(){return{getNewPayment:function(order,paymentMethods,newPaymentTemplate){var retVal,paidPayments=_.filter(order.inPayments,function(x){return"Paid"===x.status}),paidAmount=_.reduce(paidPayments,function(memo,num){return memo+num.sum.amount},0),amountToPay=order.total.amount-paidAmount,pendingPayments=_.filter(order.inPayments,function(x){return!x.isCancelled&&("New"===x.status||"Pending"===x.status)&&x.sum.amount>0}),pendingPayment=_.last(_.sortBy(pendingPayments,"createdDate"));return!pendingPayment||paymentMethods&&!_.findWhere(paymentMethods,{code:pendingPayment.gatewayCode})?(newPaymentTemplate=newPaymentTemplate||{sum:{}},newPaymentTemplate.sum.amount=amountToPay,retVal=newPaymentTemplate):retVal=pendingPayment,retVal}}}).filter("orderToSummarizedStatusLabel",["orderHelper",function(orderHelper){return function(order){var retVal=order.status||"New",found=_.findWhere(orderHelper.statusLabels,{status:retVal.toLowerCase()});return found&&(retVal=found.label),retVal}}]),angular.module("storefront.account").component("vcAccountPasswordChange",{templateUrl:"themes/assets/js/account/account-password-change.tpl.liquid",require:{accountManager:"^vcAccountManager"},controller:["loadingIndicatorService","accountApi",function(loader,accountApi){var ctrl=this;ctrl.loader=loader,ctrl.passwordChangeData={},ctrl.submit=function(){ctrl.errors=null,ctrl.error={};var errorMsg,hasError=!1;errorMsg=ctrl.passwordChangeData.oldPassword===ctrl.passwordChangeData.newPassword,ctrl.error.newPassword=errorMsg,hasError=hasError||errorMsg,hasError||(errorMsg=ctrl.passwordChangeData.newPassword!==ctrl.passwordChangeData.newPassword2,ctrl.error.newPassword2=errorMsg,hasError=hasError||errorMsg),hasError||loader.wrapLoading(function(){accountApi.changeUserPassword(ctrl.passwordChangeData).then(function(result){angular.extend(ctrl,result),ctrl.passwordChangeData={},ctrl.form.$setPristine()})})},ctrl.setForm=function(frm){ctrl.form=frm}}]}),angular.module("storefront.account").component("vcAccountProfileUpdate",{templateUrl:"themes/assets/account-profile-update.tpl.liquid",require:{accountManager:"^vcAccountManager"},controller:["$q","$scope","storefrontApp.mainContext","accountApi","loadingIndicatorService","availableRoles",function($q,$scope,mainContext,accountApi,loader,availableRoles){var $ctrl=this;$ctrl.loader=loader,$ctrl.availableRoles=availableRoles,$ctrl.member=mainContext.customer,$scope.$watch(function(){return mainContext.customer},function(customer){$ctrl.member=customer}),$ctrl.submit=function(){return $ctrl.member.fullName=$ctrl.member.firstName+" "+$ctrl.member.lastName,$ctrl.member.emails=[$ctrl.member.email],loader.wrapLoading(function(){return accountApi.updateUser($ctrl.member).then(function(response){return mainContext.loadCustomer().then(function(customer){$ctrl.member=customer})})})}}]}),angular.module("storefront.account").component("vcAccountQuotes",{templateUrl:"themes/assets/js/account/account-quotes.tpl.liquid",require:{accountManager:"^vcAccountManager"},controller:[function(){var ctrl=this;ctrl.pageSettings={currentPage:1,itemsPerPageCount:5,numPages:10},ctrl.pageSettings.pageChanged=function(){ctrl.accountManager.getQuotes(ctrl.pageSettings.currentPage,ctrl.pageSettings.itemsPerPageCount,ctrl.sortInfos,function(data){ctrl.entries=data.results,ctrl.pageSettings.totalItems=data.totalCount})},this.$routerOnActivate=function(next){ctrl.pageSettings.currentPage=next.params.pageNumber||ctrl.pageSettings.currentPage,ctrl.pageSettings.pageChanged()}}]});var storefrontApp=angular.module("storefrontApp");storefrontApp.controller("accountRegisterController",["$q","$scope","storefrontApp.mainContext","loadingIndicatorService","vcRecaptchaService","commonService",function($q,$scope,mainContext,loader,vcRecaptchaService,commonService){function populateRegionalDataForAddress(address){address&&(address.country=_.findWhere($ctrl.countries,{code3:address.countryCode}),address.country&&(address.countryName=address.country.name,address.countryCode=address.country.code3,address.country.regions?setAddressRegion(address,address.country.regions):commonService.getCountryRegions(address.country.code3).then(function(response){address.country.regions=response.data,setAddressRegion(address,response.data)})))}function setAddressRegion(address,regions){address.region=_.findWhere(regions,{code:address.regionId}),address.region?(address.regionId=address.region.code,address.regionName=address.region.name):(address.regionId=void 0,address.regionName=void 0)}function stringifyAddress(address){var stringifiedAddress="";return stringifiedAddress+=address.firstName+" "+address.lastName+", ",stringifiedAddress+=address.companyName?address.companyName+", ":"",stringifiedAddress+=address.countryName+", ",stringifiedAddress+=address.regionName?address.regionName+", ":"",stringifiedAddress+=address.city+" ",stringifiedAddress+=address.line1+", ",stringifiedAddress+=address.line2?address.line2:"",stringifiedAddress+=address.postalCode}function getParams(){var param,i,params=window.location.search.substring(1).split("&"),result={};for(i in params)if(params.hasOwnProperty(i)){if(""===params[i])continue;param=params[i].split("="),result[decodeURIComponent(param[0])]=decodeURIComponent(param[1])}return result}var $ctrl=this;$ctrl.loader=loader,commonService.getCountries().then(function(response){$ctrl.countries=response.data}),$scope.isOrg=function(){return"Business"===$scope.member.type},$scope.$watch("member.address.countryCode",function(){$scope.member.address.countryCode&&(populateRegionalDataForAddress($scope.member.address),$scope.member.address.name=stringifyAddress($scope.member.address))}),$scope.init=function(storeId){$scope.member={storeId:storeId,type:"Business",address:{}};var invite=getParams().invite;invite&&($scope.member.invite=invite,$ctrl.loader.wrapLoading(function(){return corporateRegisterApi.getRegisterInfoByInvite({invite:invite}).$promise.then(function(result){if(result.message)return $scope.error=result.message,$q.reject("Invite is invalid");$scope.member.companyName=result.companyName,$scope.member.email=result.email})}))},$scope.submit=function(){angular.element(document.querySelector("#create_customer")).submit()}}]),angular.module("storefront.account").component("vcAccountSubscriptions",{templateUrl:"themes/assets/js/account/account-subscriptions.tpl.liquid",$routeConfig:[{path:"/",name:"SubscriptionList",component:"vcAccountSubscriptionsList",useAsDefault:!0},{path:"/:number",name:"SubscriptionDetail",component:"vcAccountSubscriptionDetail"}]}).component("vcAccountSubscriptionsList",{templateUrl:"account-subscriptions-list.tpl",controller:["storefront.subscriptionApi","confirmService","loadingIndicatorService","$translate",function(subscriptionApi,confirmService,loader,$translate){var $ctrl=this;$ctrl.loader=loader,$ctrl.pageSettings={currentPage:1,itemsPerPageCount:5,numPages:10},$ctrl.pageSettings.pageChanged=function(){loader.wrapLoading(function(){return subscriptionApi.search({pageNumber:$ctrl.pageSettings.currentPage,pageSize:$ctrl.pageSettings.itemsPerPageCount,sortInfos:$ctrl.sortInfos},function(data){$ctrl.entries=data.results,$ctrl.pageSettings.totalItems=data.totalCount}).$promise})},this.$routerOnActivate=function(next){$ctrl.pageSettings.currentPage=next.params.pageNumber||$ctrl.pageSettings.currentPage,$ctrl.pageSettings.pageChanged()}}]}).component("vcAccountSubscriptionDetail",{templateUrl:"account-subscription-detail.tpl",controller:["storefront.subscriptionApi","confirmService","loadingIndicatorService","$translate",function(subscriptionApi,confirmService,loader,$translate){function refresh(){loader.wrapLoading(function(){return subscriptionApi.get({number:$ctrl.entryNumber},function(result){$ctrl.subscription=angular.copy(result)}).$promise})}var $ctrl=this;$ctrl.loader=loader,this.$routerOnActivate=function(next){$ctrl.pageNumber=next.params.pageNumber||1,$ctrl.entryNumber=next.params.number,refresh()},$ctrl.cancel=function(){loader.wrapLoading(function(){return subscriptionApi.cancel({number:$ctrl.entryNumber},{number:$ctrl.entryNumber,cancelReason:$ctrl.cancelReason},function(result){$ctrl.subscription=angular.copy(result),$ctrl.isCancelFormVisible=!1}).$promise})}}]}).filter("toIntervalKey",function(){return function(data,data_intervalCount){return"customer.subscriptions.intervals."+data.interval.toLowerCase()+"_"+(1===data_intervalCount?1:"plural")}});var moduleName="storefront.account";void 0!==storefrontAppDependencies&&storefrontAppDependencies.push(moduleName),angular.module(moduleName,["ngResource","ngComponentRouter","pascalprecht.translate","ngSanitize","storefrontApp","storefrontApp.consts"]).config(["$translateProvider","baseUrl",function($translateProvider,baseUrl){$translateProvider.useSanitizeValueStrategy("sanitizeParameters"),$translateProvider.useUrlLoader(baseUrl+"themes/localization.json"),$translateProvider.preferredLanguage("en")}]).run(["$templateCache","apiBaseUrl",function($templateCache,apiBaseUrl){$templateCache.put("pagerTemplate.html",'<uib-pagination boundary-links="true" max-size="$ctrl.pageSettings.numPages" items-per-page="$ctrl.pageSettings.itemsPerPageCount" total-items="$ctrl.pageSettings.totalItems" ng-model="$ctrl.pageSettings.currentPage" ng-change="$ctrl.pageSettings.pageChanged()" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>')}]).value("$routerRootComponent","vcAccountManager").service("accountDialogService",["$uibModal",function($uibModal){return{showDialog:function(dialogData,controller,templateUrl){$uibModal.open({controller:controller,templateUrl:templateUrl,resolve:{dialogData:function(){return dialogData}}})}}}]).component("vcAccountManager",{templateUrl:"account-manager.tpl",bindings:{baseUrl:"<",customer:"<"},$routeConfig:[{path:"/orders/...",
-name:"Orders",component:"vcAccountOrders"},{path:"/subscriptions/...",name:"Subscriptions",component:"vcAccountSubscriptions"},{path:"/quotes",name:"Quotes",component:"vcAccountQuotes"},{path:"/profile",name:"Profile",component:"vcAccountProfileUpdate",useAsDefault:!0},{path:"/addresses",name:"Addresses",component:"vcAccountAddresses"},{path:"/changePassword",name:"PasswordChange",component:"vcAccountPasswordChange"},{path:"/companyInfo",name:"CompanyInfo",component:"vcAccountCompanyInfo"},{path:"/companyMembers/...",name:"CompanyMembers",component:"vcAccountCompanyMembers"},{path:"/lists/...",name:"Lists",component:"vcAccountLists"}],controller:["$scope","$timeout","storefrontApp.mainContext","loadingIndicatorService","commonService",function($scope,$timeout,mainContext,loader,commonService){var $ctrl=this;$ctrl.availCountries=[],commonService.getCountries().then(function(response){$ctrl.availCountries=response.data}),$ctrl.getCountryRegions=function(country){return commonService.getCountryRegions(country.code3).then(function(response){return response.data})}}]}).service("confirmService",["$q",function($q){this.confirm=function(message){return $q.when(window.confirm(message||"Is it OK?"))}}]);var storefrontApp=angular.module("storefrontApp");storefrontApp.service("accountApi",["$http",function($http){return{getCurrentUser:function(){return $http.get("storefrontapi/account?t="+(new Date).getTime())},getUserById:function(userId){return $http.get("storefrontapi/account/"+userId+"?t="+(new Date).getTime())},updateUser:function(user){return $http.post("storefrontapi/account",user)},updateUserAddresses:function(addresses){return $http.post("storefrontapi/account/addresses",addresses)},getUserOrganization:function(){return $http.get("storefrontapi/account/organization/current?t="+(new Date).getTime())},updateUserOrganization:function(organization){return $http.put("storefrontapi/account/organization",organization)},searchOrganizationUsers:function(criteria){return $http.post("storefrontapi/account/organization/users/search",criteria)},createInvitation:function(invitation){return $http.post("storefrontapi/account/invitation",invitation)},registerNewUser:function(user){return $http.post("storefrontapi/account/user",user)},lockUser:function(userId){return $http.post("storefrontapi/account/"+userId+"/lock")},unlockUser:function(userId){return $http.post("storefrontapi/account/"+userId+"/unlock")},deleteUser:function(userName){return $http.delete("storefrontapi/account/"+userName)},searchUserOrders:function(searchCriteria){return $http.post("storefrontapi/orders/search",searchCriteria)},getUserOrder:function(orderNumber){return $http.get("storefrontapi/orders/"+orderNumber+"?t="+(new Date).getTime())},getUserOrderNewPaymentData:function(orderNumber){return $http.get("storefrontapi/orders/"+orderNumber+"/newpaymentdata?t="+(new Date).getTime())},changeUserPassword:function(passwordChangeData){return $http.post("storefrontapi/account/password",passwordChangeData)}}}]),angular.module("storefrontApp").component("addToListButton",{templateUrl:"themes/assets/js/lists/add-to-list-button.tpl.html",bindings:{selectedVariation:"<"},controller:["accountApi","listService","dialogService",function(accountApi,listService,dialogService){function compareProductInLists(){$ctrl.buttonInvalid=!0,accountApi.getCurrentUser().then(function(user){listService.getOrCreateMyLists(user.data.userName,$ctrl.lists).then(function(result){$ctrl.lists=result,angular.forEach($ctrl.lists,function(list){listService.containsInList($ctrl.selectedVariation.id,list.id).then(function(result){!1===result.contains&&($ctrl.buttonInvalid=!1)})})})})}function toListsDialogDataModel(product,quantity){return{product:product,quantity:quantity,updated:!1}}var $ctrl=this;$ctrl.$onInit=function(){compareProductInLists()},$ctrl.addProductToWishlist=function(){var dialogData=toListsDialogDataModel($ctrl.selectedVariation,1);dialogService.showDialog(dialogData,"recentlyAddedListItemDialogController","storefront.recently-added-list-item-dialog.tpl")},$ctrl.signInToProceed=function(){dialogService.showDialog({title:"Add product to list..."},"universalDialogController","storefront.sign-in-to-proceed.tpl")}}]});var storefrontApp=angular.module("storefrontApp");storefrontApp.controller("recentlyAddedListItemDialogController",["$scope","$window","$uibModalInstance","dialogData","listService","$translate","$localStorage","accountApi",function($scope,$window,$uibModalInstance,dialogData,listService,$translate,$localStorage,accountApi){$scope.availableLists=[],$scope.selectedList={},dialogData.product.imageUrl=dialogData.product.primaryImage.url,dialogData.product.createdDate=new Date,dialogData.product.productId=dialogData.product.price.productId,_.extend(dialogData.product,dialogData.product.price),_.extend(dialogData.product,dialogData.product.salePrice),$scope.dialogData=dialogData.product,$scope.dialogData.quantity=dialogData.quantity,$scope.inProgress=!1,$scope.itemAdded=!1,$scope.addProductToList=function(){$scope.inProgress=!0;$scope.userName,$scope.userId;$scope.userName!==$scope.selectedList.author&&(dialogData.product.modifiedBy=$scope.userName),listService.addItemToList($scope.selectedList.id,dialogData.product),$scope.inProgress=!1,$scope.itemAdded=!0},$scope.selectList=function(list){$scope.selectedList=list},$scope.close=function(){$uibModalInstance.close()},$scope.redirect=function(url){$window.location=url},$scope.initialize=function(lists){accountApi.getCurrentUser().then(function(user){$scope.userName=user.data.userName,listService.getOrCreateMyLists($scope.userName,lists).then(function(result){$scope.lists=result,angular.forEach($scope.lists,function(list){list.title=list.name,list.description=list.name,listService.containsInList(dialogData.product.id,list.id).then(function(result){list.contains=result.contains})})}),listService.getSharedLists($scope.userName).then(function(result){$scope.sharedLists=result,angular.forEach($scope.sharedLists,function(list){list.title=list.name,list.description=list.name,listService.containsInList(dialogData.product.id,list.id).then(function(result){list.contains=result.contains})})})})}}]);var storefrontApp=angular.module("storefrontApp");storefrontApp.controller("recentlyCreateNewListDialogController",["$rootScope","$scope","$window","$uibModalInstance","accountApi","dialogData","listService","$localStorage","loadingIndicatorService","$translate",function($rootScope,$scope,$window,$uibModalInstance,accountApi,dialogData,listService,$localStorage,loader,$translate){dialogData.sharedLink?$scope.sharedLink=dialogData.sharedLink:($scope.dialogData=dialogData.lists,$scope.userName=dialogData.userName,$scope.inProgress=!1,$scope.data=$scope.listName,$scope.selectedTab=dialogData.selectedTab),$scope.createList=function(){"public"!=$scope.dialogData.permission&&($scope.dialogData.permission="private"),$scope.dialogData.id=Math.floor(0x3345bd31e7f4940*Math.random()+1).toString(),accountApi.getCurrentUser().then(function(user){$scope.userName=user.data.userName,listService.getWishlist($scope.dialogData.listName,$scope.dialogData.permission,$scope.dialogData.id,user.data.userName),$uibModalInstance.close()})},$scope.setDefault=function(list){_.each($scope.dialogData,function(x){x.default=list===x})},$scope.removeList=function(list){"friendsLists"===$scope.selectedTab?loader.wrapLoading(function(){return listService.removeFromFriendsLists(list.id,$scope.userName).then(function(){})}):listService.clearList(list.id,$scope.userName),$uibModalInstance.close(),document.location.reload()},$scope.selectedList=function(listName){var items=listService.getWishlist(listName,"","",$scope.userName).items;$scope.selectedList.items=items},$scope.submitSettings=function(){angular.forEach(dialogData.lists,function(list){list.delete&&$scope.removeList(list)}),$uibModalInstance.close()},$scope.close=function(){$uibModalInstance.close()},$scope.redirect=function(url){$window.location=url}}]),angular.module("storefrontApp").directive("vaPermission",["storefrontApp.mainContext",function(mainContext){return{link:function(scope,element,attrs){function checkPermission(user,permission,securityScopes){var hasPermission=user.isAdministrator;return!hasPermission&&permission&&(permission=permission.trim(),!(hasPermission=$.inArray(permission,user.permissions)>-1)&&securityScopes&&("string"==typeof securityScopes||angular.isArray(securityScopes))&&(securityScopes=angular.isArray(securityScopes)?securityScopes:securityScopes.split(","),hasPermission=_.some(securityScopes,function(x){var permissionWithScope=permission+":"+x;return $.inArray(permissionWithScope,user.permissions)>-1}))),hasPermission}function toggleVisibilityBasedOnPermission(securityScopes){checkPermission(mainContext.user,permissionValue,securityScopes)?angular.element(element).show():angular.element(element).hide()}if(attrs.vaPermission){var permissionValue=attrs.vaPermission.trim();scope.$watch(attrs.securityScopes,function(value){value&&toggleVisibilityBasedOnPermission(value)}),toggleVisibilityBasedOnPermission(),scope.$on("loginStatusChanged",toggleVisibilityBasedOnPermission)}}}}]);
->>>>>>> sprint-1
+
 //# sourceMappingURL=account-scripts.js.map
