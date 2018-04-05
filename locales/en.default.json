@@ -674,7 +674,18 @@
         },
         "lists": {
             "title": "Lists"
-        }
+        },
+        "invite": {
+            "title": "Activate account",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "email": "Email",
+            "user_name": "User Name",
+            "password": "Password",
+            "confirm_password": "Confirm Password",
+            "submit": "Activate",
+            "confirmation": "Account successfully activated"
+        } 
     },
     "homepage": {
         "featured_collections": {
