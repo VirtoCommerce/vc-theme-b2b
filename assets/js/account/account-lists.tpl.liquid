@@ -1,4 +1,4 @@
-<div base-url="baseUrl" id="account-lists.tpl.liquid" type="text/ng-template" ng-init='$ctrl.listPreSetting({{ settings.available_lists | json }})' data='data'>
+﻿<div base-url="baseUrl" id="account-lists.tpl.liquid" type="text/ng-template" ng-init='$ctrl.listPreSetting({{ settings.available_lists | json }})' data='data'>
     <p ng-if="$ctrl.accountLists.lists.length==0">{{'wishlist.general.emptyData' | t}}</p>
     <ul class="nav nav-tab lists-navBar-clearfix">
         <li ng-if="$ctrl.accountLists.lists.length!=0" style="display: -webkit-box;" class="lists-settings" ng-click="$ctrl.accountLists.listSettings()">

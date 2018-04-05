@@ -1,4 +1,4 @@
-angular.module('storefrontApp')
+﻿angular.module('storefrontApp')
     .component('vcAccountLists', {
         templateUrl: "lists-manager.tpl",
         $routeConfig: [
@@ -6,11 +6,11 @@ angular.module('storefrontApp')
             { path: '/friendsLists', name: 'FriendsLists', component: 'vcAccountFriendsLists' },
             { path: '/myLists', name: 'MyLists', component: 'vcAccountMyLists', useAsDefault: true }
         ],
-        controller: ['listService', '$rootScope', '$location', 'customerService', 'cartService', '$translate', 'loadingIndicatorService', '$timeout', 'dialogService', '$localStorage', function (listService, $rootScope, $location, customerService, cartService, $translate, loader, $timeout, dialogService, $localStorage) {
+        controller: ['listService', '$rootScope', '$location', 'accountApi', 'cartService', '$translate', 'loadingIndicatorService', '$timeout', 'dialogService', '$localStorage', function (listService, $rootScope, $location, accountApi, cartService, $translate, loader, $timeout, dialogService, $localStorage) {
         	var $ctrl = this;
 
             $ctrl.getCustomer = function () {
-                customerService.getCurrentCustomer().then(function (user) {
+                accountApi.getCurrentUser().then(function (user) {
                     $ctrl.userName = user.data.userName;
                     $ctrl.initialize();
                 })
@@ -119,14 +119,14 @@ angular.module('storefrontApp')
         }]
     })
     .component('vcAccountMyLists', {
-        templateUrl: 'themes/assets/js/lists/account-lists.tpl.liquid',
+        templateUrl: 'themes/assets/js/account/account-lists.tpl.liquid',
         require: {
             accountLists: '^^vcAccountLists'
         },
-        controller: ['$rootScope', 'listService', 'customerService', 'loadingIndicatorService', '$timeout', 'accountDialogService', '$localStorage', function ($rootScope, listService, customerService, loader, $timeout, dialogService, $localStorage) {
+        controller: ['$rootScope', 'listService', 'accountApi', 'loadingIndicatorService', '$timeout', 'accountDialogService', '$localStorage', function ($rootScope, listService, accountApi, loader, $timeout, dialogService, $localStorage) {
 			var $ctrl = this;
 			$ctrl.listPreSetting = function (lists) {
-				customerService.getCurrentCustomer().then(function (user) {
+                accountApi.getCurrentUser().then(function (user) {
 					var userName = user.data.userName;
 					loader.wrapLoading(function () {
 						return listService.getOrCreateMyLists(userName, lists).then(function (result) {
@@ -141,16 +141,16 @@ angular.module('storefrontApp')
         }]
     })
     .component('vcAccountFriendsLists', {
-        templateUrl: "themes/assets/js/lists/account-lists.tpl.liquid",
+        templateUrl: "themes/assets/js/account/account-lists.tpl.liquid",
         require: {
             accountLists: '^^vcAccountLists'
         },
-        controller: ['$rootScope', 'listService', '$location', 'customerService', 'loadingIndicatorService', '$timeout', 'accountDialogService', '$localStorage', function ($rootScope, listService, $location, customerService, loader, $timeout, dialogService, $localStorage) {
+        controller: ['$rootScope', 'listService', '$location', 'accountApi', 'loadingIndicatorService', '$timeout', 'accountDialogService', '$localStorage', function ($rootScope, listService, $location, accountApi, loader, $timeout, dialogService, $localStorage) {
             var $ctrl = this;
 
             function checkLocation() {
                 var sharedCartId = $location.search().id.toString();
-                customerService.getCurrentCustomer().then(function (user) {
+                accountApi.getCurrentUser().then(function (user) {
                     var userName = user.data.userName;
 				    var myLists = listService.getOrCreateMyLists(userName);
 					loader.wrapLoading(function () {

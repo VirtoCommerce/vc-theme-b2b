@@ -1,6 +1,6 @@
-var storefrontApp = angular.module('storefrontApp');
+﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', 'listService', '$translate', '$localStorage', 'customerService', function ($scope, $window, $uibModalInstance, dialogData, listService, $translate, $localStorage, customerService) {
+storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', 'listService', '$translate', '$localStorage', 'accountApi', function ($scope, $window, $uibModalInstance, dialogData, listService, $translate, $localStorage, accountApi) {
     $scope.availableLists = [];
     $scope.selectedList = {};
     dialogData.product.imageUrl = dialogData.product.primaryImage.url;
@@ -38,7 +38,7 @@ storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$w
     }
 
     $scope.initialize = function (lists) {
-        customerService.getCurrentCustomer().then(function (user) {
+        accountApi.getCurrentUser().then(function (user) {
             $scope.userName = user.data.userName;
 			listService.getOrCreateMyLists($scope.userName, lists).then(function (result) {
                 $scope.lists = result;

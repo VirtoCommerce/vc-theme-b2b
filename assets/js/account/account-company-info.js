@@ -4,23 +4,21 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefrontApp.mainContext', '$scope', '$translate', 'accountService', 'loadingIndicatorService', 'confirmService', function (mainContext, $scope, $translate, accountService, loader, confirmService) {
+    controller: ['storefrontApp.mainContext', '$scope', '$translate', 'accountApi', 'loadingIndicatorService', 'confirmService', function (mainContext, $scope, $translate, accountApi, loader, confirmService) {
         var $ctrl = this;
         $ctrl.loader = loader;
 
         function refresh() {
             loader.wrapLoading(function () {
-                return accountService.getUserOrganization().then(function (response) {
+                return accountApi.getUserOrganization().then(function (response) {
                     $ctrl.company = response.data;
                 });
             });
         };
 
-      
-
         $ctrl.updateCompanyInfo = function (company) {
             return loader.wrapLoading(function () {
-                return accountService.updateUserOrganization(company).then(function () { refresh(); });
+                return accountApi.updateUserOrganization(company).then(function () { refresh(); });
             });
         };
 
@@ -69,5 +67,7 @@
         $ctrl.removeComponent = function (component) {
             components = _.without(components, component);
         };
+
+        refresh();
     }]
 });

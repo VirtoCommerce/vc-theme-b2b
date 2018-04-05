@@ -28,7 +28,10 @@
             <span class="form-error" ng-if="($ctrl.form.ConfirmPassword.$dirty || $ctrl.form.$submitted) && $ctrl.form.ConfirmPassword.$error.required" ng-bind="$ctrl.requiredError || '{{ 'common.required' | t }}'"></span>
             <span class="form-error" ng-if="($ctrl.form.ConfirmPassword.$dirty || $ctrl.form.$submitted) && !$ctrl.form.ConfirmPassword.$error.required && $ctrl.form.ConfirmPassword.$invalid && $ctrl.form.ConfirmPassword.$error.confirmPasswordValidation">{{ 'common.not_match' | t }}</span>
         </div>
-                
-        <vc-roles value="$ctrl.member.roles[0]" form="$ctrl.form" name="Roles" required="$ctrl.requiredField('Roles')" ng-if="$ctrl.showField('Roles')" disabled="$ctrl.disableField('Roles')"></vc-roles>
+        <div class="form-group form-select">
+            <select ng-model="$ctrl.member.role" ng-options="x as x for x in $ctrl.availableRoles" name="Roles" required="required" class="form-input" size="1">
+                <option value="">Please select role</option>
+            </select>
+        </div>        
     </div>
 </form>

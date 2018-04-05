@@ -4,7 +4,7 @@
 		bindings: {
 			selectedVariation: '<'
 		},
-		controller: ['customerService', 'listService', 'dialogService', function (customerService, listService, dialogService) {
+        controller: ['accountApi', 'listService', 'dialogService', function (accountApi, listService, dialogService) {
 			var $ctrl = this;
 			$ctrl.$onInit = function () {
 				compareProductInLists();
@@ -12,7 +12,7 @@
 
 			function compareProductInLists() {
 				$ctrl.buttonInvalid = true;
-			    customerService.getCurrentCustomer().then(function(user) {
+                accountApi.getCurrentUser().then(function(user) {
 			        listService.getOrCreateMyLists(user.data.userName, $ctrl.lists).then(function(result) {
 			            $ctrl.lists = result;
 			            angular.forEach($ctrl.lists, function(list) {

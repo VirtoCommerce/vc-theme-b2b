@@ -28,7 +28,7 @@
     "angular-ui-router": "^1.0.6",
     "bootstrap-sass": "^3.3.7",
     "bootstrap-social": "^5.1.1",
-    "bootstrap-toc": "^0.4.1", 
+    "bootstrap-toc": "^0.4.1",
     "es5-shim": "*",
     "es6-shim": "*",
     "font-awesome": "^4.7.0",
@@ -37,7 +37,6 @@
     "ngstorage": "^0.3.11",
     "polyfills": "*",
     "prism": "^1.8.4",
-    "satellizer": "^0.15.5",
     "underscore": "^1.8.3"
   },
   "license": "MIT",
@@ -52,9 +51,9 @@
     "node_modules",
     "bower_components"
   ],
-    "resolutions": {
+  "resolutions": {
     "angular": "~1.5.7",
-        "angular-animate": "~1.5.7",
+    "angular-animate": "~1.5.7",
     "font-awesome": "~4.7"
-    }
+  }
 }
