@@ -1039,8 +1039,8 @@ angular.module('storefront.account')
 
 var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'loadingIndicatorService', 'vcRecaptchaService', 'commonService', 'accountApi',
-    function ($q, $scope, mainContext, loader, vcRecaptchaService, commonService, accountApi) {
+storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'loadingIndicatorService', 'vcRecaptchaService', 'commonService',
+    function ($q, $scope, mainContext, loader, vcRecaptchaService, commonService) {
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.finished = false;
@@ -1183,56 +1183,6 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                 // });
             }
         };
-
-        $scope.submit = function () {
-            $scope.errors = null;
-            $ctrl.error = {};
-            var hasError = false;
-            var member = $scope.member;
-            var errorMsg = member.password.length < 5;
-            $ctrl.error.password = errorMsg;
-            hasError = hasError || errorMsg;
-
-            if (!hasError) {
-                errorMsg = member.password !== member.confirmPassword;
-                $ctrl.error.confirmPassword = errorMsg;
-                hasError = hasError || errorMsg;
-            }
-
-            if (!hasError) {
-                populateRegionalDataForAddress(member.address);
-                //member.address.name = addressService.stringify(member.address);
-
-                $ctrl.loader.wrapLoading(function () {
-                    return accountApi.registerNewUser(member).then(function(result) {
-                        if (!result.data.succeeded) {
-                            var errors = _.map(result.data.errors, function(currentObject) {
-                                return currentObject["description"];
-                            });    
-                            $scope.errors = errors;
-                        } else {
-                            $scope.outerRedirect($scope.baseUrl);
-                        }
-                    });
-                    // var urlParam, apiMethodToCall;
-                    // if (member.invite) {
-                    //     urlParam = { invite: member.invite };
-                    //     apiMethodToCall = corporateRegisterApi.registerByInvite;
-                    // } else {
-                    //     apiMethodToCall = $scope.isOrg() ? accountService.registerNewUser : corporateRegisterApi.registerPersonal;
-                    // }
-
-                    // return apiMethodToCall(urlParam, member, function (result) {
-                    //     $scope.$parent.userName = member.username;
-                    //     $scope.$parent.password = member.password;
-                    //     $scope.login();
-                    // }, function (rejection) {
-                    //     vcRecaptchaService.reload();
-                    //     corporateApiErrorHelper.handleErrors($scope, rejection);
-                    // }).$promise;
-                });
-            }
-        }
 
         $scope.setForm = function (form) { $ctrl.formScope = form; };
 
