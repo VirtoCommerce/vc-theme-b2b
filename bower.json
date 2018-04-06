@@ -33,7 +33,7 @@
     "es6-shim": "*",
     "font-awesome": "^4.7.0",
     "jquery": "^1.11.0",
-    "ng-wizard": "*",
+	"angular-wizard": "1.1.1",
     "ngstorage": "^0.3.11",
     "polyfills": "*",
     "prism": "^1.8.4",

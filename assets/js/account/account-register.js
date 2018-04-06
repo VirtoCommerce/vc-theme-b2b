@@ -4,6 +4,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
     function ($q, $scope, mainContext, loader, vcRecaptchaService, commonService) {
         var $ctrl = this;
         $ctrl.loader = loader;
+        $ctrl.finished = false;
         commonService.getCountries().then(function (response) {
             $ctrl.countries = response.data;
         });
@@ -113,8 +114,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
         }
 
         $scope.init = function (storeId) {
-            $scope.member = { storeId: storeId, type: 'Business', address: {} };
-
+            $scope.member = { storeId: storeId, type: 'Business', address: {}, email: null };
             var invite = getParams().invite;
             if (invite) {
                 //$scope.registerMemberFieldsConfig[0] = {
@@ -131,22 +131,30 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                 //};
 
                 $scope.member.invite = invite;
-                $ctrl.loader.wrapLoading(function () {
-                    return corporateRegisterApi.getRegisterInfoByInvite({ invite: invite }).$promise
-                        .then(function (result) {
-                            if (result.message) {
-                                $scope.error = result.message;
-                                return $q.reject("Invite is invalid");
-                            }
-                            $scope.member.companyName = result.companyName;
-                            $scope.member.email = result.email;
-                        });
-                });
+                // $ctrl.loader.wrapLoading(function () {
+                //     return accountApi.getRegisterInfoByInvite({ invite: invite }).$promise
+                //         .then(function (result) {
+                //             if (result.message) {
+                //                 $scope.error = result.message;
+                //                 return $q.reject("Invite is invalid");
+                //             }
+                //             $scope.member.companyName = result.companyName;
+                //             $scope.member.email = result.email;
+                //         });
+                // });
             }
         };
 
-        $scope.submit = function () {
-            //TODO: Find another solution to submit form without this
-            angular.element(document.querySelector('#create_customer')).submit();
+        $scope.setForm = function (form) { $ctrl.formScope = form; };
+
+        $scope.finishedWizard = function() {
+            $ctrl.finished = !$scope.create_customer.$invalid;
+            return $ctrl.finished;
+        };
+
+        $scope.exitValidation = function(){
+            var sc = $scope;
+            return true;
         }
+
     }]);
