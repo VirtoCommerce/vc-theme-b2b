@@ -18,7 +18,7 @@
             "bower_components/angular-translate/angular-translate.js",
             "bower_components/angular-translate-loader-url/angular-translate-loader-url.js",
             "bower_components/angular-component-router/angular_1_router.js",
-            "bower_components/ng-wizard/dist/ngWizard.js",
+            "bower_components/angular-wizard/dist/angular-wizard.js",
             "bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js",
             "bower_components/bootstrap-sass/assets/javascripts/bootstrap/scrollspy.js",
             "bower_components/bootstrap-toc/dist/bootstrap-toc.js",
@@ -55,7 +55,7 @@
         "outputFileName": "assets/static/bundle/styles.css",
         "inputFiles": [
             "bower_components/font-awesome/css/font-awesome.css",
-            "bower_components/ng-wizard/dist/ngWizard.css",
+            "bower_components/angular-wizard/dist/angular-wizard.css",
             "bower_components/bootstrap-toc/dist/bootstrap-toc.css",
             "bower_components/prism/themes/prism.css"
         ]

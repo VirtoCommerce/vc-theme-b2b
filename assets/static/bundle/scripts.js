@@ -4,9 +4,9 @@ var storefrontAppDependencies = [
     'ngSanitize',
     'ngAnimate',
     'ui.bootstrap',
-    'ngWizard',
     'vcRecaptcha',
-    'storefrontApp.consts'
+    'storefrontApp.consts',
+    'mgo-angular-wizard'
 ];
 var storefrontApp = angular.module('storefrontApp', storefrontAppDependencies);
 
@@ -53,7 +53,7 @@ storefrontApp.factory('themeInterceptor', ['$q', 'baseUrl', function ($q, baseUr
 }
 ]);
 
-storefrontApp.config(['$locationProvider', '$httpProvider', 'baseUrl', '$translateProvider', 'wizardConfigProviderProvider', 'vcRecaptchaServiceProvider', 'reCaptchaKey', function ($locationProvider, $httpProvider, baseUrl, $translateProvider, wizardConfigProvider, vcRecaptchaServiceProvider, reCaptchaKey) {
+storefrontApp.config(['$locationProvider', '$httpProvider', 'baseUrl', '$translateProvider', 'vcRecaptchaServiceProvider', 'reCaptchaKey', function ($locationProvider, $httpProvider, baseUrl, $translateProvider, vcRecaptchaServiceProvider, reCaptchaKey) {
     //$locationProvider.html5Mode({ enabled: true, requireBase: false, rewriteLinks: false });
     $httpProvider.interceptors.push('httpErrorInterceptor');
     $httpProvider.interceptors.push('themeInterceptor');
@@ -62,9 +62,9 @@ storefrontApp.config(['$locationProvider', '$httpProvider', 'baseUrl', '$transla
     $translateProvider.useUrlLoader(baseUrl + 'themes/localization.json');
     $translateProvider.preferredLanguage('en');
 
-    wizardConfigProvider.prevString = 'Back';
-    wizardConfigProvider.nextString = 'Continue';
-    wizardConfigProvider.submitString = 'Complete';
+    // wizardConfigProvider.prevString = 'Back';
+    // wizardConfigProvider.nextString = 'Continue';
+    // wizardConfigProvider.submitString = 'Complete';
 
     vcRecaptchaServiceProvider.setSiteKey(reCaptchaKey);
 }]);
@@ -1043,6 +1043,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
     function ($q, $scope, mainContext, loader, vcRecaptchaService, commonService, accountApi) {
         var $ctrl = this;
         $ctrl.loader = loader;
+        $ctrl.finished = false;
         commonService.getCountries().then(function (response) {
             $ctrl.countries = response.data;
         });
@@ -1232,6 +1233,19 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                 });
             }
         }
+
+        $scope.setForm = function (form) { $ctrl.formScope = form; };
+
+        $scope.finishedWizard = function() {
+            $ctrl.finished = !$scope.create_customer.$invalid;
+            return $ctrl.finished;
+        };
+
+        $scope.exitValidation = function(){
+            var sc = $scope;
+            return true;
+        }
+
     }]);
 
 angular.module('storefront.account')

@@ -1,13 +1,11 @@
-﻿ {% form 'customer_login' %}
+﻿{% form 'customer_login' %}
 
- <vc-errors message="errorMessage" errors="errors"></vc-errors>
+<vc-errors message="errorMessage" errors="errors"></vc-errors>
 
 <fieldset ng-keypress="login($event)">
 
     <div class="form-group">
         <div class="row">
-            {% comment %} <vc-labeled-input value="userName" form="customer_login" name="customer[user_name]" placeholder="{{ 'customer.sign-in.user_name' | t }}" required="true"></vc-labeled-input> {% endcomment %}
-            {% comment %} <vc-labeled-input value="password" form="customer_login" name="customer[password]" placeholder="{{ 'customer.sign-in.password' | t }}" type="password" required="true"></vc-labeled-input> {% endcomment %}
             <div class="col-md-12" ng-class="{'has-error': customer_login['customer[user_name]'].$invalid && !customer_login['customer[user_name]'].$pristine }">
                 <input class="form-control" ng-model="username" name="customer[user_name]" required placeholder="{{ 'customer.sign-in.user_name' | t }}" />
                 <span class="help-block text-danger" ng-show="!customer_login['customer[user_name]'].$pristine && customer_login['customer[user_name]'].$error.required">{{ 'common.required' | t }}</span>

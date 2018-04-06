@@ -4,9 +4,9 @@
     'ngSanitize',
     'ngAnimate',
     'ui.bootstrap',
-    'ngWizard',
     'vcRecaptcha',
-    'storefrontApp.consts'
+    'storefrontApp.consts',
+    'mgo-angular-wizard'
 ];
 var storefrontApp = angular.module('storefrontApp', storefrontAppDependencies);
 
@@ -53,7 +53,7 @@ storefrontApp.factory('themeInterceptor', ['$q', 'baseUrl', function ($q, baseUr
 }
 ]);
 
-storefrontApp.config(['$locationProvider', '$httpProvider', 'baseUrl', '$translateProvider', 'wizardConfigProviderProvider', 'vcRecaptchaServiceProvider', 'reCaptchaKey', function ($locationProvider, $httpProvider, baseUrl, $translateProvider, wizardConfigProvider, vcRecaptchaServiceProvider, reCaptchaKey) {
+storefrontApp.config(['$locationProvider', '$httpProvider', 'baseUrl', '$translateProvider', 'vcRecaptchaServiceProvider', 'reCaptchaKey', function ($locationProvider, $httpProvider, baseUrl, $translateProvider, vcRecaptchaServiceProvider, reCaptchaKey) {
     //$locationProvider.html5Mode({ enabled: true, requireBase: false, rewriteLinks: false });
     $httpProvider.interceptors.push('httpErrorInterceptor');
     $httpProvider.interceptors.push('themeInterceptor');
@@ -62,9 +62,9 @@ storefrontApp.config(['$locationProvider', '$httpProvider', 'baseUrl', '$transla
     $translateProvider.useUrlLoader(baseUrl + 'themes/localization.json');
     $translateProvider.preferredLanguage('en');
 
-    wizardConfigProvider.prevString = 'Back';
-    wizardConfigProvider.nextString = 'Continue';
-    wizardConfigProvider.submitString = 'Complete';
+    // wizardConfigProvider.prevString = 'Back';
+    // wizardConfigProvider.nextString = 'Continue';
+    // wizardConfigProvider.submitString = 'Complete';
 
     vcRecaptchaServiceProvider.setSiteKey(reCaptchaKey);
 }]);

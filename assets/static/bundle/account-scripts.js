@@ -2319,6 +2319,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
     function ($q, $scope, mainContext, loader, vcRecaptchaService, commonService, accountApi) {
         var $ctrl = this;
         $ctrl.loader = loader;
+        $ctrl.finished = false;
         commonService.getCountries().then(function (response) {
             $ctrl.countries = response.data;
         });
@@ -2508,6 +2509,19 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                 });
             }
         }
+
+        $scope.setForm = function (form) { $ctrl.formScope = form; };
+
+        $scope.finishedWizard = function() {
+            $ctrl.finished = !$scope.create_customer.$invalid;
+            return $ctrl.finished;
+        };
+
+        $scope.exitValidation = function(){
+            var sc = $scope;
+            return true;
+        }
+
     }]);
 
 angular.module('storefront.account')
