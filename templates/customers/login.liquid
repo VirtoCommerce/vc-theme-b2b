@@ -19,11 +19,9 @@
                         {% endfor %}
                     </ul>
                 </p>
-                <button class="btn btn-default" onclick="document.getElementById('customer_register_request').click()">
-                    <a class="hidden" href="{{ settings.registration_request_link | absolute_url}}" id="customer_register_request"></a>
-                    {{ 'layout.customer.register' | t }}
-                    {{ '' | customer_register_link | replace: 'a href', 'a class="hidden" href' }}
-                </button>
+                <div>
+                    {{ 'layout.customer.register' | t | customer_register_link | replace: 'a href', 'a class="btn btn-default" href' }}
+                </div>
             </div>
         </div>
     </aside>

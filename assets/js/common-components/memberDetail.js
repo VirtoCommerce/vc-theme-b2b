@@ -89,7 +89,7 @@ storefrontApp.directive('confirmPasswordValidation', function () {
         link: function (scope, elem, attr, ngModel) {
             ngModel.$parsers.unshift(function (value, scope) {
                 var isValid = true;
-                var password = ngModel.$$parentForm.Password.$viewValue;
+                var password = ngModel.$$parentForm['customer[password]'].$viewValue;
 
                 if (password) {
                     isValid = password === value;
