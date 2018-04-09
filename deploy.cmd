@@ -1,4 +1,5 @@
-﻿@if "%SCM_TRACE_LEVEL%" NEQ "4" @echo off
+@if "%SCM_TRACE_LEVEL%" NEQ "4" @echo off
+
 
 :: ----------------------
 :: KUDU Deployment Script
@@ -59,11 +60,13 @@ IF NOT DEFINED DEPLOYMENT_TEMP (
 :: Build to the temporary path
 set theme_target=%DEPLOYMENT_TEMP%\wwwroot\App_Data\cms-content\themes\B2B-store\default
 
+
 :: Copy all files form  wwwroot\*.* -> wwwroot\wwwroot\*.* site folder
 xcopy "%DEPLOYMENT_SOURCE%\wwwroot\*.*" "%DEPLOYMENT_TEMP%\wwwroot" /S /R /Y /I
 IF !ERRORLEVEL! NEQ 0 goto error
 
-:: Copy all files form  pages\*.* -> wwwroot\cms-content\themes\vccom\default 
+
+:: Copy all files form  themes\*.* -> wwwroot\cms-content\themes\B2B-store\default 
 xcopy "%DEPLOYMENT_SOURCE%\theme\*.*" "%theme_target%" /S /R /Y /I
 IF !ERRORLEVEL! NEQ 0 goto error
 

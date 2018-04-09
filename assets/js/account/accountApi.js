@@ -1,4 +1,4 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.service('accountApi', ['$http', function ($http) {
     return {
@@ -46,6 +46,15 @@ storefrontApp.service('accountApi', ['$http', function ($http) {
         },
         getUserOrderNewPaymentData: function (orderNumber) {
             return $http.get('storefrontapi/orders/' + orderNumber + '/newpaymentdata?t=' + new Date().getTime());
+        },
+        searchUserSubscriptions: function (searchCriteria) {
+            return $http.post('storefrontapi/subscriptions/search', searchCriteria);
+        },
+        getUserSubscription: function (number) {
+            return $http.get('storefrontapi/subscriptions/{number}', searchCriteria);
+        },
+        cancelUserSubscription: function (cancelRequest) {
+            return $http.post('storefrontapi/subscriptions/cancel', cancelRequest);
         },
         changeUserPassword: function (passwordChangeData) {
             return $http.post('storefrontapi/account/password', passwordChangeData);
