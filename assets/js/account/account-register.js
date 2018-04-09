@@ -5,8 +5,6 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.finished = false;
-        $ctrl.steps = [];
-        $ctrl.current_Step = null;
         commonService.getCountries().then(function (response) {
             $ctrl.countries = response.data;
         });
@@ -90,17 +88,9 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
 
         $scope.init = function (storeId) {
             $scope.member = { storeId: storeId, type: 'Business', address: {}, email: null };
-            $scope.stepTwoForm = { };
-            $scope.stepThreeForm = { };
         };
 
         $scope.setForm = function (form) { $ctrl.formScope = form; };
-
-        $scope.addStepForm = function (form) { 
-            if (form && !_.contains($ctrl.steps, form)) {
-                $ctrl.steps.push(form);
-            }
-        };
 
         $scope.finishedWizard = function() {
             $ctrl.finished = !$scope.create_customer.$invalid;
@@ -108,22 +98,21 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
         };
 
         $scope.stepValidation = function(){
-            var sc = $scope;
             var form = $scope.create_customer;
             var stepNumber = WizardHandler.wizard().currentStepNumber();
             var myElement = angular.element( document.querySelector( '#step'+ stepNumber ) );
-            var valid = true;
+            var result = true;
             angular.forEach(myElement.find('input'), function(node){ 
-                if (valid && node.name) {
+                if (result && node.name) {
                     var prop = form[node.name];
                     if (((prop.$dirty || form.$submitted) && prop.$error.required) ||
                         ((prop.$dirty || form.$submitted) && !prop.$error.required && prop.$invalid) ||
                         (prop.$pristine && prop.$invalid)) {
-                        valid = false;
+                            result = false;
                     }
                 }
             });
-            return valid;
+            return result;
         }
 
     }]);
