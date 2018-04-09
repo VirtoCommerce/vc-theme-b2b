@@ -17,7 +17,7 @@
         
         {% form 'create_customer' %}
             {% include 'form-errors-custom' %}
-            <wizard on-finish="finishedWizard()"> 
+            <wizard on-finish="finishedWizard()" template="themes/assets/wizard.html"> 
                 <wz-step wz-title="{{ 'customer.register.step-personal' | t }}" canexit="exitValidation">
                     <h1>{{ 'customer.register.step-personal' | t }}</h1>
                     <div class="form-group" >
@@ -66,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-                    <input type="submit" class="btn btn-primary" wz-next value="Continue" />
+                    <input type="submit" class="btn btn-primary pull-right" wz-next value="Continue" />
                 </wz-step>
                 <wz-step wz-title="{{ 'customer.register.step-address' | t }}">
                     <h1>{{ 'customer.register.step-address' | t }}</h1>
@@ -128,7 +128,8 @@
                             </div>
                         </div>
                     </div>
-                    <input type="submit" class="btn btn-primary" wz-next value="Continue" />
+                    <input type="submit" class="btn btn-primary pull-right" wz-next value="Continue" />
+                    <input type="submit" class="btn btn-alt" wz-previous value="Back" />
                 </wz-step>
                 <wz-step wz-title="{{ 'customer.register.step-account' | t }}">
                     <h1>{{ 'customer.register.step-account' | t }}</h1>
@@ -155,8 +156,8 @@
                             </div>
                         </div>
                     </div>
-                    <input type="submit" class="btn btn-primary" wz-next value="Complete" ng-disabled="$ctrl.finished"/>
-                    <input type="submit" class="btn btn-primary" value="Submit" ng-disabled="!$ctrl.finished">
+                    <input type="submit" class="btn btn-primary pull-right" value="Submit" ng-disabled="create_customer.$invalid"/>
+                    <input type="submit" class="btn btn-alt" wz-previous value="Back"/>
                 </wz-step>
             </wizard>
         {% endform %}

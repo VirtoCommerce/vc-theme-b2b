@@ -3128,19 +3128,6 @@ storefrontApp.service('searchQueryService', ['$location', function ($location) {
     }
 }]);
 
-angular.module('storefrontApp')
-.controller('universalDialogController', ['$scope', '$uibModalInstance', 'dialogData', function ($scope, $uibModalInstance, dialogData) {
-    angular.extend($scope, dialogData);
-
-    $scope.close = function (result) {
-        if (result) {
-            $uibModalInstance.close(result);
-        } else {
-            $uibModalInstance.dismiss('cancel');
-        }
-    }
-}]);
-
 var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.component('vcCoupon', {
@@ -3246,6 +3233,19 @@ storefrontApp.component('vcTotals', {
         };
     }]
 });
+
+angular.module('storefrontApp')
+.controller('universalDialogController', ['$scope', '$uibModalInstance', 'dialogData', function ($scope, $uibModalInstance, dialogData) {
+    angular.extend($scope, dialogData);
+
+    $scope.close = function (result) {
+        if (result) {
+            $uibModalInstance.close(result);
+        } else {
+            $uibModalInstance.dismiss('cancel');
+        }
+    }
+}]);
 
 var storefrontApp = angular.module('storefrontApp');
 
