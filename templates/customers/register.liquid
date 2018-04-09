@@ -17,7 +17,7 @@
         
         {% form 'create_customer' %}
             {% include 'form-errors-custom' %}
-            <wizard on-finish="finishedWizard()" indicators-position="top" current-step="$ctrl.current_Step"> 
+            <wizard on-finish="finishedWizard()" indicators-position="top"> 
                 <wz-step wz-title="{{ 'customer.register.step-personal' | t }}" canexit="stepValidation">
                     <div id="step1">
                         <h1>{{ 'customer.register.step-personal' | t }}</h1>
@@ -166,7 +166,6 @@
                     <input type="submit" class="btn btn-alt" wz-previous value="Back"/>
                 </wz-step>
             </wizard>
-            <div> Current Step: <span ng-bind="$ctrl.current_Step"></span></div>
         {% endform %}
     </div>
     </div>
