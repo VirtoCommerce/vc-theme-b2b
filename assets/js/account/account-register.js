@@ -1,11 +1,12 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'loadingIndicatorService', 'vcRecaptchaService', 'commonService',
-    function ($q, $scope, mainContext, loader, vcRecaptchaService, commonService) {
+storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'loadingIndicatorService', 'vcRecaptchaService', 'commonService', 'WizardHandler',
+    function ($q, $scope, mainContext, loader, vcRecaptchaService, commonService, WizardHandler) {
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.finished = false;
         $ctrl.steps = [];
+        $ctrl.current_Step = null;
         commonService.getCountries().then(function (response) {
             $ctrl.countries = response.data;
         });
@@ -74,33 +75,6 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
             return stringifiedAddress;
         }
 
-        //$scope.registerMemberFieldsConfig = [
-        //    {
-        //        field: 'CompanyName',
-        //        disabled: false,
-        //        visible: true,
-        //        required: true
-        //    },
-        //    {
-        //        field: 'Email',
-        //        disabled: false,
-        //        visible: true,
-        //        required: true
-        //    },
-        //    {
-        //        field: 'UserName',
-        //        disabled: false,
-        //        visible: true,
-        //        required: true
-        //    },
-        //    {
-        //        field: 'Password',
-        //        disabled: false,
-        //        visible: true,
-        //        required: true
-        //    }
-        //];
-
         function getParams() {
             var params = window.location.search.substring(1).split("&"), result = {}, param, i;
             for (i in params) {
@@ -116,34 +90,8 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
 
         $scope.init = function (storeId) {
             $scope.member = { storeId: storeId, type: 'Business', address: {}, email: null };
-            var invite = getParams().invite;
-            if (invite) {
-                //$scope.registerMemberFieldsConfig[0] = {
-                //    field: 'CompanyName',
-                //    disabled: true,
-                //    visible: true,
-                //    required: true
-                //};
-                //$scope.registerMemberFieldsConfig[1] = {
-                //    field: 'Email',
-                //    disabled: true,
-                //    visible: true,
-                //    required: true
-                //};
-
-                $scope.member.invite = invite;
-                // $ctrl.loader.wrapLoading(function () {
-                //     return accountApi.getRegisterInfoByInvite({ invite: invite }).$promise
-                //         .then(function (result) {
-                //             if (result.message) {
-                //                 $scope.error = result.message;
-                //                 return $q.reject("Invite is invalid");
-                //             }
-                //             $scope.member.companyName = result.companyName;
-                //             $scope.member.email = result.email;
-                //         });
-                // });
-            }
+            $scope.stepTwoForm = { };
+            $scope.stepThreeForm = { };
         };
 
         $scope.setForm = function (form) { $ctrl.formScope = form; };
@@ -161,8 +109,21 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
 
         $scope.stepValidation = function(){
             var sc = $scope;
-            var step = WizardHandler.wizard().currentStepNumber();
-            return true;
+            var form = $scope.create_customer;
+            var stepNumber = WizardHandler.wizard().currentStepNumber();
+            var myElement = angular.element( document.querySelector( '#step'+ stepNumber ) );
+            var valid = true;
+            angular.forEach(myElement.find('input'), function(node){ 
+                if (valid && node.name) {
+                    var prop = form[node.name];
+                    if (((prop.$dirty || form.$submitted) && prop.$error.required) ||
+                        ((prop.$dirty || form.$submitted) && !prop.$error.required && prop.$invalid) ||
+                        (prop.$pristine && prop.$invalid)) {
+                        valid = false;
+                    }
+                }
+            });
+            return valid;
         }
 
     }]);
