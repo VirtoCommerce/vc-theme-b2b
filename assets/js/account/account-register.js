@@ -5,6 +5,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
         var $ctrl = this;
         $ctrl.loader = loader;
         $ctrl.finished = false;
+        $ctrl.steps = [];
         commonService.getCountries().then(function (response) {
             $ctrl.countries = response.data;
         });
@@ -147,13 +148,20 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
 
         $scope.setForm = function (form) { $ctrl.formScope = form; };
 
+        $scope.addStepForm = function (form) { 
+            if (form && !_.contains($ctrl.steps, form)) {
+                $ctrl.steps.push(form);
+            }
+        };
+
         $scope.finishedWizard = function() {
             $ctrl.finished = !$scope.create_customer.$invalid;
             return $ctrl.finished;
         };
 
-        $scope.exitValidation = function(){
+        $scope.stepValidation = function(){
             var sc = $scope;
+            var step = WizardHandler.wizard().currentStepNumber();
             return true;
         }
 
