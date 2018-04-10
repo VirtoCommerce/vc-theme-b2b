@@ -1,17 +1,16 @@
-﻿{% layout settings.customer_layout %}
-<main class="main" role="main">
-    <div ng-if="$ctrl.loader.isLoading" class="loader">
-        <div class="indicator"></div>
-    </div>
+{% layout settings.customer_layout %}
+<main class="main">
     <aside class="container">
         <vc-account-manager base-url="baseUrl" customer="customer"></vc-account-manager>
     </aside>
 </main>
 
 <script id="account-manager.tpl" type="text/ng-template">
+    <div ng-if="$ctrl.loader.isLoading" class="loader">
+        <div class="indicator"></div>
+    </div>
     <div class="row">
-        <div class="col-xs-12">
-            <!--{% include 'toggle-dashboard' %}-->
+        <div class="col-xs-12" ng-class="{'loading': $ctrl.loader.isLoading }">
             <div class="row">
                 <div class="col-xs-4 col-sm-2">
                     <div class="row">
@@ -68,6 +67,6 @@
                     <ng-outlet></ng-outlet>
                 </div>
             </div>
-         </div>
+        </div>
     </div>
 </script>

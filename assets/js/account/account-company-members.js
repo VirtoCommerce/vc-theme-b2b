@@ -1,4 +1,4 @@
-﻿angular.module('storefront.account')
+angular.module('storefront.account')
 .component('vcAccountCompanyMembers', {
     templateUrl: "themes/assets/account-company-members.tpl.liquid",
     $routeConfig: [
@@ -27,9 +27,9 @@
                     skip: ($ctrl.pageSettings.currentPage - 1) * $ctrl.pageSettings.itemsPerPageCount,
                     take: $ctrl.pageSettings.itemsPerPageCount,
                     sortInfos: $ctrl.sortInfos
-                }).then(function (response) {
-                    $ctrl.entries = response.data.results;
-                    $ctrl.pageSettings.totalItems = response.data.totalCount;
+                     }).then(function (response) {
+                         $ctrl.entries = response.data.results;
+                         $ctrl.pageSettings.totalItems = response.data.totalCount;
                 });
             });
         };

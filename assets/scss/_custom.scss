@@ -1,4 +1,4 @@
-﻿@import "mixins/custom/_grid-framework.scss";
+@import "mixins/custom/_grid-framework.scss";
 @import "mixins/custom/_grid.scss";
 @import "mixins/custom/_buttons.scss";
 @import "mixins/custom/_button-groups.scss";
@@ -27,7 +27,14 @@ header {
   .navbar-default {
     border-color: $brand-primary;
     border-width: 4px 0 0 0;
+    position:relative;
+    z-index: 9999;
   }
+}
+
+footer {
+    position: relative;
+    z-index: 9999;
 }
 
 #all-products-popover + .popover {
@@ -39,7 +46,8 @@ header {
 }
 
 main {
-  margin-top: $navbar-margin-bottom;
+  padding-top: $navbar-margin-bottom;
+  position: relative;
 
   @media (max-width: $screen-sm-max) {
     .navbar-fixed-top + .navbar-fixed-top + & {
@@ -51,7 +59,7 @@ main {
     }
   }
 
-  margin-bottom: $navbar-margin-top;
+  padding-bottom: $navbar-margin-top;
 }
 
 .mobile-app {
