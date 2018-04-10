@@ -1,4 +1,4 @@
-﻿{% layout settings.customer_layout %}
+{% layout settings.customer_layout %}
 {% include 'third-party/ngWizardTemplate' %}
 
 <main class="container" role="main">
@@ -142,7 +142,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-12" ng-class="{'has-error': create_customer['customer[user_name]'].$invalid && !create_customer['customer[user_name]'].$pristine }">
-                                <input class="form-control" ng-model="member.username" name="customer[user_name]" required placeholder="{{ 'customer.register.user_name' | t }}" />
+                                <input class="form-control" value="{{ form.UserName }}"   name="customer[user_name]" required placeholder="{{ 'customer.register.user_name' | t }}" />
                                 <span class="text-danger" ng-style="{'visibility': !create_customer['customer[user_name]'].$pristine && create_customer['customer[user_name]'].$error.required ?'visible':'hidden'}">{{ 'common.required' | t }}</span>
                             </div>
                         </div>

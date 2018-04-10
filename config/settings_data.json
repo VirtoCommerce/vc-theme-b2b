@@ -1,4 +1,4 @@
-﻿{
+{
     "current": "B2B",
     "presets": {
         "B2B": {
@@ -43,8 +43,7 @@
             "pickup_shipping_method": "FixedRate",
 
             "available_roles": [
-                "Corporate administrator",
-                "Corporate manager",
+                "Organization maintainer",
                 "Employee"
             ],
             "bulk_order_enabled": true,
