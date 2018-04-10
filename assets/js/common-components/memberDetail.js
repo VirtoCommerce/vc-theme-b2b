@@ -1,4 +1,4 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 storefrontApp.component('vcMemberDetail', {
     templateUrl: "themes/assets/memberDetail.tpl.html",
     bindings: {

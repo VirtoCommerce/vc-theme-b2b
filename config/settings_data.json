@@ -41,11 +41,6 @@
             "product_list_capacity": "16",
             "product_list_capacity_steps": "3",
             "pickup_shipping_method": "FixedRate",
-
-            "available_roles": [
-                "Organization maintainer",
-                "Employee"
-            ],
             "bulk_order_enabled": true,
             "product_compare_enabled": true,
             "product_compare_list_capacity": 4,
