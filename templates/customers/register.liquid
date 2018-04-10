@@ -1,4 +1,4 @@
-﻿{% layout settings.customer_layout %}
+{% layout settings.customer_layout %}
 {% include 'third-party/ngWizardTemplate' %}
 
 <main class="container" role="main">
@@ -35,11 +35,11 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-6" ng-class="{'has-error': create_customer['customer[first_name]'].$invalid && !create_customer['customer[first_name]'].$pristine }">
-                                <input ng-model="member.firstName" class="form-control" name="customer[first_name]" type="text" required placeholder="{{ 'customer.register.first_name' | t }}" />
+                                <input value="{{ form.FirstName }}" class="form-control" name="customer[first_name]" type="text" required placeholder="{{ 'customer.register.first_name' | t }}" />
                                 <span class="help-block text-danger" ng-show="!create_customer['customer[first_name]'].$pristine && create_customer['customer[first_name]'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
                             <div class="col-md-6" ng-class="{'has-error': create_customer['customer[last_name]'].$invalid && !create_customer['customer[last_name]'].$pristine }">
-                                <input ng-model="member.lastName" class="form-control" name="customer[last_name]" type="text" required placeholder="{{ 'customer.register.last_name' | t }}" />
+                                <input  class="form-control" value="{{ form.LastName }}"  name="customer[last_name]" type="text" required placeholder="{{ 'customer.register.last_name' | t }}" />
                                 <span class="help-block text-danger" ng-show="!create_customer['customer[last_name]'].$pristine && create_customer['customer[last_name]'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
                         </div>
@@ -47,13 +47,13 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-6" ng-class="{'has-error': create_customer['customer[email]'].$invalid && !create_customer['customer[email]'].$pristine }">
-                                <input class="form-control" ng-model="member.email" name="customer[email]" type="email" required placeholder="{{ 'customer.register.email-work' | t }}" ng-if="isOrg()" />
-                                <input class="form-control" ng-model="member.email" name="customer[email]" type="email" required placeholder="{{ 'customer.register.email' | t }}" ng-if="!isOrg()" />
+                                <input class="form-control" value="{{ form.Email }}"  name="customer[email]" type="email" required placeholder="{{ 'customer.register.email-work' | t }}" ng-if="isOrg()" />
+                                <input class="form-control" value="{{ form.Email }}"  name="customer[email]" type="email" required placeholder="{{ 'customer.register.email' | t }}" ng-if="!isOrg()" />
                                 <span class="help-block text-danger" ng-show="create_customer['customer[email]'].$invalid && !create_customer['customer[email]'].$pristine">{{ 'common.invalid' | t }}</span>
                                 <span class="help-block text-danger" ng-show="!create_customer['customer[email]'].$pristine && create_customer['customer[email]'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
                             <div class="col-md-6" ng-class="{'has-error': create_customer['customer[address].phone'].$invalid && !create_customer['customer[address].phone'].$pristine }">
-                                <input class="form-control" ng-model="member.phone" name="customer[address].phone" type="tel" required ng-pattern="/^[0-9]{1,12}$/" placeholder="{{ 'customer.register.phone' | t }}" />
+                                <input class="form-control" value="{{ form.Address.Phone }}" name="customer[address].phone" type="tel" required ng-pattern="/^[0-9]{1,12}$/" placeholder="{{ 'customer.register.phone' | t }}" />
                                 <span class="help-block text-danger" ng-show="create_customer['customer[address].phone'].$invalid && !create_customer['customer[address].phone'].$pristine">{{ 'common.invalid' | t }}</span>
                                 <span class="help-block text-danger" ng-show="!create_customer['customer[address].phone'].$pristine && create_customer['customer[address].phone'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
@@ -73,7 +73,7 @@
                     <div class="form-group">
                         <div class="row" ng-if="isOrg()">
                             <div class="col-md-12" ng-class="{'has-error': create_customer['customer[organization_name]'].$invalid && !create_customer['customer[organization_name]'].$pristine }">
-                                <input ng-model="member.companyName" class="form-control" name="customer[organization_name]" type="text" required placeholder="{{ 'customer.register.company_name' | t }}" />
+                                <input value="{{ form.OrganizationName }}" class="form-control" name="customer[organization_name]" type="text" required placeholder="{{ 'customer.register.company_name' | t }}" />
                                 <span class="help-block text-danger" ng-show="!create_customer['customer[organization_name]'].$pristine && create_customer['customer[organization_name]'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
                         </div>
@@ -95,7 +95,7 @@
                             <div class="col-md-6" ng-if="member.address.country.regions.length">
                                 <div class="form-group form-select" ng-class="{'keyuped': member.address.regionId.length }">
                                     <label for="#" class="form-label" ng-bind="(isOrg() ? '{{ 'customer.register.work-region' | t }}' : '') + member.address.country.regionType"></label>
-                                    <select ng-model="member.address.regionId" ng-options="x.code as x.name for x in member.address.country.regions" name="customer[address].region" required="required" class="form-control" size="1">
+                                    <select ng-init="member.address.regionId = {{ form.Address.province_code }}" ng-model="member.address.regionId" ng-options="x.code as x.name for x in member.address.country.regions"  name="customer[address].region" required="required" class="form-control" size="1">
                                         <option value="" ng-bind="'Select ' + member.address.country.regionType"></option>
                                     </select>
                                 </div>
@@ -106,12 +106,12 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-6" ng-class="{'has-error': create_customer['customer[address].postalCode'].$invalid && !create_customer['customer[address].postalCode'].$pristine }">
-                                <input class="form-control" ng-model="member.address.postalCode" name="customer[address].postalCode" required pattern="\d{4,32}" placeholder="{{ 'checkout.address.zip' | t }}" />
+                                <input class="form-control" value="{{ form.Address.Zip }}" name="customer[address].postalCode" required pattern="\d{4,32}" placeholder="{{ 'checkout.address.zip' | t }}" />
                                 <span class="help-block text-danger" ng-show="create_customer['customer[address].postalCode'].$invalid && !create_customer['customer[address].postalCode'].$pristine">{{ 'common.invalid' | t }}</span>
                                 <span class="help-block text-danger" ng-show="!create_customer['customer[address].postalCode'].$pristine && create_customer['customer[address].postalCode'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
                             <div class="col-md-6" ng-class="{'has-error': create_customer['customer[address].city'].$invalid && !create_customer['customer[address].city'].$pristine }">
-                                <input class="form-control" ng-model="member.address.city" name="customer[address].city" type="text" required placeholder="{{ 'customer.addresses.city' | t }}" />
+                                <input class="form-control"  value="{{ form.Address.City }}"  name="customer[address].city" type="text" required placeholder="{{ 'customer.addresses.city' | t }}" />
                                 <span class="help-block text-danger" ng-show="!create_customer['customer[address].city'].$pristine && create_customer['customer[address].city'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
 
@@ -120,11 +120,11 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-6" ng-class="{'has-error': create_customer['customer[address].line1'].$invalid && !create_customer['customer[address].line1'].$pristine }">
-                                <input class="form-control" ng-model="member.address.line1" name="customer[address].line1" type="text" required placeholder="{{ 'customer.register.address1' | t }}" />
+                                <input class="form-control" value="{{ form.Address.Address1 }}"  name="customer[address].line1" type="text" required placeholder="{{ 'customer.register.address1' | t }}" />
                                 <span class="help-block text-danger" ng-show="!create_customer['customer[address].line1'].$pristine && create_customer['customer[address].line1'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
                             <div class="col-md-6">
-                                <input class="form-control" ng-model="member.address.line2" name="customer[address].line2" type="text" placeholder="{{ 'customer.register.address2' | t }}" />
+                                <input class="form-control" value="{{ form.Address.Address2 }}"  name="customer[address].line2" type="text" placeholder="{{ 'customer.register.address2' | t }}" />
                             </div>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-12" ng-class="{'has-error': create_customer['customer[user_name]'].$invalid && !create_customer['customer[user_name]'].$pristine }">
-                                <input class="form-control" ng-model="member.username" name="customer[user_name]" required placeholder="{{ 'customer.register.user_name' | t }}" />
+                                <input class="form-control" value="{{ form.UserName }}"   name="customer[user_name]" required placeholder="{{ 'customer.register.user_name' | t }}" />
                                 <span class="help-block text-danger" ng-show="!create_customer['customer[user_name]'].$pristine && create_customer['customer[user_name]'].$error.required">{{ 'common.required' | t }}</span>
                             </div>
                         </div>

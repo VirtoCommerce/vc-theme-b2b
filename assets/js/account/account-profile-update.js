@@ -1,4 +1,4 @@
-﻿angular.module('storefront.account')
+angular.module('storefront.account')
 .component('vcAccountProfileUpdate', {
     templateUrl: "themes/assets/account-profile-update.tpl.liquid",
     require: {
@@ -9,16 +9,21 @@
         $ctrl.loader = loader;
         $ctrl.availableRoles = availableRoles;
         $ctrl.member = mainContext.customer;
+  
         $scope.$watch(
             function () { return mainContext.customer; },
             function (customer) {
                 $ctrl.member = customer;
+                if ($ctrl.member.roles) {
+                    $ctrl.member.role = $ctrl.member.roles[0];
+                }
             });
 
 
         $ctrl.submit = function () {
             $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;
             $ctrl.member.emails = [$ctrl.member.email];
+            $ctrl.member.roles = [$ctrl.member.role];
 
             return loader.wrapLoading(function () {
                 return accountApi.updateUser($ctrl.member).then(function (response) {
