@@ -14,8 +14,9 @@ angular.module('storefront.account')
             function () { return mainContext.customer; },
             function (customer) {
                 $ctrl.member = customer;
+                //Use only one role in this theme
                 if ($ctrl.member.roles) {
-                    $ctrl.member.role = $ctrl.member.roles[0];
+                    $ctrl.member.role = $ctrl.member.roles[0].id;
                 }
             });
 
@@ -23,7 +24,7 @@ angular.module('storefront.account')
         $ctrl.submit = function () {
             $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;
             $ctrl.member.emails = [$ctrl.member.email];
-            $ctrl.member.roles = [$ctrl.member.role];
+            $ctrl.member.roles = [$ctrl.member.role.id];
 
             return loader.wrapLoading(function () {
                 return accountApi.updateUser($ctrl.member).then(function (response) {

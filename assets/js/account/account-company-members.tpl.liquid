@@ -21,7 +21,7 @@
                     <tr ng-repeat="member in $ctrl.entries">
                         <td ng-bind="member.userName"></td>
                         <td ng-bind="member.email"></td>
-                        <td ng-bind="member.roles"></td>
+                        <td ng-bind="member.role.name"></td>
                         <td ng-bind="member.isActive?'Active':'Not active'"></td>
                         <td>
                             <span ng-show="$ctrl.showActions(member)">
@@ -38,7 +38,7 @@
         <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
         <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.edit_company_members.none' | t }}</p>
 
-        <button ng-click="$ctrl.inviteInfo={}" ng-if="!$ctrl.newMember && !$ctrl.inviteInfo" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
+        <button va-permission="storefront:user:invite" ng-click="$ctrl.inviteInfo={}" ng-if="!$ctrl.newMember && !$ctrl.inviteInfo" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
             <span class="btn-text">{{ 'customer.edit_company_member.invite.title' | t }}</span>
             <span class="btn-loading"></span>
         </button>
@@ -61,7 +61,7 @@
             </form>
         </div>
 
-        <button ng-click="$ctrl.newMember={}" ng-if="!$ctrl.newMember && !$ctrl.inviteInfo" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
+        <button va-permission="storefront:user:create" ng-click="$ctrl.newMember={}" ng-if="!$ctrl.newMember && !$ctrl.inviteInfo" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
             <span class="btn-text">{{ 'customer.edit_company_member.add_new' | t }}</span>
             <span class="btn-loading"></span>
         </button>
