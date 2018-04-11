@@ -201,10 +201,7 @@ angular.module('storefront.account')
         function refresh() {
             loader.wrapLoading(function () {
                 return accountApi.getUserById($ctrl.memberNumber).then(function (response) {
-                    $ctrl.member = response.data;
-                    if ($ctrl.member.roles) {
-                        $ctrl.member.role = $ctrl.member.roles[0];
-                    }
+                    $ctrl.member = response.data;                   
                 });
             });
         }

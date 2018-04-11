@@ -7,12 +7,11 @@
             <div class="page-header">
                 <h3>{{ 'customer.edit_company_members.title' | t }}</h3>
             </div>
-            <table class="full" ng-if="$ctrl.entries.length">
+            <table class="table" ng-if="$ctrl.entries.length">
                 <thead>
                     <tr>
                         <th>{{ 'customer.edit_company_members.name' | t }}</th>
                         <th>{{ 'customer.edit_company_members.email' | t }}</th>
-                        <th>{{ 'customer.edit_company_members.job_title' | t }}</th>
                         <th>{{ 'customer.edit_company_members.role' | t }}</th>
                         <th>{{ 'customer.edit_company_members.status' | t }}</th>
                         <th>{{ 'customer.edit_company_members.actions' | t }}</th>
@@ -20,9 +19,8 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="member in $ctrl.entries">
-                        <td ng-bind="member.fullName"></td>
+                        <td ng-bind="member.userName"></td>
                         <td ng-bind="member.email"></td>
-                        <td ng-bind="member.title"></td>
                         <td ng-bind="member.role.name"></td>
                         <td ng-bind="member.isActive?'Active':'Not active'"></td>
                         <td>

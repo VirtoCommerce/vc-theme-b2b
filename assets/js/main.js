@@ -1,7 +1,9 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location', '$window', 'accountApi', 'storefrontApp.mainContext',
-    function ($rootScope, $scope, $location, $window, accountApi, mainContext) {
+storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location', '$window', 'accountApi', 'storefrontApp.mainContext', 'loadingIndicatorService',
+    function ($rootScope, $scope, $location, $window, accountApi, mainContext, loader) {
+        var $ctrl = this;
+        $ctrl.loader = loader;
 
         //Base store url populated in layout and can be used for construction url inside controller
         $scope.baseUrl = {};
@@ -59,25 +61,25 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
             return size;
         }
 
-       mainContext.loadCustomer = $scope.loadCustomer = function () {
-           return accountApi.getCurrentUser().then(function (response) {
-                var addressId = 1;
-                _.each(response.data.addresses, function (address) {
-                    address.id = addressId;
-                    addressId++;
+        mainContext.loadCustomer = $scope.loadCustomer = function () {
+            return loader.wrapLoading(function() {
+                return accountApi.getCurrentUser().then(function (response) {
+                    var addressId = 1;
+                    _.each(response.data.addresses, function (address) {
+                        address.id = addressId;
+                        addressId++;
+                    });
+                    response.data.isContact = response.data.memberType === 'Contact';
+                    mainContext.customer = $scope.customer = response.data;
+                    return response.data;
                 });
-                response.data.isContact = response.data.memberType === 'Contact';
-                mainContext.customer = $scope.customer = response.data;
-                return response.data;
+                
             });
         };
 
        $scope.loadCustomer();
     }])
 
-    .factory('storefrontApp.mainContext', ['accountApi', function (accountApi) {
-        var result = {
-            customer: {}
-        };
-        return result;
-}]);
+    .factory('storefrontApp.mainContext', function () {
+        return {};
+    });

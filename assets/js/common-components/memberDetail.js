@@ -42,6 +42,10 @@ storefrontApp.component('vcMemberDetail', {
         if ($ctrl.fieldsConfig)
             angular.extend($ctrl.config, $ctrl.fieldsConfig);
         $ctrl.availableRoles = availableRoles;
+        if ($ctrl.member.roles) {
+            $ctrl.member.role = _.find($ctrl.availableRoles, function (x) { return x.id == $ctrl.member.roles[0].id });
+        }
+
         $ctrl.rolesComponent = null;
 
         this.$onInit = function () {
@@ -81,23 +85,4 @@ storefrontApp.component('vcMemberDetail', {
             return configItem;
         }
     }]
-});
-
-storefrontApp.directive('confirmPasswordValidation', function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, elem, attr, ngModel) {
-            ngModel.$parsers.unshift(function (value, scope) {
-                var isValid = true;
-                var password = ngModel.$$parentForm['customer[password]'].$viewValue;
-
-                if (password) {
-                    isValid = password === value;
-                }
-
-                ngModel.$setValidity('confirmPasswordValidation', isValid);
-                return value;
-            });
-        }
-    };
 });

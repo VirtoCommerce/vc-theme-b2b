@@ -14,9 +14,8 @@ angular.module('storefront.account')
             function () { return mainContext.customer; },
             function (customer) {
                 $ctrl.member = customer;
-                //Use only one role in this theme
                 if ($ctrl.member.roles) {
-                    $ctrl.member.role = $ctrl.member.roles[0].id;
+                    $ctrl.member.role = _.find($ctrl.availableRoles, function (x) { return x.id == $ctrl.member.roles[0].id });
                 }
             });
 
