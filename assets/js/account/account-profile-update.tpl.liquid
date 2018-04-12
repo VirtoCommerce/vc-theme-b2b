@@ -3,17 +3,18 @@
         <h3>{{ 'customer.edit_profile.title' | t }}</h3>
     </div>
     <vc-errors message="errorMessage" errors="errors"></vc-errors>
-    <form ng-submit="$ctrl.submit()" name="detailForm">
+    <form ng-submit="$ctrl.submit()" name="detailForm" novalidate>
         <div class="form-group">
-            <vc-labeled-input value="$ctrl.member.firstName" name="first_name" placeholder="{{ 'customer.edit_profile.first_name' | t }}" form="detailForm" required="true" autofocus="true"></vc-labeled-input>
+            <vc-labeled-input value="$ctrl.member.firstName" name="first_name" placeholder="{{ 'customer.edit_profile.first_name' | t }}" form="detailForm"></vc-labeled-input>
             <vc-labeled-input value="$ctrl.member.lastName" name="last_name" placeholder="{{ 'customer.edit_profile.last_name' | t }}" form="detailForm"></vc-labeled-input>
             <vc-labeled-input value="$ctrl.member.title" name="title" type="text" placeholder="{{ 'customer.register.job_title' | t }}" form="detailForm"></vc-labeled-input>
             <vc-labeled-input value="$ctrl.member.email" name="email" placeholder="{{ 'customer.edit_profile.email' | t }}" form="detailForm" required="true" type="email"></vc-labeled-input>
 
-        <div va-permission="storefront:organization:edit" class="form-select">
-            <select ng-model="$ctrl.member.role" ng-options="x as x.name for x in $ctrl.availableRoles" name="Roles" required="required" class="form-input" size="1">
-                <option value="">Please select role</option>
-            </select>
+            <div class="form-select">
+                <select va-permission="storefront:organization:edit"  ng-model="$ctrl.member.role" ng-options="x as x.name for x in $ctrl.availableRoles" name="Roles" required class="form-input" size="1">
+                    <option value="">Please select role</option>
+                </select>
+            </div>
         </div>
 
         <button class="btn btn-primary" ng-disabled="$ctrl.loader.isLoading" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
