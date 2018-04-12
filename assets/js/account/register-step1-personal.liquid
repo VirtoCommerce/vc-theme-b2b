@@ -15,8 +15,13 @@
         <div class="row">
             <div class="col-md-6">
                 <input ng-model="registration.email" class="form-control" name="email" type="email" required placeholder="{{ 'customer.register.email' | t }}" />
-                <span class="text-danger" ng-style="{'visibility': step1Form.$submitted && step1Form.email.$error.invalid ? 'visible':'hidden'}">{{ 'common.invalid' | t }}</span>
                 <span class="text-danger" ng-style="{'visibility': step1Form.$submitted && step1Form.email.$error.required ? 'visible':'hidden'}">{{ 'common.required' | t }}</span>
+                <span class="text-danger" ng-style="{'visibility': step1Form.$submitted && step1Form.email.$error.invalid ? 'visible':'hidden'}">{{ 'common.invalid' | t }}</span>
+            </div>
+            <div class="col-md-6">
+                <input class="form-control" ng-model="registration.phone" name="phone" type="tel" required ng-pattern="/^[0-9]{1,12}$/" placeholder="{{ 'customer.register.phone' | t }}" />
+                <span class="text-danger" ng-style="{'visibility': step1Form.$submitted && step1Form.phone.$error.required ? 'visible':'hidden'}">{{ 'common.required' | t }}</span>
+                <span class="text-danger" ng-style="{'visibility': step1Form.$submitted && step1Form.phone.$error.invalid ? 'visible':'hidden'}">{{ 'common.invalid' | t }}</span>
             </div>
         </div>
     </div>

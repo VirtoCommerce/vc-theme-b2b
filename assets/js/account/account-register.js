@@ -78,6 +78,4 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
             }
                 
         }
-    
-
     }]);

@@ -2,14 +2,12 @@
 {% include 'third-party/ngWizardTemplate' %}
 {% anti_forgery %}
 <style>
-input.ng-invalid.ng-invalid-required,
-form.ng-submitted input.ng-invalid.ng-invalid-required,
-input.ng-invalid.ng-invalid-email,
-form.ng-submitted input.ng-invalid.ng-invalid-email   {
-  border-color: #a94442;
-  !box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+.ng-submitted input.ng-invalid.ng-invalid-required,
+.ng-submitted input.ng-invalid.ng-invalid-email   {
+  border-color: #883333;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
-
 </style>
 <main class="container" role="main">
     <div ng-controller="accountRegisterController" ng-init="init('{{ shop.id }}')">
@@ -26,7 +24,7 @@ form.ng-submitted input.ng-invalid.ng-invalid-email   {
         <div class="col-md-8 col-md-offset-2 col-xs-12">
             <vc-errors message="errorMessage" errors="errors"></vc-errors>
             <wizard on-finish="finishedWizard()" indicators-position="top">
-                <form name="step1Form" novalidate>
+                <form name="step1Form" novalidate ng-class="{'ng-submitted': step1Form.$submitted}">
                     <wz-step wz-title="{{ 'customer.register.step-personal' | t }}" canexit="step1Form.$valid">
                         <h1>{{ 'customer.register.step-personal' | t }}</h1>
                         <div class="form-group">
@@ -45,7 +43,7 @@ form.ng-submitted input.ng-invalid.ng-invalid-email   {
                         <input type="submit" ng-click="step1Form.$submitted = true" class="btn btn-primary pull-right" wz-next value="Continue" />
                     </wz-step>
                 </form>
-                <form name="step2Form" novalidate>
+                <form name="step2Form" novalidate ng-class="{'ng-submitted': step2Form.$submitted}">
                     <wz-step wz-title="{{ 'customer.register.step-address' | t }}" canexit="step2Form.$valid">
                         <h1>{{ 'customer.register.step-address' | t }}</h1>
                         <div class="form-group" ng-include="step2TemplateUrl"></div>
@@ -53,14 +51,14 @@ form.ng-submitted input.ng-invalid.ng-invalid-email   {
                         <input type="submit" class="btn btn-alt" wz-previous value="Back" />
                     </wz-step>
                 </form>
-                <form name="step3Form" novalidate >
+                <form name="step3Form" novalidate ng-class="{'ng-submitted': step3Form.$submitted}">
                     <wz-step wz-title="{{ 'customer.register.step-account' | t }}" canexit="step3Form.$valid">
                         <h1>{{ 'customer.register.step-account' | t }}</h1>
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-md-12" ng-class="{'has-error': step3Form.$submitted && step3Form.userName.$error.required  }">
+                                <div class="col-md-12">
                                     <input class="form-control" ng-model="registration.userName" name="userName" required placeholder="{{ 'customer.register.user_name' | t }}" />
-                                    <span class="text-danger" ng-show="step3Form.$submitted && step3Form.userName.$error.required">{{ 'common.required' | t }}</span>
+                                    <span class="text-danger" ng-style="{'visibility': step3Form.$submitted && step3Form.userName.$error.required ? 'visible':'hidden'}">{{ 'common.required' | t }}</span>
                                 </div>
                             </div>
                         </div>
@@ -68,16 +66,16 @@ form.ng-submitted input.ng-invalid.ng-invalid-email   {
                             <div class="row">
                                 <div class="col-md-6" ng-class="{'has-error': step3Form.$submitted && step3Form.password.$error.required }">
                                     <input class="form-control" ng-model="registration.password" name="password" placeholder="{{ 'customer.register.password' | t }}" required type="password" />
-                                    <span class="text-danger" ng-show="step3Form.$submitted && step3Form.password.$error.required">{{ 'common.required' | t }}</span>
+                                    <span class="text-danger" ng-style="{'visibility': step3Form.$submitted && step3Form.password.$error.required ? 'visible':'hidden'}">{{ 'common.required' | t }}</span>
                                 </div>
                                 <div class="col-md-6" ng-class="{'has-error': step3Form.$submitted && (step3Form.confirmPassword.$error.required || step3Form.confirmPassword.$error.compareTo)} ">
                                     <input class="form-control" ng-model="registration.confirmPassword" name="confirmPassword" placeholder="{{ 'customer.register.confirm_password' | t }}" required compare-to="registration.password" type="password" />
-                                    <span class="text-danger" ng-show="step3Form.$submitted && step3Form.confirmPassword.$error.required">{{ 'common.required' | t }}</span>
-                                    <span class="text-danger" ng-show="step3Form.$submitted && step3Form.confirmPassword.$error.compareTo">{{ 'common.not_match' | t }}</span>
+                                    <span class="text-danger" ng-style="{'visibility': step3Form.$submitted && step3Form.confirmPassword.$error.required ? 'visible':'hidden'}">{{ 'common.required' | t }}</span>
+                                    <span class="text-danger" ng-style="{'visibility': step3Form.$submitted && step3Form.confirmPassword.$error.compareTo ? 'visible':'hidden'}">{{ 'common.not_match' | t }}</span>
                                 </div>
                             </div>
                         </div>
-                        <input class="btn btn-primary pull-right" wz-finish value="Submit" ng-disabled="step1Form.$invalid || step2Form.$invalid || step3Form.$invalid" ng-click="step3Form.$submitted = true" />
+                        <botton class="btn btn-primary pull-right" wz-finish value="Submit" ng-disabled="step1Form.$invalid || step2Form.$invalid || step3Form.$invalid" ng-click="step3Form.$submitted = true" />
                         <input class="btn btn-alt" wz-previous value="Back" />
                     </wz-step>
                 </form>
