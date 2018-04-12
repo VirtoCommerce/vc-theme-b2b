@@ -85,7 +85,7 @@ angular.module('storefront.account')
                         message: $ctrl.inviteInfo.message
                     }).then(function (response) {
                         $ctrl.cancel();
-                        $ctrl.pageSettings.pageChanged();
+                        refresh();
                     });
                 });
             };
@@ -113,9 +113,12 @@ angular.module('storefront.account')
 
             $ctrl.changeStatus = function (member) {
                 loader.wrapLoading(function () {
-                    var action = member.isActive ? accountApi.lockUser : accountApi.unlockUser;
-                    member.isActive = !member.isActive;                    
-                    return action(member.id);
+                    var action = member.isLockedOut ? accountApi.unlockUser : accountApi.lockUser;
+                    member.isLockedOut = !member.isLockedOut;
+                    return action(member.id).then(function (response) {
+                        refresh();
+                        //TODO: errors handling
+                    });
                 });
             };
 
@@ -129,7 +132,7 @@ angular.module('storefront.account')
                         if (confirmed) {
                             loader.wrapLoading(function () {
                                 return accountApi.deleteUser(member.id).then(function (response) {
-                                    $ctrl.pageSettings.pageChanged();
+                                    refresh();
                                     //TODO: errors handling
                                 });
                             });
