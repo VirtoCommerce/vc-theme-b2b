@@ -1,17 +1,16 @@
-﻿{% layout settings.customer_layout %}
-<main class="main" role="main">
-    <div ng-if="$ctrl.loader.isLoading" class="loader">
-        <div class="indicator"></div>
-    </div>
+{% layout settings.customer_layout %}
+<main class="main">
     <aside class="container">
         <vc-account-manager base-url="baseUrl" customer="customer"></vc-account-manager>
     </aside>
 </main>
 
 <script id="account-manager.tpl" type="text/ng-template">
+    <div ng-if="$ctrl.loader.isLoading" class="loader">
+        <div class="indicator"></div>
+    </div>
     <div class="row">
-        <div class="col-xs-12">
-            <!--{% include 'toggle-dashboard' %}-->
+        <div class="col-xs-12" ng-class="{'loading': $ctrl.loader.isLoading }">
             <div class="row">
                 <div class="col-xs-4 col-sm-2">
                     <div class="row">
@@ -48,17 +47,17 @@
                             {% endif %}
                         </ul>
                     </div>
-                    <div class="row">
+                    <div class="row" va-permission="storefront:organization:view">
                         <div class="page-header">
                             <h3>{{ 'customer.account.corporate' | t }}</h3>
                         </div>
                     </div>
                     <div class="row">
                         <ul class="nav nav-pills nav-stacked">
-                            <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyInfo'}">
+                            <li va-permission="storefront:organization:view" ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyInfo'}">
                                 <a ng-link="['CompanyInfo']">{{ 'customer.account.menu_label.company_info' | t }}</a>
                             </li>
-                            <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyMembers'}">
+                            <li va-permission="storefront:user:view" ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCompanyMembers'}">
                                 <a ng-link="['CompanyMembers']">{{ 'customer.account.menu_label.company_members' | t }}</a>
                             </li>
                         </ul>
@@ -68,6 +67,6 @@
                     <ng-outlet></ng-outlet>
                 </div>
             </div>
-         </div>
+        </div>
     </div>
 </script>

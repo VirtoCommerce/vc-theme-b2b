@@ -1,4 +1,4 @@
-﻿<div class="col-md-8">
+<div class="col-md-8">
 <div class="one-half">
     <div class="page-header">
         <h3>{{ 'customer.edit_company_info.title' | t }}</h3>
@@ -7,7 +7,7 @@
     <form ng-submit="$ctrl.submit()" name="detailForm">
         <vc-labeled-input value="$ctrl.company.name" name="company_name" placeholder="{{ 'customer.edit_company_info.company_name' | t }}" form="detailForm" required="true" autofocus="true"></vc-labeled-input>
 
-        <button ng-click="$ctrl.updateCompanyInfo($ctrl.company)" class="btn btn-primary" ng-disabled="$ctrl.loader.isLoading" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
+        <button va-permission="storefront:organization:edit" ng-click="$ctrl.updateCompanyInfo($ctrl.company)" class="btn btn-primary" ng-disabled="$ctrl.loader.isLoading" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
             <span class="btn-text">{{ 'customer.edit_profile.submit' | t }}</span>
             <span class="btn-loading"></span>
         </button>
@@ -29,7 +29,7 @@
                     <span class="btn-loading"></span>
                 </button>
                 <span class="form-spacer"></span>
-                <button ng-click="$ctrl.submitCompanyAddress()" ng-disabled="$ctrl.loader.isLoading" class="btn btn-primary" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
+                <button va-permission="storefront:organization:edit" ng-click="$ctrl.submitCompanyAddress()" ng-disabled="$ctrl.loader.isLoading" class="btn btn-primary" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
                     <span class="btn-text">{{ 'customer.addresses.update' | t }}</span>
                     <span class="btn-loading"></span>
                 </button>
@@ -39,7 +39,7 @@
 
     <p ng-if="!$ctrl.company.addresses || !$ctrl.company.addresses.length">{{ 'customer.edit_company_info.no_addresses_message' | t }}</p>
 
-    <button ng-click="$ctrl.newAddress={}" ng-if="!$ctrl.newAddress && !($ctrl.editIdx >= 0)" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
+    <button va-permission="storefront:organization:edit" ng-click="$ctrl.newAddress={}" ng-if="!$ctrl.newAddress && !($ctrl.editIdx >= 0)" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
         <span class="btn-text">{{ 'customer.addresses.add_new' | t }}</span>
         <span class="btn-loading"></span>
     </button>

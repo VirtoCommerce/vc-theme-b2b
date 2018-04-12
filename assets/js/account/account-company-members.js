@@ -1,4 +1,4 @@
-﻿angular.module('storefront.account')
+angular.module('storefront.account')
 .component('vcAccountCompanyMembers', {
     templateUrl: "themes/assets/account-company-members.tpl.liquid",
     $routeConfig: [
@@ -29,6 +29,7 @@
                     sortInfos: $ctrl.sortInfos
                 }).then(function (response) {
                     $ctrl.entries = response.data.results;
+                    _.each($ctrl.entries, function (x) { x.role = x.roles ? x.roles[0] : undefined });
                     $ctrl.pageSettings.totalItems = response.data.totalCount;
                 });
             });
@@ -92,8 +93,8 @@
 
         $ctrl.addNewMember = function () {
             if ($ctrl.newMemberComponent.validate()) {
-                $ctrl.newMember.companyId = mainContext.customer.companyId;
-                $ctrl.newMember.role = $ctrl.newMember.role;
+                $ctrl.newMember.organizationId = mainContext.customer.organizationId;
+                $ctrl.newMember.role = $ctrl.newMember.role ? $ctrl.newMember.role.id : undefined;
                 $ctrl.newMember.storeId = $ctrl.storeId;
 
                 loader.wrapLoading(function () {
@@ -130,7 +131,7 @@
                 confirmService.confirm(text).then(function (confirmed) {
                     if (confirmed) {
                         loader.wrapLoading(function () {
-                            return accountApi.deleteUser(member.securityAccounts[0].userName).then(function (response) {
+                            return accountApi.deleteUser(member.securityAccounts[0].id).then(function (response) {
                                 $ctrl.pageSettings.pageChanged();
                                 //TODO: errors handling
                             });
@@ -200,7 +201,7 @@
         function refresh() {
             loader.wrapLoading(function () {
                 return accountApi.getUserById($ctrl.memberNumber).then(function (response) {
-                    $ctrl.member = response.data;
+                    $ctrl.member = response.data;                   
                 });
             });
         }
@@ -216,6 +217,7 @@
                 loader.wrapLoading(function () {
                     $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;
                     $ctrl.member.emails = [$ctrl.member.email];
+                    $ctrl.member.roles = [ $ctrl.member.role.id ];
                     return accountApi.updateUser($ctrl.member).then(function (response) {
                         refresh();
                     });
