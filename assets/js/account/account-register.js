@@ -8,17 +8,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
             $scope.countries = response.data;
         });
 
-        $scope.isOrg = function () {
-            return $scope.registration.type === 'Business';
-        };
-
-        $scope.$watch('registration.address.countryCode', function () {
-            if ($scope.registration.address.countryCode) {
-                populateRegionalDataForAddress($scope.registration.address);
-                $scope.registration.address.name = stringifyAddress($scope.registration.address);
-            }
-        });
-
+            
         function populateRegionalDataForAddress(address) {
             if (address) {
                 //Set country object for address
@@ -31,7 +21,6 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                         setAddressRegion(address, address.country.regions);
                     }
                     else {
-                        //$ctrl.getCountryRegions({ country: address.country }).then(function (regions) {
                         commonService.getCountryRegions(address.country.code3).then(function (response) {
                             address.country.regions = response.data;
                             setAddressRegion(address, response.data);
@@ -52,25 +41,12 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                 address.regionName = undefined;
             }
         }
-
-        function stringifyAddress(address) {
-            var addressType = '';
-
-            //var type = _.find($ctrl.types, function (i) { return i.id == $ctrl.address.addressType });
-            //if (type)
-            //    addressType = '[' + type.name + '] ';
-
-            var stringifiedAddress = addressType;
-            stringifiedAddress += address.firstName + ' ' + address.lastName + ', ';
-            stringifiedAddress += address.companyName ? address.companyName + ', ' : '';
-            stringifiedAddress += address.countryName + ', ';
-            stringifiedAddress += address.regionName ? address.regionName + ', ' : '';
-            stringifiedAddress += address.city + ' ';
-            stringifiedAddress += address.line1 + ', ';
-            stringifiedAddress += address.line2 ? address.line2 : '';
-            stringifiedAddress += address.postalCode;
-            return stringifiedAddress;
-        }
+        //Watch any address changes to repopulate address properties for user selection 
+        $scope.$watch('registration.address', function (address) {
+            if (address) {
+                populateRegionalDataForAddress(address);
+            }
+        }, true);
 
         $scope.init = function (storeId) {
             $scope.registration = { storeId: storeId, type: 'Business', address: {}, email: null };
@@ -78,12 +54,12 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
    
         $scope.finishedWizard = function() {
             return loader.wrapLoading(function () {
-                return accountApi.registerOrganization($scope.registration).then(function () {
-                    //TODO: Redirect to main page
-                    alert("//TODO: Redirect to main page");
+                return accountApi.registerOrganization($scope.registration).then(function (response) {
+                    if (response.data.succeeded) {
+                        $scope.outerRedirect($scope.baseUrl);
+                    }
                 });
             });
         };
-
 
     }]);
