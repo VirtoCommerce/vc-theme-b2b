@@ -1,4 +1,4 @@
-var storefrontApp = angular.module('storefrontApp');
+﻿var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefrontApp.mainContext', 'loadingIndicatorService', 'vcRecaptchaService', 'commonService', 'WizardHandler', 'accountApi', 
     function ($q, $scope, mainContext, loader, vcRecaptchaService, commonService, WizardHandler, accountApi) {
@@ -50,6 +50,7 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
 
         $scope.init = function (storeId) {
             $scope.registration = { storeId: storeId, type: 'Business', address: {}, email: null };
+            $scope.switchTemplate($scope.registration.type);
         };
    
         $scope.finishedWizard = function() {
@@ -57,9 +58,26 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
                 return accountApi.registerOrganization($scope.registration).then(function (response) {
                     if (response.data.succeeded) {
                         $scope.outerRedirect($scope.baseUrl);
+                    } else {
+                        if (response.data.errors) {
+                            $scope.errors = _.map(response.data.errors, function(err){ return err.description; });
+                        }
                     }
                 });
             });
         };
+
+        $scope.switchTemplate = function (type) {
+            if (type === 'Business') {
+                $scope.step1TemplateUrl = 'themes/assets/js/account/register-step1-business.liquid';
+                $scope.step2TemplateUrl = 'themes/assets/js/account/register-step2-business.liquid';
+            }
+            else if (type === 'Personal') {
+                $scope.step1TemplateUrl = 'themes/assets/js/account/register-step1-personal.liquid';
+                $scope.step2TemplateUrl = 'themes/assets/js/account/register-step2-personal.liquid';
+            }
+                
+        }
+    
 
     }]);

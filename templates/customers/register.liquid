@@ -1,6 +1,16 @@
-{% layout settings.customer_layout %}
+﻿{% layout settings.customer_layout %}
 {% include 'third-party/ngWizardTemplate' %}
 {% anti_forgery %}
+<style>
+input.ng-invalid.ng-invalid-required,
+form.ng-submitted input.ng-invalid.ng-invalid-required,
+input.ng-invalid.ng-invalid-email,
+form.ng-submitted input.ng-invalid.ng-invalid-email   {
+  border-color: #a94442;
+  !box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+</style>
 <main class="container" role="main">
     <div ng-controller="accountRegisterController" ng-init="init('{{ shop.id }}')">
         <div class="col-xs-12" ng-show="loader.isLoading">
@@ -21,104 +31,24 @@
                         <h1>{{ 'customer.register.step-personal' | t }}</h1>
                         <div class="form-group">
                             <label class="radio-inline">
-                                <input ng-model="registration.type" value="Business" type="radio">
+                                <input ng-model="registration.type" value="Business" type="radio" ng-click="switchTemplate(registration.type)">
                                 <span class="switch"></span>
                                 <span class="name">Business Use</span>
                             </label>
                             <label class="radio-inline">
-                                <input ng-model="registration.type" value="Personal" type="radio">
+                                <input ng-model="registration.type" value="Personal" type="radio" ng-click="switchTemplate(registration.type)">
                                 <span class="switch"></span>
                                 <span class="name">Personal Use</span>
                             </label>
                         </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-6" ng-class="{'has-error': step1Form.$submitted && step1Form.firstName.$error.required }">
-                                    <input ng-model="registration.firstName" class="form-control" name="firstName" type="text" required placeholder="{{ 'customer.register.first_name' | t }}" />
-                                    <span class="text-danger" ng-show="step1Form.$submitted && step1Form.firstName.$error.required">{{ 'common.required' | t }}</span>
-                                </div>
-                                <div class="col-md-6" ng-class="{'has-error': step1Form.$submitted && step1Form.lastName.$error.required }">
-                                    <input ng-model="registration.lastName" class="form-control" name="lastName" type="text" required placeholder="{{ 'customer.register.last_name' | t }}" />
-                                    <span class="text-danger" ng-show="step1Form.$submitted && step1Form.lastName.$error.required">{{ 'common.required' | t }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-6" ng-class="{'has-error': step1Form.$submitted && (step1Form.email.$error.required || step1Form.email.$error.email) }">
-                                    <input ng-model="registration.email" class="form-control" name="email" type="email" required placeholder="{{ 'customer.register.email' | t }}" />
-                                    <span class="text-danger" ng-show="step1Form.$submitted && step1Form.email.$error.required">{{ 'common.required' | t }}</span>
-                                    <span class="text-danger" ng-show="step1Form.$submitted && step1Form.email.$error.email">{{ 'common.invalid' | t }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <input class="form-control" ng-model="registration.accountNo" name="account_no" placeholder="{{ 'customer.register.account-number' | t }}" />
-                                </div>
-                            </div>
-                        </div>
+                        <div class="form-group" ng-include="step1TemplateUrl"></div>
                         <input type="submit" ng-click="step1Form.$submitted = true" class="btn btn-primary pull-right" wz-next value="Continue" />
                     </wz-step>
                 </form>
                 <form name="step2Form" novalidate>
                     <wz-step wz-title="{{ 'customer.register.step-address' | t }}" canexit="step2Form.$valid">
                         <h1>{{ 'customer.register.step-address' | t }}</h1>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-12" ng-class="{'has-error': step2Form.$submitted && step2Form.companyName.$error.required }">
-                                    <input ng-model="registration.organizationName" class="form-control" name="companyName" type="text" required placeholder="{{ 'customer.register.company_name' | t }}" />
-                                    <span class="text-danger" ng-show="step2Form.$submitted && step2Form.companyName.$error.required">{{ 'common.required' | t }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-select" ng-class="{'has-error': step2Form.$submitted && step2Form.countryCode.$error.required }">
-                                        <label for="#" class="form-label">{{ 'checkout.address.country' | t }}</label>
-                                        <select ng-model="registration.address.countryCode" ng-options="x.code3 as x.name for x in countries" name="countryCode" required class="form-control" size="1">
-                                            <option value="">{{ 'checkout.address.country_select_placeholder' | t }}</option>
-                                        </select>
-                                        <span class="text-danger" ng-show="step2Form.$submitted && step2Form.countryCode.$error.required">{{ 'checkout.country_required_message' | t }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6" ng-if="registration.address.country.regions.length">
-                                    <div class="form-group form-select">
-                                        <label for="#" class="form-label" ng-bind="'{{ 'customer.register.work-region' | t }}' + registration.address.country.regionType"></label>
-                                        <select ng-model="registration.address.regionId" ng-options="x.code as x.name for x in registration.address.country.regions" name="region" required class="form-control" size="1">
-                                            <option value="" ng-bind="'Select ' + registration.address.country.regionType"></option>
-                                        </select>
-                                        <span class="text-danger" ng-show="step2Form.$submitted && step2Form.region.$error.required" ng-bind="'Please select ' + registration.address.country.regionType"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-6" ng-class="{'has-error': step2Form.$submitted && ( step2Form.postalCode.$error.required || step2Form.postalCode.$error.invalid )}">
-                                    <input class="form-control" ng-model="registration.address.postalCode" name="postalCode" required pattern="\d{4,32}" placeholder="{{ 'checkout.address.zip' | t }}" />
-                                    <span class="text-danger" ng-show="step2Form.$submitted && step2Form.postalCode.$error.required">{{ 'common.required' | t }}</span>
-                                    <span class="text-danger" ng-show="step2Form.$submitted && step2Form.postalCode.$invalid">{{ 'common.invalid' | t }}</span>
-                                </div>
-                                <div class="col-md-6" ng-class="{'has-error': step2Form.$submitted && step2Form.city.$error.required }">
-                                    <input class="form-control" ng-model="registration.address.city" name="city" type="text" required placeholder="{{ 'customer.addresses.city' | t }}" />
-                                    <span class="text-danger" ng-show="step2Form.$submitted && step2Form.city.$error.required">{{ 'common.required' | t }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-6" ng-class="{'has-error': step2Form.$submitted && step2Form.line1.$error.required  }">
-                                    <input class="form-control" ng-model="registration.address.line1" name="line1" type="text" required placeholder="{{ 'customer.register.address1' | t }}" />
-                                    <span class="text-danger" ng-show="step2Form.$submitted && step2Form.line1.$error.required">{{ 'common.required' | t }}</span>
-                                </div>
-                                <div class="col-md-6">
-                                    <input class="form-control" ng-model="registration.address.line2" name="line2" type="text" placeholder="{{ 'customer.register.address2' | t }}" />
-                                </div>
-                            </div>
-                        </div>
+                        <div class="form-group" ng-include="step2TemplateUrl"></div>
                         <input type="submit" class="btn btn-primary pull-right" wz-next ng-click="step2Form.$submitted = true" value="Continue" />
                         <input type="submit" class="btn btn-alt" wz-previous value="Back" />
                     </wz-step>
@@ -147,7 +77,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input class="btn btn-primary pull-right" wz-finish value="Submit" ng-click="step3Form.$submitted = true" />
+                        <input class="btn btn-primary pull-right" wz-finish value="Submit" ng-disabled="step1Form.$invalid || step2Form.$invalid || step3Form.$invalid" ng-click="step3Form.$submitted = true" />
                         <input class="btn btn-alt" wz-previous value="Back" />
                     </wz-step>
                 </form>

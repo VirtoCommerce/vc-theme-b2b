@@ -1,0 +1,31 @@
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-6">
+            <input ng-model="registration.firstName" class="form-control" name="firstName" type="text" required placeholder="{{ 'customer.register.first_name' | t }}" />
+            <span class="text-danger" ng-style="{'visibility': step1Form.$submitted && step1Form.firstName.$error.required ? 'visible':'hidden'}">{{ 'common.required' | t }}</span>
+        </div>
+        <div class="col-md-6">
+            <input ng-model="registration.lastName" class="form-control" name="lastName" type="text" required placeholder="{{ 'customer.register.last_name' | t }}" />
+            <span class="text-danger" ng-style="{'visibility': step1Form.$submitted && step1Form.lastName.$error.required ? 'visible':'hidden'}">{{ 'common.required' | t }}</span>
+        </div>
+    </div>
+</div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-6">
+                <input ng-model="registration.email" class="form-control" name="email" type="email" required placeholder="{{ 'customer.register.workemail' | t }}" />
+                <span class="text-danger" ng-style="{'visibility': step1Form.$submitted && step1Form.email.$error.invalid ? 'visible':'hidden'}">{{ 'common.invalid' | t }}</span>
+                <span class="text-danger" ng-style="{'visibility': step1Form.$submitted && step1Form.email.$error.required ? 'visible':'hidden'}">{{ 'common.required' | t }}</span>
+            </div>
+        </div>
+    </div>
+
+
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-12">
+            <input class="form-control" ng-model="registration.accountNo" name="account_no" placeholder="{{ 'customer.register.account-number' | t }}" />
+        </div>
+    </div>
+</div>

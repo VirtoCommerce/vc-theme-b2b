@@ -1,0 +1,54 @@
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-12">
+            <input ng-model="registration.organizationName" class="form-control" name="companyName" type="text" required placeholder="{{ 'customer.register.company_name' | t }}" />
+            <span class="text-danger" ng-style="{'visibility': step2Form.$submitted && step2Form.companyName.$error.required ? 'visible':'hidden'}">{{ 'common.required' | t }}</span>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-select" ng-class="{'has-error': step2Form.$submitted && step2Form.countryCode.$error.required }">
+                <label for="#" class="form-label">{{ 'checkout.address.country' | t }}</label>
+                <select ng-model="registration.address.countryCode" ng-options="x.code3 as x.name for x in countries" name="countryCode" required class="form-control" size="1">
+                    <option value="">{{ 'checkout.address.country_select_placeholder' | t }}</option>
+                </select>
+                <span class="text-danger" ng-show="step2Form.$submitted && step2Form.countryCode.$error.required">{{ 'checkout.country_required_message' | t }}</span>
+            </div>
+        </div>
+        <div class="col-md-6" ng-if="registration.address.country.regions.length">
+            <div class="form-group form-select">
+                <label for="#" class="form-label" ng-bind="'{{ 'customer.register.work-region' | t }}' + registration.address.country.regionType"></label>
+                <select ng-model="registration.address.regionId" ng-options="x.code as x.name for x in registration.address.country.regions" name="region" required class="form-control" size="1">
+                    <option value="" ng-bind="'Select ' + registration.address.country.regionType"></option>
+                </select>
+                <span class="text-danger" ng-show="step2Form.$submitted && step2Form.region.$error.required" ng-bind="'Please select ' + registration.address.country.regionType"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-6" ng-class="{'has-error': step2Form.$submitted && ( step2Form.postalCode.$error.required || step2Form.postalCode.$error.invalid )}">
+            <input class="form-control" ng-model="registration.address.postalCode" name="postalCode" required pattern="\d{4,32}" placeholder="{{ 'checkout.address.zip' | t }}" />
+            <span class="text-danger" ng-show="step2Form.$submitted && step2Form.postalCode.$error.required">{{ 'common.required' | t }}</span>
+            <span class="text-danger" ng-show="step2Form.$submitted && step2Form.postalCode.$invalid">{{ 'common.invalid' | t }}</span>
+        </div>
+        <div class="col-md-6" ng-class="{'has-error': step2Form.$submitted && step2Form.city.$error.required }">
+            <input class="form-control" ng-model="registration.address.city" name="city" type="text" required placeholder="{{ 'customer.addresses.city' | t }}" />
+            <span class="text-danger" ng-show="step2Form.$submitted && step2Form.city.$error.required">{{ 'common.required' | t }}</span>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-6" ng-class="{'has-error': step2Form.$submitted && step2Form.line1.$error.required  }">
+            <input class="form-control" ng-model="registration.address.line1" name="line1" type="text" required placeholder="{{ 'customer.register.address1' | t }}" />
+            <span class="text-danger" ng-show="step2Form.$submitted && step2Form.line1.$error.required">{{ 'common.required' | t }}</span>
+        </div>
+        <div class="col-md-6">
+            <input class="form-control" ng-model="registration.address.line2" name="line2" type="text" placeholder="{{ 'customer.register.address2' | t }}" />
+        </div>
+    </div>
+</div>
