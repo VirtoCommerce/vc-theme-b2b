@@ -69,12 +69,12 @@ storefrontApp.controller('accountRegisterController', ['$q', '$scope', 'storefro
 
         $scope.switchTemplate = function (type) {
             if (type === 'Business') {
-                $scope.step1TemplateUrl = 'themes/assets/js/account/register-step1-business.liquid';
-                $scope.step2TemplateUrl = 'themes/assets/js/account/register-step2-business.liquid';
+                $scope.step1TemplateUrl = 'step1-business';
+                $scope.step2TemplateUrl = 'step2-business';
             }
             else if (type === 'Personal') {
-                $scope.step1TemplateUrl = 'themes/assets/js/account/register-step1-personal.liquid';
-                $scope.step2TemplateUrl = 'themes/assets/js/account/register-step2-personal.liquid';
+                $scope.step1TemplateUrl = 'step1-personal';
+                $scope.step2TemplateUrl = 'step2-personal';
             }
                 
         }
