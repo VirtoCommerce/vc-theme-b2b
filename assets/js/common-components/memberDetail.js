@@ -41,10 +41,16 @@ storefrontApp.component('vcMemberDetail', {
 
         if ($ctrl.fieldsConfig)
             angular.extend($ctrl.config, $ctrl.fieldsConfig);
+
+
         $ctrl.availableRoles = availableRoles;
-        if ($ctrl.member.roles) {
-            $ctrl.member.role = _.find($ctrl.availableRoles, function (x) { return x.id == $ctrl.member.roles[0].id });
-        }
+
+        $scope.$watch('$ctrl.member', function (member) {
+            //Need to replace member.role to the same object from roles list for correct ui-select works
+            if (member && member.roles) {
+                member.role = _.find($ctrl.availableRoles, function (x) { return x.id == member.roles[0].id });
+            }
+        });     
 
         $ctrl.rolesComponent = null;
 

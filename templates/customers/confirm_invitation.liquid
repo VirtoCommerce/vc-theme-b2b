@@ -1,4 +1,4 @@
-﻿{% layout settings.customer_layout %}
+{% layout settings.customer_layout %}
 <main class="main" role="main">
     <aside class="container">
         <div class="row">
@@ -7,9 +7,9 @@
                 {% form 'confirm_invitation' %}
                 {% include 'form-errors-custom' %}
 
-                <input type="hidden" value="{{ user_registration.email }}" name="customer[email]">
-                <input type="hidden" value="{{ user_registration.organization_id }}" name="customer[organization_id]">
-                <input type="hidden" value="{{ user_registration.token }}" name="customer[token]">
+                <input type="hidden" value="{{ form.email }}" name="customer[email]">
+                <input type="hidden" value="{{ form.organization_id }}" name="customer[organization_id]">
+                <input type="hidden" value="{{ form.token }}" name="customer[token]">
 
                 <div class="form-group">
                     <div class="row">

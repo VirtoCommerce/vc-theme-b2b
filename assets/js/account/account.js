@@ -62,7 +62,7 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards',
             });
 
             $ctrl.getCountryRegions = function (country) {
-                loader.wrapLoading(function() {
+                return loader.wrapLoading(function() {
                     return commonService.getCountryRegions(country.code3).then(function (response) { return response.data; });
                 });
             };
