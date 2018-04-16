@@ -79,6 +79,12 @@
             <li class="active">{{ article.title }}</li>
         {%- elsif template contains 'page' -%}
             <li class="active">{{ page.title }}</li>
+        {%- elsif template contains 'fulfillment' -%}
+            <li>
+                {%- capture url -%}{{ fulfillment.url | absolute_url }}{%- endcapture -%}
+                {{ fulfillment.title | link_to: url }}
+            </li>
+            <li class="active">{{ fulfillment.name }}</li>    
         {%- else -%}
             <li class="active">{{ page_title }}</li>
         {%- endif -%}
