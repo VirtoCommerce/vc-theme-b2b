@@ -1,5 +1,4 @@
 ﻿{% layout settings.customer_layout %}
-{% include 'third-party/ngWizardTemplate' %}
 {% anti_forgery %}
 <main class="container" role="main">
     <div ng-controller="accountRegisterController" ng-init="init('{{ shop.id }}')">
