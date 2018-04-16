@@ -1,69 +1,60 @@
 <main class="container container-drain container-bordered-horizontal" role="main">
 
-{% include 'shared/breadcrumb' %}
-<div id="header-breadcrumb-container">
-    <h1 id="pageHeader">{{fulfillment_center.name}}</h1> 
-</div>
+    {% comment %} {% include 'shared/breadcrumb' %} {% endcomment %}
+    <div>
+        <h2 class="page-header" id="pageHeader">{{fulfillment.name}}</h2> 
+    </div>
 
-<div class="row">
-    <div id="main-content" class="col-xs-12 col-sm-12 col-md-10 container-drain container-bordered">
-        <div id="individualBranchDetails">
-            <div class="branchDetails">
-                <ul>
-                    <li>
-                        <p>7777 Street, NY, NY, 77777</p>
-                    </li>
-                    <li class="actions">
-                        <a href="//www.google.com/maps/dir//10707%20E.%20Pine%20St.%20TULSA%20OK%2074116-1547" class="directions" target="_blank">Get Directions</a>
-                    </li>
-                </ul>
+    <div class="row">
+        <div id="main-content" class="col-xs-12 col-sm-12 col-md-10 container-drain container-bordered">
+            <div id="individualBranchDetails">
+                <div class="branchDetails">
+                    <p>{{fulfillment.address.address1}}, {{fulfillment.address.city}}, {{fulfillment.address.province}}, , {{fulfillment.address.zip}}</p>
 
-                <div><span>Phone Number:</span>1-800-GRAINGER (1-800-472-4643)</div>
-                    <div class="branchHours">
-                        <h3>Branch Hours</h3>
-                        <table>
-                            <tbody><tr>
-                                <th class="day">Day</th>
-                                <th><span class="hours">Hours</span></th>
-                            </tr>
-                            <tr>
-                                <td>MON</td>
-                                <td>7:30 AM - 5:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td>TUE</td>
-                                <td>7:30 AM - 5:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td>WED</td>
-                                <td>7:30 AM - 5:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td>THU</td>
-                                <td>7:30 AM - 5:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td>FRI</td>
-                                <td>7:30 AM - 5:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td>SAT</td>
-                                <td>
-                                    
-                                            CLOSED
-                                        </td>
-                            </tr>
-                            <tr>
-                                <td>SUN</td>
-                                <td>CLOSED</td>
-                            </tr>
-                        </tbody></table>
-                        <p class="emergency-statement">In case of emergency, call 1-800-CALL-WWG to open a branch any time (a fee may apply).  For more information, refer to our&nbsp;<a href="/content/emergency-services">Emergency Services</a></p>
-                
+                    <div><span>Phone Number:</span>{{fulfillment.address.phone}}</div>
+                        <div class="branchHours">
+                            <h3>Branch Hours</h3>
+                            <table class="table">
+                                <tbody><tr>
+                                    <th class="day">Day</th>
+                                    <th><span class="hours">Hours</span></th>
+                                </tr>
+                                <tr>
+                                    <td>MON</td>
+                                    <td>7:30 AM - 5:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>TUE</td>
+                                    <td>7:30 AM - 5:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>WED</td>
+                                    <td>7:30 AM - 5:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>THU</td>
+                                    <td>7:30 AM - 5:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>FRI</td>
+                                    <td>7:30 AM - 5:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>SAT</td>
+                                    <td>
+                                        
+                                                CLOSED
+                                            </td>
+                                </tr>
+                                <tr>
+                                    <td>SUN</td>
+                                    <td>CLOSED</td>
+                                </tr>
+                            </tbody></table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </main>
