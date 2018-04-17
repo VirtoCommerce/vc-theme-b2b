@@ -6,14 +6,17 @@ angular.module('storefrontApp')
                 var permissionValue = attrs.vaPermission.trim();
 
                 function checkPermission(user, permission) {
-                    //first check admin permission
-                    var hasPermission = user.isAdministrator;
-                    if (!hasPermission && permission) {
-                        permission = permission.trim();
-                        //check global permissions
-                        hasPermission = $.inArray(permission, user.permissions) > -1;
+                    var result = angular.isDefined(user);
+                    if (result) {
+                        //first check admin permission
+                        result = user.isAdministrator;
+                        if (!result && permission) {
+                            permission = permission.trim();
+                            //check global permissions
+                            result = $.inArray(permission, user.permissions) > -1;
+                        }
                     }
-                    return hasPermission;
+                    return result;
                 };
 
                 function toggleVisibilityBasedOnPermission(user) {

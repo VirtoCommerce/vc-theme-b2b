@@ -2,16 +2,15 @@
 {% include 'form-errors-custom' %}
 
 <fieldset ng-keypress="login($event)">
-
     <div class="form-group">
         <div class="row">
-            <div class="col-md-12" ng-class="{'has-error': customer_login['customer[user_name]'].$invalid && !customer_login['customer[user_name]'].$pristine }">
+            <div class="col-md-12">
                 <input class="form-control" ng-model="username" name="customer[user_name]" required placeholder="{{ 'customer.sign-in.user_name' | t }}" />
-                <span class="help-block text-danger" ng-show="!customer_login['customer[user_name]'].$pristine && customer_login['customer[user_name]'].$error.required">{{ 'common.required' | t }}</span>
+                <span class="text-danger" ng-show="!customer_login['customer[user_name]'].$pristine && customer_login['customer[user_name]'].$error.required">{{ 'common.required' | t }}</span>
             </div>
-            <div class="col-md-12" ng-class="{'has-error': customer_login['customer[password]'].$invalid && !customer_login['customer[password]'].$pristine }" style="margin-top:15px">
+            <div class="col-md-12" style="margin-top:15px">
                 <input class="form-control" ng-model="password" type="password" name="customer[password]" required placeholder="{{ 'customer.sign-in.password' | t }}" />
-                <span class="help-block text-danger" ng-show="!customer_login['customer[password]'].$pristine && customer_login['customer[password]'].$error.required">{{ 'common.required' | t }}</span>
+                <span class="text-danger" ng-show="!customer_login['customer[password]'].$pristine && customer_login['customer[password]'].$error.required">{{ 'common.required' | t }}</span>
             </div>
         </div>
     </div>
@@ -44,5 +43,5 @@
             {% include 'customers/forgot-links' %}
         </div>
         {% endif %}
-</fieldset>
+</fieldset> 
 {% endform %}

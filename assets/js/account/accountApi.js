@@ -20,6 +20,10 @@ storefrontApp.service('accountApi', ['$http', function ($http) {
         updateUserOrganization: function (organization) {
             return $http.put('storefrontapi/account/organization', organization);
         },
+        registerOrganization: function (registration) {
+            var XSRF_token = angular.element('input[name="__RequestVerificationToken"]').attr('value');
+            return $http.post('storefrontapi/account/organization', registration, { headers: { RequestVerificationToken: XSRF_token } });
+        },
         searchOrganizationUsers: function (criteria) {
             return $http.post('storefrontapi/account/organization/users/search', criteria);
         },
