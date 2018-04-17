@@ -18,5 +18,5 @@ storefrontApp.controller('collectionController', ['$scope', '$location', functio
         // for example            start: 16 stop: 16 * 3 + 1 = 49 step: 16
         $ctrl.pageSizes = _.range(capacity, capacity * steps + 1, capacity);
     }
-    $ctrl.keywordQuery = { keyword: [] };
+    $ctrl.keywordQuery = { keyword: [], branch:[] };
 }]);
