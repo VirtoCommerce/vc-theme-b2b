@@ -3,26 +3,16 @@
         {{ 'collections.general.availability' | t }}
     </uib-accordion-heading>
     <div ng-controller="inventoryController as $inventory">
-        <a href="#" ng-click="$inventory.selectFulfillmentCenter()">{{ 'collections.general.select_branch_title' | t }}</a> 
+        <a href="#" ng-click="selectFulfillmentCenter()">{{ 'collections.general.select_branch_title' | t }}</a> 
         {{ 'collections.general.select_branch_description' | t }}
-        <div>
-            <input type="text" ng-model="$inventory.query">
-            <a class="btn btn-warning" ng-href="?branch={{$inventory.query}}">Edit</a>
-            <label>
-                <input id="checkStock" type="checkbox" ng-model="$inventory.inStock" ng-change="$inventory.queryInStock()">
-                <a>
+        <form>
+            <p>{{ 'collections.sidebar.search_within' | t }}</p>
+            <div class="checkbox" ng-click="$collection.selectedBranch()">
+                <input type="checkbox" ng-model="$collection.searchInBranch">
+                <a vc-query-source="$collection.keywordQuery" switchable="false">
                     <span class="switch"></span>
                     <span class="name">In stock now at your brach</span>
                 </a>
-            </label>
-        </div>
-        <form>
-            <p>{{ 'collections.sidebar.search_within' | t }}</p>
-            <div class="input-group" vc-enter-source>
-                <input class="form-control" type="text" vc-query-target="$collection.keywordQuery" ng-model="$collection.keywordQuery.branch[0]">
-                <span class="input-group-btn">
-                    <a class="btn btn-default" vc-query-source="$collection.keywordQuery" switchable="false" vc-enter-target>{{ 'common.go' | t }}</a>
-                </span>
             </div>
         </form>
     </div>
