@@ -7,12 +7,11 @@
             <div class="page-header">
                 <h3>{{ 'customer.edit_company_members.title' | t }}</h3>
             </div>
-            <table class="full" ng-if="$ctrl.entries.length">
+            <table class="table" ng-if="$ctrl.entries.length">
                 <thead>
                     <tr>
                         <th>{{ 'customer.edit_company_members.name' | t }}</th>
                         <th>{{ 'customer.edit_company_members.email' | t }}</th>
-                        <th>{{ 'customer.edit_company_members.job_title' | t }}</th>
                         <th>{{ 'customer.edit_company_members.role' | t }}</th>
                         <th>{{ 'customer.edit_company_members.status' | t }}</th>
                         <th>{{ 'customer.edit_company_members.actions' | t }}</th>
@@ -20,17 +19,15 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="member in $ctrl.entries">
-                        <td ng-bind="member.fullName"></td>
+                        <td ng-bind="member.userName"></td>
                         <td ng-bind="member.email"></td>
-                        <td ng-bind="member.title"></td>
                         <td ng-bind="member.role.name"></td>
-                        <td ng-bind="member.isActive?'Active':'Not active'"></td>
+                        <td ng-bind="member.isLockedOut ?'Not active':'Active'"></td>
                         <td>
                             <span ng-show="$ctrl.showActions(member)">
                                 <a ng-if="member.firstName" ng-click="$ctrl.edit(member.id)" href="">Edit | </a>
                                 <a ng-click="$ctrl.delete(member)" href="">Delete</a>
-                                <a ng-if="member.firstName && member.isActive" ng-click="$ctrl.changeStatus(member)" href=""> | Deactivate</a>
-                                <a ng-if="member.firstName && !member.isActive" ng-click="$ctrl.changeStatus(member)" href=""> | Activate</a>
+                                <a ng-click="$ctrl.changeStatus(member)" href="" ng-bind="member.isLockedOut ? '| Activate' : '| Deactivate'"></a>
                             </span>
                         </td>
                     </tr>
@@ -85,25 +82,4 @@
                 </button>
             </div>
         </div>
-</script>
-
-<script id="account-company-members-detail.tpl" type="text/ng-template">
-	  <p>
-		<a ng-link="['MemberList', {pageNumber: $ctrl.pageNumber}]">
-		  <span class="fa fa-arrow-left"></span> {{ 'customer.edit_company_member.return_text' | t }}
-		</a>
-	  </p>
-
-	  <div class="one-whole" ng-init="init('{{ shop.id }}')">
-		<h4>{{ 'customer.edit_company_member.title' | t }}</h4>
-
-		<div ng-show="$ctrl.member">
-			<vc-member-detail member="$ctrl.member" member-component="$ctrl.memberComponent" fields-config="$ctrl.fieldsConfig"></vc-member-detail>
-		</div>
-
-		<button ng-click="$ctrl.submitMember()" ng-disabled="$ctrl.loader.isLoading" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }">
-		  <span class="btn-text">{{ 'customer.edit_company_member.btn_update' | t }}</span>
-		  <span class="btn-loading"></span>
-		</button>
-	  </div>
 </script>

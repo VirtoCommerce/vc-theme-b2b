@@ -1,4 +1,4 @@
-﻿//Call this to register our module to main application
+//Call this to register our module to main application
 var moduleName = "storefront.account";
 
 if (storefrontAppDependencies !== undefined) {
@@ -53,15 +53,19 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards',
         ],
         controller: ['$scope', '$timeout', 'storefrontApp.mainContext', 'loadingIndicatorService', 'commonService', function ($scope, $timeout, mainContext, loader, commonService) {
             var $ctrl = this;
+            $ctrl.loader = loader;
             $ctrl.availCountries = [];
-            commonService.getCountries().then(function (response) {
-                $ctrl.availCountries = response.data;
+            loader.wrapLoading(function() {
+                return commonService.getCountries().then(function (response) {
+                    $ctrl.availCountries = response.data;
+                });
             });
 
             $ctrl.getCountryRegions = function (country) {
-                return commonService.getCountryRegions(country.code3).then(function (response) { return response.data; });
+                return loader.wrapLoading(function() {
+                    return commonService.getCountryRegions(country.code3).then(function (response) { return response.data; });
+                });
             };
-
         }]
     })
 
