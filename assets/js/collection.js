@@ -1,8 +1,7 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('collectionController', ['$scope', '$location', function ($scope, $location) {
-    $scope.fulfillmentCenters = [];
-    $scope.currentfulfillmentCenter = null;
+storefrontApp.controller('collectionController', ['$scope', '$location', '$localStorage', function ($scope, $location, $localStorage) {
+    $scope.currentFulfillmentCenter = null;
     var $ctrl = this;
     $ctrl.init = function() {
         $ctrl.sortModes = {
@@ -17,9 +16,9 @@ storefrontApp.controller('collectionController', ['$scope', '$location', functio
         };
         $ctrl.viewQuery = { view: ['grid'] };
         $ctrl.keywordQuery = { keyword: [], branch:[] };
-        $ctrl.currentBranch = null;
-        $ctrl.searchInBranch = null;
-        
+        if ($localStorage['selectedBranch']) {
+            $scope.currentFulfillmentCenter = $localStorage['selectedBranch'];
+        }
     }
     
     $ctrl.generatePageSizes = function (capacity, steps) {
@@ -40,8 +39,11 @@ storefrontApp.controller('collectionController', ['$scope', '$location', functio
     }
 
     $scope.getCurrentFulfillment = function() {
-        var result = _.find($scope.fulfillmentCenters, function(fulfillment){ return fulfillment.selected === true; });
-        return result.name;
+        var result = null;
+        if ($scope.currentFulfillmentCenter) {
+            result = $scope.currentFulfillmentCenter.id;
+        }
+        return result;
     };
 
     $scope.$on('$locationChangeSuccess', function(event) {

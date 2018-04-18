@@ -1,28 +1,39 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('inventoryController', ['$scope', 'dialogService', 'fulfillmentCenterService', function ($scope, dialogService, fulfillmentCenterService) {
+storefrontApp.controller('inventoryController', ['$scope', 'dialogService', 'fulfillmentCenterService', '$localStorage', function ($scope, dialogService, fulfillmentCenterService, $localStorage) {
     $inventory = this;
-    $inventory.parentfulfillmentCenters = $scope.fulfillmentCenters;
-    $inventory.currentfulfillmentCenter = $scope.currentfulfillmentCenter;
+    $scope.fulfillmentCenters = [];
+    $scope.currentFulfillmentCenter = $localStorage['selectedBranch'];
+    $scope.widgetBranchUrl = null;
+    
 
     $scope.searchFulfillmentCenters = function() {
         // fulfillmentCenterService.searchFulfillmentCenters({ searchPhrase: $scope.searchPhrase }).then(function(response) {
         //     $scope.fulfillmentCenters = response.data.results;
         // });
-        //$scope.fulfillmentCenters = $inventory.parentfulfillmentCenters;
-        $inventory.parentfulfillmentCenters.push({name: "branch1", selected: false},{ name: "branch2", selected: false});
-        
+        $scope.fulfillmentCenters = [{name: "branch1", id: "1", city:"NY"},{ name: "branch2", id: "2", city:"Chicago"}];
     };
 
     $scope.selectFulfillmentCenter = function() {
-        //dialogService.showDialog({ isFilter: true }, 'universalDialogController', 'storefront.select-fulfillment-center-dialog.tpl');
-        $scope.searchFulfillmentCenters();
-        $inventory.currentfulfillmentCenter = $inventory.parentfulfillmentCenters[0];
-        $inventory.currentfulfillmentCenter.selected = true;
-        //$scope.fulfillmentCenters = angular.copy($inventory.parentfulfillmentCenters); 
+        var dialogInstance = dialogService.showDialog({ isFilter: true }, 'universalDialogController', 'storefront.select-fulfillment-center-dialog.tpl');
+        dialogInstance.result.then(function(result) {
+            $scope.currentFulfillmentCenter = result;
+            $localStorage['selectedBranch'] = $scope.currentFulfillmentCenter;
+            $scope.switchTemplate();
+        });
     };
 
     $scope.fulfillmentCenterToAddress = function (fulfillmentCenter) {
         return fulfillmentCenterService.toAddress(fulfillmentCenter);
     };
+
+    $scope.switchTemplate = function () {
+        if ($scope.currentFulfillmentCenter) {
+            $scope.widgetBranchUrl = "selected-branch";
+        } else {
+            $scope.widgetBranchUrl = "unselected-branch";
+        }
+    }
+
+    $scope.switchTemplate();
 }]);
