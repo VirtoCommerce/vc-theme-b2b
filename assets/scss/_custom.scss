@@ -33,8 +33,8 @@ header {
 }
 
 footer {
-    position: relative;
-    z-index: 9999;
+  position: absolute;
+  width: 100%;
 }
 
 #all-products-popover + .popover {
@@ -71,7 +71,8 @@ main {
 }
 
 .ng-submitted input.ng-invalid.ng-invalid-required,
-.ng-submitted input.ng-invalid.ng-invalid-email   {
+.ng-submitted input.ng-invalid.ng-invalid-email,
+.ng-submitted input.ng-invalid.ng-invalid-pattern   {
   border-color: #883333;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
