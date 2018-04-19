@@ -1,7 +1,7 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.controller('collectionController', ['$scope', '$location', '$localStorage', function ($scope, $location, $localStorage) {
-    $scope.currentFulfillmentCenter = null;
+    $scope.currentFulfillmentCenter = { id: null };
     var $ctrl = this;
     $ctrl.init = function() {
         $ctrl.sortModes = {
@@ -32,9 +32,11 @@ storefrontApp.controller('collectionController', ['$scope', '$location', '$local
         var sc = $scope;
         if ($ctrl.searchInBranch) {
             $ctrl.keywordQuery.branch = null;
+            $ctrl.searchInBranch = false;
         }
         else {
             $ctrl.keywordQuery.branch = [$scope.getCurrentFulfillment()];
+            $ctrl.searchInBranch = true;
         }
     }
 
@@ -45,10 +47,23 @@ storefrontApp.controller('collectionController', ['$scope', '$location', '$local
         }
         return result;
     };
+ 
+    $ctrl.checkedBranch = function() {
+        $ctrl.searchInBranch = false;
+        if ($ctrl.keywordQuery.branch && $scope.currentFulfillmentCenter) {
+            $ctrl.searchInBranch = $ctrl.keywordQuery.branch[0] === $scope.currentFulfillmentCenter.id;
+        }
+    }
 
     $scope.$on('$locationChangeSuccess', function(event) {
-        $ctrl.searchInBranch = angular.isDefined($ctrl.keywordQuery.branch[0]);
+        $ctrl.checkedBranch();
     });
+
+    $scope.$watch('currentFulfillmentCenter.id', function (fulfillmentCenterId) {
+        if ($ctrl.searchInBranch && fulfillmentCenterId) {
+            $ctrl.searchInBranch = false;
+        }
+    }, true);
 
     $ctrl.init();
 }]);
