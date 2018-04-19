@@ -2,11 +2,11 @@
     <ng-outlet ng-init=""></ng-outlet>
 </div>
 <script id="account-company-members-list.tpl" type="text/ng-template">
-    <vc-errors message="errorMessage" errors="errors"></vc-errors>
     <div ng-init="init('{{ shop.id }}', '{{ current_language.culture_name }}', '{{ "/account/register" | absolute_url }}')">
         <div class="page-header">
             <h3>{{ 'customer.edit_company_members.title' | t }}</h3>
         </div>
+        <vc-errors message="errorMessage" errors="errors"></vc-errors>
         <table class="table" ng-if="$ctrl.entries.length">
             <thead>
                 <tr>
