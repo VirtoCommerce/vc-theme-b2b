@@ -13,7 +13,7 @@ angular.module('storefront.account')
     .component('vcAccountCompanyMembersList', {
         templateUrl: "account-company-members-list.tpl",
         bindings: { $router: '<' },
-        controller: ['storefrontApp.mainContext', '$scope', 'accountApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, $scope, accountApi, loader, confirmService, $location, $translate) {
+        controller: ['storefrontApp.mainContext', '$scope', 'accountApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', 'apiErrorService', function (mainContext, $scope, accountApi, loader, confirmService, $location, $translate, error) {
             var $ctrl = this;
             $ctrl.currentMemberId = mainContext.customer.id;
             $ctrl.newMemberComponent = null;
@@ -28,7 +28,7 @@ angular.module('storefront.account')
                         take: $ctrl.pageSettings.itemsPerPageCount,
                         sortInfos: $ctrl.sortInfos
                     }).then(function (response) {
-                        $ctrl.entries = response.data.results;                       
+                        $ctrl.entries = response.data.results;
                         $ctrl.pageSettings.totalItems = response.data.totalCount;
                     });
                 });
@@ -77,12 +77,16 @@ angular.module('storefront.account')
             };
 
             $ctrl.inviteEmailsValidationPattern = new RegExp(/((^|((?!^)([,;]|\r|\r\n|\n)))([a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*))+$/);
+
             $ctrl.invite = function () {
                 $ctrl.inviteInfo.emails = $ctrl.inviteInfo.rawEmails.split(/[,;]|\r|\r\n|\n/g);
                 loader.wrapLoading(function () {
                     return accountApi.createInvitation({
                         emails: $ctrl.inviteInfo.emails,
                         message: $ctrl.inviteInfo.message
+                    }).then(function (response) {
+                        error.handleErrors($scope, response);
+                        return response;
                     }).then(function (response) {
                         $ctrl.cancel();
                         refresh();
@@ -97,11 +101,15 @@ angular.module('storefront.account')
                     $ctrl.newMember.storeId = $ctrl.storeId;
 
                     loader.wrapLoading(function () {
-                        return accountApi.registerNewUser($ctrl.newMember).then(function (response) {
-                            $ctrl.cancel();
-                            $ctrl.pageSettings.currentPage = 1;
-                            $ctrl.pageSettings.pageChanged();
-                        });
+                        return accountApi.registerNewUser($ctrl.newMember)
+                            .then(function (response) {
+                                error.handleErrors($scope, response);
+                                return response;
+                            }).then(function (response) {
+                                $ctrl.cancel();
+                                $ctrl.pageSettings.currentPage = 1;
+                                $ctrl.pageSettings.pageChanged();
+                            });
                     });
                 }
             };
