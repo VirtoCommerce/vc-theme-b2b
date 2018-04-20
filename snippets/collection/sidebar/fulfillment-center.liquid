@@ -2,5 +2,34 @@
     <uib-accordion-heading>
         {{ 'collections.general.availability' | t }}
     </uib-accordion-heading>
-    <p ng-controller="inventoryController as $inventory"><a href="" ng-click="$inventory.selectFulfillmentCenter()">{{ 'collections.general.select_branch_title' | t }}</a> {{ 'collections.general.select_branch_description' | t }}</p>
+    <div ng-controller="inventoryController as $inventory">
+        <div ng-include="widgetBranchUrl"></div>
+        <form>
+            <p>{{ 'collections.sidebar.search_within' | t }}</p>
+            <div class="checkbox" ng-click="$collection.selectedBranch()">
+                <input type="checkbox" ng-model="$collection.searchInBranch">
+                <a vc-query-source="$collection.keywordQuery" switchable="false">
+                    <span class="switch"></span>
+                    <span class="name">In stock now at your brach</span>
+                </a>
+            </div>
+        </form>
+    </div>
+    
 </div>
+
+<script type="text/ng-template" id="unselected-branch">
+    <a href="#" ng-click="selectFulfillmentCenter()">{{ 'collections.general.select_branch_title' | t }}</a> 
+    {{ 'collections.general.select_branch_description' | t }}
+</script>
+
+<script type="text/ng-template" id="selected-branch">
+    {% raw %}
+    <form>
+        <p>
+            {{currentFulfillmentCenter.name}} – <a ng-href="/fulfillmentcenter/{{currentFulfillmentCenter.id}}" target="_blank">Info</a> |
+            <a href="#" ng-click="selectFulfillmentCenter()" vc-query-source="$collection.keywordQuery" switchable="false">Change</a>
+        </p>
+    </form>
+    {% endraw %}
+</script>
