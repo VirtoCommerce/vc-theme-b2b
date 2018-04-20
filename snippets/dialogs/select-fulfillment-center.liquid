@@ -1,4 +1,4 @@
-﻿<script id="storefront.select-fulfillment-center-dialog.tpl" type="text/ng-template">
+<script id="storefront.select-fulfillment-center-dialog.tpl" type="text/ng-template">
     <div class="modal-header">
         <button class="close" type="button" ng-click="close()" title="{{ 'inventory.select_branch.close' | t }}" aria-label="{{ 'inventory.select_branch.close' | t }}"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">{{ 'inventory.select_branch.title' | t }}</h4>
@@ -9,14 +9,14 @@
             <div class="input-group" vc-enter-source>
                 <input class="form-control" type="text" ng-model="searchPhrase">
                 <span class="input-group-btn">
-                    <a class="btn btn-default" href="" ng-click="searchFulfillmentCenters()" vc-enter-target>{{ 'common.go' | t }}</a>
+                    <a class="btn btn-default" href="" ng-click="searchFulfillmentCenters(searchPhrase)" vc-enter-target>{{ 'common.go' | t }}</a>
                 </span>
             </div>
         </div>
         <div class="container-bordered container-drain">
             <div class="row" ng-repeat="fulfillmentCenter in fulfillmentCenters">
                 <div class="col-md-5">
-                    <vc-address ng-init="address = fulfillmentCenterToAddress(fulfillmentCenter)" address="address">
+                    <vc-address address="fulfillmentCenter.address">
                         <address-header>
                             <div class="h5" ng-bind="fulfillmentCenter.name"></div>
                         </address-header>

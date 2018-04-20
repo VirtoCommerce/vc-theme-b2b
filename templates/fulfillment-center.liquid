@@ -5,55 +5,17 @@
     </div>
     <div class="col-xs-12">
         <div>
-            <h2>{{fulfillment.name}}</h2> 
+            <h2>{{fulfillment_center.name}}</h2>
         </div>
         <div class="row">
             <div id="main-content" class="col-xs-12 col-sm-12 col-md-10 container-drain container-bordered">
                 <div id="individualBranchDetails">
                     <div class="branchDetails">
-                        <p>{{fulfillment.address.address1}}, {{fulfillment.address.city}}, {{fulfillment.address.province}}, , {{fulfillment.address.zip}}</p>
+                        <p>{{fulfillment_center.address.address1}}, {{fulfillment_center.address.city}}, {{fulfillment_center.address.province}}, , {{fulfillment_center.address.zip}}</p>
 
-                        <div><span>Phone Number:</span>{{fulfillment.address.phone}}</div>
-                            <div class="branchHours">
-                                <h3>Branch Hours</h3>
-                                <table class="table">
-                                    <tbody><tr>
-                                        <th class="day">Day</th>
-                                        <th><span class="hours">Hours</span></th>
-                                    </tr>
-                                    <tr>
-                                        <td>MON</td>
-                                        <td>7:30 AM - 5:00 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>TUE</td>
-                                        <td>7:30 AM - 5:00 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>WED</td>
-                                        <td>7:30 AM - 5:00 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>THU</td>
-                                        <td>7:30 AM - 5:00 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>FRI</td>
-                                        <td>7:30 AM - 5:00 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>SAT</td>
-                                        <td>
-                                            
-                                                    CLOSED
-                                                </td>
-                                    </tr>
-                                    <tr>
-                                        <td>SUN</td>
-                                        <td>CLOSED</td>
-                                    </tr>
-                                </tbody></table>
-                            </div>
+                        <div><span>Phone Number:</span>{{fulfillment_center.address.phone}}</div>
+                        <div class="branchHours">
+                            {{fulfillment_center.description}}
                         </div>
                     </div>
                 </div>

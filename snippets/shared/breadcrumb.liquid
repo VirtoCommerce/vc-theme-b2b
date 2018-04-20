@@ -1,4 +1,4 @@
-﻿{%- unless template == 'index' or template == 'cart' -%}
+{%- unless template == 'index' or template == 'cart' -%}
     <ol class="breadcrumb pull-left" role="navigation" aria-label="breadcrumbs">
         <li>
             <a href="{{ "/" | absolute_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
@@ -80,11 +80,7 @@
         {%- elsif template contains 'page' -%}
             <li class="active">{{ page.title }}</li>
         {%- elsif template contains 'fulfillment' -%}
-            <li>
-                {%- capture url -%}{{ fulfillment.url | absolute_url }}{%- endcapture -%}
-                {{ fulfillment.title | link_to: url }}
-            </li>
-            <li class="active">{{ fulfillment.name }}</li>    
+            <li class="active">{{ fulfillment_center.name }}</li>    
         {%- else -%}
             <li class="active">{{ page_title }}</li>
         {%- endif -%}

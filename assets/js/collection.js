@@ -1,6 +1,6 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('collectionController', ['$scope', '$location', '$localStorage', function ($scope, $location, $localStorage) {
+storefrontApp.controller('collectionController', ['$scope', '$location',  function ($scope, $location) {
     $scope.currentFulfillmentCenter = { id: null };
     var $ctrl = this;
     $ctrl.init = function() {
@@ -15,10 +15,7 @@ storefrontApp.controller('collectionController', ['$scope', '$location', '$local
             'createddate-ascending': 'collections.sorting.date_ascending'
         };
         $ctrl.viewQuery = { view: ['grid'] };
-        $ctrl.keywordQuery = { keyword: [], branch:[] };
-        if ($localStorage['selectedBranch']) {
-            $scope.currentFulfillmentCenter = $localStorage['selectedBranch'];
-        }
+        $ctrl.keywordQuery = { keyword: [] };       
     }
     
     $ctrl.generatePageSizes = function (capacity, steps) {
@@ -26,44 +23,7 @@ storefrontApp.controller('collectionController', ['$scope', '$location', '$local
         // for example            start: 16 stop: 16 * 3 + 1 = 49 step: 16
         $ctrl.pageSizes = _.range(capacity, capacity * steps + 1, capacity);
     }
-    
-    
-    $ctrl.selectedBranch = function() {
-        var sc = $scope;
-        if ($ctrl.searchInBranch) {
-            $ctrl.keywordQuery.branch = null;
-            $ctrl.searchInBranch = false;
-        }
-        else {
-            $ctrl.keywordQuery.branch = [$scope.getCurrentFulfillment()];
-            $ctrl.searchInBranch = true;
-        }
-    }
 
-    $scope.getCurrentFulfillment = function() {
-        var result = null;
-        if ($scope.currentFulfillmentCenter) {
-            result = $scope.currentFulfillmentCenter.id;
-        }
-        return result;
-    };
- 
-    $ctrl.checkedBranch = function() {
-        $ctrl.searchInBranch = false;
-        if ($ctrl.keywordQuery.branch && $scope.currentFulfillmentCenter) {
-            $ctrl.searchInBranch = $ctrl.keywordQuery.branch[0] === $scope.currentFulfillmentCenter.id;
-        }
-    }
-
-    $scope.$on('$locationChangeSuccess', function(event) {
-        $ctrl.checkedBranch();
-    });
-
-    $scope.$watch('currentFulfillmentCenter.id', function (fulfillmentCenterId) {
-        if ($ctrl.searchInBranch && fulfillmentCenterId) {
-            $ctrl.searchInBranch = false;
-        }
-    }, true);
-
+  
     $ctrl.init();
 }]);

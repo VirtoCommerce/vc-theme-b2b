@@ -1,6 +1,6 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('purchaseController', ['$scope', '$localStorage', 'storefrontApp.mainContext', 'fulfillmentCenterService', function ($scope, $localStorage, mainContext, fulfillmentCenterService) {
+storefrontApp.controller('purchaseController', ['$scope', '$localStorage', 'storefrontApp.mainContext', function ($scope, $localStorage, mainContext) {
 
     $scope.loadPaymentPlan = function(availablePaymentPlans, objectType, objectId) {
         $scope.availablePaymentPlans = availablePaymentPlans;
@@ -30,7 +30,7 @@ storefrontApp.controller('purchaseController', ['$scope', '$localStorage', 'stor
     $scope.shipmentType = $localStorage['shipmentType'] || 'shipping';
     $scope.shipmentAddress = $localStorage['shipmentAddress'];
     $scope.shipmentFulfillmentCenter = $localStorage['shipmentFulfillmentCenter'];
-    $scope.shipmentFulfillmentCenterAddress = fulfillmentCenterService.toAddress($scope.shipmentFulfillmentCenter);
+    $scope.shipmentFulfillmentCenterAddress = $scope.shipmentFulfillmentCenter.address;
 
     $scope.$watch(
         function () { return mainContext.customer; },
@@ -52,7 +52,7 @@ storefrontApp.controller('purchaseController', ['$scope', '$localStorage', 'stor
         } else {
             $localStorage['shipmentFulfillmentCenter'] = shipmentTypeInfo;
             $scope.shipmentFulfillmentCenter = shipmentTypeInfo;
-            $scope.shipmentFulfillmentCenterAddress = fulfillmentCenterService.toAddress(shipmentTypeInfo);
+            $scope.shipmentFulfillmentCenterAddress = fulfillmentCenterService.address;
         }
     };
 }]);
