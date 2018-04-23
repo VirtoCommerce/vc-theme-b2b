@@ -30,7 +30,9 @@ storefrontApp.controller('purchaseController', ['$scope', '$localStorage', 'stor
     $scope.shipmentType = $localStorage['shipmentType'] || 'shipping';
     $scope.shipmentAddress = $localStorage['shipmentAddress'];
     $scope.shipmentFulfillmentCenter = $localStorage['shipmentFulfillmentCenter'];
-    $scope.shipmentFulfillmentCenterAddress = $scope.shipmentFulfillmentCenter.address;
+    if ($scope.shipmentFulfillmentCenter) {
+        $scope.shipmentFulfillmentCenterAddress = $scope.shipmentFulfillmentCenter.address;
+    }
 
     $scope.$watch(
         function () { return mainContext.customer; },
