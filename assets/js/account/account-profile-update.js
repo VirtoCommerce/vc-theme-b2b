@@ -4,7 +4,7 @@ angular.module('storefront.account')
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['$q', '$scope', 'storefrontApp.mainContext', 'accountApi', 'loadingIndicatorService', 'availableRoles', 'apiErrorService', function ($q, $scope, mainContext, accountApi, loader, availableRoles, apiErrorService) {
+    controller: ['$q', '$scope', 'storefrontApp.mainContext', 'accountApi', 'loadingIndicatorService', 'availableRoles', function ($q, $scope, mainContext, accountApi, loader, availableRoles) {
         var $ctrl = this;
         $ctrl.loader = loader;
         //$ctrl.availableRoles = availableRoles;

@@ -104,10 +104,8 @@ angular.module('storefront.account')
                     loader.wrapLoading(function () {
                         return accountApi.registerNewUser($ctrl.newMember)
                             .then(function (response) {
-                                if (!response.data.succeeded) {
-                                    $ctrl.errorMessage = response.data.message;
+                                if (!response.data.succeeded)
                                     $ctrl.errors = response.data.errors;
-                                }
                                 return response;
                             }).then(function (response) {
                                 $ctrl.cancel();
