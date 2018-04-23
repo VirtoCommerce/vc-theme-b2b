@@ -3,7 +3,7 @@
         <h3>{{ 'customer.edit_profile.title' | t }}</h3>
     </div>
 
-    <vc-errors message="errorMessage" errors="errors"></vc-errors>
+    <vc-errors errors="$ctrl.errors" ng-if="$ctrl.errors.length"></vc-errors>
 
     <form ng-submit="$ctrl.submit()" name="detailForm" novalidate>
         <div class="form-group">

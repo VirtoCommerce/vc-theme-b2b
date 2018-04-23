@@ -29,11 +29,13 @@ angular.module('storefront.account')
             }
 
             return loader.wrapLoading(function () {
-                return accountApi.updateUser($ctrl.member, function(response) {
-                    apiErrorService.clearErrors($scope);
-                }, function(rejection) {
-                    apiErrorService.handleErrors($scope, rejection);
-                }).then(function (response) {
+                return accountApi.updateUser($ctrl.member)
+                    .then(function (response) {
+                        if (!response.data.succeeded)
+                            $ctrl.errors = response.data.errors;
+                        return response;
+                    })
+                    .then(function (response) {
                     return mainContext.loadCustomer().then(function (customer) {
                         $ctrl.member = customer;                      
                     });

@@ -13,7 +13,7 @@ angular.module('storefront.account')
     .component('vcAccountCompanyMembersList', {
         templateUrl: "account-company-members-list.tpl",
         bindings: { $router: '<' },
-        controller: ['storefrontApp.mainContext', '$scope', 'accountApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', 'apiErrorService', function (mainContext, $scope, accountApi, loader, confirmService, $location, $translate, error) {
+        controller: ['storefrontApp.mainContext', '$scope', 'accountApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, $scope, accountApi, loader, confirmService, $location, $translate) {
             var $ctrl = this;
             $ctrl.currentMemberId = mainContext.customer.id;
             $ctrl.newMemberComponent = null;
@@ -85,7 +85,8 @@ angular.module('storefront.account')
                         emails: $ctrl.inviteInfo.emails,
                         message: $ctrl.inviteInfo.message
                     }).then(function (response) {
-                        error.handleErrors($scope, response);
+                        if (!response.data.succeeded)
+                            $ctrl.errors = response.data.errors;
                         return response;
                     }).then(function (response) {
                         $ctrl.cancel();
@@ -103,7 +104,10 @@ angular.module('storefront.account')
                     loader.wrapLoading(function () {
                         return accountApi.registerNewUser($ctrl.newMember)
                             .then(function (response) {
-                                error.handleErrors($scope, response);
+                                if (!response.data.succeeded) {
+                                    $ctrl.errorMessage = response.data.message;
+                                    $ctrl.errors = response.data.errors;
+                                }
                                 return response;
                             }).then(function (response) {
                                 $ctrl.cancel();
