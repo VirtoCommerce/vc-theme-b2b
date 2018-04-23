@@ -10,8 +10,8 @@
             <vc-labeled-input value="$ctrl.member.title" name="title" type="text" placeholder="{{ 'customer.register.job_title' | t }}" form="detailForm"></vc-labeled-input>
             <vc-labeled-input value="$ctrl.member.email" name="email" placeholder="{{ 'customer.edit_profile.email' | t }}" form="detailForm" required="true" type="email"></vc-labeled-input>
 
-            <div class="form-select">
-                <select va-permission="storefront:organization:edit"  ng-model="$ctrl.member.role" ng-options="x as x.name for x in $ctrl.availableRoles" name="Roles" required class="form-control" size="1">
+            <div class="form-group">
+                <select va-permission="storefront:organization:edit" ng-model="$ctrl.member.role" ng-options="x as x.name for x in $ctrl.availableRoles" name="Roles" required class="form-control" size="1">
                     <option value="">Please select role</option>
                 </select>
             </div>
