@@ -1,4 +1,4 @@
-﻿{% layout settings.customer_layout %}
+{% layout settings.customer_layout %}
 {% anti_forgery %}
 <main class="container" role="main">
     <div ng-controller="accountRegisterController" ng-init="init('{{ shop.id }}')">
@@ -45,28 +45,26 @@
                 <form name="step3Form" novalidate ng-class="{'ng-submitted': step3Form.$submitted}">
                     <wz-step wz-title="{{ 'customer.register.step-account' | t }}" canexit="step3Form.$valid">
                         <h1>{{ 'customer.register.step-account' | t }}</h1>
-                        <div class="form-group" style="margin-bottom: 0px;">
+                        <div class="form-group">
                             <div class="row">
                                 <div class="col-md-12">
                                     <input class="form-control" ng-model="registration.userName" name="userName" required placeholder="{{ 'customer.register.user_name' | t }}" />
-                                    <span class="text-danger" ng-style="{'visibility': step3Form.$submitted && step3Form.userName.$error.required ? 'visible':'hidden'}">{{ 'common.required' | t }}</span>
+                                    <span class="text-danger" ng-show="step3Form.$submitted && step3Form.userName.$error.required">{{ 'common.required' | t }}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group" style="margin-bottom: 0px;">
+                        <div class="form-group">
                             <div class="row">
                                 <div class="col-md-6" ng-class="{'has-error': step3Form.$submitted && step3Form.password.$error.required }">
                                     <input class="form-control" ng-model="registration.password" name="password" placeholder="{{ 'customer.register.password' | t }}" required type="password" />
-                                    <span class="text-danger" ng-style="{'visibility': step3Form.$submitted && step3Form.password.$error.required ? 'visible':'hidden'}">{{ 'common.required' | t }}</span>
                                 </div>
                                 <div class="col-md-6" ng-class="{'has-error': step3Form.$submitted && (step3Form.confirmPassword.$error.required || step3Form.confirmPassword.$error.compareTo)} ">
                                     <input class="form-control" ng-model="registration.confirmPassword" name="confirmPassword" placeholder="{{ 'customer.register.confirm_password' | t }}" required compare-to="registration.password" type="password" />
-                                    <span class="text-danger" ng-style="{'visibility': step3Form.$submitted && step3Form.confirmPassword.$error.required ? 'visible':'hidden'}">{{ 'common.required' | t }}</span>
-                                    <span class="text-danger" ng-style="{'visibility': step3Form.$submitted && step3Form.confirmPassword.$error.compareTo ? 'visible':'hidden'}">{{ 'common.not_match' | t }}</span>
+                                    <span class="text-danger" ng-show="step3Form.confirmPassword.$error.compareTo">{{ 'common.not_match' | t }}</span>
                                 </div>
                             </div>
                         </div>
-                        <input class="btn btn-primary pull-right" wz-finish type="submit" value="Submit" ng-disabled="step1Form.$invalid || step2Form.$invalid || step3Form.$invalid" ng-click="step3Form.$submitted = true" />
+                        <input class="btn btn-primary pull-right" wz-finish type="submit" value="Submit" ng-disabled="step3Form.$invalid" ng-click="step3Form.$submitted = true" />
                         <input class="btn btn-alt" wz-previous value="Back" />
                     </wz-step>
                 </form>
