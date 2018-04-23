@@ -7,9 +7,9 @@
         <vc-errors level="'warning'" message="dialogData.errorMessage" errors="dialogData.errors"></vc-errors>
         <div ng-repeat="item in dialogData.items">
             <div class="row">
-                <div class="col-md-2 img-responsive">
-                    <img ng-if="item.imageUrl" ng-src="{% raw %}{{ item.imageUrl }}{% endraw %}">
-                    <img ng-if="!item.imageUrl" src="{{ 'no-image.svg' | asset_url }}" />
+                <div class="col-md-2">
+                    <img class="img-responsive" ng-if="item.imageUrl" ng-src="{% raw %}{{ item.imageUrl }}{% endraw %}">
+                    <img class="img-responsive" ng-if="!item.imageUrl" src="{{ 'no-image.svg' | asset_url }}" />
                 </div>
                 <div class="col-md-5">
                     <a href="item.url" ng-bind="item.name"></a>
