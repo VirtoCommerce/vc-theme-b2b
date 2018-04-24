@@ -1,0 +1,45 @@
+<div class="col-xs-2 col-md-1">
+    <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ $ctrl.lineItem.imageUrl }}{% endraw %}" />
+</div>
+<div class="col-xs-4 col-md-3">
+    <p><a ng-href="{% raw %}{{ $ctrl.lineItem.product.url}}{% endraw %}" ng-bind="$ctrl.lineItem.name"></a></p>
+    <p>Item <strong ng-bind="$ctrl.lineItem.sku"></strong></p>
+    <p>
+        <span>Price</span>
+        {% if settings.show_prices_with_taxes %}
+        <strong class="text-success" ng-bind="$ctrl.lineItem.placedPriceWithTax.formattedAmount"></strong>
+        {% else %}
+        <strong class="text-success" ng-bind="$ctrl.lineItem.placedPrice.formattedAmount"></strong>
+        {% endif %}
+        <span>/ each</span>
+    </p>
+</div>
+<div class="hidden-xs hidden-sm col-md-4" ng-init='$ctrl.loadPaymentPlan({{ settings.available_paymentPlans | json }}, "product", $ctrl.lineItem.productId)'>
+   <vc-item-availability availability="$ctrl.lineItem.availability"></vc-item-availability>
+    <vc-payment-plan available-payment-plans = "$ctrl.availablePaymentPlans" payment-plan="$ctrl.lineItem.paymentPlan"></vc-payment-plan>
+</div>
+<div class="col-xs-3 col-md-2">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <input class="form-control" type="text" ng-model="$ctrl.lineItem.quantity" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div><a href="" ng-click="$ctrl.changeQty()">Update</a></div>
+            <div><a href="" ng-click="$ctrl.remove()">Remove</a></div>          
+        </div>
+    </div>
+</div>
+<div class="col-xs-3 col-md-2">
+    <p>
+        <span class="text-uppercase">Total</span><br>
+        {% if settings.show_prices_with_taxes %}
+        <strong class="text-success" ng-bind="$ctrl.lineItem.extendedPriceWithTax.formattedAmount"></strong>
+        {% else %}
+        <strong class="text-success" ng-bind="$ctrl.lineItem.extendedPrice.formattedAmount"></strong>
+        {% endif %}
+    </p>
+</div>

@@ -1,4 +1,4 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.component('vcCheckoutEmail', {
 	templateUrl: "themes/assets/js/checkout/checkout-email.tpl.html",

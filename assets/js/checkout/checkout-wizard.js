@@ -1,16 +1,16 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 storefrontApp.component('vcCheckoutWizard', {
 	transclude: true,
 	templateUrl: 'themes/assets/js/checkout/checkout-wizard.tpl.html',
 	bindings: {
-		wizard: '=',
+		wizardModel: '=',
 		loading: '=',
 		onFinish: '&?',
 		onInitialized: '&?'
 	},
 	controller: ['$scope', function ($scope) {
 		var ctrl = this;
-		ctrl.wizard = ctrl;
+        ctrl.wizardModel = ctrl;
 		ctrl.steps = [];	
 		ctrl.goToStep = function (step) {
 			if (angular.isString(step))
