@@ -1,4 +1,4 @@
-﻿.page-header {
+.page-header {
   margin: 0 0 $line-height-computed;
 }
 
@@ -78,7 +78,7 @@ dl:only-child {
   @media (min-width: $dl-horizontal-breakpoint) {
     dt {
       float: left;
-      width: $dl-horizontal-offset * 0.75;
+      width: $dl-horizontal-offset * 0.90;
       clear: left;
       text-align: right;
     }
