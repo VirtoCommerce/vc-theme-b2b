@@ -6,7 +6,7 @@
         <div class="page-header">
             <h3>{{ 'customer.edit_company_members.title' | t }}</h3>
         </div>
-        <vc-errors errors="$ctrl.errors" ng-if="$ctrl.errors.length"></vc-errors>
+        <vc-errors errors="$ctrl.errors"></vc-errors>
         <table class="table" ng-if="$ctrl.entries.length">
             <thead>
                 <tr>

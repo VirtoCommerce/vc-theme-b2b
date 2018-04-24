@@ -1,4 +1,4 @@
-﻿<div class="col-md-8">
+<div class="col-md-8">
     <ng-outlet></ng-outlet>
 </div>
 
@@ -106,7 +106,7 @@
                     <span class="btn-loading"></span>
                 </button>
                 <form ng-submit="cancelForm.setSubmitted() || (cancelForm.$valid && $ctrl.cancel())" name="cancelForm" ng-if="$ctrl.isCancelFormVisible">
-                    <div class="note form-error" ng-if="$ctrl.errors.length">
+                    <div class="note form-error">
                         <p>{{ 'general.forms.post_error' | t }}</p>
                         <ul class="disc">
                             <li ng-repeat="e in $ctrl.errors" ng-bind="e"></li>
