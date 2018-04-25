@@ -1,0 +1,65 @@
+<div class="well container-bordered-vertical">
+    <div class="row flexible">
+        <div class="col-md-3">
+            <h4>Delivery method</h4>
+            <div class="form-group">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="deliveryMethods" id="shipping" ng-model="$ctrl.deliveryMethod.type" value="shipping">
+                        <span class="switch"></span>
+                        <span class="name">Shipping</span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="deliveryMethods" id="pickup" ng-model="$ctrl.deliveryMethod.type" value="pickup">
+                        <span class="switch"></span>
+                        <span class="name">Pickup</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9" ng-if="$ctrl.deliveryMethod.type == 'shipping'">
+            <h4>Check availability</h4>
+            <div class="form-inline">
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model="$ctrl.deliveryMethod.postalCode" placeholder="ZIP code" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" ng-click="$ctrl.evalAvailability()">Go</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9" ng-if="$ctrl.deliveryMethod.type == 'pickup'">
+            <div class="container-drain container-bordered-horizontal">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Find a branch</h4>
+                        <p>Enter an address, city & state, ZIP code, branch # or country.</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="$ctrl.deliveryMethod.postalCode" placeholder="ZIP code" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" ng-click="$ctrl.selectFulfillmentCenter()">Go</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-if="$ctrl.deliveryMethod.fulfillmentCenter">
+                    <div class="col-md-12">
+                        <h4>My selected branch</h4>
+                        <vc-address address="$ctrl.deliveryMethod.fulfillmentCenter.address">
+                            <address-header>
+                                <p><a href="#" ng-bind="$ctrl.deliveryMethod.fulfillmentCenter.name"></a></p>
+                            </address-header>
+                            <address-footer>
+                                <strong>Hours:</strong> <span>M–F 7:00 AM - 5:00 PM EASTERN</span>
+                            </address-footer>
+                        </vc-address>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-﻿//Call this to register our module to main application
+//Call this to register our module to main application
 var moduleName = "storefront.checkout";
 
 if (storefrontAppDependencies != undefined) {
@@ -10,6 +10,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
         $scope.checkout = {
             wizard: {},
             paymentMethod: {},
+            deliveryMethod: {},
             shipment: {},
             payment: {},
             coupon: {},
@@ -17,7 +18,26 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
             loading: false,
             isValid: false
         };
+        $scope.evalAvailability = function (deliveryMethod) {
+            _.each($scope.checkout.cart.items, function (x) {
+                x.availability = {
+                    deliveryMethod: deliveryMethod,
+                    availDate: Date.now()
+                };
+            });
+        };
 
+        $scope.changeItemQty = function (lineItem) {
+            return wrapLoading(function () {
+                return cartService.changeLineItemsQuantity({ lineItemId: lineItem.id, Quantity: lineItem.quantity }).then($scope.reloadCart);
+            });
+        };
+
+        $scope.removeItem = function (lineItem) {
+            return wrapLoading(function () {
+                return cartService.removeLineItem(lineItem.id).then($scope.reloadCart);
+            });
+        };
         $scope.validateCheckout = function (checkout) {
             checkout.isValid = checkout.payment && checkout.payment.paymentGatewayCode;
             if (checkout.isValid && !checkout.billingAddressEqualsShipping) {

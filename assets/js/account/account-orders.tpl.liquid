@@ -1,4 +1,4 @@
-﻿<ng-outlet ng-init="$ctrl.orderHelper.statusLabels=[
+<ng-outlet ng-init="$ctrl.orderHelper.statusLabels=[
            { status: 'unpaid', label: '{{ 'customer.order.status.unpaid' | t }}'},
            { status: 'pending', label: '{{ 'customer.order.status.pending' | t }}'},
            { status: 'processing', label: '{{ 'customer.order.status.processing' | t }}'},
@@ -12,163 +12,206 @@
     <div class="page-header">
         <h3>{{ 'customer.orders.title' | t }}</h3>
     </div>
-    <table class="full" ng-if="$ctrl.entries.length">
-        <thead>
-            <tr>
-                <th>{{ 'customer.orders.order_number' | t }}</th>
-                <th>{{ 'customer.orders.date' | t }}</th>
-                <th>{{ 'customer.orders.status' | t }}</th>
-                <th>{{ 'customer.orders.total' | t }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="order in $ctrl.entries">
-                <td>
-                    <a ng-bind="order.number" ng-link="['OrderDetail', {number: order.number, pageNumber: $ctrl.pageSettings.currentPage}]"></a>
-                </td>
-                <td ng-bind="order.createdDate | date"></td>
-                <td ng-bind="order | orderToSummarizedStatusLabel"></td>
-                <td ng-bind="order.total.formattedAmount"></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover" ng-if="$ctrl.entries.length">
+                <thead>
+                    <tr>
+                        <th>{{ 'customer.orders.order_number' | t }}</th>
+                        <th>{{ 'customer.orders.date' | t }}</th>
+                        <th>{{ 'customer.orders.status' | t }}</th>
+                        <th>{{ 'customer.orders.total' | t }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="order in $ctrl.entries">
+                        <td>
+                            <a ng-bind="order.number" ng-link="['OrderDetail', {number: order.number, pageNumber: $ctrl.pageSettings.currentPage}]"></a>
+                        </td>
+                        <td ng-bind="order.createdDate | date"></td>
+                        <td ng-bind="order | orderToSummarizedStatusLabel"></td>
+                        <td ng-bind="order.total.formattedAmount"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
-
-    <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.orders.none' | t }}</p>
+    <div class="row">
+        <div class="col-md-12">
+            <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.orders.none' | t }}</p>
+        </div>
+    </div>
 </script>
 
 <script id="account-order-detail.tpl" type="text/ng-template">
-    <p>
-        <a ng-link="['OrderList', {pageNumber: $ctrl.pageNumber}]">
-            <span class="fa fa-arrow-left"></span> {{ 'customer.orders.return' | t }}
-        </a>
-    </p>
+    <div class="page-header">
+        <h3>
+            <a ng-link="['OrderList', {pageNumber: $ctrl.pageNumber}]">
+                <span class="fa fa-arrow-left"></span> {{ 'customer.orders.return' | t }}
+            </a>
+        </h3>
+    </div>
+    <div id="order-detail" class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3>{{ 'customer.order.title' | t }} {% raw %}{{$ctrl.orderNumber}}{% endraw %}</h3>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <p>{{ 'customer.orders.status' | t }} <span ng-bind="$ctrl.order | orderToSummarizedStatusLabel"></span></p>
 
-    <div class="cols">
-        <div class="col col-66 main">
-          <div class="cols">
-            <div class="col col-66">
-              <h4>{{ 'customer.order.title' | t }} {% raw %}{{$ctrl.orderNumber}}{% endraw %}</h4>
-              <p>
-                {{ 'customer.order.placed_on_date_html' | t }}
-                <strong ng-bind="$ctrl.order.createdDate | date: 'medium'"></strong>
-              </p>
-
-              <div ng-if="$ctrl.order.isCancelled" class="errors">
-                <h5>
-                  {{ 'customer.order.cancelled_on' | t }}
-                  <span ng-bind="$ctrl.order.modifiedDate | date: 'medium'"></span>
-                </h5>
-                <p>{{ 'customer.order.cancel_reason' | t }}: {% raw %}{{ $ctrl.order.cancelReason }}{% endraw %}</p>
-              </div>
-            </div>
-            <div class="col col-33 text-right">
-              <button class="btn btn-primary" ng-class="{'loading': showLoading }" ng-click="showLoading=true && $ctrl.getInvoicePdf()">
-                <span class="btn-text">{{ 'customer.order.get_invoice' | t }}</span>
-                <span class="btn-loading"></span>
-              </button>
-            </div>
-          </div>
-          <div class="form-fieldset">
-                <vc-line-items items="$ctrl.order.items"></vc-line-items>
-
-                <hr class="hr--small" />
-                <div class="vc-section-header">
-                    <div class="vc-t">Order totals</div>
-                </div>
-                <div class="cols">
-                    <div class="col col-33">
-                    </div>
-                    <div class="col col-66">
-                        <vc-totals order="$ctrl.order"></vc-totals> 
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col col-33" ng-if="!$ctrl.isShowPayment">
-            <div class="vc-section-header">
-                <div class="vc-t">{{ 'customer.orders.status' | t }}</div>
-                <div class="vc-descr" ng-bind="$ctrl.order | orderToSummarizedStatusLabel"></div>
-            </div>
-
-            <div class="vc-section-header">
-                <div class="vc-t">{{ 'customer.order.billing_address' | t }}</div>
-                <div class="vc-descr">
-                    <vc-address address="$ctrl.billingAddress"></vc-address>
-                </div>
-            </div>
-
-            <button ng-click="showLoading=true && $ctrl.showPayment()" class="btn btn-primary" ng-class="{'loading': showLoading }" ng-if="$ctrl.amountToPay > 0">
-                <span class="btn-text">{{ 'customer.order.new_payment' | t }}</span>
-                <span class="btn-text" ng-bind="$ctrl.amountToPay"></span>
-                <span class="btn-text" ng-bind="$ctrl.order.total.currency.code"></span>
-                <span class="btn-loading"></span>
-            </button>
-
-            <hr class="hr--small" ng-if="$ctrl.order.shipments[0].deliveryAddress" />
-            <div class="vc-section-header" ng-if="$ctrl.order.shipments[0].deliveryAddress">
-                <div class="vc-t">{{ 'customer.order.shipping_address' | t }}</div>
-                <div class="vc-descr">
-                    <vc-address address="$ctrl.order.shipments[0].deliveryAddress"></vc-address>
-                </div>
-            </div>
-
-            <hr class="hr--small" ng-if="$ctrl.order.subscriptionNumber" />
-            <div class="vc-section-header" ng-if="$ctrl.order.subscriptionNumber">
-                <div class="vc-t">{{ 'customer.order.subscription' | t }}</div>
-                <div class="vc-descr">
-                    {{ 'customer.order.subscription_comment' | t }}
-                    <td ng-bind="'customer.order.subscription_link' | translate: $ctrl.order"></td>
-                </div>
-                <div class="vc-descr">
-                    <a ng-bind="$ctrl.order.subscriptionNumber" ng-link="['/Subscriptions/SubscriptionDetail', {number: $ctrl.order.subscriptionNumber}]"></a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col col-33" ng-if="$ctrl.isShowPayment">
-            <div class="vc-section-header">
-                <div class="vc-t">Payment</div>
-                <ul class="vc-product-totals list">
-                    <li class="list-item total summary">
-                        <div class="list-name">Payment amount</div>
-                        <div class="list-price">
-                            <div class="list-currency" ng-bind="$ctrl.payment.currency.code"></div>
-                            <span ng-bind="$ctrl.payment.sum.amount"></span>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <span class="pull-right">
+                                                {{ 'customer.order.placed_on_date_html' | t }}
+                                                <strong ng-bind="$ctrl.order.createdDate | date: 'medium'"></strong>
+                                            </span>
+                                            <div ng-if="$ctrl.order.isCancelled">
+                                                <p>
+                                                    {{ 'customer.order.cancelled_on' | t }}
+                                                    <span ng-bind="$ctrl.order.modifiedDate | date: 'medium'"></span>
+                                                </p>
+                                                <p>{{ 'customer.order.cancel_reason' | t }}: {% raw %}{{ $ctrl.order.cancelReason }}{% endraw %}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </li>
-                </ul>
-            </div>
-            <hr class="hr--small" />
-
-            <vc-payment-methods get-avail-payment-methods="$ctrl.getAvailPaymentMethods()" payment-method="$ctrl.paymentMethod" on-select-method="$ctrl.selectPaymentMethod(paymentMethod)" validation-container="$ctrl"></vc-payment-methods>
-
-            <div class="vc-section-header">
-                <div class="vc-t">{{ 'checkout.payment_method.billing_address' | t }}</div>
-            </div>
-            <div class="form-box">
-                <div class="box-row" ng-if="$ctrl.hasPhysicalProducts">
-                    <label class="check-box">
-                        <input ng-model="$ctrl.billingAddressEqualsShipping" ng-checked="$ctrl.billingAddressEqualsShipping" class="check" type="checkbox"/>
-                        <div class="switch"></div>
-                        <div class="name">{{ 'checkout.payment_method.billing_address_equals_shipping' | t }}</div>
-                    </label>
-                </div>
-                <div class="box-row" ng-if="!$ctrl.billingAddressEqualsShipping">
-                    <vc-address address="$ctrl.payment.billingAddress" countries="$ctrl.accountManager.availCountries" get-country-regions="$ctrl.accountManager.getCountryRegions(country)" addresses="$ctrl.parentComponent.customer.addresses" validation-container="$ctrl" edit-mode="true"></vc-address>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <vc-line-items items="$ctrl.order.items"></vc-line-items>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row" ng-if="!$ctrl.isShowPayment">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-primary btn-block" ng-class="{'loading': showLoading }" ng-click="showLoading=true && $ctrl.getInvoicePdf()">
+                                <span class="btn-text">{{ 'customer.order.get_invoice' | t }}</span>
+                                <span class="btn-loading"></span>
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <button ng-click="showLoading=true && $ctrl.showPayment()" class="btn btn-primary btn-block disabled" ng-class="{'loading': showLoading }" ng-disabled="true" ng-if="$ctrl.amountToPay > 0">
+                                <span class="btn-text">{{ 'customer.order.new_payment' | t }}</span>
+                                <span class="btn-text" ng-bind="$ctrl.amountToPay"></span>
+                                <span class="btn-text" ng-bind="$ctrl.order.total.currency.code"></span>
+                                <span class="btn-loading"></span>
+                            </button>
+                        </div>
+                        <div class="col-xl-12 buffer"><span>&nbsp;</span></div>
+                        <div class="col-md-12">
+                            <button ng-click="showLoading=true && $ctrl.showPayment()" class="btn btn-primary btn-block disabled" ng-class="{'loading': showLoading }" ng-disabled="true" ng-if="$ctrl.amountToPay > 0">
+                                <span class="btn-text">{{ 'customer.order.reorder' | t }}</span>
+                                <span class="btn-text" ng-bind="$ctrl.amountToPay"></span>
+                                <span class="btn-text" ng-bind="$ctrl.order.total.currency.code"></span>
+                                <span class="btn-loading"></span>
+                            </button>
+                        </div>
+                        <div class="col-xl-12 buffer"><span>&nbsp;</span></div>
+                    </div>
+                    <div class="row">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">{{ 'customer.order.billing_address' | t }}</div>
+                            <div class="panel-body">
+                                <vc-address address="$ctrl.billingAddress"></vc-address>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="panel panel-default" ng-if="$ctrl.order.shipments[0].deliveryAddress">
+                            <div class="panel-heading">{{ 'customer.order.shipping_address' | t }}</div>
+                            <div class="panel-body">
+                                <vc-address address="$ctrl.order.shipments[0].deliveryAddress"></vc-address>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <hr class="hr--small" ng-if="$ctrl.order.subscriptionNumber" />
+                        <div class="vc-section-header" ng-if="$ctrl.order.subscriptionNumber">
+                            <div class="vc-t">{{ 'customer.order.subscription' | t }}</div>
+                            <div class="vc-descr">
+                                {{ 'customer.order.subscription_comment' | t }}
+                                <p ng-bind="'customer.order.subscription_link' | translate: $ctrl.order"></p>
+                            </div>
+                            <div class="vc-descr">
+                                <a ng-bind="$ctrl.order.subscriptionNumber" ng-link="['/Subscriptions/SubscriptionDetail', {number: $ctrl.order.subscriptionNumber}]"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="$ctrl.isShowPayment">
+                <div class="col-md-12">
+                    <div class="vc-section-header">
+                        <div class="vc-t">Payment</div>
+                        <ul class="vc-product-totals list">
+                            <li class="list-item total summary">
+                                <div class="list-name">Payment amount</div>
+                                <div class="list-price">
+                                    <div class="list-currency" ng-bind="$ctrl.payment.currency.code"></div>
+                                    <span ng-bind="$ctrl.payment.sum.amount"></span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr class="hr--small" />
 
-            <button ng-click="$ctrl.cancel()" ng-if="$ctrl.canCancelPayment" class="btn btn-primary secondary" ng-class="{'loading': $ctrl.loader.isLoading }">
-                <span class="btn-text">{{ 'customer.order_payment.cancel' | t }}</span>
-                <span class="btn-loading"></span>
-            </button>
+                    <vc-payment-methods get-avail-payment-methods="$ctrl.getAvailPaymentMethods()" payment-method="$ctrl.paymentMethod" on-select-method="$ctrl.selectPaymentMethod(paymentMethod)" validation-container="$ctrl"></vc-payment-methods>
 
-            <button ng-click="$ctrl.submit()" class="btn btn-primary" ng-class="{'loading': $ctrl.loader.isLoading }">
-                <span class="btn-text">{{ 'customer.order_payment.submit' | t }}</span>
-                <span class="btn-loading"></span>
-            </button>
+                    <div class="vc-section-header">
+                        <div class="vc-t">{{ 'checkout.payment_method.billing_address' | t }}</div>
+                    </div>
+                    <div class="form-box">
+                        <div class="box-row" ng-if="$ctrl.hasPhysicalProducts">
+                            <label class="check-box">
+                                <input ng-model="$ctrl.billingAddressEqualsShipping" ng-checked="$ctrl.billingAddressEqualsShipping" class="check" type="checkbox" />
+                                <span class="switch"></span>
+                                <span class="name">{{ 'checkout.payment_method.billing_address_equals_shipping' | t }}</span>
+                            </label>
+                        </div>
+                        <div class="box-row" ng-if="!$ctrl.billingAddressEqualsShipping">
+                            <vc-address address="$ctrl.payment.billingAddress" countries="$ctrl.accountManager.availCountries" get-country-regions="$ctrl.accountManager.getCountryRegions(country)" addresses="$ctrl.parentComponent.customer.addresses" validation-container="$ctrl" edit-mode="true"></vc-address>
+                        </div>
+                    </div>
+
+                    <button ng-click="$ctrl.cancel()" ng-if="$ctrl.canCancelPayment" class="btn btn-primary secondary" ng-class="{'loading': $ctrl.loader.isLoading }">
+                        <span class="btn-text">{{ 'customer.order_payment.cancel' | t }}</span>
+                        <span class="btn-loading"></span>
+                    </button>
+
+                    <button ng-click="$ctrl.submit()" class="btn btn-primary" ng-class="{'loading': $ctrl.loader.isLoading }">
+                        <span class="btn-text">{{ 'customer.order_payment.submit' | t }}</span>
+                        <span class="btn-loading"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Order totals</div>
+                    <div class="panel-body">
+                        <vc-totals order="$ctrl.order"></vc-totals>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </script>

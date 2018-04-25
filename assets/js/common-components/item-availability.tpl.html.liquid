@@ -1,0 +1,2 @@
+<p ng-if="$ctrl.availability && $ctrl.availability.deliveryMethod.type == 'shipping'">Expected to arrive: <strong ng-bind="$ctrl.availability.availDate | date: 'fullDate'"></strong></p>
+<p ng-if="$ctrl.availability && $ctrl.availability.deliveryMethod.type == 'pickup'">Available for pickup: <strong ng-bind="$ctrl.availability.availDate | date: 'fullDate'"></strong></p>
