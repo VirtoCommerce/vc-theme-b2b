@@ -57,7 +57,6 @@ angular.module('storefront.account')
                         $ctrl.billingAddress = (lastPayment && lastPayment.billingAddress) ||
                             _.findWhere(order.addresses, { type: 'billing' }) ||
                             _.first(order.addresses);
-                        debugger;
                         $ctrl.amountToPay = orderHelper.getNewPayment(order).sum.amount;
                         if ($ctrl.amountToPay > 0) {
                             $ctrl.billingAddressEqualsShipping = true;

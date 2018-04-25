@@ -1,4 +1,4 @@
-﻿.navbar {
+.navbar {
   margin-bottom: 0;
 
   .row .navbar-brand {
@@ -15,6 +15,7 @@
 }
 
 $navbars-count: 3;
+
 @for $navbar-index from 0 to $navbars-count {
   $navbar-number: $navbar-index + 1;
 
@@ -32,6 +33,17 @@ $navbars-count: 3;
   }
 }
 
+.navbar-static-top {
+  .navbar-brand {
+    color: $text-color;
+
+    &:hover,
+    &:focus {
+      color: $text-color;
+    }
+  }
+}
+
 .navbar-default {
   .navbar-link {
     &:hover {
@@ -46,7 +58,6 @@ $navbars-count: 3;
     }
   }
 }
-
 .navbar-inverse {
   .navbar-form {
     .form-control,
@@ -68,11 +79,11 @@ $navbars-count: 3;
     }
   }
 }
-
 // Copied from navbar-inverse source code
 .navbar-inverse-light {
   background-color: $navbar-inverse-light-bg;
   border-color: $navbar-inverse-light-border;
+  color: $navbar-inverse-light-color;
 
   .navbar-brand {
     color: $navbar-inverse-light-brand-color;
@@ -218,7 +229,7 @@ $navbars-count: 3;
         color: $navbar-inverse-light-link-disabled-color;
       }
     }
-  }  
+  }
 }
 
 .navbar-default,
@@ -261,6 +272,7 @@ $navbars-count: 3;
 
 .navbar-condensed {
   min-height: $navbar-condensed-height;
+  background-color: $navbar-condensed-bg;
 
   .navbar-toggle {
     @include navbar-vertical-align($navbar-condensed-height, 34px); // from original style
@@ -308,6 +320,8 @@ $navbars-count: 3;
 .navbar-static-bottom {
   padding-left: 0;
   padding-right: 0;
+  background-color: $navbar-static-bottom-bg;
+  border-color: $navbar-static-bottom-border-color;
 
   &:last-of-type {
     margin-bottom: 0;
@@ -320,11 +334,20 @@ $navbars-count: 3;
     border-radius: 0;
   }
 }
-
 // Fix bootstrap bug
 @media (min-width: $grid-float-breakpoint) {
   .navbar-right {
     margin-right: 0;
+  }
+}
+
+.navbar-text.navbar-right {
+  color: $navbar-default-link-color;
+
+  a {
+      &, &:hover, &:focus {
+      color: $navbar-default-link-color;
+    }
   }
 }
 
@@ -335,7 +358,6 @@ $navbars-count: 3;
   .form-control,
   .btn {
     border-radius: 0;
-    border-top: 0;
     border-bottom: 0;
     height: $navbar-height;
   }
@@ -350,6 +372,7 @@ $navbars-count: 3;
 
   .input-group {
     display: table;
+
     .input-group-addon,
     .input-group-btn {
       width: 1%;

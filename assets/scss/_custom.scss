@@ -23,6 +23,16 @@
 @import "custom/_responsive-utilities.scss";
 @import "custom/_toc.scss";
 
+html {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 header {
   .navbar-default {
     border-color: $brand-primary;
@@ -33,8 +43,7 @@ header {
 }
 
 footer {
-  position: absolute;
-  width: 100%;
+  flex: 0 0 auto;
 }
 
 #all-products-popover + .popover {
@@ -47,7 +56,7 @@ footer {
 
 main {
   padding-top: $navbar-margin-bottom;
-  position: relative;
+  flex: 1 0 auto;
 
   @media (max-width: $screen-sm-max) {
     .navbar-fixed-top + .navbar-fixed-top + & {
