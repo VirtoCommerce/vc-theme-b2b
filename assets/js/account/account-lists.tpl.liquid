@@ -23,9 +23,8 @@
     <div style="margin-top: 25px;" ng-if="$ctrl.accountLists.lists.length != 0" class="grid-border">
 
         <aside class="lists-sideBar grid-item large--one-fifth grid-border--bottom">
-            <ul style="padding-left:0px!important;"  class="sidebar nav nav-pills nav-justified nav-justified-fixed grid-item">
+            <ul class="nav nav-pills nav-justified">
                 <li ng-repeat="list in $ctrl.accountLists.lists"
-                    class="lists-sideBar-content"
                     ng-class="{'active': $ctrl.accountLists.selectedList.name == list.name}"
                     ng-click="$ctrl.accountLists.selectList(list)">
                     <a class="lists-sideBar-textAlign" ng-bind="list.name"></a>
