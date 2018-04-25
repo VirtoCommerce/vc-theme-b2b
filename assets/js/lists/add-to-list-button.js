@@ -12,18 +12,23 @@
 
 			function compareProductInLists() {
 				$ctrl.buttonInvalid = true;
-                accountApi.getCurrentUser().then(function(user) {
-			        listService.getOrCreateMyLists(user.data.userName, $ctrl.lists).then(function(result) {
-			            $ctrl.lists = result;
-			            angular.forEach($ctrl.lists, function(list) {
-			                listService.containsInList($ctrl.selectedVariation.id, list.id).then(function(result) {
-			                    if (result.contains === false) {
-			                        $ctrl.buttonInvalid = false;
-			                    }
-			                });
-			            });
-			        });
-			    });
+                listService.searchLists({
+					pageSize: 10000,
+					type: $ctrl.type
+				}).then(function (response) {
+					$ctrl.lists = response.data.results;
+		
+					_.each($ctrl.lists, function(list) {
+						var foundItem = _.find(list.items, function(item) {
+								return item.productId === dialogData.id;
+						});
+		
+						if (foundItem) {
+							list.contains = true;
+							$ctrl.buttonInvalid = false;
+						}
+					});
+				});
 			}
 
 			function toListsDialogDataModel(product, quantity) {
