@@ -1,4 +1,4 @@
-﻿<main class="container container-drain container-bordered-horizontal" role="main">
+<main class="container container-drain container-bordered-horizontal" role="main">
     <div class="row">
         <div class="col-xs-12">
             {% include 'shared/breadcrumb' %}
@@ -38,6 +38,7 @@
                 <div class="col-md-2">
                     {% include 'product/image' %}
                     {% include 'product/compare' %}
+                    {% include 'product/product-compare-list-bar' %}
                 </div>
                 <div class="col-md-2" ng-controller="priceController">{% include 'product/price', product: product %}</div>
                 <div class="col-md-4" ng-controller="purchaseController" ng-init='loadPaymentPlan({{ settings.available_paymentPlans | json }}, "product", "{{ product.id }}")'>
