@@ -5,10 +5,11 @@ if (storefrontAppDependencies != undefined) {
     storefrontAppDependencies.push(moduleName);
 }
 angular.module(moduleName, ['credit-cards', 'angular.filter'])
-    .controller('checkoutController', ['$rootScope', '$scope', '$window', 'cartService', 'commonService', 'dialogService',
-        function ($rootScope, $scope, $window, cartService, commonService, dialogService) {
+    .controller('checkoutController', ['$rootScope', '$scope', '$window', 'cartService', 'commonService', 'dialogService', 'orderService',
+        function ($rootScope, $scope, $window, cartService, commonService, dialogService, orderService) {
             $scope.checkout = {
                 wizard: {},
+                order: {},
                 paymentMethod: {},
                 deliveryMethod: {},
                 shipment: {},
@@ -18,6 +19,11 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 loading: false,
                 isValid: false
             };
+
+            $scope.getInvoicePdf = function () {
+                var url = $window.BASE_URL + 'storefrontapi/orders/' + $scope.checkout.order.number + '/invoice';
+                $window.open(url, '_blank');
+            }
 
             $scope.changePaymentMethod = function () {
                 $scope.getAvailPaymentMethods().then(function (response) {
@@ -77,38 +83,35 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
             $scope.reloadCart = function () {
                 return cartService.getCart().then(function (response) {
                     var cart = response.data;
-                    if (!cart || !cart.id) {
-                        $scope.outerRedirect($scope.baseUrl + 'cart');
+
+                    $scope.checkout.cart = cart;
+                    if (cart.payments.length) {
+                        $scope.checkout.payment = cart.payments[0];
+                        $scope.checkout.paymentMethod.code = $scope.checkout.payment.paymentGatewayCode;
+                        $scope.getAvailPaymentMethods().then(function (response) {
+                            _.each(cart.payments, function (x) {
+                                var paymentMethod = _.find(response, function (pm) { return pm.code == x.paymentGatewayCode; });
+                                if (paymentMethod) {
+                                    angular.extend(x, paymentMethod);
+                                }
+                            });
+                        });
+                    }
+                    if (cart.shipments.length) {
+                        $scope.checkout.shipment = cart.shipments[0];
                     }
                     else {
-                        $scope.checkout.cart = cart;
-                        if (cart.payments.length) {
-                            $scope.checkout.payment = cart.payments[0];
-                            $scope.checkout.paymentMethod.code = $scope.checkout.payment.paymentGatewayCode;
-                            $scope.getAvailPaymentMethods().then(function (response){
-                                _.each(cart.payments, function (x) {
-                                    var paymentMethod = _.find(response, function (pm) { return pm.code == x.paymentGatewayCode; });
-                                    if (paymentMethod) {
-                                        angular.extend(x, paymentMethod);
-                                    }
-                                });
-                            });
+                        //Set default shipping address
+                        if ($scope.checkout.cart.customer.addresses) {
+                            $scope.checkout.shipment.deliveryAddress = $scope.checkout.cart.customer.addresses[0];
                         }
-                        if (cart.shipments.length) {
-                            $scope.checkout.shipment = cart.shipments[0];
-                        }
-                        else {
-                            //Set default shipping address
-                            if ($scope.checkout.cart.customer.addresses) {
-                                $scope.checkout.shipment.deliveryAddress = $scope.checkout.cart.customer.addresses[0];
-                            }
-                        }
-                        $scope.checkout.billingAddressEqualsShipping = cart.hasPhysicalProducts && !angular.isObject($scope.checkout.payment.billingAddress);
-
-                        $scope.checkout.canCartBeRecurring = $scope.customer.isRegisteredUser && _.all(cart.items, function (x) { return !x.isReccuring });
-                        $scope.checkout.paymentPlan = cart.paymentPlan && _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: cart.paymentPlan.intervalCount, interval: cart.paymentPlan.interval }) ||
-                            _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: 1, interval: 'months' });
                     }
+                    $scope.checkout.billingAddressEqualsShipping = cart.hasPhysicalProducts && !angular.isObject($scope.checkout.payment.billingAddress);
+
+                    $scope.checkout.canCartBeRecurring = $scope.customer.isRegisteredUser && _.all(cart.items, function (x) { return !x.isReccuring });
+                    $scope.checkout.paymentPlan = cart.paymentPlan && _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: cart.paymentPlan.intervalCount, interval: cart.paymentPlan.interval }) ||
+                        _.findWhere($scope.checkout.availablePaymentPlans, { intervalCount: 1, interval: 'months' });
+
                     $scope.validateCheckout($scope.checkout);
                     return cart;
                 });
@@ -179,10 +182,16 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 updatePayment($scope.checkout.payment).then(function () {
                     $scope.checkout.loading = true;
                     cartService.createOrder($scope.checkout.paymentMethod.card).then(function (response) {
-                        var order = response.data.order;
+
                         var orderProcessingResult = response.data.orderProcessingResult;
                         var paymentMethod = response.data.paymentMethod;
-                        handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
+
+                        orderService.getOrder(response.data.order.number).then(function (response) {
+                            var order = response.data;                         
+                            $scope.checkout.order = order;
+                            handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
+                        });
+
                     });
                 });
             };
@@ -240,10 +249,10 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 } else {
                     if (!$scope.customer.isRegisteredUser) {
                         $scope.checkout.wizard.nextStep();
-                       // $scope.outerRedirect($scope.baseUrl + 'cart/thanks/' + order.number);
+                        // $scope.outerRedirect($scope.baseUrl + 'cart/thanks/' + order.number);
                     } else {
                         $scope.checkout.wizard.nextStep();
-                       // $scope.outerRedirect($scope.baseUrl + 'account#/orders/' + order.number);
+                        // $scope.outerRedirect($scope.baseUrl + 'account#/orders/' + order.number);
                     }
                 }
             }

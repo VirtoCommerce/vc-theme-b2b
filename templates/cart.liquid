@@ -168,7 +168,7 @@
                                         <div class="col-xs-12">
                                             <address>
                                                 <div class="col-xs-2 col-md-1">
-                                                    <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="checkout.payment.imgUrl" />
+                                                    <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ checkout.payment.logoUrl }}{% endraw %}" />
                                                 </div>
                                                 <div class="h5">
                                                     <span ng-bind="checkout.payment.name"></span>
@@ -207,8 +207,58 @@
                         </div>
                     </div>
                 </vc-checkout-wizard-step>
-                <vc-checkout-wizard-step name="complete" title="Complete">
-                </vc-checkout-wizard-step>
+                <vc-checkout-wizard-step name="complete" title="Complete" final="true">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-9"><p><span><i class="fa fa-check-circle lg success horizon-align-center" aria-hidden="true"></i></span> Order<span ng-bind="checkout.order.number"></span> {{ 'checkout.order_successfully' | t: number: number }}</p></div>
+                                        <div class="col-md-3">
+                                            <div class="btn-group pull-right" role="group">
+                                                <button type="button" class="btn btn-default" ng-click="getInvoicePdf()"><p> {{ 'checkout.order-print' | t }}</p></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="center-block text-center"><p>{{ 'checkout.order-summary' | t }}</p></div>
+                                            <vc-totals order="checkout.order"></vc-totals>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="center-block text-center"><p>{{ 'checkout.pickup-address' | t }}</p></div>
+                                            <vc-address address="checkout.order.shipments[0].deliveryAddress"></vc-address>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="center-block text-center">{{ 'checkout.payment-method' | t }}</div>
+                                            <!--<vc-payment-methods get-avail-payment-methods="$ctrl.getAvailPaymentMethods()" payment-method="$ctrl.paymentMethod" on-select-method="$ctrl.selectPaymentMethod(paymentMethod)" validation-container="$ctrl"></vc-payment-methods>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>{{ 'checkout.purchased-products' | t }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12" ng-repeat="lineItem in checkout.order.items">
+                                            <vc-checkout-line-item line-item="lineItem" readOnly="true"></vc-checkout-line-item>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </vc-checkout-wizard-step>                
             </vc-checkout-wizard>
         </div>
     </div>

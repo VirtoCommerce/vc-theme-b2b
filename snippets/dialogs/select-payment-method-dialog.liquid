@@ -8,7 +8,7 @@
             <div class="row" ng-repeat="paymentMethod in availPaymentMethods">
                 <div class="col-md-5">
                     <div class="col-xs-2 col-md-1">
-                        <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="paymentMethod.imgUrl" />
+                        <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ paymentMethod.imgUrl }}{% endraw %}" />
                     </div>
                     <div class="h5">
                         <span ng-bind="paymentMethod.name"></span>
