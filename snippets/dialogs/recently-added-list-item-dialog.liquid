@@ -9,7 +9,6 @@
                 <div class="list-group">
                     <a href="#" class="list-group-item" ng-repeat="list in lists" ng-class="{'active': list.name == selectedList.name, 'disabled' : list.contains }" ng-click="selectList(list)">
                         <span  class="list-text-title" ng-bind="list.name"></span>
-                        <span ng-bind="list.contains"></span>
                         <span ng-if="list.contains" class="list-text-descr-inList">
                             {{ 'wishlist.general.list_contains' | t }}
                             <i ng-if="list.contains" class="fa fa-check-square " aria-hidden="true"></i>
