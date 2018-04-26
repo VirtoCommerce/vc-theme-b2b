@@ -7,8 +7,8 @@
                 { path: '/myLists', name: 'MyLists', component: 'vcAccountMyLists', useAsDefault: true }
             ],
             controller: [
-                'listService', '$rootScope', 'cartService', '$translate', 'loadingIndicatorService', '$timeout',
-                function (listService, $rootScope, cartService, $translate, loader, $timeout) {
+                'listsApi', '$rootScope', 'cartService', '$translate', 'loadingIndicatorService', '$timeout',
+                function (listsApi, $rootScope, cartService, $translate, loader, $timeout) {
                     var $ctrl = this;
 
                     $ctrl.loader = loader;
@@ -24,7 +24,7 @@
                         $ctrl.errors = null;
                         $ctrl.selectedList = list;
                         loader.wrapLoading(function () {
-                            return listService.getWishlist(list.name, list.type).then(function (response) {
+                            return listsApi.getWishlist(list.name, list.type).then(function (response) {
                                 $ctrl.selectedList.items = response.data.items;
                             });
                         });
@@ -32,7 +32,7 @@
 
                     $ctrl.removeLineItem = function (lineItem, list) {
                         loader.wrapLoading(function () {
-                            return listService.removeLineItem(lineItem.id, list.name, list.type).then(function (response) {
+                            return listsApi.removeLineItem(lineItem.id, list.name, list.type).then(function (response) {
                                 $ctrl.selectList(list);
                             });
                         });
@@ -58,7 +58,7 @@
                 accountLists: '^^vcAccountLists'
             },
             controller: [
-                '$rootScope', 'listService', 'customerService', 'loadingIndicatorService', '$q', 'dialogService', function ($rootScope, listService, customerService, loader, $q, dialogService) {
+                '$rootScope', 'listsApi', 'customerService', 'loadingIndicatorService', '$q', 'dialogService', function ($rootScope, listsApi, customerService, loader, $q, dialogService) {
 
                     var $ctrl = this;
 
@@ -74,7 +74,7 @@
                     $ctrl._searchLists = function () {
                         $ctrl.accountLists.errors = null;
                         loader.wrapLoading(function () {
-                            return listService.searchLists({
+                            return listsApi.searchLists({
                                 pageNumber: $ctrl.pageSettings.currentPage,
                                 pageSize: $ctrl.pageSettings.itemsPerPageCount,
                                 type: $ctrl.type
@@ -110,7 +110,7 @@
                             lists: $ctrl.lists,
                             type: $ctrl.type
                         }
-                        dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.recently-create-new-list-dialog.tpl', function (result) {
+                        dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.lists-create-new-list-dialog.tpl', function (result) {
                             if (!result)
                                 return;
 
@@ -125,7 +125,7 @@
 
                     $ctrl.addToCartAllProducts = function (listName) {
                         loader.wrapLoading(function () {
-                            return listService.mergeWithCurrentCart(listName, $ctrl.type).then(function (response) {
+                            return listsApi.mergeWithCurrentCart(listName, $ctrl.type).then(function (response) {
                                 $rootScope.$broadcast('cartItemsChanged');
                             });
                         });
@@ -133,7 +133,7 @@
 
                     $ctrl.listSettings = function () {
                         loader.wrapLoading(function () {
-                            return listService.searchLists({
+                            return listsApi.searchLists({
                                 pageSize: 10000,
                                 type: $ctrl.type
                             }).then(function (response) {
@@ -142,7 +142,7 @@
                                     predefinedLists: $ctrl.predefinedLists,
                                     type: $ctrl.type
                                 }
-                                dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.list-settings-dialog.tpl', function (result) {
+                                dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.lists-settings-dialog.tpl', function (result) {
                                     $ctrl.pageSettings.currentPage = 1;
                                     $ctrl._searchLists();
                                 });
@@ -153,7 +153,7 @@
                     };
 
                     function createList(listName, type) {
-                        return listService.createList(listName, type);
+                        return listsApi.createList(listName, type);
                     }
                 }
             ]

@@ -1,6 +1,6 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', 'listService', '$translate', function ($scope, $window, $uibModalInstance, dialogData, listService, $translate) {
+storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', 'listsApi', '$translate', function ($scope, $window, $uibModalInstance, dialogData, listsApi, $translate) {
     $scope.availableLists = [];
     $scope.selectedList = {};
     $scope.dialogData = dialogData;
@@ -10,7 +10,7 @@ storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$w
 
     $scope.addProductToList = function () {
         $scope.inProgress = true;
-        listService.addLineItem(dialogData.product.id, $scope.selectedList.name, $scope.selectedList.type).then(function (response) {
+        listsApi.addLineItem(dialogData.product.id, $scope.selectedList.name, $scope.selectedList.type).then(function (response) {
             if (response.data) {
                 $scope.inProgress = false;
                 $scope.itemAdded = true;
@@ -30,22 +30,22 @@ storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$w
     };
 
     $scope.initialize = function () {
-        listService.searchLists({
+        listsApi.searchLists({
             pageSize: 10000,
             type: $scope.type
         }).then(function (response) {
             $scope.lists = response.data.results;
-
-            _.each($scope.lists, function(list) {
-                
-                var foundItem = _.find(list.items, function(item) {
-                        return item.productId === dialogData.product.id;
+            if ($scope.lists) {
+                var nameLists = _.pluck($scope.lists, 'name');
+                listsApi.getListsWithProduct(dialogData.product.id, nameLists, $scope.type).then(function(containsResponse) {
+                    var containsLists = containsResponse.data;
+                    if ($scope.lists && containsLists) {
+                        _.each($scope.lists, function(list) {
+                            list.contains = _.contains(containsLists, list.name);
+                        });
+                    }
                 });
-
-                if (foundItem) {
-                    list.contains = true;
-                }
-            });
+            }
         });
     };
 

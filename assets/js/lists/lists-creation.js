@@ -1,6 +1,6 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope', '$scope', '$window', '$uibModalInstance', 'customerService', 'dialogData', 'listService', '$localStorage', 'loadingIndicatorService', function ($rootScope, $scope, $window, $uibModalInstance, customerService, dialogData, listService, $localStorage, loader) {
+storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope', '$scope', '$window', '$uibModalInstance', 'customerService', 'dialogData', 'listsApi', '$localStorage', 'loadingIndicatorService', function ($rootScope, $scope, $window, $uibModalInstance, customerService, dialogData, listsApi, $localStorage, loader) {
 
     $scope.dialogData = dialogData.lists;
     $scope.predefinedLists = dialogData.lists;
@@ -11,13 +11,13 @@ storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope',
     $scope.type = dialogData.type;
 
     $scope.createList = function () {
-        listService.createList($scope.dialogData.listName, $scope.type).then(function(result) {
+        listsApi.createList($scope.dialogData.listName, $scope.type).then(function(result) {
             $uibModalInstance.close(result.data);
         });
     };
 
     $scope.selectedList = function (listName, type) {
-        var items = listService.getWishlist(listName, type).items;
+        var items = listsApi.getWishlist(listName, type).items;
         $scope.selectedList.items = items;
     };
 
@@ -28,7 +28,7 @@ storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope',
                 listIds.push(list.id);
         });
 
-        listService.deleteListsByIds(listIds).then(function (result) {
+        listsApi.deleteListsByIds(listIds).then(function (result) {
             $uibModalInstance.close();
         });
     };

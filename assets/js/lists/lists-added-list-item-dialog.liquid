@@ -1,4 +1,4 @@
-<script id="storefront.recently-added-list-item-dialog.tpl" type="text/ng-template">
+<script id="storefront.lists-added-list-item-dialog.tpl" type="text/ng-template">
     <div ng-if="!itemAdded">
         <div class="modal-header">
             <button type="button" class="close" ng-click="close()" title="{{ 'cart.general.close_cart' | t }}" aria-label="{{ 'cart.general.close_cart' | t }}"><span aria-hidden="true">&times;</span></button>
@@ -73,7 +73,7 @@
                 </div>
 
                 <div>
-                    <button ng-click="redirect('{{ 'account#/lists' | absolute_url }}')" class="btn" >
+                    <button ng-click="redirect('{{ 'account#/lists/myLists' | absolute_url }}')" class="btn" >
                         <span>{{ 'wishlist.general.view_your_list' | t }}</span>
                     </button>
                     <button ng-click="close()" class="btn" >
