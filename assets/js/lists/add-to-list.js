@@ -37,8 +37,9 @@ storefrontApp.controller('recentlyAddedListItemDialogController', ['$scope', '$w
             $scope.lists = response.data.results;
 
             _.each($scope.lists, function(list) {
+                
                 var foundItem = _.find(list.items, function(item) {
-                        return item.productId === dialogData.id;
+                        return item.productId === dialogData.product.id;
                 });
 
                 if (foundItem) {

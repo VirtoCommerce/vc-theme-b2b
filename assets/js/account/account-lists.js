@@ -41,8 +41,8 @@
                     $ctrl.addToCart = function (lineItem) {
                         loader.wrapLoading(function () {
                             return cartService.addLineItem(lineItem.productId, 1).then(function (response) {
-                                $ctrl.productAdded = true;
-                                $timeout(function () { $ctrl.productAdded = false; }, 2000);
+                                lineItem.productAdded = true;
+                                $timeout(function () { lineItem.productAdded = false; }, 10000);
                                 $rootScope.$broadcast('cartItemsChanged');
                             });
                         });

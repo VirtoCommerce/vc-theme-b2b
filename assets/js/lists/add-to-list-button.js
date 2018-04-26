@@ -20,7 +20,7 @@
 		
 					_.each($ctrl.lists, function(list) {
 						var foundItem = _.find(list.items, function(item) {
-								return item.productId === dialogData.id;
+								return item.productId === $ctrl.selectedVariation.id;
 						});
 		
 						if (foundItem) {

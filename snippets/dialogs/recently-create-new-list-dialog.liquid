@@ -1,32 +1,27 @@
 <script id="storefront.recently-create-new-list-dialog.tpl" type="text/ng-template">
-  <div class="ajaxify-modal is-visible lists-creationDialog-wrapper" id="ajaxifyModal">
-    <div class="ajaxifyCart--content" id="ajaxifyCart">
-      <div class="lists-creationDialog-closeButtonWrapper">
-        <button class="lists-creationDialog-closeButtonClearFix ajaxifyCart--close" title="{{ 'cart.general.close_cart' | t }}" ng-click="close()">{{ 'cart.general.close_cart' | t }}</button>
-        <h1 class="h2">{{ 'wishlist.general.create' |t }}</h1>
-      </div>
-
-      <div class="product-list-modal-wrapper">
-        <div class="cart-row list-modal-row-fix">
-          <div class="lists-creationDialog-inputWrapper grid-item text-left">
-            <div>
-              <input placeholder="Enter list name" class="form-input lists-creationDialog-inputClearFix" ng-model="dialogData.listName" type="text"/>
-            </div>
-          </div>
-        </div>
-        
-        <div class="product-list-modal-borders product-list-modal-borders">
-          <div class="grid-item text-right">
-            <button ng-disabled="inProgress || !dialogData.listName" class="btn " ng-click="createList()">
-              <span >{{ 'wishlist.general.create' |t }}</span>
-            </button>
-            <button class="btn" >
-              <span ng-click="close()">{{ 'wishlist.general.cancel' | t }}</span>
-            </button>
-          </div>
+  <div class="modal-header">
+      <button type="button" class="close" ng-click="close()" title="{{ 'cart.general.close_cart' | t }}" aria-label="{{ 'cart.general.close_cart' | t }}"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title">{{ 'wishlist.general.create' | t }}</h4>
+  </div>
+  <div class="modal-body">
+    <div class="cart-row list-modal-row-fix">
+      <div class="lists-creationDialog-inputWrapper grid-item text-left">
+        <div>
+          <input placeholder="Enter list name" class="form-input lists-creationDialog-inputClearFix" ng-model="dialogData.listName" type="text"/>
         </div>
       </div>
     </div>
+    
+    <div class="product-list-modal-borders product-list-modal-borders">
+      <div class="grid-item text-right">
+        <button ng-disabled="inProgress || !dialogData.listName" class="btn " ng-click="createList()">
+          <span >{{ 'wishlist.general.create' |t }}</span>
+        </button>
+        <button class="btn" >
+          <span ng-click="close()">{{ 'wishlist.general.cancel' | t }}</span>
+        </button>
+      </div>
+    </div>
   </div>
-  <div id="ajaxifyCart-overlay"></div>
+   
 </script>
