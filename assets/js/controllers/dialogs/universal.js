@@ -1,4 +1,4 @@
-﻿angular.module('storefrontApp')
+angular.module('storefrontApp')
 .controller('universalDialogController', ['$scope', '$uibModalInstance', 'dialogData', function ($scope, $uibModalInstance, dialogData) {
     angular.extend($scope, dialogData);
 
@@ -9,4 +9,5 @@
             $uibModalInstance.dismiss('cancel');
         }
     }
+
 }]);

@@ -1,4 +1,4 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.constant('vcTotalsDefaults', {
     show: {
@@ -12,7 +12,7 @@ storefrontApp.constant('vcTotalsDefaults', {
 });
 
 storefrontApp.component('vcTotals', {
-    templateUrl: "themes/assets/js/components/purchase/totals.tpl.liquid",
+    templateUrl: "themes/assets/js/common-components/totals.tpl.liquid",
 	bindings: {
         order: '<',
         options: '<'

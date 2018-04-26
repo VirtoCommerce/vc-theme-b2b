@@ -1,4 +1,4 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.controller('productController', ['$rootScope', '$scope', '$window', '$timeout', 'dialogService', 'catalogService', 'cartService', 'quoteRequestService', 'availabilityService',
     function ($rootScope, $scope, $window, $timeout, dialogService, catalogService, cartService, quoteRequestService, availabilityService) {
@@ -242,6 +242,9 @@ storefrontApp.controller('recentlyAddedCartItemDialogController', ['$scope', '$w
         $uibModalInstance.dismiss('cancel');
     }
 
+    $scope.redirect = function (url) {
+        $window.location.href = url;
+    }
     $scope.send = function(email) {
         mailingService.sendProduct(dialogData.productId, { email: email, storeId: dialogData.storeId, productUrl: dialogData.productUrl, language: dialogData.language });
         $uibModalInstance.close();
