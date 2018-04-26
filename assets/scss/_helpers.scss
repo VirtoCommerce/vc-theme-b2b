@@ -1,4 +1,4 @@
-﻿@include bg-variant('.bg-gray-base',     $gray-base);
+@include bg-variant('.bg-gray-base',     $gray-base);
 @include bg-variant('.bg-gray-darker',   $gray-darker);
 @include bg-variant('.bg-gray-dark',     $gray-dark);
 @include bg-variant('.bg-gray',          $gray);
@@ -14,4 +14,10 @@
 
 .block {
   padding-bottom: 50%;
+}
+
+.horizon-align-center {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
 }

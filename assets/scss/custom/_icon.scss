@@ -1,0 +1,25 @@
+i {
+  &.sm {
+    font-size: 1em;
+  }
+
+  &.md {
+    font-size: 1.5em;
+  }
+
+  &.lg {
+    font-size: 2em;
+  }
+
+  &.success {
+    color: $icon-bg-color-success;
+  }
+
+  &.danger {
+    color: $icon-bg-color-danger;
+  }
+
+  &.warning {
+    color: $icon-bg-color-warning;
+  }
+}

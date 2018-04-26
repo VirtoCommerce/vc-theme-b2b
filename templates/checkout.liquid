@@ -1,5 +1,8 @@
 {% layout theme %}
 <main class="container" role="main" ng-controller="checkoutController">
+    <div ng-if="$ctrl.loader.isLoading" class="loader">
+        <div class="indicator"></div>
+    </div>
     <div class="row">
         <div class="hidden-xs hidden-sm col-md-12 hidden-print">
             <div class="page-header clearfix">
@@ -50,7 +53,7 @@
                                         </div>
                                     </div>
                                     <div class="row flexible text-condensed" ng-repeat="lineItem in checkout.cart.items">
-                                       <vc-checkout-line-item line-item="lineItem" on-change-qty="changeItemQty(lineItem)" on-remove="removeItem(lineItem)"></vc-checkout-line-item>
+                                        <vc-checkout-line-item line-item="lineItem" on-change-qty="changeItemQty(lineItem)" on-remove="removeItem(lineItem)"></vc-checkout-line-item>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +62,57 @@
                 </vc-checkout-wizard-step>
                 <vc-checkout-wizard-step name="review" title="Review">
                 </vc-checkout-wizard-step>
-                <vc-checkout-wizard-step name="complete" title="Complete" final="true">
+                <vc-checkout-wizard-step name="complete" title="Complete">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-9"><p><span><i class="fa fa-check-circle lg success horizon-align-center" aria-hidden="true"></i></span> Order<span ng-bind="order.number"></span> {{ 'checkout.order_successfully' | t: number: number }}</p></div>
+                                        <div class="col-md-3">
+                                            <div class="btn-group pull-right" role="group">
+                                                <button type="button" class="btn btn-default"><p> {{ 'checkout.order-print' | t }}</p></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="center-block text-center"><p>{{ 'checkout.order-summary' | t }}</p></div>
+                                            <vc-totals order="$ctrl.order.total"></vc-totals>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="center-block text-center"><p>{{ 'checkout.pickup-address' | t }}</p></div>
+                                            <vc-address address="$ctrl.order.address"></vc-address>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="center-block text-center">{{ 'checkout.payment-method' | t }}</div>
+                                            <!--<vc-payment-methods get-avail-payment-methods="$ctrl.getAvailPaymentMethods()" payment-method="$ctrl.paymentMethod" on-select-method="$ctrl.selectPaymentMethod(paymentMethod)" validation-container="$ctrl"></vc-payment-methods>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>{{ 'checkout.purchased-products' | t }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12" ng-repeat="lineItem in mockLineItem">
+                                            <vc-checkout-line-item line-item="lineItem" on-change-qty="changeItemQty(lineItem)" on-remove="removeItem(lineItem)" readOnly="true"></vc-checkout-line-item>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </vc-checkout-wizard-step>
             </vc-checkout-wizard>
         </div>
