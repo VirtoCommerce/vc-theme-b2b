@@ -20,22 +20,23 @@
         var BASE_URL = '{{ "/" | full_url }}';
     </script>
 </head>
-    <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" ng-controller="mainController" ng-init="baseUrl='{{ '/' | absolute_url }}'" data-target="#toc" data-spy="scroll">
-        {% include 'third-party/google-tag-manager-body' %}
-        {% include 'dialogs/sign-in-to-proceed' %}
-        {% include 'dialogs/recently-added-cart-item' %}
-        {% include 'dialogs/select-fulfillment-center' %}
-        {% include 'dialogs/send-product-to-email' %}
-
-        {% include 'js/lists/lists-added-list-item-dialog' %}
-        {% include 'js/lists/lists-create-new-list-dialog' %}
-        {% include 'js/lists/lists-settings-dialog' %}
-        {% include 'dialogs/list-shared-link-dialog' %}
-        {% include 'notification' %}
-        {% include 'main/header' %}
-        {{ content_for_layout }}
-        {% include 'main/footer' %}
-    </body>
+<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" ng-controller="mainController" ng-init="baseUrl='{{ '/' | absolute_url }}'" data-target="#toc" data-spy="scroll">
+    {% include 'third-party/google-tag-manager-body' %}
+    {% include 'dialogs/sign-in-to-proceed' %}
+    {% include 'dialogs/recently-added-cart-item' %}
+    {% include 'dialogs/select-fulfillment-center' %}
+    {% include 'dialogs/select-address-dialog' %}
+    {% include 'dialogs/select-payment-method-dialog' %}
+    {% include 'dialogs/send-product-to-email' %}
+    {% include 'js/lists/lists-added-list-item-dialog' %}
+    {% include 'js/lists/lists-create-new-list-dialog' %}
+    {% include 'js/lists/lists-settings-dialog' %}
+    {% include 'dialogs/list-shared-link-dialog' %}
+    {% include 'notification' %}
+    {% include 'main/header' %}
+    {{ content_for_layout }}
+    {% include 'main/footer' %}
+</body>
 
     {% comment %}
         <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" ng-controller="mainController" ng-init="baseUrl='{{ '/' | absolute_url }}'">

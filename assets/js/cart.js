@@ -1,4 +1,4 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 'cartService', 'catalogService', 'availabilityService', 'loadingIndicatorService', function ($rootScope, $scope, $timeout, cartService, catalogService, availabilityService, loader) {
     var timer;
@@ -179,14 +179,3 @@ storefrontApp.controller('cartBarController', ['$scope', 'cartService', function
     }
 }]);
 
-storefrontApp.controller('recentlyAddedCartItemDialogController', ['$scope', '$window', '$uibModalInstance', 'dialogData', function ($scope, $window, $uibModalInstance, dialogData) {
-    $scope.dialogData = dialogData;
-
-    $scope.close = function () {
-        $uibModalInstance.close();
-    }
-
-    $scope.redirect = function (url) {
-        $window.location = url;
-    }
-}]);

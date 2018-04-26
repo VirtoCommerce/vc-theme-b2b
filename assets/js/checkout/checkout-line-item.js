@@ -9,6 +9,7 @@ storefrontApp.component('vcCheckoutLineItem', {
         lineItem: '=',
         onChangeQty: '&',
         onRemove: '&',
+        readOnly: '<'
     },
     controller: ['$scope', 'availablePaymentPlans', function ($scope, availablePaymentPlans) {
         var ctrl = this;

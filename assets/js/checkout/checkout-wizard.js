@@ -17,20 +17,17 @@ storefrontApp.component('vcCheckoutWizard', {
 			{
 				step = _.find(ctrl.steps, function (x) { return x.name == step; });
 			}
-			if (step && ctrl.currentStep != step && step.canEnter) {
-				if (!step.final) {
-					step.isActive = true;
-					if (ctrl.currentStep) {
-						ctrl.currentStep.isActive = false;
-					}
-					ctrl.currentStep = step;
-				}
-				else if (ctrl.onFinish)
-				{
-					ctrl.onFinish();
-				}
-			}
-		};
+            if (step && ctrl.currentStep != step && step.canEnter) {
+                step.isActive = true;
+                if (ctrl.currentStep) {
+                    ctrl.currentStep.isActive = false;
+                }
+                ctrl.currentStep = step;
+                if (step.final && ctrl.onFinish) {
+                    ctrl.onFinish();
+                }
+            }
+        };
 
 		ctrl.nextStep = function () {
 			if (!ctrl.currentStep.validate || ctrl.currentStep.validate()) {
