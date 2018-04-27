@@ -8,19 +8,6 @@
     </div>
 
     <p ng-if="$ctrl.lists.length == 0">{{'wishlist.general.emptyData' | t}}</p>
-
-    <div class="row">
-        <div class="col-md-3 col-md-offset-9">
-            <ul class="nav nav-pills">
-                <li ng-if="$ctrl.accountLists.lists.length != 0" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.listSettings()">
-                    <a href="#"><i class="fa fa-cog"></i> {{'wishlist.general.settings' | t}}</a>
-                </li>
-                <li ng-if="$ctrl.accountLists.selectedTab === 'myLists'" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.createList()">
-                    <a href="#"><i class="fa fa-plus"></i> {{'wishlist.general.create' | t}}</a>
-                </li>
-            </ul>
-        </div>
-    </div>
     
     <div ng-if="$ctrl.accountLists.lists.length != 0" class="grid-border">
         <div class="row">
@@ -37,10 +24,21 @@
             <div class="col-xs-8 col-sm-10">
                 <div class ="row">
                     <div class="col-md-12">
-                        <div class="page-header">
-                            <h3 ng-bind="$ctrl.accountLists.selectedList.name"></h3>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <span class="h3" ng-bind="$ctrl.accountLists.selectedList.name"></span>
+                            </div>
+                            <div class="col-md-5">
+                                <ul class="nav nav-pills">
+                                    <li ng-if="$ctrl.accountLists.lists.length != 0" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.listSettings()">
+                                        <a href="#"><i class="fa fa-cog"></i> {{'wishlist.general.settings' | t}}</a>
+                                    </li>
+                                    <li ng-if="$ctrl.accountLists.selectedTab === 'myLists'" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.createList()">
+                                        <a href="#"><i class="fa fa-plus"></i> {{'wishlist.general.create' | t}}</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    
 
                         <span ng-if="$ctrl.accountLists.selectedList.items.length == 0">
                             <h2>{{ 'wishlist.general.empty' | t }}</h2>

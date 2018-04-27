@@ -4,9 +4,36 @@
 		bindings: {
 			selectedVariation: '<'
 		},
-        controller: ['accountApi', 'dialogService', function (accountApi, dialogService) {
+        controller: ['accountApi', 'dialogService', 'listsApi', 'customerService', function (accountApi, dialogService, listsApi, customerService) {
 			var $ctrl = this;
 			$ctrl.$onInit = function () {
+				compareProductInLists();
+			}
+
+			function compareProductInLists() {
+				$ctrl.buttonInvalid = true;
+                listsApi.searchLists({
+					pageSize: 10000,
+					type: $ctrl.type
+				}).then(function (response) {
+					$ctrl.lists = response.data.results;
+
+					if ($ctrl.lists) {
+						var nameLists = _.pluck($ctrl.lists, 'name');
+						listsApi.getListsWithProduct($ctrl.selectedVariation.id, nameLists, $ctrl.type).then(function(containsResponse) {
+							var containsLists = containsResponse.data;
+							if (containsLists) {
+								_.each($ctrl.lists, function(list) {
+									list.contains = _.contains(containsLists, list.name);
+								});
+							}
+						});
+					}
+				});
+				customerService.getCurrentCustomer().then(function(response) {
+					$ctrl.customer = response.data;
+				});
+				
 			}
 
 			function toListsDialogDataModel(product, quantity) {

@@ -7,13 +7,21 @@
         <div class="modal-body">
             <div class="product-list-modal-wrapper">
                 <div class="list-group">
-                    <a href="#" class="list-group-item" ng-repeat="list in lists" ng-class="{'active': list.name == selectedList.name, 'disabled' : list.contains }" ng-click="selectList(list)">
-                        <span  class="list-text-title" ng-bind="list.name"></span>
-                        <span ng-if="list.contains" class="list-text-descr-inList">
-                            {{ 'wishlist.general.list_contains' | t }}
-                            <i ng-if="list.contains" class="fa fa-check-square " aria-hidden="true"></i>
-                        </span>
-                    </a>
+                    
+                        <a href="#" class="list-group-item" ng-repeat="list in lists" ng-class="{'active': list.name == selectedList.name, 'disabled' : list.contains }" ng-click="selectList(list)">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <span ng-bind="list.name"></span>
+                                </div>
+                                <div class="col-md-5">
+                                    <span ng-if="list.contains" >
+                                        {{ 'wishlist.general.list_contains' | t }}
+                                        <i ng-if="list.contains" class="fa fa-check-square " aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    
                 </div>
                 
                 <div class="cart-row product-list-modal-borders product-list-modal-borders">
