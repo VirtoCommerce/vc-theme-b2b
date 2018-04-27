@@ -10,14 +10,17 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
             $scope.checkout = {
                 wizard: {},
                 order: {},
+                deliveryAddress: {},
                 paymentMethod: {},
+                shipmentMethod: {},
                 deliveryMethod: {},
                 shipment: {},
                 payment: {},
                 coupon: {},
-                availCountries: [],
+                availCountries: [],               
                 loading: false,
-                isValid: false
+                isValid: false,
+                newAddress: {}
             };
 
             $scope.getInvoicePdf = function () {
@@ -25,9 +28,18 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 $window.open(url, '_blank');
             }
 
+            $scope.changeShippingMethod = function () {
+                $scope.getAvailShippingMethods($scope.checkout.shipment).then(function (response) {
+                    var dialogInstance = dialogService.showDialog({ availShippingMethods: response, checkout: $scope.checkout }, 'universalDialogController', 'storefront.select-shipment-method-dialog.tpl');
+                    dialogInstance.result.then(function (shipmentMethod) {
+                        $scope.selectShippingMethod(shipmentMethod);
+                    });
+                });
+            };
+
             $scope.changePaymentMethod = function () {
                 $scope.getAvailPaymentMethods().then(function (response) {
-                    var dialogInstance = dialogService.showDialog({ availPaymentMethods: response, paymentMethod: {} }, 'universalDialogController', 'storefront.select-payment-method-dialog.tpl');
+                    var dialogInstance = dialogService.showDialog({ availPaymentMethods: response, checkout: $scope.checkout }, 'universalDialogController', 'storefront.select-payment-method-dialog.tpl');
                     dialogInstance.result.then(function (paymentMethod) {
                         $scope.selectPaymentMethod(paymentMethod);
                     });
@@ -42,7 +54,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
             };
 
             $scope.changeShippingAddress = function () {
-                var dialogInstance = dialogService.showDialog({ addresses: $scope.checkout.cart.customer.addresses }, 'universalDialogController', 'storefront.select-address-dialog.tpl');
+                var dialogInstance = dialogService.showDialog({ checkout: $scope.checkout, addresses: $scope.checkout.cart.customer.addresses }, 'universalDialogController', 'storefront.select-address-dialog.tpl');
                 dialogInstance.result.then(function (address) {
                     $scope.checkout.shipment.deliveryAddress = address;
                 });
@@ -133,7 +145,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 });
             };
 
-            $scope.getCountryRegions = function (country) {
+            $scope.checkout.getCountryRegions = $scope.getCountryRegions = function (country) {
                 return commonService.getCountryRegions(country.code3).then(function (response) {
                     return response.data;
                 });
