@@ -57,7 +57,7 @@
 }
 
 .btn-alt {
-  @include button-variant-alt($btn-default-color, $btn-custom-color, $btn-custom-color, 'lighten', 0);
+  @include button-variant-alt($btn-default-color, $btn-default-bg, $btn-default-border, 'lighten', 0);
 }
 
 .btn-primary.btn-alt {
