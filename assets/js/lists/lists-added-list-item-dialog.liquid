@@ -41,7 +41,7 @@
 
         <div class="modal-body">
             <div class="row">
-                <div>
+                <div class="col-xs-12">
                     <table class="table table-hover">
                         <tr>
                             <td>
@@ -59,26 +59,22 @@
                                 <div ng-bind="dialogData.quantity"></div>
                             </td>
                             <td>
-                                {% if settings.show_prices_with_taxes %}
-                                <span class="h2" ng-bind="dialogData.product.price.listPrice.formattedAmount"></span>
-                                <span style="text-decoration: line-through;" ng-if="dialogData.product.price.listPriceWithTax.amount != dialogData.placedPriceWithTax.amount" ng-bind="dialogData.product.price.listPriceWithTax.formattedAmount"></span>
-                                {% else %}
-                                <span class="h2" ng-bind="dialogData.product.price.listPrice.formattedAmount"></span>
-                                <span style="text-decoration: line-through;" ng-if="dialogData.product.price.listPrice.amount != dialogData.placedPrice.amount" ng-bind="dialogData.product.price.listPrice.formattedAmount"></span>
-                                {% endif %}
+                                <span ng-bind="dialogData.product.price.listPrice.formattedAmount"></span>
                             </td>
                             
                         </tr>
                     </table>
                 </div>
 
-                <div>
-                    <button ng-click="redirect('{{ 'account#/lists/myLists' | absolute_url }}')" class="btn" >
-                        <span>{{ 'wishlist.general.view_your_list' | t }}</span>
-                    </button>
-                    <button ng-click="close()" class="btn" >
-                        <span>{{ 'wishlist.general.continue_shopping' | t }}</span>
-                    </button>
+                <div class="col-xs-12">
+                    <div class="text-right">
+                        <button ng-click="redirect('{{ 'account#/lists/myLists' | absolute_url }}')" class="btn" >
+                            <span>{{ 'wishlist.general.view_your_list' | t }}</span>
+                        </button>
+                        <button ng-click="close()" class="btn" >
+                            <span>{{ 'wishlist.general.continue_shopping' | t }}</span>
+                        </button>
+                    </div>
                 </div>    
                 
             </div>
