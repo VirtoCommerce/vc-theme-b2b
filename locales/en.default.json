@@ -253,7 +253,7 @@
     },
     "wishlist": {
         "general": {
-            "title": "Your lists",
+            "title": "Private lists",
             "friends_lists": "Friends lists",
             "select_list": "Please select list",
             "remove": "Remove",
