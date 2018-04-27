@@ -7,7 +7,7 @@ angular.module('storefront.account')
     controller: ['$q', '$scope', 'storefrontApp.mainContext', 'accountApi', 'loadingIndicatorService', 'availableRoles', function ($q, $scope, mainContext, accountApi, loader, availableRoles) {
         var $ctrl = this;
         $ctrl.loader = loader;
-        //$ctrl.availableRoles = availableRoles;
+        $ctrl.availableRoles = availableRoles;
         $ctrl.member = mainContext.customer;
 
         $scope.$watch(
