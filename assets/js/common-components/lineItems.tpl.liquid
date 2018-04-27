@@ -10,7 +10,7 @@
     </thead>
     <tbody>
         <tr ng-repeat="lineItem in $ctrl.items">
-            <td>
+            <td class="col-xs-2 col-md-1">
                 <img class="img-responsive" alt="{% raw %}{{ lineItem.name }}{% endraw %}" ng-src="{% raw %}{{ lineItem.imageUrl }}{% endraw %}" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-if="lineItem.imageUrl" />
             </td>
             <td>
