@@ -78,20 +78,20 @@
                                 {% endif %}
                                 {% comment %}
                                     {% if shop.customer_accounts_enabled %}
-                                        <span class="site-header--meta-links medium-down--hide">
-                                            {% if customer %}
-                                                {% capture first_name %}
-                                                    <a href="{{ '/account' | absolute_url }}">{{ customer.first_name }}</a>
-                                                {% endcapture %}
-                                                {{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }} &middot; {{ 'layout.customer.log_out' | t | customer_logout_link }}
-                                            {% else %}
-                                                {{ 'layout.customer.sign_in' | t | customer_login_link }}
-                                                {% if shop.customer_accounts_optional %}
-                                                    <span class="site-header--spacer">{{ 'layout.customer.or' | t }}</span>
-                                                    {{ 'layout.customer.create_account' | t | customer_register_link }}
-                                                {% endif %}
-                                            {% endif %}
-                                        </span>
+                                <span class="site-header--meta-links medium-down--hide">
+                                    {% if customer %}
+                                    {% capture first_name %}
+                                    <a href="{{ '/account' | absolute_url }}">{{ customer.first_name }}</a>
+                                    {% endcapture %}
+                                    {{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }} &middot; {{ 'layout.customer.log_out' | t | customer_logout_link }}
+                                    {% else %}
+                                    {{ 'layout.customer.sign_in' | t | customer_login_link | replace: 'a href', 'a class="btn btn-primary" href' }}
+                                    {% if shop.customer_accounts_optional %}
+                                    <span class="site-header--spacer">{{ 'layout.customer.or' | t }}</span>
+                                    {{ 'layout.customer.create_account' | t | customer_register_link }}
+                                    {% endif %}
+                                    {% endif %}
+                                </span>
                                     {% endif %}
                                 {% endcomment %}
 
@@ -103,7 +103,7 @@
                                         {{ 'layout.customer.logged_in_as_label' | t }} <a href="{{ 'account' | absolute_url }}" ng-bind="customer.firstName || customer.userName"></a> &middot; {{ 'layout.customer.log_out' | t | customer_logout_link }}
                                     </span>
                                     <span ng-if="customer && !customer.isRegisteredUser" ng-cloak>
-                                        {{ 'layout.customer.sign_in' | t | customer_login_link }}
+                                        {{ 'layout.customer.sign_in' | t | customer_login_link | replace: 'a href', 'a class="btn btn-primary" href' }}
                                         <span class="site-header--spacer">{{ 'layout.customer.or' | t }}</span>
                                         {{ 'layout.customer.create_account' | t | customer_register_link }}
                                     </span>
