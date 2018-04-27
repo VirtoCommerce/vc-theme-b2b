@@ -1,52 +1,56 @@
-﻿<nav class="navbar navbar-default navbar-condensed navbar-static-top small" role="navigation">
+<nav class="navbar navbar-default navbar-condensed navbar-static-top small" role="navigation">
     <div class="container">
         <div class="row">
-            <div class="navbar-text">
-                <ul class="list-horizontal">
-                    <li>
-                        <span ng-if="customer && !customer.isRegisteredUser">
-                            {{ 'customer.account.title' | t | customer_login_link | replace: 'href', 'class="navbar-link" href' }}
-                        </span>
-                        <span ng-if="customer && customer.isRegisteredUser">
-                            <a class="navbar-link" href="{{ 'account' | absolute_url }}">{{ 'customer.account.title' | t }}</a>
-                        </span>
-                    </li>
-                    <!-- TODO: Add links to orders, lists and specials in account via ui-router -->
-                    <li>
-                        <a class="navbar-link" href="account#/orders">{{ 'customer.orders.title' | t }}</a>
-                    </li>
-                    <li>
-                        <a class="navbar-link" href="account#/lists">{{ 'customer.lists.title' | t }}</a>
-                    </li>
-                    <li>
-                        <a class="navbar-link" href="#">{{ 'customer.account.specials' | t }}</a>
-                    </li>
-                </ul>
+            <div class="col-md-8">
+                <div class="navbar-text">
+                    <ul class="list-horizontal">
+                        <li>
+                            <span ng-if="customer && !customer.isRegisteredUser">
+                                {{ 'customer.account.title' | t | customer_login_link | replace: 'href', 'class="navbar-link" href' }}
+                            </span>
+                            <span ng-if="customer && customer.isRegisteredUser">
+                                <a class="navbar-link" href="{{ 'account' | absolute_url }}">{{ 'customer.account.title' | t }}</a>
+                            </span>
+                        </li>
+                        <!-- TODO: Add links to orders, lists and specials in account via ui-router -->
+                        <li>
+                            <a class="navbar-link" href="account#/orders">{{ 'customer.orders.title' | t }}</a>
+                        </li>
+                        <li>
+                            <a class="navbar-link" href="account#/lists/myLists">{{ 'customer.lists.title' | t }}</a>
+                        </li>
+                        <li>
+                            <a class="navbar-link" href="#">{{ 'customer.account.specials' | t }}</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="navbar-text navbar-right" ng-if="customer && !customer.isRegisteredUser" ng-cloak>
-                <ul class="list-inline">
-                    <li>
-                        {{ 'layout.customer.sign_in' | t | customer_login_link | replace: 'href', 'class="navbar-link primary-link text-uppercase" href' }}
-                    </li>
-                    <li>
-                        {{ 'layout.customer.register_now' | t | customer_register_link | replace: 'href', 'class="navbar-link" href' }}
-                    </li>
-                </ul>
-            </div>
-            <div class="navbar-text navbar-right" ng-if="customer && customer.isRegisteredUser" ng-cloak>
-                <ul class="list-inline">
-                    <li>
-                        {% raw %}{{ customer.firstName }} {{ customer.lastName }}{% endraw %}
-                    </li>
-                    <li class="dropdown" uib-dropdown auto-close="mouseleave" aria-haspopup="true">
-                        <a id="account-dropdown" href="{{ 'account' | absolute_url }}" uib-dropdown-toggle vc-dropdown-trigger="mouseenter">{{ 'layout.customer.account' | t }}&ensp;<i class="dropdown-ico fa fa-angle-down"></i></a>
-                        <ul class="dropdown-menu" role="menu" uib-dropdown-menu aria-labelledby="account-dropdown">
-                            <li>
-                                {{ 'layout.customer.log_out' | t | customer_logout_link | replace: 'href', 'role="menuitem" tabindex="-1" href' }}
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+            <div class="col-md-4">
+                <div class="navbar-text navbar-right" ng-if="customer && !customer.isRegisteredUser" ng-cloak>
+                    <ul class="list-inline">
+                        <li>
+                            {{ 'layout.customer.sign_in' | t | customer_login_link | replace: 'href', 'class="btn btn-primary text-uppercase" href' }}
+                        </li>
+                        <li>
+                            {{ 'layout.customer.register_now' | t | customer_register_link | replace: 'href', 'class="navbar-link" href' }}
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar-text navbar-right" ng-if="customer && customer.isRegisteredUser" ng-cloak>
+                    <ul class="list-inline">
+                        <li>
+                            {% raw %}{{ customer.firstName }} {{ customer.lastName }}{% endraw %}
+                        </li>
+                        <li class="dropdown" uib-dropdown auto-close="mouseleave" aria-haspopup="true">
+                            <a id="account-dropdown" href="{{ 'account' | absolute_url }}" uib-dropdown-toggle vc-dropdown-trigger="mouseenter">{{ 'layout.customer.account' | t }}&ensp;<i class="dropdown-ico fa fa-angle-down"></i></a>
+                            <ul class="dropdown-menu" role="menu" uib-dropdown-menu aria-labelledby="account-dropdown">
+                                <li>
+                                    {{ 'layout.customer.log_out' | t | customer_logout_link | replace: 'href', 'role="menuitem" tabindex="-1" href' }}
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

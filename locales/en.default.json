@@ -68,6 +68,12 @@
         "invalid_bank_card_expiration_date_message": "Please enter valid expiration date of your bank card in MM / YY format",
         "bank_card_cvv_required_message": "Please enter verification code of your bank card",
         "invalid_bank_card_cvv_message": "Please enter correct verification code of your bank card",
+        "order_successfully": "Order <strong class=\"text-uppercase\" >{{ number }}</strong> has successfully been submitted. You will be sent an email notification as soon as your order is ready.",
+        "order-print": "Print order",
+        "order-summary": "Order summary",
+        "pickup-address": "Pickup address",
+        "payment-method": "Payment method",
+        "purchased-products": "My purchased products",
         "mobile": {
             "show_order_summary": "Show order summary",
             "hide_order_summary": "Hide order summary"
@@ -247,7 +253,7 @@
     },
     "wishlist": {
         "general": {
-            "title": "Your lists",
+            "title": "Private lists",
             "friends_lists": "Friends lists",
             "select_list": "Please select list",
             "remove": "Remove",
@@ -685,7 +691,7 @@
             "confirm_password": "Confirm Password",
             "submit": "Activate",
             "confirmation": "Account successfully activated"
-        } 
+        }
     },
     "homepage": {
         "featured_collections": {

@@ -1,4 +1,4 @@
-﻿// Override Bootstrap variables here (defaults from bootstrap-sass v3.3.7):
+// Override Bootstrap variables here (defaults from bootstrap-sass v3.3.7):
 
 //
 // Variables
@@ -15,7 +15,7 @@
    $gray-light:    #d8d8d8; // lighten($gray-base, 46.7%) // #777
    $gray-lighter:  #eee;    // lighten($gray-base, 93.5%) // #eee
 
-   $brand-primary: #be2122; // darken(#428bca, 6.5%) // #337ab7
+   $brand-primary: #f0ad4e; // darken(#428bca, 6.5%) // #337ab7
    $brand-alt:     #00739E; // not predefined
    $brand-success: #5cb85c; // #5cb85c
    $brand-info:    #5bc0de; // #5bc0de
@@ -1837,3 +1837,7 @@ $popularColor: #29333b;
 //== Product list
 $priceValueColor: #2c9243;
 */
+
+$icon-bg-color-success: #008000;
+$icon-bg-color-danger: #008000;
+$icon-bg-color-warning: #008000;

@@ -4,26 +4,9 @@
 		bindings: {
 			selectedVariation: '<'
 		},
-        controller: ['accountApi', 'listService', 'dialogService', function (accountApi, listService, dialogService) {
+        controller: ['accountApi', 'dialogService', function (accountApi, dialogService) {
 			var $ctrl = this;
 			$ctrl.$onInit = function () {
-				compareProductInLists();
-			}
-
-			function compareProductInLists() {
-				$ctrl.buttonInvalid = true;
-                accountApi.getCurrentUser().then(function(user) {
-			        listService.getOrCreateMyLists(user.data.userName, $ctrl.lists).then(function(result) {
-			            $ctrl.lists = result;
-			            angular.forEach($ctrl.lists, function(list) {
-			                listService.containsInList($ctrl.selectedVariation.id, list.id).then(function(result) {
-			                    if (result.contains === false) {
-			                        $ctrl.buttonInvalid = false;
-			                    }
-			                });
-			            });
-			        });
-			    });
 			}
 
 			function toListsDialogDataModel(product, quantity) {
@@ -36,7 +19,7 @@
 
 			$ctrl.addProductToWishlist = function () {
 				var dialogData = toListsDialogDataModel($ctrl.selectedVariation, 1);
-				dialogService.showDialog(dialogData, 'recentlyAddedListItemDialogController', 'storefront.recently-added-list-item-dialog.tpl');
+				dialogService.showDialog(dialogData, 'recentlyAddedListItemDialogController', 'storefront.lists-added-list-item-dialog.tpl');
             }
 
             $ctrl.signInToProceed = function() {

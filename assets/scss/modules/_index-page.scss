@@ -1,0 +1,32 @@
+.block-wraper {
+  text-align: center;
+  background-color: $gray-dark;
+  padding: 20px 10px;
+  border-radius: 10px;
+  margin: 20px;
+
+  p {
+    color: $text-contrast;
+    padding-top: 2em;
+  }
+}
+
+.border-top {
+  border-top: 4px solid $gray-dark;
+}
+
+.pouring-secondary {
+  background-color: $gray-lighter;
+}
+
+.carousel {
+  .carousel-caption {
+    &.custom {
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: $gray-dark;
+      opacity: 0.8;
+    }
+  }
+}

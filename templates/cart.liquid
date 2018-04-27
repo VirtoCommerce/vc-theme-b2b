@@ -1,230 +1,269 @@
-﻿<nav ng-show="cart.itemsCount > 0" class="navbar navbar-default navbar-fixed-top visible-xs-block visible-sm-block" role="navigation" ng-controller="cartController">
-    <p class="navbar-text navbar-left">
-        <small>{{ 'checkout.total' | t }}:</small>
-        <strong class="text-success" ng-bind="cart.total.formattedAmount"></strong>
-    </p>
-    <form class="navbar-form navbar-right">
-        <button class="btn btn-primary" type="button" ng-disabled="cartIsUpdating || loader.isLoading || cart.hasValidationErrors" ng-click="submitCart()">
-            Continue
-        </button>
-    </form>
-</nav>
-<main class="container" role="main">
-    <div class="row" ng-controller="cartController">
+<main class="container" role="main" ng-controller="checkoutController">
+    <div class="row">
         <div class="hidden-xs hidden-sm col-md-12 hidden-print">
             <div class="page-header clearfix">
-                {% include 'shared/order-steps' %}
+                <ol class="nav nav-pills pull-left">
+                    <li role="presentation" ng-repeat="step in checkout.wizard.steps" ng-class="{'active': step.isActive}">
+                        <a href="" ng-click="checkout.wizard.goToStep(step)">
+                            <span class="h1 text-middle" ng-bind="$index + 1"></span>
+                            <u class="h2 text-middle" ng-bind="step.title"></u>
+                        </a>
+                    </li>
+                </ol>
                 <ul class="list-inline pull-right">
                     <li>
                         <a href="" class="btn btn-link" ng-click=""><i class="fa fa-bullhorn"></i>&ensp;Feedback</a>
                     </li>
-                    <li ng-if="cart.itemsCount > 0">
+                    <li>
                         <a href="" class="btn btn-link" ng-click=""><i class="fa fa-envelope"></i>&ensp;Email</a>
                     </li>
-                    <li ng-if="cart.itemsCount > 0">
-                        {% include 'shared/print' %}
+                    <li>
+                        <a href="" class="btn btn-link" ng-click="print()"><i class="fa fa-print"></i>&ensp;Print</a>
                     </li>
                 </ul>
             </div>
         </div>
-
-        <div class="col-xs-12" ng-show="!cart">
-            <div class="row">
-                <div class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4">
-                    <div class="alert alert-info" role="alert">
-                        <i class="fa fa-spinner fa-pulse fa-fw"></i>
-                        <span>{{ 'cart.general.loading_cart_message' | t }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12" ng-show="cart && (cartIsUpdating || loader.isLoading)">
-            <div class="row">
-                <div class="col-xs-6 col-xs-offset-3 col-md-4 col-md-offset-4">
-                    <div class="alert alert-info" role="alert">
-                        <i class="fa fa-refresh fa-spin fa-fw"></i>
-                        <span>{{ 'cart.general.updating_cart_message' | t }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xs-12" ng-show="cart.itemsCount == 0" ng-cloak>
-            <h2>{{ 'cart.general.empty' | t }}</h2>
-            <a href="collections" class="btn btn-lg btn-primary">{{ 'cart.general.continue_shopping' | t }}</a>
-        </div>
-        <div class="col-xs-12" ng-show="cart.itemsCount > 0" ng-cloak>
-            <div class="row">
-                <div class="col-xs-12 col-md-9">
-                    <div ng-init="setCartForm(formCart)"></div>
-                    <form name="formCart" novalidate="novalidate">
-                        <div class="container-drain container-bordered-horizontal">
-                            <div class="row hidden-xs hidden-sm">
-                                <div class="col-xs-12" ng-controller="purchaseController">
-                                    <vc-shipment-type ctrl="$ctrl" shipment-type="::shipmentType" shipment-address="::shipmentAddress" shipment-fulfillment-center="::shipmentFulfillmentCenter" on-change="updateShipmentType(shipmentType, shipmentTypeInfo); reloadCart();" on-fulfillment-center-selection="$ctrl.change()">
-                                        <div class="well container-bordered-vertical">
-                                            <div class="row flexible">
-                                                <div class="col-md-3">
-                                                    <h4>Delivery method</h4>
-                                                    <div class="form-group">
-                                                        <div class="radio">
-                                                            <label>
-                                                                <input type="radio" name="deliveryMethods" id="shipping" ng-model="$ctrl.shipmentType" value="shipping" ng-click="$ctrl.change()">
-                                                                <span class="switch"></span>
-                                                                <span class="name">Shipping</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="radio">
-                                                            <label>
-                                                                <input type="radio" name="deliveryMethods" id="pickup" ng-model="$ctrl.shipmentType" value="pickup" ng-click="$ctrl.change()">
-                                                                <span class="switch"></span>
-                                                                <span class="name">Pickup</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-9" ng-if="$ctrl.shipmentType == 'shipping'">
-                                                    <h4>Check availability</h4>
-                                                    <div class="form-inline">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" ng-model="$ctrl.shipmentAddress.postalCode" placeholder="ZIP code" />
-                                                            <span class="input-group-btn">
-                                                                <button class="btn btn-default" ng-click="$ctrl.change()">Go</button>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-9" ng-if="$ctrl.shipmentType == 'pickup'">
-                                                    <div class="container-drain container-bordered-horizontal">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <h4>Find a branch</h4>
-                                                                <p>Enter an address, city & state, ZIP code, branch # or country.</p>
-                                                                <div class="input-group">
-                                                                    <input type="text" class="form-control" ng-model="$ctrl.shipmentFulfillmentCenter.postalCode" placeholder="ZIP code" />
-                                                                    <span class="input-group-btn">
-                                                                        <button class="btn btn-default" ng-click="$ctrl.selectFulfillmentCenter()">Go</button>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row" ng-if="$ctrl.shipmentFulfillmentCenter.name">
-                                                            <div class="col-md-12">
-                                                                <h4>My selected branch</h4>
-                                                                <vc-address address="shipmentFulfillmentCenterAddress">
-                                                                    <address-header>
-                                                                        <p><a href="#" ng-bind="$ctrl.shipmentFulfillmentCenter.name"></a></p>
-                                                                    </address-header>
-                                                                    <address-footer>
-                                                                        <strong>Hours:</strong> <span>M–F 7:00 AM - 5:00 PM EASTERN</span>
-                                                                    </address-footer>
-                                                                </vc-address>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+        <div class="col-xs-12">
+            <vc-checkout-wizard wizard-model="checkout.wizard" on-initialized="initialize()" loading="checkout.loading">
+                <vc-checkout-wizard-step name="cart" title="My Cart">
+                    <div class="col-xs-12">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-9">
+                                <div class="container-drain container-bordered-horizontal">
+                                    <div class="row hidden-xs hidden-sm">
+                                        <div class="col-xs-12">
+                                            <vc-checkout-delivery-method delivery-method="checkout.deliveryMethod" on-eval-availability="evalAvailability(deliveryMethod)"></vc-checkout-delivery-method>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="h2">
+                                                My products
+                                                <ul class="list-horizontal link-reset pull-right">
+                                                    <li>
+                                                        <a href="">Show Reference Information</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="" ng-click="clearCart()">Clear Cart</a>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
-                                    </vc-shipment-type>
-                                </div>
-                                <div class="col-xs-12">
-                                    <div class="h2">
-                                        My products
-                                        <ul class="list-horizontal link-reset pull-right">
-                                            <li>
-                                                <a href="">Show Reference Information</a>
-                                            </li>
-                                            <li>
-                                                <a href="" ng-click="clearCart()">Clear Cart</a>
-                                            </li>
-                                        </ul>
+                                    </div>
+                                    <div class="row flexible text-condensed" ng-repeat="lineItem in checkout.cart.items">
+                                        <vc-checkout-line-item line-item="lineItem" on-change-qty="changeItemQty(lineItem)" on-remove="removeItem(lineItem)"></vc-checkout-line-item>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <p class="text-center"><strong>If you changed multiple quantities, </strong><a href="">Update All</a></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row flexible text-condensed" ng-repeat="lineItem in cart.items">
-                                <div class="col-xs-2 col-md-1">
-                                    <img class="img-responsive" src="{{ 'no-image.svg' | asset_url }}" ng-if="!lineItem.imageUrl" />
-                                    <img class="img-responsive" ng-src="{% raw %}{{ lineItem.imageUrl }}{% endraw %}" ng-if="lineItem.imageUrl" />
+                            <div class="hidden-xs hidden-sm col-md-3">
+                                <p>
+                                    <button class="btn btn-lg btn-block btn-primary" type="button" ng-disabled="checkout.loading" ng-click="checkout.wizard.nextStep()">
+                                        {{ 'cart.general.checkout' | t }}
+                                    </button>
+                                </p>
+                                <div class="panel-group">
+                                    <div class="panel panel-default panel-static">
+                                        <div class="panel-heading">
+                                            Order summary
+                                        </div>
+                                        <div class="panel-body">
+                                            <vc-totals order="checkout.cart" options="{ show: { payment: false, discount: {% if settings.show_prices_with_taxes %}cart.discountWithTaxes{% else %}cart.discount{% endif %}.amount > 0 } }"></vc-totals>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default panel-static">
+                                        <div class="panel-heading">
+                                            Promotion code
+                                        </div>
+                                        <div class="panel-body">
+                                            <vc-checkout-coupon coupon="checkout.coupon" on-apply-coupon="applyCoupon(coupon)" on-remove-coupon="removeCoupon(coupon)"></vc-checkout-coupon>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-xs-4 col-md-3">
-                                    <p><a ng-href="{% raw %}{{lineItem.product.url}}{% endraw %}" ng-bind="lineItem.name"></a></p>
-                                    <p>Item <strong ng-bind="lineItem.sku"></strong></p>
-                                    <p>
-                                        <span>Price</span>
-                                        {% if settings.show_prices_with_taxes %}
-                                            <strong class="text-success" ng-bind="lineItem.placedPriceWithTax.formattedAmount"></strong>
-                                        {% else %}
-                                            <strong class="text-success" ng-bind="lineItem.placedPrice.formattedAmount"></strong>
-                                        {% endif %}
-                                        <span>/ each</span>
-                                    </p>
-                                </div>
-                                <div class="hidden-xs hidden-sm col-md-4" ng-controller="purchaseController" ng-init='loadPaymentPlan({{ settings.available_paymentPlans | json }}, "product", lineItem.productId)'>
-                                    <p ng-show="shipmentType == 'shipping' && shipmentAddress">Expected to arrive: <strong ng-bind="availability[lineItem.productId].expectedArrival | date: 'fullDate'"></strong></p>
-                                    <p ng-show="shipmentType == 'pickup' && shipmentFulfillmentCenter">Available for pickup: <strong ng-bind="availability[lineItem.productId].availableSince | date: 'fullDate'"></strong></p>
-                                    <vc-payment-plan available-payment-plans="::availablePaymentPlans" payment-plan-type="::paymentPlanType" payment-plan="::paymentPlan" on-change="updatePaymentPlan('product', lineItem.productId, paymentPlanType, paymentPlan)"></vc-payment-plan>
-                                </div>
-                                <div class="col-xs-3 col-md-2">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input class="form-control" type="text" ng-model="lineItem.quantity" />
+                            </div>
+                        </div>
+                    </div>
+                </vc-checkout-wizard-step>
+                <vc-checkout-wizard-step name="review" title="Review">
+                    <div class="col-xs-12">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-9">
+                                <div class="container-drain container-bordered-horizontal">
+                                    <div class="row hidden-xs hidden-sm">
+                                        <div class="col-xs-12">
+                                            <div class="h2">
+                                                Delivery method
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="deliveryMethods" id="shipping" ng-model="checkout.deliveryMethod.type" value="shipping">
+                                                        <span class="switch"></span>
+                                                        <span class="name">Shipping</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="deliveryMethods" id="pickup" ng-model="checkout.deliveryMethod.type" value="pickup">
+                                                        <span class="switch"></span>
+                                                        <span class="name">Pickup</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row hidden-xs hidden-sm" ng-if="checkout.deliveryMethod.type == 'shipping'">
+                                        <div class="col-xs-12">
+                                            <div class="h2">
+                                                Shipping address
+                                                <ul class="list-horizontal link-reset pull-right">
+                                                    <li>
+                                                        <a href="" ng-click="changeShippingAddress()">Change</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-if="checkout.deliveryMethod.type == 'shipping'">
+                                        <div class="col-xs-12">
+                                            <vc-address address="checkout.shipment.deliveryAddress" edit-mode="false"></vc-address>
+                                        </div>
+                                    </div>
+                                    <div class="row hidden-xs hidden-sm" ng-if="checkout.deliveryMethod.type == 'pickup'">
+                                        <div class="col-xs-12">
+                                            <div class="h2">
+                                                Pickup address
+                                                <ul class="list-horizontal link-reset pull-right">
+                                                    <li>
+                                                        <a href="" ng-click="changePickupAddress()">Change</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-if="checkout.deliveryMethod.type == 'pickup'">
+                                        <div class="col-xs-12">
+                                            <vc-address address="checkout.shipment.deliveryAddress" edit-mode="false"></vc-address>
+                                        </div>
+                                    </div>
+                                    <div class="row hidden-xs hidden-sm">
+                                        <div class="col-xs-12">
+                                            <div class="h2">
+                                                Payment method
+                                                <ul class="list-horizontal link-reset pull-right">
+                                                    <li>
+                                                        <a href="" ng-click="changePaymentMethod()">Change</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <address>
+                                                <div class="col-xs-2 col-md-1">
+                                                    <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ checkout.payment.logoUrl }}{% endraw %}" />
+                                                </div>
+                                                <div class="h5">
+                                                    <span ng-bind="checkout.payment.name"></span>
+                                                    <span><small ng-bind="checkout.payment.description"></small></span>
+                                                </div>
+                                            </address>
+                                        </div>
+                                    </div>
+                                    <div class="row hidden-xs hidden-sm">
+                                        <div class="col-xs-12">
+                                            <div class="h2">
+                                                My products
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row flexible text-condensed" ng-repeat="lineItem in checkout.cart.items">
+                                        <vc-checkout-line-item line-item="lineItem"></vc-checkout-line-item>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hidden-xs hidden-sm col-md-3">
+                                <p>
+                                    <button class="btn btn-lg btn-block btn-primary" type="button" ng-disabled="checkout.loading" ng-click="createOrder()">
+                                        Submit order
+                                    </button>
+                                </p>
+                                <div class="panel-group">
+                                    <div class="panel panel-default panel-static">
+                                        <div class="panel-heading">
+                                            Order summary
+                                        </div>
+                                        <div class="panel-body">
+                                            <vc-totals order="checkout.cart" options="{ show: { payment: false, discount: {% if settings.show_prices_with_taxes %}cart.discountWithTaxes{% else %}cart.discount{% endif %}.amount > 0 } }"></vc-totals>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </vc-checkout-wizard-step>
+                <vc-checkout-wizard-step name="complete" title="Complete" final="true">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-9"><p><span><i class="fa fa-check-circle fa-2x text-middle success" aria-hidden="true"></i></span> Order<span ng-bind="checkout.order.number"></span> {{ 'checkout.order_successfully' | t: number: number }}</p></div>
+                                        <div class="col-md-3">
+                                            <div class="btn-group pull-right" role="group">
+                                                <button type="button" class="btn btn-default" ng-click="getInvoicePdf()"><p> {{ 'checkout.order-print' | t }}</p></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="center-block text-center"><p>{{ 'checkout.order-summary' | t }}</p></div>
+                                            <vc-totals order="checkout.order"></vc-totals>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="center-block text-center"><p>{{ 'checkout.pickup-address' | t }}</p></div>
+                                            <vc-address address="checkout.order.shipments[0].deliveryAddress"></vc-address>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="center-block text-center">{{ 'checkout.payment-method' | t }}</div>
+                                            <!--<vc-payment-methods get-avail-payment-methods="$ctrl.getAvailPaymentMethods()" payment-method="$ctrl.paymentMethod" on-select-method="$ctrl.selectPaymentMethod(paymentMethod)" validation-container="$ctrl"></vc-payment-methods>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div><a href="" ng-click="changeLineItemQuantity(lineItem.id, lineItem.quantity)">Update</a></div>
-                                            <div><a href="" ng-click="removeLineItem(lineItem.id)">Remove</a></div>
-                                            <div ng-if="customer && customer.isRegistered"><a href="#">Save for later</a></div>
+                                            <p>{{ 'checkout.purchased-products' | t }}</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-3 col-md-2">
-                                    <p>
-                                        <span class="text-uppercase">Total</span><br>
-                                        {% if settings.show_prices_with_taxes %}
-                                            <strong class="text-success" ng-bind="lineItem.extendedPriceWithTax.formattedAmount"></strong>
-                                        {% else %}
-                                            <strong class="text-success" ng-bind="lineItem.extendedPrice.formattedAmount"></strong>
-                                        {% endif %}
-                                    </p>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12" ng-repeat="lineItem in checkout.order.items">
+                                            <vc-checkout-line-item line-item="lineItem" readOnly="true"></vc-checkout-line-item>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <p class="text-center"><strong>If you changed multiple quantities, </strong><a href="">Update All</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="hidden-xs hidden-sm col-md-3" ng-if="cart.itemsCount > 0">
-                    <p>
-                        <button class="btn btn-lg btn-block btn-primary" type="button" ng-disabled="cartIsUpdating || loader.isLoading || cart.hasValidationErrors" ng-click="submitCart()">
-                            {{ 'cart.general.checkout' | t }}
-                        </button>
-                    </p>
-                    <div class="panel-group">
-                        <div class="panel panel-default panel-static">
-                            <div class="panel-heading">
-                                Order summary
-                            </div>
-                            <vc-totals class="panel-collapse" order="cart" options="{ show: { payment: false, discount: {% if settings.show_prices_with_taxes %}cart.discountWithTaxes{% else %}cart.discount{% endif %}.amount > 0 } }"></vc-totals>
-                        </div>
-                        <div class="panel panel-default panel-static">
-                            <div class="panel-heading">
-                                Promotion code
-                            </div>
-                            <div class="panel-body">
-                                <vc-coupon coupon="coupon" loader="coupon.loader" on-apply-coupon="applyCoupon(coupon)" on-remove-coupon="removeCoupon(coupon)"></vc-coupon>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </vc-checkout-wizard-step>                
+            </vc-checkout-wizard>
         </div>
     </div>
 </main>

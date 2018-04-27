@@ -35,7 +35,10 @@ storefrontApp.controller('purchaseController', ['$scope', '$localStorage', 'stor
     }
 
     $scope.$watch(
-        function () { return mainContext.customer; },
+        function () { 
+            var mc = mainContext;
+            return mainContext.customer; 
+        },
         function (customer) {
             if (customer) {
                 if (!$scope.shipmentAddress && customer.defaultShippingAddress) {

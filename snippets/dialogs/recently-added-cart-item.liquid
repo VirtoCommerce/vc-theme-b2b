@@ -8,8 +8,7 @@
         <div ng-repeat="item in dialogData.items">
             <div class="row">
                 <div class="col-md-2">
-                    <img class="img-responsive" ng-if="item.imageUrl" ng-src="{% raw %}{{ item.imageUrl }}{% endraw %}">
-                    <img class="img-responsive" ng-if="!item.imageUrl" src="{{ 'no-image.svg' | asset_url }}" />
+                    <img class="img-responsive"  fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ item.primaryImage.url }}{% endraw %}">
                 </div>
                 <div class="col-md-5">
                     <a href="item.url" ng-bind="item.name"></a>
