@@ -1,8 +1,7 @@
-<div class="navbar navbar-inverse-light navbar-static-bottom hidden-xs hidden-sm">
+<div class="navbar navbar-default navbar-static-bottom hidden-xs hidden-sm">
     <div class="container">
         <div class="row">
-            {% if settings.footer_mobile_apps_enable %}
-                <div class="col-md-3">
+                <div class="col-md-3 col-md-offset-2">
                     <h4>
                         <a href="#">{{ 'layout.footer.mobile_apps_title' | t }}</a>
                     </h4>
@@ -16,8 +15,6 @@
                         </a>
                     </p>
                 </div>
-            {% endif %}
-            {% if settings.footer_newsletter_enable %}
                 <div class="col-md-3">
                     <h4>{{ 'layout.footer.newsletter_title' | t }}</h4>
                     <p>{{ 'blogs.newsletter.message' | t }}</p>
@@ -26,19 +23,10 @@
                         <a href="" class="btn btn-primary btn-block">{{ 'blogs.newsletter.sign_up' | t }}</a>
                     </p>
                 </div>
-            {% endif %}
-            {% if settings.footer_social_enable %}
                 <div class="col-md-3">
                     <h4>Connect with us</h4>
                     {% include 'social/links' %}
                 </div>
-            {% endif %}
-            {% if settings.footer_support_number_enable %}
-                <div class="col-md-3">
-                    <h4>{{ 'layout.footer.call_us' | t }}</h4>
-                    <p>{{ settings.support_number }}</p>
-                </div>
-            {% endif %}
         </div>
     </div>
 </div>

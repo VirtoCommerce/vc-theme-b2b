@@ -1,4 +1,4 @@
-﻿{% comment %}
+{% comment %}
 
   MailChimp is the go-to newsletter service for Shopify.
   Use the link below to find your MailChimp "form action"
@@ -13,7 +13,7 @@
     <div class="input-group">
         <input type="email" id="mail" class="form-control"  value="{% raw %}{{ customer ? customer.email : null }}{% endraw %}" placeholder="{{ 'blogs.newsletter.email_placeholder' | t }}" name="EMAIL" aria-label="{{ 'blogs.newsletter.email_placeholder' | t }}" autocorrect="off" autocapitalize="off">
         <span class="input-group-btn">
-            <input type="submit" id="subscribe" class="btn btn-default" value="{{ 'blogs.newsletter.sign_up' | t }}" name="subscribe">
+            <input type="submit" id="subscribe" class="btn btn-primary" value="{{ 'blogs.newsletter.sign_up' | t }}" name="subscribe">
         </span>
     </div>
 </form>
