@@ -1,0 +1,32 @@
+.block-wraper {
+  text-align: center;
+  background-color: $navbar-inverse-light-border;
+  padding: 20px 10px;
+  border-radius: 10px;
+  margin: 20px;
+
+  p {
+    color: $text-contrast;
+    padding-top: 2em;
+  }
+}
+
+.border-top {
+  border-top: 4px solid $navbar-inverse-light-border;
+}
+
+.pouring-secondary {
+  background-color: $navbar-inverse-light-link-active-bg;
+}
+
+.carousel {
+  .carousel-caption {
+    &.custom {
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: #4c5c6a;
+      opacity: 0.8;
+    }
+  }
+}
