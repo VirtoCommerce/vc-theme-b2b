@@ -1,4 +1,4 @@
-.navbar {
+﻿.navbar {
   margin-bottom: 0;
 
   .row .navbar-brand {
@@ -15,7 +15,6 @@
 }
 
 $navbars-count: 3;
-
 @for $navbar-index from 0 to $navbars-count {
   $navbar-number: $navbar-index + 1;
 
@@ -34,8 +33,6 @@ $navbars-count: 3;
 }
 
 .navbar-default {
-  border-color: #fff;
-
   .navbar-link {
     &:hover {
       border-bottom-color: $navbar-default-link-hover-color;
@@ -221,7 +218,7 @@ $navbars-count: 3;
         color: $navbar-inverse-light-link-disabled-color;
       }
     }
-  }
+  }  
 }
 
 .navbar-default,
@@ -353,7 +350,6 @@ $navbars-count: 3;
 
   .input-group {
     display: table;
-
     .input-group-addon,
     .input-group-btn {
       width: 1%;

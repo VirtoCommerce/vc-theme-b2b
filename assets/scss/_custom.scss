@@ -36,9 +36,9 @@ body {
 
 header {
   .navbar-default {
-    border-color: $btn-custom-color;
+    border-color: $brand-primary;
     border-width: 4px 0 0 0;
-    position:relative;
+    position: relative;
     z-index: 9999;
   }
 }
@@ -71,18 +71,6 @@ main {
   }
 
   padding-bottom: $navbar-margin-top;
-}
-
-.row-flex {
-  display: flex;
-  flex-flow: row wrap;
-}
-
-.row-eq-height {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
 }
 
 .mobile-app {
