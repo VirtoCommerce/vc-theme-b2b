@@ -529,8 +529,8 @@ $nav-small-link-padding: $padding-small-vertical $padding-small-horizontal; // n
 // $nav-tabs-justified-active-link-border-color:     $body-bg
 
 //== Pills
-$nav-pills-border-radius: 0; // $border-radius-base
-// $nav-pills-active-link-hover-bg:            $component-active-bg
+   $nav-pills-border-radius: 0; // $border-radius-base
+   $nav-pills-active-link-hover-bg:            $btn-custom-color;
 // $nav-pills-active-link-hover-color:         $component-active-color
 
 
@@ -547,67 +547,48 @@ $nav-pills-border-radius: 0; // $border-radius-base
 // $pagination-hover-border:              #ddd
 
 // $pagination-active-color:              #fff
-// $pagination-active-bg:                 $brand-primary
-// $pagination-active-border:             $brand-primary
-
+  $pagination-active-bg:                $btn-custom-color;
+  $pagination-active-border: $btn-custom-color;
 // $pagination-disabled-color:            $gray-light
 // $pagination-disabled-bg:               #fff
 // $pagination-disabled-border:           #ddd
-
-
 //== Pager
 //
 //##
-
 // $pager-bg:                             $pagination-bg
 // $pager-border:                         $pagination-border
 // $pager-border-radius:                  15px
-
 // $pager-hover-bg:                       $pagination-hover-bg
-
 // $pager-active-bg:                      $pagination-active-bg
 // $pager-active-color:                   $pagination-active-color
-
 // $pager-disabled-color:                 $pagination-disabled-color
-
-
 //== Jumbotron
 //
 //##
-
 // $jumbotron-padding:              30px
 // $jumbotron-color:                inherit
 // $jumbotron-bg:                   $gray-lighter
 // $jumbotron-heading-color:        inherit
 // $jumbotron-font-size:            ceil(($font-size-base * 1.5))
 // $jumbotron-heading-font-size:    ceil(($font-size-base * 4.5))
-
-
 //== Form states and alerts
 //
 //## Define colors for form feedback states and, by default, alerts.
-
 // $state-success-text:             #3c763d
 // $state-success-bg:               #dff0d8
 // $state-success-border:           darken(adjust-hue($state-success-bg, -10), 5%)
-
 // $state-info-text:                #31708f
 // $state-info-bg:                  #d9edf7
 // $state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%)
-
 // $state-warning-text:             #8a6d3b
 // $state-warning-bg:               #fcf8e3
 // $state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 5%)
-
 // $state-danger-text:              #a94442
 // $state-danger-bg:                #f2dede
 // $state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%)
-
-
 //== Tooltips
 //
 //##
-
 //** Tooltip max width
 // $tooltip-max-width:           200px
 //** Tooltip text color
@@ -615,17 +596,13 @@ $nav-pills-border-radius: 0; // $border-radius-base
 //** Tooltip background color
 // $tooltip-bg:                  #000
 // $tooltip-opacity:             .9
-
 //** Tooltip arrow width
 // $tooltip-arrow-width:         5px
 //** Tooltip arrow color
 // $tooltip-arrow-color:         $tooltip-bg
-
-
 //== Popovers
 //
 //##
-
 //** Popover body background color
 // $popover-bg:                          #fff
 //** Popover maximum width
