@@ -1,6 +1,6 @@
 .block-wraper {
   text-align: center;
-  background-color: $navbar-inverse-light-border;
+  background-color: $gray-dark;
   padding: 20px 10px;
   border-radius: 10px;
   margin: 20px;
@@ -12,11 +12,11 @@
 }
 
 .border-top {
-  border-top: 4px solid $navbar-inverse-light-border;
+  border-top: 4px solid $gray-dark;
 }
 
 .pouring-secondary {
-  background-color: $navbar-inverse-light-link-active-bg;
+  background-color: $gray-lighter;
 }
 
 .carousel {
@@ -25,7 +25,7 @@
       right: 0;
       bottom: 0;
       left: 0;
-      background-color: #4c5c6a;
+      background-color: $gray-dark;
       opacity: 0.8;
     }
   }
