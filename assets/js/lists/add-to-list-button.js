@@ -11,6 +11,7 @@
 			}
 
 			function compareProductInLists() {
+				var lists = $ctrl.lists;
 				$ctrl.buttonInvalid = true;
                 listsApi.searchLists({
 					pageSize: 10000,

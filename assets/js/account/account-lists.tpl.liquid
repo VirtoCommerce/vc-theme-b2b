@@ -73,7 +73,7 @@
                                     <div ng-if="lineItem.modifiedBy" ng-bind="'Added by '+ (lineItem.modifiedBy) +' in '+ (lineItem.createdDate | date:'MMMM d, y')"
                                         class="lists-productsList-descr-modify">
                                     </div>
-                                    <div  class="ajax-informer text-center" ng-if="lineItem.productAdded">{{ 'wishlist.general.added_to_cart' | t}}</div>
+                                    <div  class="bg-warning text-center" ng-if="lineItem.productAdded">{{ 'wishlist.general.added_to_cart' | t}}</div>
                                 </td>
                                 <td>
                                     <div class="span cost ng-binding" ng-bind="lineItem.placedPrice.formattedAmount"></div>
