@@ -217,19 +217,21 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
             };
 
             $scope.createOrder = function () {
-                updatePayment($scope.checkout.payment).then(function () {
-                    $scope.checkout.loading = true;
-                    cartService.createOrder($scope.checkout.paymentMethod.card).then(function (response) {
+                wrapLoading(function () {
+                    return updatePayment($scope.checkout.payment).then(function () {
+                        $scope.checkout.loading = true;
+                        return cartService.createOrder($scope.checkout.paymentMethod.card).then(function (response) {
 
-                        var orderProcessingResult = response.data.orderProcessingResult;
-                        var paymentMethod = response.data.paymentMethod;
+                            var orderProcessingResult = response.data.orderProcessingResult;
+                            var paymentMethod = response.data.paymentMethod;
 
-                        orderService.getOrder(response.data.order.number).then(function (response) {
-                            var order = response.data;                         
-                            $scope.checkout.order = order;
-                            handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
+                            return orderService.getOrder(response.data.order.number).then(function (response) {
+                                var order = response.data;
+                                $scope.checkout.order = order;
+                                handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
+                            });
+
                         });
-
                     });
                 });
             };
