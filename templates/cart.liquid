@@ -71,10 +71,13 @@
                                 </div>
                             </div>
                             <div class="hidden-xs hidden-sm col-md-3">
-                                <p>
+                                <p ng-if="customer && customer.isRegisteredUser" ng-cloak >
                                     <button class="btn btn-lg btn-block btn-primary" type="button" ng-disabled="checkout.loading" ng-click="checkout.wizard.nextStep()">
                                         {{ 'cart.general.checkout' | t }}
                                     </button>
+                                <p ng-if="customer && !customer.isRegisteredUser" ng-cloak >
+                                    {{ 'cart.general.checkout' | t | customer_login_link | replace: 'href', 'class="btn btn-lg btn-block btn-primary" href' }}
+                                </p>
                                 </p>
                                 <div class="panel-group">
                                     <div class="panel panel-default panel-static">

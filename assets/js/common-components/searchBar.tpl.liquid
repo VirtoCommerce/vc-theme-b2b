@@ -1,8 +1,8 @@
-﻿<form class="navbar-form navbar-form-justify" method="get" action="{{ '/search' | absolute_url }}" role="search" autocomplete="off">
+<form class="navbar-form navbar-form-justify" method="get" action="{{ '/search' | absolute_url }}" role="search" autocomplete="off">
     <div class="input-group" uib-dropdown is-open="$ctrl.hasHint" dropdown-append-to-body="true">
-        <input class="form-control" type="search" ng-model="$ctrl.query" placeholder="{% raw %}{{ $ctrl.placeholder }}{% endraw %}"
+        <input type="search" name="q" class="form-control" ng-model="$ctrl.query" placeholder="{% raw %}{{ $ctrl.placeholder }}{% endraw %}"
                uib-typeahead="suggestion as suggestion.name for suggestion in $ctrl.getSuggestions()" typeahead-is-open="$ctrl.isOpen" typeahead-wait-ms="100" typeahead-loading="$ctrl.isSearching" typeahead-no-results="$ctrl.hasNoResults"
-               typeahead-template-url="search-bar-match.tpl" typeahead-popup-template-url="search-bar-popup.tpl" typeahead-append-to-body="true">
+               typeahead-focus-first="false" typeahead-template-url="search-bar-match.tpl" typeahead-popup-template-url="search-bar-popup.tpl" typeahead-append-to-body="true">
         <ul class="dropdown-menu" uib-dropdown-menu>
             <li class="disabled" ng-show="$ctrl.isSearching"><a href="" ng-bind="$ctrl.searching"></a></li>
             <li class="disabled" ng-show="$ctrl.hasNoResults"><a href="" ng-bind="$ctrl.noResults"></a></li>

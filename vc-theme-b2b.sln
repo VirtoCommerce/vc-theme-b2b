@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "vc-theme-b2b", ".", "{DE439F89-126C-44F7-A8A9-C3B69C4A822B}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_50515"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\..\..\..\prokhorov\local\b2b\vc-theme-b2b\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50515\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_50515"
+		Release.AspNetCompiler.PhysicalPath = "..\..\..\..\..\prokhorov\local\b2b\vc-theme-b2b\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50515\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "50515"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE439F89-126C-44F7-A8A9-C3B69C4A822B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE439F89-126C-44F7-A8A9-C3B69C4A822B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8E432F7E-F18C-4A9C-912D-E99669EB7082}
+	EndGlobalSection
+EndGlobal
