@@ -24,4 +24,5 @@ angular.module('storefrontApp.consts', [])
     ItemSmall: this.ItemInfo | this.ItemAssets | this.Seo | this.Outlines,
     ItemMedium: this.ItemSmall | this.ItemProperties | this.ItemEditorialReviews,
     ItemLarge: this.ItemMedium | this.ItemAssociations | this.Variations | this.Inventory | this.ItemWithPrices | this.ItemWithDiscounts | this.ItemWithVendor | this.ItemWithPaymentPlan
-});
+})
+.constant('defaultLists', {{ settings.lists | json }});
