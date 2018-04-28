@@ -4,16 +4,18 @@
         <h4 class="modal-title">{{ 'inventory.select_branch.title' | t }}</h4>
     </div>
     <div class="modal-body" ng-controller="inventoryController" ng-init="searchFulfillmentCenters()">
-        <p>{{ 'inventory.select_branch.enter_search_phrase' | t }}</p>
-        <div class="form-group">
-            <div class="input-group" vc-enter-source>
-                <input class="form-control" type="text" ng-model="searchPhrase">
-                <span class="input-group-btn">
-                    <a class="btn btn-default" href="" ng-click="searchFulfillmentCenters(searchPhrase)" vc-enter-target>{{ 'common.go' | t }}</a>
-                </span>
+        <div class="container-fluid">
+            <p>{{ 'inventory.select_branch.enter_search_phrase' | t }}</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group" vc-enter-source>
+                        <input class="form-control" type="text" ng-model="searchPhrase">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" href="" ng-click="searchFulfillmentCenters(searchPhrase)" vc-enter-target>{{ 'common.go' | t }}</a>
+                        </span>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="container-bordered container-drain">
             <div class="row" ng-repeat="fulfillmentCenter in fulfillmentCenters">
                 <div class="col-md-5">
                     <vc-address address="fulfillmentCenter.address">

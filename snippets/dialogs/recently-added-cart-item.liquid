@@ -4,9 +4,9 @@
         <h4 class="modal-title">{% raw %}{{ dialogData.items.length }}{% endraw %}&nbsp;{{ 'cart.general.added_to_cart' | t }}</h4>
     </div>
     <div class="modal-body">
-        <vc-errors level="'warning'" message="dialogData.errorMessage" errors="dialogData.errors"></vc-errors>
-        <div ng-repeat="item in dialogData.items">
-            <div class="row">
+        <div class="container-fluid">
+            <vc-errors level="'warning'" message="dialogData.errorMessage" errors="dialogData.errors"></vc-errors>
+            <div class="row" ng-repeat="item in dialogData.items">
                 <div class="col-md-2">
                     <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ item.primaryImage.url }}{% endraw %}">
                 </div>
@@ -38,7 +38,6 @@
                     </div>
                 </div>
             </div>
-            <hr />
         </div>
     </div>
     <div class="modal-footer">
