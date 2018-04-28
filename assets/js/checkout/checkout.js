@@ -54,9 +54,27 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
             };
 
             $scope.changeShippingAddress = function () {
-                var dialogInstance = dialogService.showDialog({ checkout: $scope.checkout, addresses: $scope.checkout.cart.customer.addresses }, 'universalDialogController', 'storefront.select-address-dialog.tpl');
+                var dialogData =
+                    {                     
+                        checkout: $scope.checkout,
+                        addresses: $scope.checkout.cart.customer.addresses
+                    };
+
+                var dialogInstance = dialogService.showDialog(dialogData, 'universalDialogController', 'storefront.select-address-dialog.tpl');
                 dialogInstance.result.then(function (address) {
-                    $scope.checkout.shipment.deliveryAddress = address;
+                    if (address == $scope.checkout.newAddress) {
+                        dialogInstance = dialogService.showDialog(dialogData, 'universalDialogController', 'storefront.new-address-dialog.tpl');
+                        dialogInstance.result.then(function (address) {
+                            if (!$scope.checkout.cart.customer.addresses) {
+                                $scope.checkout.cart.customer.addresses = [];
+                            }
+                            $scope.checkout.cart.customer.addresses.push(address);
+                            $scope.checkout.shipment.deliveryAddress = address;
+                        });
+                    }
+                    else {
+                        $scope.checkout.shipment.deliveryAddress = address;
+                    }
                 });
             };
 
@@ -105,12 +123,20 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                                 var paymentMethod = _.find(response, function (pm) { return pm.code == x.paymentGatewayCode; });
                                 if (paymentMethod) {
                                     angular.extend(x, paymentMethod);
+                                    $scope.checkout.paymentMethod = paymentMethod;
                                 }
                             });
                         });
                     }
                     if (cart.shipments.length) {
                         $scope.checkout.shipment = cart.shipments[0];
+                        //Load shipment method for cart shipment
+                        $scope.getAvailShippingMethods($scope.checkout.shipment).then(function (response) {
+                            var shipmentMethod = _.find(response, function (sm) { return sm.shipmentMethodCode == $scope.checkout.shipment.shipmentMethodCode && sm.optionName == $scope.checkout.shipment.shipmentMethodOption; });
+                            if (shipmentMethod) {
+                                $scope.checkout.shipment.shipmentMethod = shipmentMethod;
+                            }
+                        });
                     }
                     else {
                         //Set default shipping address

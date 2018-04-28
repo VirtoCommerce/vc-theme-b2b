@@ -60,8 +60,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" ng-repeat="lineItem in checkout.cart.items">
-                                        <vc-checkout-line-item line-item="lineItem" on-change-qty="changeItemQty(lineItem)" on-remove="removeItem(lineItem)" readOnly="true"></vc-checkout-line-item>
+                                    <div class="row flexible text-condensed" ng-repeat="lineItem in checkout.cart.items">
+                                        <vc-checkout-line-item line-item="lineItem" on-change-qty="changeItemQty(lineItem)" on-remove="removeItem(lineItem)"></vc-checkout-line-item>
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-12">
@@ -145,10 +145,10 @@
                                         </div>
                                     </div>
                                     <div class="row" ng-if="checkout.deliveryMethod.type == 'shipping'">
-                                        <div class="col-xs-12" ng-if="checkout.shipment.deliveryAddress.name">
+                                        <div class="col-xs-12" ng-if="checkout.shipment.deliveryAddress.city">
                                             <vc-address address="checkout.shipment.deliveryAddress" edit-mode="false"></vc-address>
                                         </div>
-                                        <div class="col-xs-12" ng-if="!checkout.shipment.deliveryAddress.name">
+                                        <div class="col-xs-12" ng-if="!checkout.shipment.deliveryAddress.city">
                                             <h4><small>Please enter shipping address</small></h4>
                                         </div>
                                     </div>
@@ -166,17 +166,20 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-xs-12" ng-if="checkout.shipmentMethod.shipmentMethodCode">
+                                        <div class="col-xs-12" ng-if="checkout.shipment.shipmentMethod.shipmentMethodCode">
                                             <address>
+                                                <div class="col-xs-2 col-md-1">
+                                                    <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ checkout.shipment.shipmentMethod.logoUrl }}{% endraw %}" />
+                                                </div>
                                                 <div class="h5">
-                                                    <span ng-bind="checkout.shipmentMethod.name"></span>
+                                                    <span class="name" ng-bind="checkout.shipment.shipmentMethod.name"></span><span ng-bind="checkout.shipment.shipmentMethod.optionName"></span>
                                                     <span>
-                                                        <strong class="text-success" ng-bind="'(' + checkout.shipmentMethod.price.formattedAmount + ')'"></strong>
+                                                        <strong class="text-success" ng-bind="'(' + checkout.shipment.price.formattedAmount + ')'"></strong>
                                                     </span>
                                                 </div>
                                             </address>
                                         </div>
-                                        <div class="col-xs-12" ng-if="!checkout.shipmentMethod.shipmentMethodCode">
+                                        <div class="col-xs-12" ng-if="!checkout.shipment.shipmentMethod.shipmentMethodCode">
                                             <h4><small>Please select shipping method</small></h4>
                                         </div>
                                     </div>
@@ -215,7 +218,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-xs-12" ng-if="checkout.payment.name">
+                                        <div class="col-xs-12"  ng-if="checkout.payment.name">
                                             <address>
                                                 <div class="col-xs-2 col-md-1">
                                                     <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ checkout.payment.logoUrl }}{% endraw %}" />
@@ -288,7 +291,7 @@
                                             <vc-address address="checkout.order.shipments[0].deliveryAddress"></vc-address>
                                         </div>
                                         <div class="col-md-4">
-                                            <div class="center-block text-center">{{ 'checkout.payment-method' | t }}</div>
+                                            <div class="center-block text-center">{{ 'checkout.payment-method' | t }}</div>                                           
                                         </div>
                                     </div>
                                 </div>
@@ -319,47 +322,14 @@
     </div>
 </main>
 
-
-<script id="storefront.select-address-dialog.tpl" type="text/ng-template">
+<script id="storefront.new-address-dialog.tpl" type="text/ng-template">
     <div class="modal-header">
         <button class="close" type="button" ng-click="close()" title="Select address" aria-label="{{ 'inventory.select_branch.close' | t }}"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">SELECT/ENTER address</h4>
+        <h4 class="modal-title">ENTER NEW ADDRESS</h4>
     </div>
     <div class="modal-body">
-        <div class="container-fluid">
-            <div class="row" ng-repeat="address in addresses">
-                <div class="form-group">
-                    <div class="col-xs-1">
-                        <div class="radio-inline">
-                            <label>
-                                <input type="radio" ng-model="checkout.deliveryAddress" ng-value="address">
-                                <span class="switch"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <vc-address address="address">
-                            <address-header>
-                                <div class="h5" ng-bind="address.name"></div>
-                            </address-header>
-                        </vc-address>
-                    </div>
-                </div>
-            </div>
+        <div class="container-bordered container-drain">            
             <div class="row">
-                <div class="form-group">
-                    <div class="col-xs-1">
-                        <div class="radio-inline">
-                            <label>
-                                <input type="radio" ng-model="checkout.deliveryAddress" ng-value="checkout.newAddress">
-                                <span class="switch"></span>
-                                <span class="name">New</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row" ng-if="checkout.deliveryAddress == checkout.newAddress">
                 <div class="col-md-12">
                     <vc-address address="checkout.deliveryAddress" edit-mode="true" countries="checkout.availCountries" get-country-regions="checkout.getCountryRegions(country)">
                     </vc-address>
@@ -374,34 +344,77 @@
 </script>
 
 
+<script id="storefront.select-address-dialog.tpl" type="text/ng-template">
+    <div class="modal-header">
+        <button class="close" type="button" ng-click="close()" title="Select address" aria-label="{{ 'inventory.select_branch.close' | t }}"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">SELECT ADDRESS</h4>
+    </div>
+    <div class="modal-body">
+        <div class="container-bordered container-drain">
+            <div class="row">
+                <div class="col-xs-4 ">
+                    <h5 class="pull-left" ng-bind="addresses.length + ' total addresses'"></h5>
+                </div>
+                <div class="col-xs-8">
+                    <div class="h5">
+                        <ul class="list-horizontal link-reset pull-right">
+                            <li>
+                                <a href="" ng-click="close(checkout.newAddress)">+ Add new shipping address</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="addresses.length == 0">
+                <div class="col-xs-12">
+                    <h4><small>No addresses</small></h4>
+                </div>
+            </div>
+            <div class="row" ng-repeat="address in addresses">
+                <div class="col-md-9">
+                    <vc-address address="address">
+                        <address-header>
+                            <div class="h5" ng-bind="address.name"></div>
+                        </address-header>
+                    </vc-address>
+                </div>
+                <div class="col-md-3 form-group">
+                    <a ng-if="checkout.shipment.deliveryAddress.key != address.key" class="btn btn-default form-control" ng-click="close(address)">Select</a>
+                    <a ng-if="checkout.shipment.deliveryAddress.key == address.key" class="btn btn-default form-control" ng-disabled="true">Selected</a>
+                </div>
+            </div>          
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="close()">Cancel</button>
+    </div>
+</script>
+
+
 <script id="storefront.select-shipment-method-dialog.tpl" type="text/ng-template">
     <div class="modal-header">
         <button class="close" type="button" ng-click="close()" title="SHIPPING METHOD" aria-label="{{ 'inventory.select_branch.close' | t }}"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">AVAILABLE SHIPPING METHODS / ESTIMATED ARRIVAL</h4>
     </div>
     <div class="modal-body">
-        <div class="container-fluid">
+        <div class="container-bordered container-drain">
             <div ng-repeat="(key, value) in availShippingMethods | groupBy: 'shipmentMethodCode' ">
                 <div class="row" ng-repeat="method in value">
-                    <div class="form-group">
-                        <div class="radio-inline">
-                            <label>
-                                <input type="radio" ng-model="checkout.shipmentMethod" ng-value="method">
-                                <span class="switch"></span>
-                                <span class="name" ng-bind="method.name"></span><span ng-bind="method.optionName"></span>
-                                <span>
-                                    <strong class="text-success" ng-bind="'(' + method.price.formattedAmount + ')'"></strong>
-                                </span>
-                            </label>
-                        </div>
+                    <div class="col-md-9">
+                        <span class="name" ng-bind="method.name"></span><span ng-bind="method.optionName"></span>
+                        <span>
+                            <strong class="text-success" ng-bind="'(' + method.price.formattedAmount + ')'"></strong>
+                        </span>
                     </div>
+                    <div class="col-md-3 form-group">
+                        <a ng-if="checkout.shipment.shipmentMethodOption != method.optionName" class="btn btn-default form-control" ng-click="close(method)">Select</a>
+                        <a ng-if="checkout.shipment.shipmentMethodOption == method.optionName" class="btn btn-default form-control" ng-disabled="true">Selected</a>
+                    </div>                    
                 </div>
             </div>
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" ng-click="close()">Cancel</button>
-        <button type="button" class="btn btn-primary" ng-click="close(checkout.shipmentMethod)">Update</button>
     </div>
 </script>
 
@@ -411,33 +424,28 @@
         <h4 class="modal-title">Select payment method</h4>
     </div>
     <div class="modal-body">
-        <div class="container-fluid">
+        <div class="container-bordered container-drain">
             <div class="row" ng-repeat="paymentMethod in availPaymentMethods">
-                <div class="col-xs-12">
-                    <div class="row">
-                        <div class="col-xs-1">
-                            <div class="radio-inline">
-                                <label>
-                                    <input type="radio" ng-model="checkout.paymentMethod" ng-value="paymentMethod">
-                                    <span class="switch"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-xs-1">
-                            <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ paymentMethod.logoUrl }}{% endraw %}" />
-                        </div>
-                        <div class="col-xs-10">
-                            <address>
-                                <span><strong ng-bind="paymentMethod.name"></strong></span><br>
-                                <span ng-bind="paymentMethod.description"></span>
-                            </address>
+                <div class="form-group">
+                    <div class="col-xs-1">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" ng-model="checkout.paymentMethod" ng-value="paymentMethod">
+                                <span class="switch"></span>
+                            </label>
                         </div>
                     </div>
-                    <div class="row buffer"><div class="col-md-12"><p></p></div></div>
-                    <div class="row">
-                        <div class="col-xs-12" ng-if="checkout.paymentMethod == paymentMethod && paymentMethod.paymentMethodType === 'Standard'">
-                            <vc-credit-card card="paymentMethod.card" validation-container="validationContainer"></vc-credit-card>
-                        </div>
+                    <div class="col-xs-1">
+                        <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ paymentMethod.logoUrl }}{% endraw %}" />
+                    </div>
+                    <div class="col-xs-10">
+                        <address>
+                            <span><strong ng-bind="paymentMethod.name"></strong></span><br>
+                            <span ng-bind="paymentMethod.description"></span>
+                        </address>
+                    </div>
+                    <div class="col-xs-12" ng-if="checkout.paymentMethod == paymentMethod && paymentMethod.paymentMethodType === 'Standard'">
+                        <vc-credit-card card="paymentMethod.card" validation-container="validationContainer"></vc-credit-card>
                     </div>
                 </div>
             </div>

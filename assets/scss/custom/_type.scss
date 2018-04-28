@@ -51,6 +51,10 @@ h4, .h4 {
   white-space: nowrap;
 }
 
+.list-inline > li {
+  vertical-align: inherit;
+}
+
 .list-horizontal {
   @include list-unstyled;
   margin-left: -5px;
@@ -58,14 +62,24 @@ h4, .h4 {
   > li {
     display: inline-block;
     position: relative;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: .5em;
+    padding-right: .5em;
 
     &:not(:first-child)::before {
       content: '\FF5C'; // 1px width full height vertical line
       position: absolute;
       left: calc(-0.5em - 1px); // horizontal align
       opacity: (1/3);
+    }
+  }
+
+  &.list-lg {
+    > li {
+      padding-left: 1em;
+      padding-right: 1em;
+      &:not(:first-child)::before{
+        font-size: 2em;
+      }
     }
   }
 }

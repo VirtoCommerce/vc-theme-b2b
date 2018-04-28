@@ -1,4 +1,4 @@
-﻿.checkbox input[type="checkbox"],
+.checkbox input[type="checkbox"],
 .checkbox-inline input[type="checkbox"],
 .radio input[type="radio"],
 .radio-inline input[type="radio"] {
@@ -57,6 +57,7 @@
 .checkbox-inline,
 .radio label,
 .radio-inline {
+    width: 100%;
     padding-left: 0;
 }
 
