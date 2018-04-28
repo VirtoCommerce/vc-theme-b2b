@@ -29,10 +29,10 @@
                 <div class="navbar-text navbar-right" ng-if="customer && !customer.isRegisteredUser" ng-cloak>
                     <ul class="list-inline">
                         <li>
-                            {{ 'layout.customer.sign_in' | t | customer_login_link | replace: 'href', 'class="btn btn-primary text-uppercase" href' }}
+                            {{ 'layout.customer.sign_in' | t | customer_login_link | replace: 'href', 'class="navbar-link text-uppercase" href' }}
                         </li>
                         <li>
-                            {{ 'layout.customer.register_now' | t | customer_register_link | replace: 'href', 'class="navbar-link" href' }}
+                            {{ 'layout.customer.register_now' | t | customer_register_link | replace: 'href', 'class="navbar-link text-uppercase" href' }}
                         </li>
                     </ul>
                 </div>
