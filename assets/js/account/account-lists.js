@@ -110,7 +110,9 @@
                             lists: $ctrl.lists,
                             type: $ctrl.type
                         }
-                        dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.lists-create-new-list-dialog.tpl', function (result) {
+                        var dialogInstance = dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.lists-create-new-list-dialog.tpl');
+
+                        dialogInstance.result.then(function (result) {
                             if (!result)
                                 return;
 
@@ -142,7 +144,9 @@
                                     predefinedLists: $ctrl.predefinedLists,
                                     type: $ctrl.type
                                 }
-                                dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.lists-settings-dialog.tpl', function (result) {
+                                var dialogInstance = dialogService.showDialog(dialogData, 'recentlyCreateNewListDialogController', 'storefront.lists-settings-dialog.tpl');
+
+                                dialogInstance.result.then(function (result) {
                                     $ctrl.pageSettings.currentPage = 1;
                                     $ctrl._searchLists();
                                 });

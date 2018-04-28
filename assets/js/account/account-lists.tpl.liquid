@@ -33,16 +33,18 @@
                                     <div class="col-md-5">
                                         <ul class="nav nav-pills">
                                             <li ng-if="$ctrl.accountLists.lists.length != 0" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.listSettings()">
-                                                <a href="#"><i class="fa fa-cog"></i> {{'wishlist.general.settings' | t}}</a>
+                                                <button class="btn"><i class="fa fa-cog"></i> {{'wishlist.general.settings' | t}}</button>
                                             </li>
                                             <li ng-if="$ctrl.accountLists.selectedTab === 'myLists'" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.createList()">
-                                                <a href="#"><i class="fa fa-plus"></i> {{'wishlist.general.create' | t}}</a>
+                                                <button class="btn"><i class="fa fa-plus"></i> {{'wishlist.general.create' | t}}</button>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div>    
                                 </div>
                             </div>
                         </div>
+
+                        
 
                         <span ng-if="$ctrl.accountLists.selectedList.items.length == 0">
                             <h2>{{ 'wishlist.general.empty' | t }}</h2>
@@ -86,7 +88,7 @@
                                         <div class="cost list-item-oldPrice ng-binding ng-scope" ng-if="lineItem.listPrice.amount > lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></div>
                                     </td>
                                     <td>
-                                        <button type="button" name="add" id="addToCart" class="btn pull-right"
+                                        <button type="button" name="add" id="addToCart" class="btn btn-primary"
                                                 ng-click="$ctrl.accountLists.addToCart(lineItem)">
                                             <span class="icon icon-cart"></span>
                                             <span id="addToCartText">{{ 'products.general.add_to_cart' | t }}</span>
