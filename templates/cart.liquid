@@ -168,6 +168,9 @@
                                     <div class="row">
                                         <div class="col-xs-12" ng-if="checkout.shipment.shipmentMethod.shipmentMethodCode">
                                             <address>
+                                                <div class="col-xs-2 col-md-1">
+                                                    <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ checkout.shipment.shipmentMethod.logoUrl }}{% endraw %}" />
+                                                </div>
                                                 <div class="h5">
                                                     <span class="name" ng-bind="checkout.shipment.shipmentMethod.name"></span><span ng-bind="checkout.shipment.shipmentMethod.optionName"></span>
                                                     <span>
