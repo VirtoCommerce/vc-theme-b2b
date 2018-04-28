@@ -1,4 +1,4 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.component('vcCreditCard', {
     templateUrl: "themes/assets/js/common-components/creditCard.tpl.html",
@@ -33,6 +33,7 @@ storefrontApp.component('vcCreditCard', {
         }, true);
 
         ctrl.validate = function () {
+            debugger;
             ctrl.form.$setSubmitted();
             return !ctrl.form.$invalid;
         }

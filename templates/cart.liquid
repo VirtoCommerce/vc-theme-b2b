@@ -413,26 +413,31 @@
     <div class="modal-body">
         <div class="container-fluid">
             <div class="row" ng-repeat="paymentMethod in availPaymentMethods">
-                <div class="form-group">
-                    <div class="col-xs-1">
-                        <div class="radio-inline">
-                            <label>
-                                <input type="radio" ng-model="checkout.paymentMethod" ng-value="paymentMethod">
-                                <span class="switch"></span>
-                            </label>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <div class="radio-inline">
+                                <label>
+                                    <input type="radio" ng-model="checkout.paymentMethod" ng-value="paymentMethod">
+                                    <span class="switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                            <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ paymentMethod.logoUrl }}{% endraw %}" />
+                        </div>
+                        <div class="col-xs-10">
+                            <address>
+                                <span><strong ng-bind="paymentMethod.name"></strong></span><br>
+                                <span ng-bind="paymentMethod.description"></span>
+                            </address>
                         </div>
                     </div>
-                    <div class="col-xs-1">
-                        <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ paymentMethod.logoUrl }}{% endraw %}" />
-                    </div>
-                    <div class="col-xs-10">
-                        <address>
-                            <span><strong ng-bind="paymentMethod.name"></strong></span><br>
-                            <span ng-bind="paymentMethod.description"></span>
-                        </address>
-                    </div>
-                    <div class="col-xs-12" ng-if="checkout.paymentMethod == paymentMethod && paymentMethod.paymentMethodType === 'Standard'">
-                        <vc-credit-card card="paymentMethod.card" validation-container="validationContainer"></vc-credit-card>
+                    <div class="row buffer"><div class="col-md-12"><p></p></div></div>
+                    <div class="row">
+                        <div class="col-xs-12" ng-if="checkout.paymentMethod == paymentMethod && paymentMethod.paymentMethodType === 'Standard'">
+                            <vc-credit-card card="paymentMethod.card" validation-container="validationContainer"></vc-credit-card>
+                        </div>
                     </div>
                 </div>
             </div>
