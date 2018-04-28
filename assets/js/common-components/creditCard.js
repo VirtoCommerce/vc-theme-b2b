@@ -33,7 +33,6 @@ storefrontApp.component('vcCreditCard', {
         }, true);
 
         ctrl.validate = function () {
-            debugger;
             ctrl.form.$setSubmitted();
             return !ctrl.form.$invalid;
         }
