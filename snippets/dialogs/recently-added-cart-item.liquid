@@ -4,11 +4,11 @@
         <h4 class="modal-title">{% raw %}{{ dialogData.items.length }}{% endraw %}&nbsp;{{ 'cart.general.added_to_cart' | t }}</h4>
     </div>
     <div class="modal-body">
-        <vc-errors level="'warning'" message="dialogData.errorMessage" errors="dialogData.errors"></vc-errors>
-        <div ng-repeat="item in dialogData.items">
-            <div class="row">
+        <div class="container-fluid">
+            <vc-errors level="'warning'" message="dialogData.errorMessage" errors="dialogData.errors"></vc-errors>
+            <div class="row" ng-repeat="item in dialogData.items">
                 <div class="col-md-2">
-                    <img class="img-responsive"  fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ item.primaryImage.url }}{% endraw %}">
+                    <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ item.primaryImage.url }}{% endraw %}">
                 </div>
                 <div class="col-md-5">
                     <a href="item.url" ng-bind="item.name"></a>
@@ -38,12 +38,11 @@
                     </div>
                 </div>
             </div>
-            <hr />
         </div>
     </div>
-        <div class="modal-footer">
-            <p class="pull-left" ng-controller="cartBarController">{{ 'cart.general.products_in_cart' | t: cartItemsCount: cartItemsCount }}</p>
-            <button type="button" class="btn btn-default" ng-click="close()">{{ 'cart.general.continue_shopping' | t }}</button>
-            <button type="button" class="btn btn-primary" ng-click="redirect('{{ 'cart' | absolute_url }}')">{{ 'cart.general.view_cart' | t }}</button>
-        </div>
+    <div class="modal-footer">
+        <span class="pull-left">{{ 'cart.general.products_in_cart' | t: cartItemsCount: cartItemsCount }}</span>
+        <button type="button" class="btn btn-default" ng-click="close()">{{ 'cart.general.continue_shopping' | t }}</button>
+        <button type="button" class="btn btn-primary" ng-click="redirect('{{ 'cart' | absolute_url }}')">{{ 'cart.general.view_cart' | t }}</button>
+    </div>
 </script>
