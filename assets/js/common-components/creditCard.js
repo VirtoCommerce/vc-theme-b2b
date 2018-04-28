@@ -1,4 +1,4 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.component('vcCreditCard', {
     templateUrl: "themes/assets/js/common-components/creditCard.tpl.html",
