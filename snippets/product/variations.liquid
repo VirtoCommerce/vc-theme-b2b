@@ -133,19 +133,19 @@
                                             </div>
 
                                             <div class="col-md-5">
-                                                <div class="table-brand">{{ product.metafields.properties['Brand'] }}</div>
-                                                <a class="table-name" href="{{ product_url }}">
+                                                <div>{{ product.metafields.properties['Brand'] }}</div>
+                                                <a href="{{ product_url }}">
                                                     {{ variant.title }}
                                                 </a>
-                                                <div class="table-sku">
+                                                <div>
                                                     {{ 'products.product.sku' | t }}&nbsp;<a href="{{ product_url }}">{{ variant.sku }}</a>
                                                 </div>
-                                                <div class="table-model">
+                                                <div>
                                                     {{ 'products.product.mmn' | t }}&nbsp;{{ variant.metafields.properties['MMN'] }}
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
-                                                <div class="catalog-page">Catalog Page #  NA</div>
+                                                <div>Catalog Page #  NA</div>
                                                 {% if settings.show_prices_with_taxes %}
                                                     {% include 'product/price', price: variant.price_with_tax %}
                                                 {% else %}
