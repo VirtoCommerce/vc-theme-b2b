@@ -52,13 +52,8 @@
                 <div class="col-xs-12">
                     <table class="table table-hover">
                         <tr>
-                            <td>
-                                <span class="cart-image">
-                                    <img ng-src="{% raw %}{{ dialogData.product.images['0'].url }}{% endraw %}" ng-if="dialogData.dialogData.product.images" />
-                                    <div class="no-product-image" ng-if="!dialogData.product.images['0'].url">
-                                        <img src="{{ 'no-image.svg' | asset_url }}" />
-                                    </div>
-                                </span>
+                            <td class="col-xs-2 col-md-1">
+                                <img class="img-responsive" ng-src="{% raw %}{{ dialogData.product.images['0'].url }}{% endraw %}" ng-if="dialogData.product.name" />
                             </td>
                             <td>
                                 <a ng-bind="dialogData.product.name"></a>
