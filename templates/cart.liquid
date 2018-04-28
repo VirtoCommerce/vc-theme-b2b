@@ -60,8 +60,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row flexible text-condensed" ng-repeat="lineItem in checkout.cart.items">
-                                        <vc-checkout-line-item line-item="lineItem" on-change-qty="changeItemQty(lineItem)" on-remove="removeItem(lineItem)"></vc-checkout-line-item>
+                                    <div class="row" ng-repeat="lineItem in checkout.cart.items">
+                                        <vc-checkout-line-item line-item="lineItem" on-change-qty="changeItemQty(lineItem)" on-remove="removeItem(lineItem)" readOnly="true"></vc-checkout-line-item>
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-12">
@@ -215,7 +215,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-xs-12"  ng-if="checkout.payment.name">
+                                        <div class="col-xs-12" ng-if="checkout.payment.name">
                                             <address>
                                                 <div class="col-xs-2 col-md-1">
                                                     <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ checkout.payment.logoUrl }}{% endraw %}" />
@@ -288,7 +288,7 @@
                                             <vc-address address="checkout.order.shipments[0].deliveryAddress"></vc-address>
                                         </div>
                                         <div class="col-md-4">
-                                            <div class="center-block text-center">{{ 'checkout.payment-method' | t }}</div>                                           
+                                            <div class="center-block text-center">{{ 'checkout.payment-method' | t }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -326,7 +326,7 @@
         <h4 class="modal-title">SELECT/ENTER address</h4>
     </div>
     <div class="modal-body">
-        <div class="container-bordered container-drain">
+        <div class="container-fluid">
             <div class="row" ng-repeat="address in addresses">
                 <div class="form-group">
                     <div class="col-xs-1">
@@ -380,7 +380,7 @@
         <h4 class="modal-title">AVAILABLE SHIPPING METHODS / ESTIMATED ARRIVAL</h4>
     </div>
     <div class="modal-body">
-        <div class="container-bordered container-drain">
+        <div class="container-fluid">
             <div ng-repeat="(key, value) in availShippingMethods | groupBy: 'shipmentMethodCode' ">
                 <div class="row" ng-repeat="method in value">
                     <div class="form-group">
@@ -411,28 +411,33 @@
         <h4 class="modal-title">Select payment method</h4>
     </div>
     <div class="modal-body">
-        <div class="container-bordered container-drain">
+        <div class="container-fluid">
             <div class="row" ng-repeat="paymentMethod in availPaymentMethods">
-                <div class="form-group">
-                    <div class="col-xs-1">
-                        <div class="radio-inline">
-                            <label>
-                                <input type="radio" ng-model="checkout.paymentMethod" ng-value="paymentMethod">
-                                <span class="switch"></span>
-                            </label>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <div class="radio-inline">
+                                <label>
+                                    <input type="radio" ng-model="checkout.paymentMethod" ng-value="paymentMethod">
+                                    <span class="switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                            <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ paymentMethod.logoUrl }}{% endraw %}" />
+                        </div>
+                        <div class="col-xs-10">
+                            <address>
+                                <span><strong ng-bind="paymentMethod.name"></strong></span><br>
+                                <span ng-bind="paymentMethod.description"></span>
+                            </address>
                         </div>
                     </div>
-                    <div class="col-xs-1">
-                        <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ paymentMethod.logoUrl }}{% endraw %}" />
-                    </div>
-                    <div class="col-xs-10">
-                        <address>
-                            <span><strong ng-bind="paymentMethod.name"></strong></span><br>
-                            <span ng-bind="paymentMethod.description"></span>
-                        </address>
-                    </div>
-                    <div class="col-xs-12" ng-if="checkout.paymentMethod == paymentMethod && paymentMethod.paymentMethodType === 'Standard'">
-                        <vc-credit-card card="paymentMethod.card" validation-container="validationContainer"></vc-credit-card>
+                    <div class="row buffer"><div class="col-md-12"><p></p></div></div>
+                    <div class="row">
+                        <div class="col-xs-12" ng-if="checkout.paymentMethod == paymentMethod && paymentMethod.paymentMethodType === 'Standard'">
+                            <vc-credit-card card="paymentMethod.card" validation-container="validationContainer"></vc-credit-card>
+                        </div>
                     </div>
                 </div>
             </div>
