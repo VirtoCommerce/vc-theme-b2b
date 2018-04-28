@@ -160,7 +160,6 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
                 angular.copy(getFlatternDistinctPropertiesMap(allVariations), $scope.allVariationPropsMap);
                 angular.copy(_.pick($scope.allVariationPropsMap, function (value, key, object) { return value.length > 1; }), $scope.filterableVariationPropsMap);
                 $scope.allVariationPropsMapCount = _.keys($scope.allVariationPropsMap).length;
-                debugger;
                 //Auto select initial product as default variation  (its possible because all our products is variations)
                 //var propertyMap = getVariationPropertyMap(product);
                 //_.each(_.keys(propertyMap), function (x) {
