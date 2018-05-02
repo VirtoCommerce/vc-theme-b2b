@@ -117,7 +117,7 @@
                             </td>
                         </tr>
                         <tr class="variation-details" ng-if-end>
-                            <td colspan="6">
+                            <td ng-attr-colspan="{% raw %}{{allVariationPropsMapCount + 4}}{% endraw %}">
                                 <div class="expander text-center">
                                     <span class="fa" ng-class="{'fa-angle-down': isCollapsed['{{ variant.id }}'], 'fa-angle-up': !isCollapsed['{{ variant.id }}'] }" ng-click="isCollapsed['{{ variant.id }}'] = !isCollapsed['{{ variant.id }}']"></span>
                                 </div>

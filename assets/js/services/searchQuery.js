@@ -1,4 +1,4 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.service('searchQueryService', ['$location', function ($location) {
     return {
@@ -17,11 +17,11 @@ storefrontApp.service('searchQueryService', ['$location', function ($location) {
 
         // Deserializes search query strings like 'key=value1[,value2]' or 'key=key1:value1[,value2[;key2:value3[,value4]]]'
         deserialize: function (searchQuery, defaults) {
-            var deserializeValues = function(string) {
+            var deserializeValues = function (string) {
                 return string.split(',');
             };
             var deserializePairs = function (string) {
-                return _.object(string.split(';').map(function(pairString) {
+                return _.object(string.split(';').map(function (pairString) {
                     return _.reduce(pairString.split(':'), function (key, value) {
                         return [key, deserializeValues(value)];
                     });
@@ -82,14 +82,14 @@ storefrontApp.service('searchQueryService', ['$location', function ($location) {
                 return values.join(',');
             };
             var serializePairs = function (pairs) {
-                return _.map(Object.keys(pairs), function(key) {
+                return _.map(Object.keys(pairs), function (key) {
                     return [key, serializeValues(pairs[key])].join(':');
                 }).join(';');
             };
             searchQuery = searchQuery || {};
             defaults = defaults || {};
             var result = _.defaults(searchQuery, defaults);
-            return _.mapObject(result, function(values, key) {
+            return _.mapObject(result, function (values, key) {
                 return values !== null ? !angular.isArray(values) ? serializePairs(values) : serializeValues(values) : null;
             });
         }
