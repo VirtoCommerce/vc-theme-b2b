@@ -25,20 +25,26 @@
                 <div class ="row">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-7">
-                                <span class="h3" ng-bind="$ctrl.accountLists.selectedList.name"></span>
-                            </div>
-                            <div class="col-md-5">
-                                <ul class="nav nav-pills">
-                                    <li ng-if="$ctrl.accountLists.lists.length != 0" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.listSettings()">
-                                        <a href="#"><i class="fa fa-cog"></i> {{'wishlist.general.settings' | t}}</a>
-                                    </li>
-                                    <li ng-if="$ctrl.accountLists.selectedTab === 'myLists'" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.createList()">
-                                        <a href="#"><i class="fa fa-plus"></i> {{'wishlist.general.create' | t}}</a>
-                                    </li>
-                                </ul>
+                            <div  class="page-header">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <h3 ng-bind="$ctrl.accountLists.selectedList.name"></h3>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <ul class="nav nav-pills">
+                                            <li ng-if="$ctrl.accountLists.lists.length != 0" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.listSettings()">
+                                                <button class="btn"><i class="fa fa-cog"></i> {{'wishlist.general.settings' | t}}</button>
+                                            </li>
+                                            <li ng-if="$ctrl.accountLists.selectedTab === 'myLists'" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.createList()">
+                                                <button class="btn"><i class="fa fa-plus"></i> {{'wishlist.general.create' | t}}</button>
+                                            </li>
+                                        </ul>
+                                    </div>    
+                                </div>
                             </div>
                         </div>
+
+                        
 
                         <span ng-if="$ctrl.accountLists.selectedList.items.length == 0">
                             <h2>{{ 'wishlist.general.empty' | t }}</h2>
@@ -46,50 +52,51 @@
                         </span>
                     
                         <table class="table table-hover">
-                            <tr ng-repeat="lineItem in $ctrl.accountLists.selectedList.items">
-                                <td>
-                                    <div class="list-img"> 
-                                    
-                                        {% comment %} <a class="list-link" ng-href="camcorders/aerial-imaging-drones/3dr-solo-quadcopter-no-gimbal" href="camcorders/aerial-imaging-drones/3dr-solo-quadcopter-no-gimbal">
-                                            <img src="{{ 'no-image.svg' | asset_url }}" ng-if="lineItem.imageUrl" alt="" class="list-pic">
-                                            <a href="#" ng-click="$ctrl.accountLists.removeLineItem(lineItem, $ctrl.accountLists.selectedList)">
-                                                <i class="list-remove fa fa-times-circle"></i>
-                                            </a>  
-                                        </a> {% endcomment %}
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="lineItem in $ctrl.accountLists.selectedList.items">
+                                    <td class="col-xs-2 col-md-1">
                                         <img class="img-responsive" alt="{% raw %}{{ lineItem.name }}{% endraw %}" ng-src="{% raw %}{{ lineItem.imageUrl }}{% endraw %}" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-if="lineItem.imageUrl" />
+                                    </td>
+                                    <td>
                                         <a href="#" ng-click="$ctrl.accountLists.removeLineItem(lineItem, $ctrl.accountLists.selectedList)">
                                             <i class="list-remove fa fa-times-circle"></i>
                                         </a>
-                                        
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="lists-productsList-descr-contentAllign">
-                                        <a class="lists-productsList-descr-title product-list-advanced" ng-bind="lineItem.name" href="{% raw %}{{ 'product/' + lineItem.productId }}{% endraw %}"></a>
-                                    </div>
-                                    <div ng-if="!lineItem.modifiedBy" ng-bind="'Added '+ (lineItem.createdDate | date:'MMMM d, y')"
-                                        class="lists-productsList-descr-modify">
-                                    </div>
-                                    <div ng-if="lineItem.modifiedBy" ng-bind="'Added by '+ (lineItem.modifiedBy) +' in '+ (lineItem.createdDate | date:'MMMM d, y')"
-                                        class="lists-productsList-descr-modify">
-                                    </div>
-                                    <div  class="bg-warning text-center" ng-if="lineItem.productAdded">{{ 'wishlist.general.added_to_cart' | t}}</div>
-                                </td>
-                                <td>
-                                    <div class="span cost ng-binding" ng-bind="lineItem.placedPrice.formattedAmount"></div>
-                                    <div class="cost list-item-oldPrice ng-binding ng-scope" ng-if="lineItem.listPrice.amount > lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></div>
-                                </td>
-                                <td>
-                                    <button type="button" name="add" id="addToCart" class="btn pull-right"
-                                            ng-click="$ctrl.accountLists.addToCart(lineItem)">
-                                        <span class="icon icon-cart"></span>
-                                        <span id="addToCartText">{{ 'products.general.add_to_cart' | t }}</span>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                
-                            </tr>
+                                    </td>
+                                    <td>
+                                        <div class="lists-productsList-descr-contentAllign">
+                                            <a class="lists-productsList-descr-title product-list-advanced" ng-bind="lineItem.name" href="{% raw %}{{ 'product/' + lineItem.productId }}{% endraw %}"></a>
+                                        </div>
+                                        <div ng-if="!lineItem.modifiedBy" ng-bind="'Added '+ (lineItem.createdDate | date:'MMMM d, y')"
+                                            class="lists-productsList-descr-modify">
+                                        </div>
+                                        <div ng-if="lineItem.modifiedBy" ng-bind="'Added by '+ (lineItem.modifiedBy) +' in '+ (lineItem.createdDate | date:'MMMM d, y')"
+                                            class="lists-productsList-descr-modify">
+                                        </div>
+                                        <div  class="bg-warning text-center" ng-if="lineItem.productAdded">{{ 'wishlist.general.added_to_cart' | t}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="span cost ng-binding" ng-bind="lineItem.placedPrice.formattedAmount"></div>
+                                        <div class="cost list-item-oldPrice ng-binding ng-scope" ng-if="lineItem.listPrice.amount > lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></div>
+                                    </td>
+                                    <td>
+                                        <button type="button" name="add" id="addToCart" class="btn btn-primary"
+                                                ng-click="$ctrl.accountLists.addToCart(lineItem)">
+                                            <span class="icon icon-cart"></span>
+                                            <span id="addToCartText">{{ 'products.general.add_to_cart' | t }}</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            
                         </table>
                         <div ng-if="$ctrl.accountLists.selectedList.items.length" class="lists-productsList-addAllToCart">
                             <button type="button" name="add" id="addToCart" class="btn pull-right"
