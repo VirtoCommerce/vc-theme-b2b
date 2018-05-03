@@ -74,6 +74,18 @@
                     </div>
                 </div>
             {% endif %}
+
+            <div class="row">  
+                <div class="col-xs-12"> 
+                    {% for description in product.descriptions %}
+                        {% if description.type == "FullReview" %}
+                            {{ description.content }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            
         </div>
         <div class="product-related hidden-xs hidden-sm col-md-10 hidden-print"></div>
     </div>
