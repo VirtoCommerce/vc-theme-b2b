@@ -48,8 +48,10 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
 
             $scope.changePickupAddress = function () {
                 var dialogInstance = dialogService.showDialog({}, 'universalDialogController', 'storefront.select-fulfillment-center-dialog.tpl');
-                dialogInstance.result.then(function (fulfillmentCenter) {
+                dialogInstance.result.then(function(fulfillmentCenter) {
+                    $scope.checkout.deliveryMethod.fulfillmentCenter = fulfillmentCenter;
                     $scope.checkout.shipment.deliveryAddress = fulfillmentCenter.address;
+                    $scope.updateShipment($scope.checkout.shipment);
                 });
             };
 
@@ -75,6 +77,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                     else {
                         $scope.checkout.shipment.deliveryAddress = address;
                     }
+                    $scope.updateShipment($scope.checkout.shipment);
                 });
             };
 
@@ -103,7 +106,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 if (checkout.isValid && !checkout.billingAddressEqualsShipping) {
                     checkout.isValid = angular.isObject(checkout.payment.billingAddress);
                 }
-                if (checkout.isValid && checkout.cart && checkout.cart.hasPhysicalProducts) {
+                if (checkout.isValid && checkout.cart && checkout.deliveryMethod.type == 'shipping') {
                     checkout.isValid = angular.isObject(checkout.shipment)
                         && checkout.shipment.shipmentMethodCode
                         && angular.isObject(checkout.shipment.deliveryAddress);
@@ -207,7 +210,11 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
 
             $scope.updateShipment = function (shipment) {
                 if (shipment.deliveryAddress) {
-                    $scope.checkout.shipment.deliveryAddress.type = 'Shipping';
+                    var deliveryAddress = $scope.checkout.shipment.deliveryAddress;
+                    deliveryAddress.type = 'Shipping';
+                    //WORKAROUND: For pickup address FirstName and LastName can't set and need use some to avoid required violation
+                    deliveryAddress.firstName = deliveryAddress.firstName ? deliveryAddress.firstName : 'Fulfillment';
+                    deliveryAddress.lastName = deliveryAddress.lastName ? deliveryAddress.lastName : 'center';
                 };
                 //Does not pass validation errors to API
                 shipment.validationErrors = undefined;
@@ -217,22 +224,19 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
             };
 
             $scope.createOrder = function () {
-                wrapLoading(function () {
-                    return updatePayment($scope.checkout.payment).then(function () {
-                        $scope.checkout.loading = true;
-                        return cartService.createOrder($scope.checkout.paymentMethod.card).then(function (response) {
+                wrapLoading(function() {
+                    return cartService.createOrder($scope.checkout.paymentMethod.card).then(function(response) {
 
-                            var orderProcessingResult = response.data.orderProcessingResult;
-                            var paymentMethod = response.data.paymentMethod;
+                        var orderProcessingResult = response.data.orderProcessingResult;
+                        var paymentMethod = response.data.paymentMethod;
 
-                            return orderService.getOrder(response.data.order.number).then(function (response) {
-                                var order = response.data;
-                                $scope.checkout.order = order;
-                                handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
-                            });
-
+                        return orderService.getOrder(response.data.order.number).then(function(response) {
+                            var order = response.data;
+                            $scope.checkout.order = order;
+                            handlePostPaymentResult(order, orderProcessingResult, paymentMethod);
                         });
                     });
+
                 });
             };
 

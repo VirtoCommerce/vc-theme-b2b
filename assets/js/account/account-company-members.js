@@ -22,6 +22,7 @@ angular.module('storefront.account')
             $ctrl.pageSettings.pageChanged = function () { refresh(); };
 
             function refresh() {
+                $ctrl.errors = undefined;
                 loader.wrapLoading(function () {
                     return accountApi.searchOrganizationUsers({
                         skip: ($ctrl.pageSettings.currentPage - 1) * $ctrl.pageSettings.itemsPerPageCount,
@@ -83,9 +84,15 @@ angular.module('storefront.account')
                     return accountApi.createInvitation({
                         emails: $ctrl.inviteInfo.emails,
                         message: $ctrl.inviteInfo.message
-                    }).then(function (response) {
-                        $ctrl.cancel();
-                        refresh();
+                    }).then(function(response) {
+                        if (response.data.succeeded) {
+                            $ctrl.cancel();
+                            refresh();
+                        }
+                        else {
+                            $ctrl.errors = _.pluck(response.data.errors, 'description');
+                        }
+                       
                     });
                 });
             };
@@ -97,10 +104,15 @@ angular.module('storefront.account')
                     $ctrl.newMember.storeId = $ctrl.storeId;
 
                     loader.wrapLoading(function () {
-                        return accountApi.registerNewUser($ctrl.newMember).then(function (response) {
-                            $ctrl.cancel();
-                            $ctrl.pageSettings.currentPage = 1;
-                            $ctrl.pageSettings.pageChanged();
+                        return accountApi.registerNewUser($ctrl.newMember).then(function(response) {
+                            if (response.data.succeeded) {
+                                $ctrl.cancel();
+                                $ctrl.pageSettings.currentPage = 1;
+                                $ctrl.pageSettings.pageChanged();
+                            }
+                            else {
+                                $ctrl.errors = _.pluck(response.data.errors, 'description');
+                            }
                         });
                     });
                 }
@@ -116,8 +128,12 @@ angular.module('storefront.account')
                     var action = member.isLockedOut ? accountApi.unlockUser : accountApi.lockUser;
                     member.isLockedOut = !member.isLockedOut;
                     return action(member.id).then(function (response) {
-                        refresh();
-                        //TODO: errors handling
+                        if (response.data.succeeded) {
+                            refresh();
+                        }
+                        else {
+                            $ctrl.errors = _.pluck(response.data.errors, 'description');
+                        }
                     });
                 });
             };
@@ -131,9 +147,13 @@ angular.module('storefront.account')
                     confirmService.confirm(text).then(function (confirmed) {
                         if (confirmed) {
                             loader.wrapLoading(function () {
-                                return accountApi.deleteUser(member.id).then(function (response) {
-                                    refresh();
-                                    //TODO: errors handling
+                                return accountApi.deleteUser(member.id).then(function(response) {
+                                    if (response.data.succeeded) {
+                                        refresh();
+                                    }
+                                    else {
+                                        $ctrl.errors = _.pluck(response.data.errors, 'description');
+                                    }
                                 });
                             });
                         }

@@ -13,6 +13,7 @@
                         <th>{{ 'customer.edit_company_members.name' | t }}</th>
                         <th>{{ 'customer.edit_company_members.email' | t }}</th>
                         <th>{{ 'customer.edit_company_members.role' | t }}</th>
+                        <th>Budget</th>
                         <th>{{ 'customer.edit_company_members.status' | t }}</th>
                         <th>{{ 'customer.edit_company_members.actions' | t }}</th>
                     </tr>
@@ -22,6 +23,7 @@
                         <td ng-bind="member.userName"></td>
                         <td ng-bind="member.email"></td>
                         <td ng-bind="member.role.name"></td>
+                        <td ng-bind="member.salutation ? '$' + member.salutation : 'n/a'"></td>
                         <td ng-bind="member.isLockedOut ?'Not active':'Active'"></td>
                         <td>
                             <span ng-show="$ctrl.showActions(member)">
@@ -67,7 +69,7 @@
         <div ng-if="$ctrl.newMember">
             <div class="one-whole">
                 <h2>{{ 'customer.edit_company_member.add_new' | t }}</h2>
-                <vc-errors message="errorMessage" errors="errors"></vc-errors>
+                <vc-errors message="$ctrl.errorMessage" errors="$ctrl.errors"></vc-errors>
                 <vc-member-detail member="$ctrl.newMember" member-component="$ctrl.newMemberComponent" fields-config="$ctrl.addNewMemberFieldsConfig"></vc-member-detail>
             </div>
             <div class="one-whole">
