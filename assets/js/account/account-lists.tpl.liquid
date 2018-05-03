@@ -15,7 +15,7 @@
                 <div  class="page-header">
                     <div class="row">
                         <div class="col-md-7">
-                            <h3 ng-bind="$ctrl.accountLists.selectedList.name"></h3>
+                            <h3>Your List</h3>
                         </div>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                     <li ng-repeat="list in $ctrl.accountLists.lists"
                         ng-class="{'active': $ctrl.accountLists.selectedList.name == list.name}"
                         ng-click="$ctrl.accountLists.selectList(list)">
-                        <a class="lists-sideBar-textAlign" ng-bind="list.name"></a>
+                        <a href="" ng-bind="list.name"></a>
                     </li>
                 </ul>
                 <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount'  ng-include="'pagerTemplate.html'"></div>
@@ -48,14 +48,12 @@
                             </div>   
                         </div>
 
-                        
-
                         <span ng-if="$ctrl.accountLists.selectedList.items.length == 0">
                             <h2>{{ 'wishlist.general.empty' | t }}</h2>
                             <p>{{ 'wishlist.general.continue_browsing_html' | t }}</p>
                         </span>
                     
-                        <table class="table table-hover">
+                        <table class="table table-hover" ng-if="$ctrl.accountLists.selectedList.items.length > 0">
                             <thead>
                                 <tr>
                                     <th></th>
@@ -71,7 +69,7 @@
                                         <img class="img-responsive" alt="{% raw %}{{ lineItem.name }}{% endraw %}" ng-src="{% raw %}{{ lineItem.imageUrl }}{% endraw %}" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-if="lineItem.imageUrl" />
                                     </td>
                                     <td>
-                                        <a ng-click="$ctrl.accountLists.removeLineItem(lineItem, $ctrl.accountLists.selectedList)">
+                                        <a href="" ng-click="$ctrl.accountLists.removeLineItem(lineItem, $ctrl.accountLists.selectedList)">
                                             <i class="list-remove fa fa-times-circle"></i>
                                         </a>
                                     </td>
