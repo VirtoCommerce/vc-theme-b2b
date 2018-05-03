@@ -10,6 +10,17 @@
     <p ng-if="$ctrl.lists.length == 0">{{'wishlist.general.emptyData' | t}}</p>
     
     <div ng-if="$ctrl.accountLists.lists.length != 0" class="grid-border">
+        <div class ="row">
+            <div class="col-md-12">
+                <div  class="page-header">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h3 ng-bind="$ctrl.accountLists.selectedList.name"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs-4 col-sm-2">
                 <ul class="nav nav-pills nav-stacked">
@@ -25,23 +36,16 @@
                 <div class ="row">
                     <div class="col-md-12">
                         <div class="row">
-                            <div  class="page-header">
-                                <div class="row">
-                                    <div class="col-md-7">
-                                        <h3 ng-bind="$ctrl.accountLists.selectedList.name"></h3>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <ul class="nav nav-pills">
-                                            <li ng-if="$ctrl.accountLists.lists.length != 0" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.listSettings()">
-                                                <button class="btn"><i class="fa fa-cog"></i> {{'wishlist.general.settings' | t}}</button>
-                                            </li>
-                                            <li ng-if="$ctrl.accountLists.selectedTab === 'myLists'" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.createList()">
-                                                <button class="btn"><i class="fa fa-plus"></i> {{'wishlist.general.create' | t}}</button>
-                                            </li>
-                                        </ul>
-                                    </div>    
-                                </div>
-                            </div>
+                            <div class="col-md-4 col-md-offset-8">
+                                <ul class="nav nav-pills">
+                                    <li ng-if="$ctrl.accountLists.lists.length != 0" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.listSettings()">
+                                        <button class="btn"><i class="fa fa-cog"></i> {{'wishlist.general.settings' | t}}</button>
+                                    </li>
+                                    <li ng-if="$ctrl.accountLists.selectedTab === 'myLists'" style="display: -webkit-box;"  class="lists-settings" ng-click="$ctrl.createList()">
+                                        <button class="btn"><i class="fa fa-plus"></i> {{'wishlist.general.create' | t}}</button>
+                                    </li>
+                                </ul>
+                            </div>   
                         </div>
 
                         
@@ -67,7 +71,7 @@
                                         <img class="img-responsive" alt="{% raw %}{{ lineItem.name }}{% endraw %}" ng-src="{% raw %}{{ lineItem.imageUrl }}{% endraw %}" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-if="lineItem.imageUrl" />
                                     </td>
                                     <td>
-                                        <a href="#" ng-click="$ctrl.accountLists.removeLineItem(lineItem, $ctrl.accountLists.selectedList)">
+                                        <a ng-click="$ctrl.accountLists.removeLineItem(lineItem, $ctrl.accountLists.selectedList)">
                                             <i class="list-remove fa fa-times-circle"></i>
                                         </a>
                                     </td>

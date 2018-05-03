@@ -5,37 +5,44 @@
             <h4 class="modal-title" ng-if="!selectedList.title">{{ 'wishlist.general.select_list' | t }}</h4>
         </div>
         <div class="modal-body">
-            <div class="product-list-modal-wrapper">
-                <div class="list-group">
-                    
-                        <a href="#" class="list-group-item" ng-repeat="list in lists" ng-class="{'active': list.name == selectedList.name, 'disabled' : list.contains }" ng-click="selectList(list)">
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <span ng-bind="list.name"></span>
-                                </div>
-                                <div class="col-md-5">
-                                    <span ng-if="list.contains" >
-                                        {{ 'wishlist.general.list_contains' | t }}
-                                        <i ng-if="list.contains" class="fa fa-check-square " aria-hidden="true"></i>
-                                    </span>
-                                </div>
+            <div class="container-bordered container-drain">
+                <div class="row" ng-repeat="list in lists" >
+                    <div class="form-group">
+                        <div class="col-xs-1">
+                            <div class="radio-inline">
+                                <label >
+                                    <input type="radio" ng-model="selectedList.name" ng-value="list.name" ng-disabled="list.contains">
+                                    <span class="switch"></span>
+                                </label>
                             </div>
-                        </a>
-                    
-                </div>
-                
-                <div class="cart-row product-list-modal-borders product-list-modal-borders">
-                    <div class="grid">
-                        <div class="grid-item text-right">
-                            <button class="btn" >
-                                <span ng-click="close()">{{ 'wishlist.general.cancel' | t }}</span>
-                            </button>
-                            <button ng-class="{ 'btn-secondary btn-secondary-clearfix' : inProgress }" ng-disabled="selectedList.contains || inProgress || !selectedList.name" class="btn " ng-click="addProductToList()">
-                                <span ng-if="!inProgress">{{ 'wishlist.general.add_to_list' | t }}</span>
-                                <span ng-if="inProgress">{{ 'wishlist.general.adding_to_list' | t }}</span>
-                            </button>
+                        </div>
+                        <div class="col-xs-6">
+                            <address>
+                                <span><strong ng-bind="list.name"></strong></span><br>
+                            </address>
+                        </div>
+                        <div class="col-xs-5">
+                            <span ng-if="list.contains" >
+                                {{ 'wishlist.general.list_contains' | t }}
+                                <i ng-if="list.contains" class="fa fa-check-square " aria-hidden="true"></i>
+                            </span>
                         </div>
                     </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="grid">
+                <div class="grid-item text-right">
+                    <button class="btn btn-default" >
+                        <span ng-click="close()">{{ 'wishlist.general.cancel' | t }}</span>
+                    </button>
+                    <button ng-class="{ 'btn btn-primary btn btn-primary-clearfix' : inProgress }" ng-disabled="selectedList.contains || inProgress || !selectedList.name" class="btn btn-primary" ng-click="addProductToList()">
+                        <span ng-if="!inProgress">{{ 'wishlist.general.add_to_list' | t }}</span>
+                        <span ng-if="inProgress">{{ 'wishlist.general.adding_to_list' | t }}</span>
+                    </button>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 ﻿var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope', '$scope', '$window', '$uibModalInstance', 'customerService', 'dialogData', 'listsApi', '$localStorage', 'loadingIndicatorService', function ($rootScope, $scope, $window, $uibModalInstance, customerService, dialogData, listsApi, $localStorage, loader) {
+storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope', '$scope', '$window', '$uibModalInstance', 'customerService', 'dialogData', 'listsApi', '$localStorage', 'loadingIndicatorService', '$translate', 'confirmService', function ($rootScope, $scope, $window, $uibModalInstance, customerService, dialogData, listsApi, $localStorage, loader, $translate, confirmService) {
 
     $scope.dialogData = dialogData.lists;
     $scope.predefinedLists = dialogData.lists;
@@ -22,15 +22,23 @@ storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope',
     };
 
     $scope.submitSettings = function () {
-        var listIds = [];
-        _.each(dialogData.lists, function (list) {
-            if (list.delete)
-                listIds.push(list.id);
-        });
+        var showDialog = function (text) {
+            confirmService.confirm(text).then(function (confirmed) {
+                if (confirmed) {
+                    var listIds = [];
+                    _.each(dialogData.lists, function (list) {
+                        if (list.delete)
+                            listIds.push(list.id);
+                    });
 
-        listsApi.deleteListsByIds(listIds).then(function (result) {
-            $uibModalInstance.close();
-        });
+                    listsApi.deleteListsByIds(listIds).then(function (result) {
+                        $uibModalInstance.close();
+                    });
+                }
+            });
+        };
+
+        showDialog("Are you sure you wish to delete this list?");
     };
 
     $scope.close = function () {
