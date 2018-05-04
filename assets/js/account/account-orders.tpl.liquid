@@ -100,35 +100,24 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="row" ng-if="!$ctrl.isShowPayment">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-6">
-                            <button class="btn btn-primary btn-block" ng-class="{'loading': showLoading }" ng-click="showLoading=true && $ctrl.getInvoicePdf()">
+                            <button class="btn btn-primary btn-block" ng-click="$ctrl.getInvoicePdf()">
                                 <span class="btn-text">{{ 'customer.order.get_invoice' | t }}</span>
                                 <span class="btn-loading"></span>
                             </button>
                         </div>
                         <div class="col-md-6">
-                            <button ng-click="showLoading=true && $ctrl.showPayment()" class="btn btn-primary btn-block disabled" ng-class="{'loading': showLoading }" ng-disabled="true" ng-if="$ctrl.amountToPay > 0">
-                                <span class="btn-text">{{ 'customer.order.new_payment' | t }}</span>
-                                <span class="btn-text" ng-bind="$ctrl.amountToPay"></span>
-                                <span class="btn-text" ng-bind="$ctrl.order.total.currency.code"></span>
-                                <span class="btn-loading"></span>
-                            </button>
-                        </div>
-                        <div class="col-xl-12 buffer"><span>&nbsp;</span></div>
-                        <div class="col-md-12">
-                            <button ng-click="showLoading=true && $ctrl.showPayment()" class="btn btn-primary btn-block disabled" ng-class="{'loading': showLoading }" ng-disabled="true" ng-if="$ctrl.amountToPay > 0">
+                            <button class="btn btn-primary btn-block">
                                 <span class="btn-text">{{ 'customer.order.reorder' | t }}</span>
-                                <span class="btn-text" ng-bind="$ctrl.amountToPay"></span>
-                                <span class="btn-text" ng-bind="$ctrl.order.total.currency.code"></span>
                                 <span class="btn-loading"></span>
                             </button>
                         </div>
                         <div class="col-xl-12 buffer"><span>&nbsp;</span></div>
                     </div>
-                    <div class="row">
+                    <div class="row" ng-if="$ctrl.deliveryMethod.type =='shipping'">
                         <div class="panel panel-default">
                             <div class="panel-heading">{{ 'customer.order.billing_address' | t }}</div>
                             <div class="panel-body">
@@ -136,11 +125,30 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" ng-if="$ctrl.deliveryMethod.type =='shipping'">
                         <div class="panel panel-default" ng-if="$ctrl.order.shipments[0].deliveryAddress">
                             <div class="panel-heading">{{ 'customer.order.shipping_address' | t }}</div>
                             <div class="panel-body">
                                 <vc-address address="$ctrl.order.shipments[0].deliveryAddress"></vc-address>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="$ctrl.deliveryMethod.type =='pickup'">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">PICKUP INFORMATION</div>
+                            <div class="panel-body">
+                                <vc-address address="$ctrl.deliveryMethod.fulfillmentCenter.address"></vc-address>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">PAYMENT DETAILS</div>
+                            <div class="panel-body">
+                                <address>
+                                    <span><strong ng-bind="$ctrl.order.inPayments[0].paymentMethod.name"></strong></span><br>
+                                    <span ng-bind="$ctrl.order.inPayments[0].paymentMethod.description"></span>
+                                </address>
                             </div>
                         </div>
                     </div>
@@ -158,52 +166,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row" ng-if="$ctrl.isShowPayment">
-                <div class="col-md-12">
-                    <div class="vc-section-header">
-                        <div class="vc-t">Payment</div>
-                        <ul class="vc-product-totals list">
-                            <li class="list-item total summary">
-                                <div class="list-name">Payment amount</div>
-                                <div class="list-price">
-                                    <div class="list-currency" ng-bind="$ctrl.payment.currency.code"></div>
-                                    <span ng-bind="$ctrl.payment.sum.amount"></span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <hr class="hr--small" />
-
-                    <vc-payment-methods get-avail-payment-methods="$ctrl.getAvailPaymentMethods()" payment-method="$ctrl.paymentMethod" on-select-method="$ctrl.selectPaymentMethod(paymentMethod)" validation-container="$ctrl"></vc-payment-methods>
-
-                    <div class="vc-section-header">
-                        <div class="vc-t">{{ 'checkout.payment_method.billing_address' | t }}</div>
-                    </div>
-                    <div class="form-box">
-                        <div class="box-row" ng-if="$ctrl.hasPhysicalProducts">
-                            <label class="check-box">
-                                <input ng-model="$ctrl.billingAddressEqualsShipping" ng-checked="$ctrl.billingAddressEqualsShipping" class="check" type="checkbox" />
-                                <span class="switch"></span>
-                                <span class="name">{{ 'checkout.payment_method.billing_address_equals_shipping' | t }}</span>
-                            </label>
-                        </div>
-                        <div class="box-row" ng-if="!$ctrl.billingAddressEqualsShipping">
-                            <vc-address address="$ctrl.payment.billingAddress" countries="$ctrl.accountManager.availCountries" get-country-regions="$ctrl.accountManager.getCountryRegions(country)" addresses="$ctrl.parentComponent.customer.addresses" validation-container="$ctrl" edit-mode="true"></vc-address>
-                        </div>
-                    </div>
-
-                    <button ng-click="$ctrl.cancel()" ng-if="$ctrl.canCancelPayment" class="btn btn-primary secondary" ng-class="{'loading': $ctrl.loader.isLoading }">
-                        <span class="btn-text">{{ 'customer.order_payment.cancel' | t }}</span>
-                        <span class="btn-loading"></span>
-                    </button>
-
-                    <button ng-click="$ctrl.submit()" class="btn btn-primary" ng-class="{'loading': $ctrl.loader.isLoading }">
-                        <span class="btn-text">{{ 'customer.order_payment.submit' | t }}</span>
-                        <span class="btn-loading"></span>
-                    </button>
-                </div>
-            </div>
+            </div>           
             <div class="row">
                 <div class="panel panel-default">
                     <div class="panel-heading">Order totals</div>
