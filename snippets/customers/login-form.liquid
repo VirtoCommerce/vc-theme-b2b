@@ -5,8 +5,9 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-12">
-                <input class="form-control" ng-model="username" name="customer[user_name]" required placeholder="{{ 'customer.sign-in.user_name' | t }}" />
+                {% comment %} <input class="form-control" ng-model="username" name="customer[user_name]" required placeholder="{{ 'customer.sign-in.user_name' | t }}" /> {% endcomment %}
                 <span class="text-danger" ng-show="!customer_login['customer[user_name]'].$pristine && customer_login['customer[user_name]'].$error.required">{{ 'common.required' | t }}</span>
+                <vc-labeled-input value="username" name="customer[user_name]" placeholder="{{ 'customer.sign-in.user_name' | t }}" form="customer_login" required="true" autofocus="true"></vc-labeled-input>
             </div>
             <div class="col-md-12" style="margin-top:15px">
                 <input class="form-control" ng-model="password" type="password" name="customer[password]" required placeholder="{{ 'customer.sign-in.password' | t }}" />
