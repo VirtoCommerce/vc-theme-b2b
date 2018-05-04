@@ -2,12 +2,12 @@
     <div class="form-group">
         <div class="radio">
             <label>
-                <input name="reorder" type="radio" ng-model="$ctrl.paymentPlan" ng-value="$ctrl.availablePaymentPlans[0]">
+                <input name="reorder" type="radio" ng-model="$ctrl.type" value="reorder">
                 <span class="switch"></span>
                 <span class="name">Auto-Reorder Every&ensp;</span>
             </label>
-            <div class="dropdown-inline" uib-dropdown ng-if="$ctrl.paymentPlan">
-                <button id="autoReorder" class="btn btn-link" uib-dropdown-toggle" aria-haspopup="true" aria-expanded="false">{% raw %}{{ $ctrl.paymentPlan.intervalCount }}&nbsp;{{ $ctrl.paymentPlan.name }}{% endraw %} <span class="fa fa-angle-down"></span></button>
+            <div class="dropdown-inline" uib-dropdown ng-if="$ctrl.type == 'reorder'">
+                <button id="autoReorder" class="btn btn-link" uib-dropdown-toggle aria-haspopup="true" aria-expanded="false">{% raw %}{{ $ctrl.paymentPlan.intervalCount }}&nbsp;{{ $ctrl.paymentPlan.name }}{% endraw %} <span class="fa fa-angle-down"></span></button>
                 <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="autoReorder">
                     <li ng-repeat="paymentPlan in $ctrl.availablePaymentPlans">
                         <a href="" ng-click="$ctrl.paymentPlan = paymentPlan;">{% raw %}{{ paymentPlan.intervalCount }}&nbsp;{{ paymentPlan.name }}{% endraw %}</a>
@@ -17,7 +17,7 @@
         </div>
         <div class="radio">
             <label>
-                <input name="reorder" type="radio" ng-model="$ctrl.paymentPlan"  ng-value="null">
+                <input name="reorder" type="radio" ng-model="$ctrl.type" value="once" >
                 <span class="switch"></span>
                 <span class="name">Deliver one time only</span>
             </label>

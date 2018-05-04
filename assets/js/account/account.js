@@ -77,29 +77,11 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards',
     }])
 
     .service('checkoutDefaultService', ['$localStorage', function ($localStorage) {
-        this.SetPreferedPaymentMethod = function (paymentMethod) {
-            $localStorage['preferedPaymentMethod'] = paymentMethod;
-        };
-        this.GetPreferedPaymentMethod = function () {
-            return $localStorage['preferedPaymentMethod'];
-        };
-        this.SetPreferedShippingMethod = function (shippingMethod) {
-            $localStorage['preferedShippingMethod'] = shippingMethod;
-        };
-        this.GetPreferedShippingMethod = function () {
-            return $localStorage['preferedShippingMethod'];
-        };
-        this.SetPreferedDeliveryMethod = function (deliveryMethod) {
-            $localStorage['preferedDeliveryMethod'] = deliveryMethod;
-        };
-        this.GetPreferedDeliveryMethod = function () {
-            return $localStorage['preferedDeliveryMethod'];
-        };
-        this.SetPreferedAddress = function (address) {
-            $localStorage['preferedAddress'] = address;
-        };
-        this.GetPreferedAddress = function () {
-            return $localStorage['preferedAddress'];
-        };
+        return {
+            paymentMethod: undefined,
+            shippingMethod: undefined,
+            deliveryMethod: undefined,
+            address: undefined
+        };       
     }])
 
