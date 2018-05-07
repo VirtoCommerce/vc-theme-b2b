@@ -27,7 +27,7 @@
   }
 }
 
-input .form-group.keyuped,
+input[vc-flying-placeholder] .form-group.keyuped,
 vc-labeled-input .form-group.keyuped {
   label {
     font-size: $font-size-small;
@@ -40,3 +40,29 @@ vc-labeled-input .form-group.keyuped {
 @include vc-labeled-input-size('', $padding-base-horizontal, $padding-base-vertical);
 @include vc-labeled-input-size('.input-lg', $padding-large-horizontal, $padding-large-vertical);
 @include vc-labeled-input-size('.input-sm', $padding-small-horizontal, $padding-small-vertical);
+
+
+input[vc-flying-placeholder] {
+  label {
+    background: $input-bg;
+    color: $text-muted;
+    font-size: $font-size-base;
+    font-weight: normal;
+    cursor: text;
+    margin: 0;
+    padding: 0 $padding-xs-horizontal;
+    position: absolute;
+    transition: top 0.25s ease;
+  }
+
+  input:focus ~ label {
+    color: $input-border-focus;
+  }
+
+  input:disabled ~ label {
+    background-color: $input-bg-disabled;
+    color: $text-muted;
+    cursor: $cursor-disabled;
+  }
+}
+
