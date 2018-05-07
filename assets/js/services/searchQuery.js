@@ -62,12 +62,12 @@ storefrontApp.service('searchQueryService', ['$location', function ($location) {
                         if (searchQueryValues && changeValues && angular.isArray(searchQueryValues) !== angular.isArray(changeValues)) {
                             throw 'Type of ' + key + ' in search query is' + typeof (searchQueryValues[key]) + ' while in changes is' + typeof (changeValues[key]);
                         }
-                        if (!angular.isArray(changeValues)) {
-                            var mergedPairs = mergePairs(searchQueryValues || [], changeValues || []);
-                            return !_.isEmpty(mergedPairs) ? [key, mergedPairs] : null;
-                        } else {
+                        if (angular.isArray(changeValues) || angular.isArray(searchQueryValues)) {
                             var mergedValues = mergeValues(searchQueryValues, changeValues);
                             return mergedValues !== null ? [key, mergedValues] : null;
+                        } else {
+                            var mergedPairs = mergePairs(searchQueryValues || [], changeValues || []);
+                            return !_.isEmpty(mergedPairs) ? [key, mergedPairs] : null;
                         }
                     } else {
                         return null;
@@ -83,7 +83,7 @@ storefrontApp.service('searchQueryService', ['$location', function ($location) {
             };
             var serializePairs = function (pairs) {
                 return _.map(Object.keys(pairs), function (key) {
-                    return [key, serializeValues(pairs[key])].join(':');
+                    return [key, angular.isArray(pairs[key]) ? serializeValues(pairs[key]) : pairs[key]].join(':');
                 }).join(';');
             };
             searchQuery = searchQuery || {};
