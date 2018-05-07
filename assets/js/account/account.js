@@ -49,7 +49,8 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards',
             { path: '/changePassword', name: 'PasswordChange', component: 'vcAccountPasswordChange' },
             { path: '/companyInfo', name: 'CompanyInfo', component: 'vcAccountCompanyInfo' },
             { path: '/companyMembers/...', name: 'CompanyMembers', component: 'vcAccountCompanyMembers' },
-            { path: '/lists/...', name: 'Lists', component: 'vcAccountLists' }
+            { path: '/lists/...', name: 'Lists', component: 'vcAccountLists' },
+            //{ path: '/checkoutDefaults', name: 'CheckoutDefaults', component: 'vcAccountCheckoutDefaults' },
         ],
         controller: ['$scope', '$timeout', 'storefrontApp.mainContext', 'loadingIndicatorService', 'commonService', function ($scope, $timeout, mainContext, loader, commonService) {
             var $ctrl = this;
@@ -73,5 +74,14 @@ angular.module(moduleName, ['ngResource', 'ngComponentRouter', /*'credit-cards',
         this.confirm = function (message) {
             return $q.when(window.confirm(message || 'Is it OK?'));
         };
+    }])
+
+    .service('checkoutDefaultService', ['$localStorage', function ($localStorage) {
+        return {
+            paymentMethod: undefined,
+            shippingMethod: undefined,
+            deliveryMethod: undefined,
+            address: undefined
+        };       
     }])
 

@@ -4,9 +4,11 @@ storefrontApp.component('vcPaymentPlan', {
     templateUrl: "themes/assets/js/common-components/paymentPlan.tpl.html",
     bindings: {
         availablePaymentPlans: '<',
-        paymentPlan: '=',
     },
     controller: [function() {
-        var $ctrl = this;       
+        var $ctrl = this;
+        $ctrl.type = 'once';
+        $ctrl.paymentPlan = $ctrl.availablePaymentPlans[0];
+ 
     }]
 });

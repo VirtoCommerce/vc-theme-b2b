@@ -1,0 +1,77 @@
+<div class="col-md-8">
+        <div class="page-header">
+            <h3>Checkout Defaults</h3>
+        </div>
+        <vc-errors message="errorMessage" errors="errors"></vc-errors>
+        <form name="detailForm">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="#" class="form-label">Prefered Delivery Method</label>
+                        
+                    <div class="form-group">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="deliveryMethods" id="shipping" ng-model="$ctrl.defaults.deliveryMethod" value="shipping">
+                                <span class="switch"></span>
+                                <span class="name">Shipping</span>
+                            </label>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="deliveryMethods" id="pickup" ng-model="$ctrl.defaults.deliveryMethod" value="pickup">
+                                <span class="switch"></span>
+                                <span class="name">Pickup</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-select">
+                            <label for="#" class="form-label">Prefered Address</label>
+                            <select ng-model="$ctrl.defaults.address" ng-options="x as x.name for x in $ctrl.customer.addresses" name="address" required class="form-control" size="1">
+                                <option value="">Please select prefered Address</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-select">
+                            <label for="#" class="form-label">Prefered Payment Method</label>
+                            <select ng-model="$ctrl.defaults.paymentMethod" ng-options="x as x.name for x in $ctrl.paymentMethods" name="paymentMethod" required class="form-control" size="1">
+                                <option value="">Please select prefered Payment Method</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-select">
+                            <label for="#" class="form-label">Prefered Shipping Method</label>
+                            <select ng-model="$ctrl.defaults.shippingMethod" ng-options="x as x.name for x in $ctrl.shippingMethods" name="shippingMethod" required class="form-control" size="1">
+                                <option value="">Please select prefered Shipping Method</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <button class="btn btn-primary">Update</button>
+        </form>
+    </div>
