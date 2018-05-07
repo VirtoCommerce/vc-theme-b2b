@@ -1,0 +1,72 @@
+﻿// from official docs: https://afeld.github.io/bootstrap-toc/
+nav[data-toggle='toc'] {
+  margin-top: $line-height-computed;
+
+  &.affix {
+    top: 0;
+  }
+
+  .nav .nav {
+    padding-bottom: 0;
+  }
+}
+
+/* small screens */
+@media (max-width: $screen-sm-max) {
+  nav[data-toggle='toc'] {
+    /* override the Affix plugin so that the navigation isn't sticky */
+    &.affix {
+      position: static;
+    }
+
+    /* PICK ONE */
+    /* don't expand nested items, which pushes down the rest of the page when navigating */
+    /*.nav .active .nav {
+      display: none;
+    }*/
+    /* alternatively, if you *do* want the second-level navigation to be shown (as seen on this page on mobile), use this */
+    .nav .nav {
+      display: block;
+    }
+  }
+}
+
+// for PR: https://github.com/afeld/bootstrap-toc/pull/37
+nav[data-toggle='toc'] .nav .nav {
+  li > a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    font-size: 12px;
+    font-weight: normal;
+  }
+
+  .active > a,
+  .active:hover > a,
+  .active:focus > a {
+    font-weight: 500;
+  }
+}
+
+$navs: ();
+// h2..h6
+@for $i from 0 through 5 {
+  $padding-left: 7px * $i;
+  nav[data-toggle='toc'] .nav #{$navs} {
+    > li > a {
+      padding-left: 15px + $padding-left;
+    }
+
+    > li > a:hover,
+    > li > a:focus {
+      padding-left: 14px + $padding-left;
+    }
+
+    > .active > a,
+    > .active:hover > a,
+    > .active:focus > a {
+      padding-left: 13px + $padding-left;
+    }
+  }
+
+  $navs: append($navs, " .nav");
+}

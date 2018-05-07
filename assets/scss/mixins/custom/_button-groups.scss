@@ -1,0 +1,10 @@
+﻿@mixin button-split-dropdown-fix ($class, $border-color) {
+  .btn + .btn,
+  .btn + .btn-group,
+  .btn-group + .btn,
+  .btn-group + .btn-group {
+    &#{$class}:not(:hover):not(:focus):not(:active):not(:disabled) {
+      border-left-color: darken($border-color, 6%);
+    }
+  }
+}

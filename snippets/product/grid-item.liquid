@@ -1,0 +1,13 @@
+﻿{% unless current_collection %}
+    {% assign current_collection = collection %}
+{% endunless %}
+
+<!-- TODO: Badges -->
+
+<div class="col-md-3 flexible" ng-init="products.push('{{ product.id }}')">
+    {% include 'product/item/image' %}
+    {% include 'product/compare' %}
+    {% include 'product/item/title-and-codes' %}
+    {% include 'product/price' %}
+    {% include 'product/quantity' %}
+</div>

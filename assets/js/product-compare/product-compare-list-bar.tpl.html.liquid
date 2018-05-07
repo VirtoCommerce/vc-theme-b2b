@@ -1,0 +1,40 @@
+<div class="modal-compare" ng-show="$ctrl.itemsCount > 0 && $ctrl.showBar">
+    <div class="compare-head">
+        <div class="col-md-8">
+            You have <span class="visible-count" id="productCompareListCount" ng-bind="$ctrl.itemsCount"></span> out of 5 products to compare selected.
+        </div>
+        <div class="col-md-4">
+            <div class="col-md-5 compare-clear">
+                <a href="#" ng-click="$ctrl.clearCompareList()" >Clear all</a>
+            </div>
+            <div class="col-md-4 compare-hide">
+                <a href="#" ng-click="$ctrl.showBody()">
+                    <span ng-bind="$ctrl.showBodyText"></span>
+                    <i ng-class="$ctrl.showBodyIcon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="compare-body" ng-show="$ctrl.showedBody">
+        <div class="col-md-9">
+            <ul class="list">
+                <li class="list-item" ng-repeat="product in $ctrl.products">
+                    <div class="list-img">
+                        <a class="list-link" ng-href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}">
+                            <img ng-src="{% raw %}{{ product.primaryImage.url }}{% endraw %}" alt="" class="list-pic">
+                            <a href="#" ng-click="$ctrl.removeProduct(product)">
+                                <i class="list-remove fa fa-times-circle"></i>
+                            </a>    
+                        </a>
+                        <div class="list-t">
+                            Item #<a href="{% raw %}{{ product.url.replace('~/', '') }}{% endraw %}" ng-bind="product.sku"></a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="pull-right">
+            <a href="{{ 'compare' | absolute_url }}" class="btn btn-default">View compare</a>
+        </div>
+    </div>
+</div>

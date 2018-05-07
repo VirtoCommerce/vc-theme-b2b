@@ -1,0 +1,37 @@
+﻿// Disable anchor border for controls which is not real link
+@import "_text-decoration.scss";
+
+a {
+  font-family: $link-font-family;
+  font-weight: $link-font-weight;
+  border-bottom: 1px solid transparent;
+
+  &:hover,
+  &:focus {
+    border-bottom: 1px $link-hover-border-style $link-hover-color;
+  }
+
+  &[href=""] {
+    &:hover,
+    &:focus {
+      border-bottom: 1px $internal-link-hover-border-style $link-hover-color;
+    }
+  }
+}
+
+a.primary-link {
+  color: $primary-link-color;
+
+  &:hover,
+  &:focus {
+    border-bottom-color: $primary-link-hover-color;
+    color: $primary-link-hover-color;
+  }
+}
+
+.link-reset {
+  font-family: $link-font-family;
+  font-weight: $link-font-weight;
+  font-size:   $font-size-base;
+  text-transform: none;
+}

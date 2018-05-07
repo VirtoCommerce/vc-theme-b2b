@@ -1,13 +1,69 @@
-[
+﻿[
+    {
+        "outputFileName": "assets/static/bundle/dependencies.js",
+        "inputFiles": [
+            "bower_components/polyfills/polyfill.js",
+            "bower_components/jquery/dist/jquery.js",
+            "bower_components/underscore/underscore.js",
+            "bower_components/angularjs/angular.js",
+            "bower_components/angular-filter/dist/angular-filter.js",
+            "bower_components/angular-resource/angular-resource.js",
+            "bower_components/ngstorage/ngStorage.js",
+            "bower_components/angular-credit-cards/release/angular-credit-cards.js",
+            "bower_components/angular-animate/angular-animate.js",
+            "bower_components/angular-bootstrap/ui-bootstrap.js",
+            "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
+            "bower_components/angular-recaptcha/release/angular-recaptcha.js",
+            "bower_components/angular-sanitize/angular-sanitize.js",
+            "bower_components/angular-translate/angular-translate.js",
+            "bower_components/angular-translate-loader-url/angular-translate-loader-url.js",
+            "bower_components/angular-component-router/angular_1_router.js",
+            "bower_components/angular-wizard/dist/angular-wizard.js",
+            "bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js",
+            "bower_components/bootstrap-sass/assets/javascripts/bootstrap/scrollspy.js",
+            "bower_components/bootstrap-toc/dist/bootstrap-toc.js",
+            "bower_components/prism/prism.js",
+            "bower_components/prism/plugins/normalize-whitespace/prism-normalize-whitespace.js"
+        ]
+    },
+    {
+        "outputFileName": "assets/static/fonts",
+        "inputFiles": [
+            "bower_components/font-awesome/fonts/**"
+        ]
+    },
+    {
+        "outputFileName": "assets/static/fonts/bootstrap",
+        "inputFiles": [
+            "bower_components/bootstrap-sass/assets/fonts/bootstrap/**"
+        ]
+    },
     {
         "outputFileName": "assets/static/bundle/scripts.js",
         "inputFiles": [
-            "assets/modernizr.min.js",
             "assets/interactor.js",
-            "assets/ideal-image-slider.min.js",
-            "assets/ideal-image-slider-bullet-nav.js",
-            "assets/ideal-image-slider-captions.js",
+            "assets/js/app/app.js",
+            "assets/js/account/account.js",
+            "assets/js/app/!(app).js",
+            "assets/js/account/!(account).js",
+            "assets/js/!(app|account)/*.js",
+            "assets/js/!(app|account)/**/*.js",
             "assets/js/*.js"
+        ]
+    },
+    {
+        "outputFileName": "assets/static/bundle/styles.css",
+        "inputFiles": [
+            "bower_components/font-awesome/css/font-awesome.css",
+            "bower_components/angular-wizard/dist/angular-wizard.css",
+            "bower_components/bootstrap-toc/dist/bootstrap-toc.css",
+            "bower_components/prism/themes/prism.css"
+        ]
+    },
+    {
+        "outputFileName": "assets/static/bundle/styles.scss.css",
+        "inputFiles": [
+            "assets/scss/main.scss"
         ]
     },
     {
@@ -36,28 +92,13 @@
             "assets/js/searchBar.js",
             "assets/js/common-components/*.js",
             "assets/js/account/*.js",
+            "assets/js/lists/*.js",
             "assets/js/permission.js"
-        ]
-    },
-    {
-        "outputFileName": "assets/static/bundle/styles.css",
-        "inputFiles": [
-            "assets/storefront.css",
-            "assets/common-components.css",
-            "assets/ideal-image-slider.css",
-            "assets/ideal-image-slider-default-theme.css"
         ]
     },
     {
         "outputFileName": "assets/static/bundle/checkout-styles.css",
         "inputFiles": [
-            "assets/common-components.css"
-        ]
-    },
-    {
-        "outputFileName": "assets/static/bundle/account-styles.css",
-        "inputFiles": [
-            "assets/account-bootstrap.css",
             "assets/common-components.css"
         ]
     }

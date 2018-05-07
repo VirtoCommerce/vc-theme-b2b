@@ -12,6 +12,15 @@ storefrontApp.service('dialogService', ['$uibModal', function ($uibModal) {
                     }
                 }
             });
+            return modalInstance;
+        }
+    }
+}]);
+
+storefrontApp.service('mailingService', ['$http', 'apiBaseUrl', function ($http, apiBaseUrl) {
+    return {
+        sendProduct: function(id, data) {
+            return $http.post(apiBaseUrl + 'api/b2b/send/product/' + id, data);
         }
     }
 }]);
@@ -20,14 +29,6 @@ storefrontApp.service('feedbackService', ['$http', function ($http) {
     return {
         postFeedback: function (data) {
             return $http.post('storefrontapi/feedback', { model: data });
-        }
-    }
-}]);
-
-storefrontApp.service('customerService', ['$http', function ($http) {
-    return {
-        getCurrentCustomer: function () {
-            return $http.get('storefrontapi/account?t=' + new Date().getTime());
         }
     }
 }]);
@@ -43,7 +44,7 @@ storefrontApp.service('marketingService', ['$http', function ($http) {
 storefrontApp.service('pricingService', ['$http', function ($http) {
 	return {
 		getActualProductPrices: function (products) {
-		    return $http.post('storefrontapi/pricing/actualprices', { products: products });
+		    return $http.post('storefrontapi/pricing/actualprices', products);
 		}
 	}
 }]);
@@ -53,11 +54,14 @@ storefrontApp.service('catalogService', ['$http', function ($http) {
         getProduct: function (productIds) {
             return $http.get('storefrontapi/products?productIds=' + productIds + '&t=' + new Date().getTime());
         },
+        getProducts: function(productIds) {
+            return $http.get('storefrontapi/products?' + productIds + '&t=' + new Date().getTime());
+        },
         search: function (criteria) {
-            return $http.post('storefrontapi/catalog/search', { searchCriteria: criteria });
+            return $http.post('storefrontapi/catalog/search', criteria);
         },
         searchCategories: function (criteria) {
-            return $http.post('storefrontapi/categories/search', { searchCriteria: criteria });
+            return $http.post('storefrontapi/categories/search', criteria);
         }
     }
 }]);
@@ -76,6 +80,9 @@ storefrontApp.service('cartService', ['$http', function ($http) {
         changeLineItemQuantity: function (lineItemId, quantity) {
             return $http.put('storefrontapi/cart/items', { lineItemId: lineItemId, quantity: quantity });
         },
+        changeLineItemsQuantity: function(items) {
+            return $http.put('storefrontapi/cart/items', items);
+        },
         removeLineItem: function (lineItemId) {
             return $http.delete('storefrontapi/cart/items?lineItemId=' + lineItemId);
         },
@@ -84,13 +91,7 @@ storefrontApp.service('cartService', ['$http', function ($http) {
         },
         clearCart: function () {
             return $http.post('storefrontapi/cart/clear');
-        },
-        getCountries: function () {
-            return $http.get('storefrontapi/countries?t=' + new Date().getTime());
-        },
-        getCountryRegions: function (countryCode) {
-        	return $http.get('storefrontapi/countries/' + countryCode + '/regions?t=' + new Date().getTime());
-        },
+        },     
         addCoupon: function (couponCode) {
             return $http.post('storefrontapi/cart/coupons/' + couponCode);
         },
@@ -121,22 +122,7 @@ storefrontApp.service('cartService', ['$http', function ($http) {
     }
 }]);
 
-storefrontApp.service('listService', ['$http', function ($http) {
-    return {
-        getWishlist: function (listName) {
-            return $http.get('storefrontapi/lists/' + listName + '?t=' + new Date().getTime());
-        },
-        contains: function (productId, listName) {
-            return $http.get('storefrontapi/lists/' + listName +'/items/'+ productId + '/contains?t=' + new Date().getTime());
-        },
-        addLineItem: function (productId, listName) {
-            return $http.post('storefrontapi/lists/' + listName + '/items', { productId: productId });
-        },
-        removeLineItem: function (lineItemId, listName) {
-            return $http.delete('storefrontapi/lists/' + listName + '/items/' + lineItemId);
-        }
-    }
-}]);
+
 
 storefrontApp.service('quoteRequestService', ['$http', function ($http) {
     return {
@@ -185,6 +171,68 @@ storefrontApp.service('orderService', ['$http', function ($http) {
     return {
         getOrder: function (orderNumber) {
             return $http.get('storefrontapi/orders/' + orderNumber + '?t=' + new Date().getTime());
+        }
+    }
+}]);
+
+storefrontApp.service('compareProductService', ['$http', '$localStorage', function($http, $localStorage) {
+    return {
+        isInProductCompareList: function(productId) {
+            var containProduct;
+            if (!_.some($localStorage['productCompareListIds'], function(id) { return id === productId })) {
+                containProduct = false;
+            }
+            else
+                containProduct = true
+            return containProduct;
+        },
+        addProduct: function(productId) {
+            if (!$localStorage['productCompareListIds']) {
+                $localStorage['productCompareListIds'] = [];
+            }
+            $localStorage['productCompareListIds'].push(productId);
+            _.uniq($localStorage['productCompareListIds']);
+        },
+        getProductsIds: function() {
+            if (!$localStorage['productCompareListIds']) {
+                $localStorage['productCompareListIds'] = [];
+                return;
+            }
+            var ids = [];
+            for (i = 0; i < $localStorage['productCompareListIds'].length; i++) {
+                ids.push('productIds=' + $localStorage['productCompareListIds'][i]);
+            }
+            return ids.join("&");
+        },
+        getProductsCount: function() {
+            var count = $localStorage['productCompareListIds'] ? $localStorage['productCompareListIds'].length : 0;
+            return count;
+        },
+        clearCompareList: function() {
+            $localStorage['productCompareListIds'] = [];
+        },
+        removeProduct: function(productId) {
+            $localStorage['productCompareListIds'] = _.without($localStorage['productCompareListIds'], productId);
+        }
+    }
+}]);
+
+
+storefrontApp.service('commonService', ['$http', function ($http) {
+    return {
+        getCountries: function () {
+            return $http.get('storefrontapi/countries?t=' + new Date().getTime());
+        },
+        getCountryRegions: function (countryCode) {
+            return $http.get('storefrontapi/countries/' + countryCode + '/regions?t=' + new Date().getTime());
+        }
+    }
+}]);
+
+storefrontApp.service('customerService', ['$http', function ($http) {
+    return {
+        getCurrentCustomer: function () {
+            return $http.get('storefrontapi/account?t=' + new Date().getTime());
         }
     }
 }]);

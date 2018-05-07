@@ -1,0 +1,20 @@
+﻿<ol class="nav nav-pills pull-left">
+    <li role="presentation" ng-class="{'active': '{{ template }}' == 'cart'}">
+        <a href="">
+            <span class="h1 text-middle">1</span>
+            <u class="h2 text-middle">My cart</u>
+        </a>
+    </li>
+    <li role="presentation" ng-class="{'active': '{{ template }}' == 'review', 'disabled': '{{ template }}' == 'cart'}">
+        <a href="">
+            <span class="h1 text-middle">2</span>
+            <u class="h2 text-middle">Review</u>
+        </a>
+    </li>
+    <li role="presentation" ng-class="{'active': '{{ template }}' == 'complete', 'disabled': '{{ template }}' != 'complete'}">
+        <a href="">
+            <span class="h1 text-middle">3</span>
+            <u class="h2 text-middle">Complete</u>
+        </a>
+    </li>
+</ol>

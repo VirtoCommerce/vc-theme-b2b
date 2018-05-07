@@ -1,10 +1,10 @@
-﻿angular.module('storefront.account')
+angular.module('storefront.account')
 .component('vcAccountPasswordChange', {
     templateUrl: "themes/assets/js/account/account-password-change.tpl.liquid",
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['loadingIndicatorService', function (loader) {
+    controller: ['loadingIndicatorService', 'accountApi', function (loader, accountApi) {
         var ctrl = this;
         ctrl.loader = loader;
         ctrl.passwordChangeData = {};
@@ -27,14 +27,16 @@
             }
 
             if (!hasError) {
-                ctrl.accountManager.changePassword(ctrl.passwordChangeData).then(function (result) {
-                    angular.extend(ctrl, result);
-                    ctrl.passwordChangeData = {};
-                    ctrl.form.$setPristine();
+                loader.wrapLoading(function () {
+                    accountApi.changeUserPassword(ctrl.passwordChangeData).then(function (result) {
+                        angular.extend(ctrl, result);
+                        ctrl.passwordChangeData = {};
+                        ctrl.form.$setPristine();
+                        return result;
+                    });
                 });
             }
         };
-
         ctrl.setForm = function (frm) { ctrl.form = frm; };
     }]
 });

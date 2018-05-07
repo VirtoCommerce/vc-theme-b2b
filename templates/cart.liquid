@@ -1,118 +1,488 @@
-﻿<div ng-controller="cartController">
-    <div class="ajax-informer fade" ng-if="!cart">
-        <div class="loader"></div>
-        <span>{{ 'cart.general.loading_cart_message' | t }}</span>
+<nav ng-show="checkout.cart.itemsCount > 0" class="navbar navbar-default navbar-fixed-top visible-xs-block visible-sm-block" role="navigation">
+    <p class="navbar-text navbar-left">
+        <small>{{ 'checkout.total' | t }}:</small>
+        <strong class="text-success" ng-bind="checkout.cart.total.formattedAmount"></strong>
+    </p>
+</nav>
+<main class="container" role="main" ng-controller="checkoutController">
+    <div ng-if="checkout.loading" class="loader">
+        <div class="indicator"></div>
     </div>
-
-    <div class="ajax-informer" ng-if="cart" ng-class="{ 'fade': cartIsUpdating }">
-        <div class="loader"></div>
-        <span>{{ 'cart.general.updating_cart_message' | t }}</span>
+    <div class="row">
+        <div class="col-xs-12" ng-show="checkout.cart.itemsCount == 0" ng-cloak>
+            <h2>{{ 'cart.general.empty' | t }}</h2>
+            <a href="{{ '/' | absolute_url }}" class="btn btn-lg btn-primary">{{ 'cart.general.continue_shopping' | t }}</a>
+        </div>
     </div>
-
-    <h1>{{ 'cart.general.title' | t }}</h1>
-    {% include 'quick-order-section' %}
-
-    <span ng-if="cart.itemsCount == 0" ng-cloak="">
-        <h2>{{ 'cart.general.empty' | t }}</h2>
-        <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
-    </span>
-
-    <div ng-show="cart.itemsCount > 0" ng-cloak="">
-        <div ng-init="setCartForm(formCart)"></div>
-        <form name="formCart" novalidate="novalidate">
-            <div class="cart-row" ng-repeat="lineItem in cart.items">
-                <div class="grid">
-                    <div class="grid-item large--seven-twelfths">
-                        <div class="grid">
-                            <div class="grid-item one-third large--one-quarter">
-                                <span class="cart-image">
-                                    <img ng-src="{% raw %}{{ lineItem.imageUrl }}{% endraw %}" ng-if="lineItem.imageUrl" />
-                                    <div class="no-product-image" ng-if="!lineItem.imageUrl">
-                                        <img src="{{ 'no-image.svg' | asset_url }}" />
+    <div class="row" ng-show="checkout.cart.itemsCount > 0">
+        <div class="hidden-xs hidden-sm col-md-12 hidden-print">
+            <div class="page-header clearfix">
+                <ol class="nav nav-pills pull-left">
+                    <li role="presentation" ng-repeat="step in checkout.wizard.steps" ng-class="{'active': step.isActive}">
+                        <a href="" ng-click="checkout.wizard.goToStep(step)">
+                            <span class="h1 text-middle" ng-bind="$index + 1"></span>
+                            <u class="h2 text-middle" ng-bind="step.title"></u>
+                        </a>
+                    </li>
+                </ol>
+                <ul class="list-inline pull-right">
+                    <li>
+                        <a href="" class="btn btn-link" ng-click=""><i class="fa fa-bullhorn"></i>&ensp;Feedback</a>
+                    </li>
+                    <li>
+                        <a href="" class="btn btn-link" ng-click=""><i class="fa fa-envelope"></i>&ensp;Email</a>
+                    </li>
+                    <li>
+                        <a href="" class="btn btn-link" ng-click="print()"><i class="fa fa-print"></i>&ensp;Print</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <vc-checkout-wizard wizard-model="checkout.wizard" on-initialized="initialize()" loading="checkout.loading">
+                <vc-checkout-wizard-step name="cart" title="My Cart">
+                    <div class="col-xs-12">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-9">
+                                <div class="container-drain container-bordered-horizontal">
+                                    <div class="row hidden-xs hidden-sm">
+                                        <div class="col-xs-12">
+                                            <vc-checkout-delivery-method delivery-method="checkout.deliveryMethod" on-eval-availability="evalAvailability(deliveryMethod)"></vc-checkout-delivery-method>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="h2">
+                                                My products
+                                                <ul class="list-horizontal link-reset pull-right">
+                                                    <li>
+                                                        <a href="">Show Reference Information</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="" ng-click="clearCart()">Clear Cart</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
-                                </span>
-                            </div>
-                            <div class="grid-item two-thirds large--three-quarters">
-                                <span ng-bind="lineItem.name"></span>
-                                {% if shop.subscription_enabled %}
-                                <div class="note" ng-if="lineItem.paymentPlan">
-                                    <span ng-bind="'Subscription with a period: ' + lineItem.paymentPlan.intervalCount + ' ' + lineItem.paymentPlan.interval"></span>
+                                    <div class="row flexible text-condensed" ng-repeat="lineItem in checkout.cart.items">
+                                        <vc-checkout-line-item line-item="lineItem" on-change-qty="changeItemQty(lineItem)" on-remove="removeItem(lineItem)"></vc-checkout-line-item>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <p class="text-center"><strong>If you changed multiple quantities, </strong><a href="">Update All</a></p>
+                                        </div>
+                                    </div>
                                 </div>
-                                {% endif %}
-                                <div class="note" ng-class="{ 'form-error' : !lineItem.isValid }" ng-repeat="error in lineItem.validationErrors">
-                                    {% if settings.show_prices_with_taxes %}
-                                    <span ng-if="error.errorCode == 'PriceError'" ng-bind="'Product price has been changed. New price: ' + error.newPriceWithTax.formattedAmount"></span>
-                                    {% else %}
-                                    <span ng-if="error.errorCode == 'PriceError'" ng-bind="'Product price has been changed. New price: ' + error.newPrice.formattedAmount"></span>
-                                    {% endif %}
-                                    <span ng-if="error.errorCode == 'PriceError'" style="color: #204a80; cursor: pointer; margin-left: 10px;" ng-click="changeLineItemPrice(lineItem.id, error.newPrice.amount)">Apply new price</span>
-                                    <span ng-if="error.errorCode == 'UnavailableError'" ng-bind="'Product is currently unavailable!'"></span>
-                                    <span ng-if="error.errorCode == 'QuantityError'" ng-bind="'Product quantity exceeded! Available quantity is: ' + error.availableQuantity"></span>
+                            </div>
+                            <div class="hidden-xs hidden-sm col-md-3">
+                                <p ng-if="customer && customer.isRegisteredUser" ng-cloak >
+                                    <button class="btn btn-lg btn-block btn-primary" type="button" ng-disabled="checkout.loading" ng-click="checkout.wizard.nextStep()">
+                                        {{ 'cart.general.checkout' | t }}
+                                    </button>
+                                <p ng-if="customer && !customer.isRegisteredUser" ng-cloak >
+                                    {{ 'cart.general.checkout' | t | customer_login_link | replace: 'href', 'class="btn btn-lg btn-block btn-primary" href' }}
+                                </p>                  
+                                <div class="panel-group">
+                                    <div class="panel panel-default panel-static">
+                                        <div class="panel-heading">
+                                            Order summary
+                                        </div>
+                                        <div class="panel-body">
+                                            <vc-totals order="checkout.cart" options="{ show: { payment: false, discount: {% if settings.show_prices_with_taxes %}cart.discountWithTaxes{% else %}cart.discount{% endif %}.amount > 0 } }"></vc-totals>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default panel-static">
+                                        <div class="panel-heading">
+                                            Promotion code
+                                        </div>
+                                        <div class="panel-body">
+                                            <vc-checkout-coupon coupon="checkout.coupon" on-apply-coupon="applyCoupon(coupon)" on-remove-coupon="removeCoupon(coupon)"></vc-checkout-coupon>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="grid-item large--five-twelfths medium--two-thirds push--medium--one-third">
-                        <div class="grid">
-                            <div class="grid-item one-half medium-down--one-third" style="text-align: center;">
-                                <div class="js-qty">
-                                    <input class="js-num" min="1" name="{% raw %}{{ 'item' + lineItem.id }}{% endraw %}" type="number" ng-model="lineItem.quantity" ng-blur="changeLineItemQuantity(lineItem.id, lineItem.quantity)" />
-                                    <span class="js--qty-adjuster js--add" ng-click="changeLineItemQuantity(lineItem.id, lineItem.quantity + 1)">+</span>
-                                    <span class="js--qty-adjuster js--minus" ng-click="changeLineItemQuantity(lineItem.id, lineItem.quantity - 1)">-</span>
+                </vc-checkout-wizard-step>
+                <vc-checkout-wizard-step name="review" title="Review">
+                    <div class="col-xs-12">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-9">
+                                <div class="container-drain container-bordered-horizontal">
+                                    <div class="row hidden-xs hidden-sm">
+                                        <div class="col-xs-12">
+                                            <div class="h2">
+                                                Delivery method
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="deliveryMethods" id="shipping" ng-model="checkout.deliveryMethod.type" value="shipping">
+                                                        <span class="switch"></span>
+                                                        <span class="name">Shipping</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="deliveryMethods" id="pickup" ng-model="checkout.deliveryMethod.type" value="pickup">
+                                                        <span class="switch"></span>
+                                                        <span class="name">Pickup</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row hidden-xs hidden-sm" ng-if="checkout.deliveryMethod.type == 'shipping'">
+                                        <div class="col-xs-12">
+                                            <div class="h2">
+                                                Shipping address
+                                                <ul class="list-horizontal link-reset pull-right">
+                                                    <li>
+                                                        <a href="" ng-click="changeShippingAddress()">Change</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-if="checkout.deliveryMethod.type == 'shipping'">
+                                        <div class="col-xs-12" ng-if="checkout.shipment.deliveryAddress.city">
+                                            <vc-address address="checkout.shipment.deliveryAddress" edit-mode="false"></vc-address>
+                                        </div>
+                                        <div class="col-xs-12" ng-if="!checkout.shipment.deliveryAddress.city">
+                                            <h4><small>Please enter shipping address</small></h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" ng-if="checkout.deliveryMethod.type == 'shipping'">
+                                        <div class="col-xs-12">
+                                            <div class="h2">
+                                                SHIPPING METHOD
+                                                <ul class="list-horizontal link-reset pull-right">
+                                                    <li>
+                                                        <a href="" ng-click="changeShippingMethod()">Change</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row"  ng-if="checkout.deliveryMethod.type == 'shipping'">
+                                        <div class="col-xs-12" ng-if="checkout.shipment.shipmentMethod.shipmentMethodCode">
+                                            <address>
+                                                <div class="col-xs-2 col-md-1">
+                                                    <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ checkout.shipment.shipmentMethod.logoUrl }}{% endraw %}" />
+                                                </div>
+                                                <div class="h5">
+                                                    <span class="name" ng-bind="checkout.shipment.shipmentMethod.name"></span><span ng-bind="checkout.shipment.shipmentMethod.optionName"></span>
+                                                    <span>
+                                                        <strong class="text-success" ng-bind="'(' + checkout.shipment.price.formattedAmount + ')'"></strong>
+                                                    </span>
+                                                </div>
+                                            </address>
+                                        </div>
+                                        <div class="col-xs-12" ng-if="!checkout.shipment.shipmentMethod.shipmentMethodCode">
+                                            <h4><small>Please select shipping method</small></h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" ng-if="checkout.deliveryMethod.type == 'pickup'">
+                                        <div class="col-xs-12">
+                                            <div class="h2">
+                                                PICKUP ADDRESS
+                                                <ul class="list-horizontal link-reset pull-right">
+                                                    <li>
+                                                        <a href="" ng-click="changePickupAddress()">Change</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-if="checkout.deliveryMethod.type == 'pickup'">
+                                        <div class="col-xs-12" ng-if="checkout.deliveryMethod.fulfillmentCenter.address.city">
+                                            <vc-address address="checkout.deliveryMethod.fulfillmentCenter.address" edit-mode="false"></vc-address>
+                                        </div>
+                                        <div class="col-xs-12" ng-if="!checkout.deliveryMethod.fulfillmentCenter.address.city">
+                                            <h4><small>Please select branch</small></h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="row hidden-xs hidden-sm">
+                                        <div class="col-xs-12">
+                                            <div class="h2">
+                                                PAYMENT METHOD
+                                                <ul class="list-horizontal link-reset pull-right">
+                                                    <li>
+                                                        <a href="" ng-click="changePaymentMethod()">Change</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12" ng-if="checkout.payment.name">
+                                            <address>
+                                                <div class="col-xs-2 col-md-1">
+                                                    <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ checkout.payment.logoUrl }}{% endraw %}" />
+                                                </div>
+                                                <div class="h5" ng-if="checkout.deliveryMethod.type == 'shipping'">
+                                                    <span ng-bind="checkout.payment.name"></span>
+                                                    <span><small ng-bind="checkout.payment.description"></small></span>
+                                                </div>
+                                                <div class="h5" ng-if="checkout.deliveryMethod.type == 'pickup'">
+                                                    <span ng-bind="checkout.payment.code == 'DefaultManualPaymentMethod'? 'Pay Upon Pickup' : checkout.payment.name"></span>
+                                                    <span><small ng-bind="checkout.payment.description"></small></span>
+                                                </div>
+                                            </address>
+                                        </div>
+                                        <div class="col-xs-12" ng-if="!checkout.payment.name">
+                                            <h4><small>Please select payment method</small></h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="row hidden-xs hidden-sm">
+                                        <div class="col-xs-12">
+                                            <div class="h2">
+                                                MY PRODUCTS
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row flexible text-condensed" ng-repeat="lineItem in checkout.cart.items">
+                                        <vc-checkout-line-item line-item="lineItem"></vc-checkout-line-item>
+                                    </div>
                                 </div>
-                                <div class="alert alert-error" style="margin-top: 5px;" ng-if="formCart['item' + lineItem.id].$error.number">Please enter a number</div>
-                                <div class="alert alert-error" style="margin-top: 5px;" ng-if="formCart['item' + lineItem.id].$error.min">Quantity should be greater than 0</div>
                             </div>
-                            <div class="grid-item one-third medium-down--one-third medium-down--text-left text-right">
-                                {% if settings.show_prices_with_taxes %}
-                                <span class="h2">
-                                    <small ng-bind="lineItem.placedPriceWithTax.formattedAmount"></small>
-                                </span>
-                                <span style="text-decoration: line-through;" ng-if="lineItem.listPriceWithTax.amount != lineItem.placedPriceWithTax.amount" ng-bind="lineItem.listPriceWithTax.formattedAmount"></span>
-                                {% else %}
-                                <span class="h2">
-                                    <small ng-bind="lineItem.placedPrice.formattedAmount"></small>
-                                </span>
-                                <span style="text-decoration: line-through;" ng-if="lineItem.listPrice.amount != lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></span>
-                                {% endif %}
-                            </div>
-                            <div class="grid-item one-sixth medium-down--one-third text-right">
-                                <a class="icon-fallback-text btn-secondary remove RemoveShopCart" href="" ng-click="removeLineItem(lineItem.id)" interactor-arg="{% raw %}{{ lineItem.id }}{% endraw %}">
-                                    <span class="icon icon-x" aria-hidden="true"></span>
-                                    <span class="fallback-text">{{ 'cart.general.remove' | t }}</span>
-                                </a>
+                            <div class="hidden-xs hidden-sm col-md-3">
+                                <p>
+                                    <button class="btn btn-lg btn-block btn-primary" type="button" ng-disabled="checkout.loading || !checkout.isValid" ng-click="createOrder()">
+                                        Submit order
+                                    </button>
+                                </p>
+                                <div class="panel-group">
+                                    <div class="panel panel-default panel-static">
+                                        <div class="panel-heading">
+                                            Order summary
+                                        </div>
+                                        <div class="panel-body">
+                                            <vc-totals order="checkout.cart" options="{ show: { payment: false, discount: {% if settings.show_prices_with_taxes %}cart.discountWithTaxes{% else %}cart.discount{% endif %}.amount > 0 } }"></vc-totals>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </vc-checkout-wizard-step>
+                <vc-checkout-wizard-step name="complete" title="Complete" final="true">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-9"><p><span><i class="fa fa-check-circle fa-2x text-middle success" aria-hidden="true"></i></span> Order<span ng-bind="checkout.order.number"></span> {{ 'checkout.order_successfully' | t: number: number }}</p></div>
+                                        <div class="col-md-3">
+                                            <div class="btn-group pull-right" role="group">
+                                                <button type="button" class="btn btn-default" ng-click="getInvoicePdf()"><p> {{ 'checkout.order-print' | t }}</p></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="center-block text-center"><p>{{ 'checkout.order-summary' | t }}</p></div>
+                                            <vc-totals order="checkout.order"></vc-totals>
+                                        </div>
+                                        <div class="col-md-4" ng-if="checkout.deliveryMethod.type == 'shipping'">
+                                            <div class="center-block text-center"><p>Shipping address</p></div>
+                                            <vc-address address="checkout.order.shipments[0].deliveryAddress"></vc-address>
+                                        </div>
+                                        <div class="col-md-4" ng-if="checkout.deliveryMethod.type == 'pickup'">
+                                            <div class="center-block text-center"><p>{{ 'checkout.pickup-address' | t }}</p></div>
+                                            <vc-address address="checkout.deliveryMethod.fulfillmentCenter.address"></vc-address>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="center-block text-center">{{ 'checkout.payment-method' | t }}</div>
+                                            <address>
+                                                <div class="col-xs-2 col-md-1">
+                                                    <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ checkout.payment.logoUrl }}{% endraw %}" />
+                                                </div>
+                                                <div class="h5" ng-if="checkout.deliveryMethod.type == 'shipping'">
+                                                    <span ng-bind="checkout.payment.name"></span>
+                                                    <span><small ng-bind="checkout.payment.description"></small></span>
+                                                </div>
+                                                <div class="h5" ng-if="checkout.deliveryMethod.type == 'pickup'">
+                                                    <span ng-bind="checkout.payment.code == 'DefaultManualPaymentMethod'? 'Pay Upon Pickup' : checkout.payment.name"></span>
+                                                    <span><small ng-bind="checkout.payment.description"></small></span>
+                                                </div>
+                                            </address>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>{{ 'checkout.purchased-products' | t }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12" ng-repeat="lineItem in checkout.order.items">
+                                            <vc-checkout-line-item line-item="lineItem" readOnly="true"></vc-checkout-line-item>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </vc-checkout-wizard-step>
+            </vc-checkout-wizard>
+        </div>
+    </div>
+</main>
+
+<script id="storefront.new-address-dialog.tpl" type="text/ng-template">
+    <div class="modal-header">
+        <button class="close" type="button" ng-click="close()" title="Select address" aria-label="{{ 'inventory.select_branch.close' | t }}"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">ENTER NEW ADDRESS</h4>
+    </div>
+    <div class="modal-body">
+        <div class="container-bordered container-drain">            
+            <div class="row">
+                <div class="col-md-12">
+                    <vc-address address="checkout.deliveryAddress" edit-mode="true" countries="checkout.availCountries" get-country-regions="checkout.getCountryRegions(country)">
+                    </vc-address>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="close()">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-click="close(checkout.deliveryAddress)">Update</button>
+    </div>
+</script>
+
+
+<script id="storefront.select-address-dialog.tpl" type="text/ng-template">
+    <div class="modal-header">
+        <button class="close" type="button" ng-click="close()" title="Select address" aria-label="{{ 'inventory.select_branch.close' | t }}"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">SELECT ADDRESS</h4>
+    </div>
+    <div class="modal-body">
+        <div class="container-bordered container-drain">
+            <div class="row">
+                <div class="col-xs-4 ">
+                    <h5 class="pull-left" ng-bind="addresses.length + ' total addresses'"></h5>
+                </div>
+                <div class="col-xs-8">
+                    <div class="h5">
+                        <ul class="list-horizontal link-reset pull-right">
+                            <li>
+                                <a href="" ng-click="close(checkout.newAddress)">+ Add new shipping address</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            <div class="cart-row">
-                <div class="grid">
-                    <div class="grid-item large--one-half">
-                        <label for="cartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
-                        <textarea class="input-full" ng-bind="cart.comment"></textarea>
+            <div class="row" ng-if="addresses.length == 0">
+                <div class="col-xs-12">
+                    <h4><small>No addresses</small></h4>
+                </div>
+            </div>
+            <div class="row" ng-repeat="address in addresses">
+                <div class="col-md-9">
+                    <vc-address address="address">
+                        <address-header>
+                            <div class="h5" ng-bind="address.name"></div>
+                        </address-header>
+                    </vc-address>
+                </div>
+                <div class="col-md-3 form-group">
+                    <a ng-if="checkout.shipment.deliveryAddress.key != address.key" class="btn btn-default form-control" ng-click="close(address)">Select</a>
+                    <a ng-if="checkout.shipment.deliveryAddress.key == address.key" class="btn btn-default form-control" ng-disabled="true">Selected</a>
+                </div>
+            </div>          
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="close()">Cancel</button>
+    </div>
+</script>
+
+
+<script id="storefront.select-shipment-method-dialog.tpl" type="text/ng-template">
+    <div class="modal-header">
+        <button class="close" type="button" ng-click="close()" title="SHIPPING METHOD" aria-label="{{ 'inventory.select_branch.close' | t }}"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">AVAILABLE SHIPPING METHODS / ESTIMATED ARRIVAL</h4>
+    </div>
+    <div class="modal-body">
+        <div class="container-bordered container-drain">
+            <div ng-repeat="(key, value) in availShippingMethods | groupBy: 'shipmentMethodCode' ">
+                <div class="row" ng-repeat="method in value">
+                    <div class="col-md-9">
+                        <span class="name" ng-bind="method.name"></span><span ng-bind="method.optionName"></span>
+                        <span>
+                            <strong class="text-success" ng-bind="'(' + method.price.formattedAmount + ')'"></strong>
+                        </span>
                     </div>
-                    <div class="grid-item text-right large--one-half">
-                        <div class="cart-subtotal">
-                            {% if settings.show_prices_with_taxes %}
-                            {{ 'cart.general.subtotalWithTax' | t }}
-                            <span class="h1 cart-subtotal--price">
-                                <small ng-bind="cart.extendedPriceTotalWithTax.formattedAmount"></small>
-                            </span>
-                            {% else %}
-                            {{ 'cart.general.subtotal' | t }}
-                            <span class="h1 cart-subtotal--price">
-                                <small ng-bind="cart.extendedPriceTotal.formattedAmount"></small>
-                            </span>
-                            {% endif %}
+                    <div class="col-md-3 form-group">
+                        <a ng-if="checkout.shipment.shipmentMethodOption != method.optionName" class="btn btn-default form-control" ng-click="close(method)">Select</a>
+                        <a ng-if="checkout.shipment.shipmentMethodOption == method.optionName" class="btn btn-default form-control" ng-disabled="true">Selected</a>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+    </div>
+</script>
+
+<script id="storefront.select-payment-method-dialog.tpl" type="text/ng-template">
+    <div class="modal-header">
+        <button class="close" type="button" ng-click="close()" title="Select payment method" aria-label="{{ 'inventory.select_branch.close' | t }}"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Select payment method</h4>
+    </div>
+    <div class="modal-body">
+        <div class="container-bordered container-drain">
+            <div class="row" ng-repeat="paymentMethod in availPaymentMethods">
+                <div class="form-group">
+                    <div class="col-xs-1">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" ng-model="checkout.paymentMethod" ng-value="paymentMethod">
+                                <span class="switch"></span>
+                            </label>
                         </div>
-                        <button type="button" ng-class="{ 'btn': !cartIsUpdating, 'btn-secondary': cartIsUpdating || errorOccured || !cart.isValid }" ng-disabled="cartIsUpdating || cart.hasValidationErrors" ng-click="submitCart()">
-                            <span class="icon icon-cart"></span>
-                            {{ 'cart.general.checkout' | t }}
-                        </button>
+                    </div>
+                    <div class="col-xs-1">
+                        <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ paymentMethod.logoUrl }}{% endraw %}" />
+                    </div>
+                    <div class="col-xs-10">
+                        <address ng-if="checkout.deliveryMethod.type == 'shipping'">
+                            <span><strong ng-bind="paymentMethod.name"></strong></span><br>
+                            <span ng-bind="paymentMethod.description"></span>
+                        </address>
+                        <address ng-if="checkout.deliveryMethod.type == 'pickup'">
+                            <span><strong ng-bind="paymentMethod.code == 'DefaultManualPaymentMethod'? 'Pay Upon Pickup' : paymentMethod.name"></strong></span><br>
+                            <span ng-bind="paymentMethod.description"></span>
+                        </address>
+                    </div>
+                    <div class="col-xs-12" ng-if="checkout.paymentMethod == paymentMethod && paymentMethod.paymentMethodType === 'Standard'">
+                        <vc-credit-card card="paymentMethod.card" validation-container="validationContainer"></vc-credit-card>
                     </div>
                 </div>
             </div>
-        </form>
-    </div>   
-</div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="close()">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-click="close(checkout.paymentMethod)">Update</button>
+    </div>
+</script>

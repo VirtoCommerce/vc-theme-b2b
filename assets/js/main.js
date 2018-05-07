@@ -1,13 +1,18 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location', '$window', 'customerService', 'storefrontApp.mainContext',
-    function ($rootScope, $scope, $location, $window, customerService, mainContext) {
+storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location', '$window', 'accountApi', 'storefrontApp.mainContext', 'loadingIndicatorService',
+    function ($rootScope, $scope, $location, $window, accountApi, mainContext, loader) {
+        var $ctrl = this;
+        $ctrl.loader = loader;
 
         //Base store url populated in layout and can be used for construction url inside controller
         $scope.baseUrl = {};
 
-        $scope.$watch(function () {
-            $scope.currentPath = $location.$$path.replace('/', '');
+        $rootScope.$on('$locationChangeSuccess', function () {
+            var path = $location.path();
+            if (path) {
+                $scope.currentPath = path.replace('/', '');
+            }
         });
 
         $rootScope.$on('storefrontError', function (event, data) {
@@ -56,21 +61,25 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
             return size;
         }
 
-        mainContext.getCustomer = $scope.getCustomer = function () {
-            customerService.getCurrentCustomer().then(function (response) {
-                var addressId = 1;
-                _.each(response.data.addresses, function (address) {
-                    address.id = addressId;
-                    addressId++;
+        mainContext.loadCustomer = $scope.loadCustomer = function () {
+            return loader.wrapLoading(function() {
+                return accountApi.getCurrentUser().then(function (response) {
+                    var addressId = 1;
+                    _.each(response.data.addresses, function (address) {
+                        address.id = addressId;
+                        addressId++;
+                    });
+                    response.data.isContact = response.data.memberType === 'Contact';
+                    mainContext.customer = $scope.customer = response.data;
+                    return response.data;
                 });
-                response.data.isContact = response.data.memberType === 'Contact';
-                mainContext.customer = $scope.customer = response.data;
+                
             });
         };
 
-        $scope.getCustomer();
+       $scope.loadCustomer();
     }])
 
-.factory('storefrontApp.mainContext', function () {
-    return {};
-});
+    .factory('storefrontApp.mainContext', function () {
+        return {};
+    });

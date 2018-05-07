@@ -1,0 +1,16 @@
+<div class="navbar navbar-inverse navbar-static-bottom">
+    <div class="container-fluid">
+        <div class="navbar-text navbar-text-justify text-center">
+            {% if settings.footer_legallinks_enable %}
+                <ul class="list-horizontal hidden-xs hidden-sm">
+                    {% for link in linklists[settings.footer_legallinks_linklist].links %}
+                        <li>
+                            <a class="navbar-link text-normal" href="{{ link.url }}">{{ link.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <p>&copy; {{ 'now' | date: "%Y" }} {{ settings.copyright }}<br>{{ powered_by_link }}</p>
+        </div>
+    </div>
+</div>

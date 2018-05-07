@@ -1,0 +1,25 @@
+<main class="container container-drain container-bordered-horizontal" role="main">
+
+    <div class="col-xs-12">
+        {% include 'shared/breadcrumb' %}
+    </div>
+    <div class="col-xs-12">
+        <div>
+            <h2>{{fulfillment_center.name}}</h2>
+        </div>
+        <div class="row">
+            <div id="main-content" class="col-xs-12 col-sm-12 col-md-10 container-drain container-bordered">
+                <div id="individualBranchDetails">
+                    <div class="branchDetails">
+                        <p>{{fulfillment_center.address.address1}}, {{fulfillment_center.address.city}}, {{fulfillment_center.address.province}}, , {{fulfillment_center.address.zip}}</p>
+
+                        <div><span>Phone Number:</span>{{fulfillment_center.address.phone}}</div>
+                        <div class="branchHours">
+                            {{fulfillment_center.description}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

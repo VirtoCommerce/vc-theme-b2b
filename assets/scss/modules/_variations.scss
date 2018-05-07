@@ -1,0 +1,19 @@
+.variations-table {
+  table-layout: fixed;
+
+  .variation, .expander {
+    cursor: pointer;
+  }
+
+  tr:not(.variation-details){
+    th, td {
+      &:first-of-type {
+        width: 15%;
+      }
+    }
+  }
+
+  .variation-details td {
+    border-width: 0;
+  }
+}

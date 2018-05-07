@@ -1,0 +1,59 @@
+{
+  "name": "vc-b2b-theme",
+  "authors": [
+    "Aleksandr Vishnyakov",
+    "Mihail Chirskiy",
+    "VirtoCommerce"
+  ],
+  "description": "B2B theme for Storefront",
+  "private": true,
+  "keywords": [
+    "virtocommerce",
+    "theme",
+    "b2b"
+  ],
+  "main": "gulpfile.js",
+  "dependencies": {
+    "angularjs": "~1.5.7",
+    "angular-animate": "~1.5.7",
+    "angular-bootstrap": "^2.5.0",
+    "angular-component-router": "0.2.0",
+    "angular-credit-cards": "^3.0.1",
+    "angular-filter": "^0.5.8",
+    "angular-recaptcha": "^4.1.2",
+    "angular-resource": "~1.5.7",
+    "angular-sanitize": "~1.5.7",
+    "angular-translate": "^2.12.1",
+    "angular-translate-loader-url": "^2.12.1",
+    "angular-ui-router": "^1.0.6",
+    "bootstrap-sass": "^3.3.7",
+    "bootstrap-social": "^5.1.1",
+    "bootstrap-toc": "^0.4.1",
+    "es5-shim": "*",
+    "es6-shim": "*",
+    "font-awesome": "^4.7.0",
+    "jquery": "^1.11.0",
+	"angular-wizard": "1.1.1",
+    "ngstorage": "^0.3.11",
+    "polyfills": "*",
+    "prism": "^1.8.4",
+    "underscore": "^1.8.3"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/VirtoCommerce/vc-theme-b2b/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VirtoCommerce/vc-theme-b2b.git"
+  },
+  "ignore": [
+    "**/.*",
+    "artifacts*",
+    "node_modules",
+    "bower_components"
+  ],
+  "resolutions": {
+    "angular": "~1.5.7",
+    "angular-animate": "~1.5.7",
+    "font-awesome": "~4.7"
+  }
+}

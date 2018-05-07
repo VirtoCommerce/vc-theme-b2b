@@ -1,0 +1,14 @@
+﻿<div class="panel-default panel-static" uib-accordion-group template-url="collection-sidebar-always-visible-group.html" is-open="always">
+    <uib-accordion-heading>
+        {{ 'collections.sidebar.filter_by' | t }}
+    </uib-accordion-heading>
+    <form>
+        <p>{{ 'collections.sidebar.search_within' | t }}</p>
+        <div class="input-group" vc-enter-source>
+            <input class="form-control" type="text" vc-query-target="$collection.keywordQuery" ng-model="$collection.keywordQuery.keyword[0]">
+            <span class="input-group-btn">
+                <a class="btn btn-default" vc-query-source="$collection.keywordQuery" switchable="false" vc-enter-target>{{ 'common.go' | t }}</a>
+            </span>
+        </div>
+    </form>
+</div>

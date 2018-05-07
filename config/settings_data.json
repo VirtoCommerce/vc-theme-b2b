@@ -1,13 +1,46 @@
 {
-    "current": "Monochrome",
+    "current": "B2B",
     "presets": {
-        "Monochrome": {
-            "available_roles": [
-                "Corporate administrator",
-                "Corporate manager",
-                "Employee"
-            ],
-            "suggestions_limit": 10,
+        "B2B": {
+            "service_menu": "service-menu",
+            "main_menu": "main-menu",
+            "all_products_menu": "all-products-menu",
+            "collections_capacity": 100,
+            "suggestions_category_limit": 5,
+            "suggestions_product_limit": 15,
+            "footer_company_information_enable": true,
+            "footer_company_information_linklist": "company-information",
+            "footer_customer_support_enable": true,
+            "footer_customer_support_linklist": "customer-support",
+            "footer_order_support_enable": true,
+            "footer_order_support_linklist": "order-support",
+            "footer_resources_enable": true,
+            "footer_resources_linklist": "online-resources",
+            "footer_services_enable": true,
+            "footer_services_linklist": "our-services",
+            "footer_legallinks_enable": true,
+            "footer_legallinks_linklist": "legal-links",
+            "footer_mobile_apps_enable": true,
+            "mobile_features_link": "",
+            "google_play_link": "",
+            "app_store_link": "",
+            "footer_social_enable": true,
+            "social_google_plus_link": "https://plus.google.com/+virtocommerce",
+            "social_facebook_link": "https://facebook.com/virtocommerce",
+            "social_twitter_link": "https://twitter.com/virtocommerce",
+            "social_instagram_link": "https://instagram.com/virtocommerce",
+            "social_youtube_link": "https://www.youtube.com/virtocommerce",
+            "social_vimeo_link": "",
+            "social_tumblr_link": "",
+            "social_pinterest_link": "",
+            "social_linkedin_link": "https://www.linkedin.com/company/virto-commerce",
+            "footer_support_number_enable": true,
+            "support_number": "<strong>1-800-555-CENT</strong>&nbsp;(1-800-555-2368)",
+            "copyright": "VirtoCommerce. All Rights Reserved.",
+
+            "product_list_capacity": "16",
+            "product_list_capacity_steps": "3",
+            "pickup_shipping_method": "FixedRate",
             "bulk_order_enabled": true,
             "product_compare_enabled": true,
             "product_compare_list_capacity": 4,
@@ -15,13 +48,11 @@
             "ajax_cart_method": "Modal",
             "cart_notes_enable": false,
             "collection_prod_image_sizes": "large",
-            "collection_sidebar_filters": "facets",
             "color_accent": "#686868",
             "color_body_bg": "#fff",
             "color_body_text": "#585858",
             "color_borders": "#ececec",
             "color_footer_bg": "#f2f2f2",
-            "color_footer_social_link": "#bbbbbb",
             "color_footer_text": "#636363",
             "color_header_background": "#eaeaea",
             "color_header_background_top": "#cecece",
@@ -33,14 +64,9 @@
             "color_nav_text": "#fff",
             "color_primary": "#686868",
             "color_secondary": "#dcdcdc",
-            "customer_layout": "account_layout",
+            "customer_layout": "theme",
             "favicon_enable": false,
-            "footer_content_enable": true,
-            "footer_legallinks_enable": true,
             "footer_newsletter_enable": true,
-            "footer_quicklinks_enable": true,
-            "footer_quicklinks_linklist": "footer",
-            "footer_social_enable": true,
             "home_featured_collections_enable": true,
             "home_featured_collections_sort": "auto",
             "home_featured_row1": "Cell-phones",
@@ -55,7 +81,7 @@
             "home_featured_row4_enable": false,
             "home_content": "",
             "logo_max_width": "305",
-            "logo_use_image": false,
+            "logo_use_image": true,
             "product_image_zoom_enable": false,
             "product_quantity_enable": false,
             "product_reviews_enable": false,
@@ -73,19 +99,10 @@
             "slider_home_auto": true,
             "slider_home_enable": true,
             "slider_home_rate": 7000,
-            "social_facebook_link": "https://facebook.com/virtocommerce",
-            "social_fancy_link": "",
-            "social_google_plus_link": "https://plus.google.com/+virtocommerce",
-            "social_instagram_link": "https://instagram.com/virtocommerce",
-            "social_pinterest_link": "",
             "social_sharing_blog": true,
             "social_sharing_count": true,
             "social_sharing_products": true,
             "social_sharing_style": "is-normal",
-            "social_tumblr_link": "",
-            "social_twitter_link": "https://twitter.com/virtocommerce",
-            "social_vimeo_link": "",
-            "social_youtube_link": "",
             "twittercard_handle": "@",
             "type_accent_family": "Google_Dosis_600_sans",
             "type_base_family": "'HelveticaNeue', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'",
@@ -114,9 +131,44 @@
                     "name": "week"
                 },
                 {
+                    "intervalCount": 2,
+                    "interval": "weeks",
+                    "name": "weeks"
+                },
+                {
+                    "intervalCount": 3,
+                    "interval": "weeks",
+                    "name": "weeks"
+                },
+                {
                     "intervalCount": 1,
                     "interval": "months",
                     "name": "month"
+                },
+                {
+                    "intervalCount": 2,
+                    "interval": "months",
+                    "name": "months"
+                },
+                {
+                    "intervalCount": 3,
+                    "interval": "months",
+                    "name": "months"
+                },
+                {
+                    "intervalCount": 4,
+                    "interval": "months",
+                    "name": "months"
+                },
+                {
+                    "intervalCount": 5,
+                    "interval": "months",
+                    "name": "months"
+                },
+                {
+                    "intervalCount": 6,
+                    "interval": "months",
+                    "name": "months"
                 },
                 {
                     "intervalCount": 1,
@@ -124,13 +176,21 @@
                     "name": "year"
                 }
             ],
-            "footer_content_text": "Some footer content text",
             //Collect usage events for product recommendations
             "collect_user_events_enabled": false,
-            "available_lists": [
-                { "name": "shopping" },
-                { "name": "wish" }
-            ]
+            "lists": {
+                "default_list_type": "wishlist",
+                "default_lists": [
+                    {
+                        "name": "shopping",
+                        "type": "wishlist"
+                    },
+                    {
+                        "name": "wish",
+                        "type": "wishlist"
+                    }
+                ]
+            }
         }
     }
 }

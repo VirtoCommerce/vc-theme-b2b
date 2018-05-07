@@ -1,0 +1,35 @@
+﻿<nav class="navbar navbar-inverse navbar-fixed-top visible-xs-block visible-sm-block" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header" itemscope itemtype="http://schema.org/Organization">
+            {% include 'main/header/links/brand' %}
+        </div>
+        <ul class="nav navbar-nav navbar-right" ng-cloak>
+            <li ng-if="customer && !customer.isRegisteredUser">
+                {{ 'layout.customer.sign_in' | t | customer_login_link | replace: 'href', 'class="text-uppercase text-condensed" href' | replace: '">', '"><i class="fa fa-sign-in"></i>&ensp;' }}
+            </li>
+            <li>
+            </li>
+            <li class="dropdown" uib-dropdown ng-if="customer && customer.isRegisteredUser">
+                <a id="account-dropdown" class="text-uppercase text-condensed" href="" uib-dropdown-toggle><i class="fa fa-user"></i>&ensp;{{ 'layout.customer.account' | t }}&ensp;<i class="dropdown-ico fa fa-angle-down"></i></a>
+                <ul class="dropdown-menu dropdown-menu-left" role="menu" uib-dropdown-menu aria-labelledby="account-dropdown">
+                    <li>
+                        <a href="{{ 'account' | absolute_url }}">
+                            <i class="fa fa-user"></i>&ensp;{{ 'customer.account.title' | t }}
+                        </a>
+                    </li>
+                    <li>
+                        {{ 'layout.customer.log_out' | t | customer_logout_link | replace: '">', '"><i class="fa fa-sign-out"></i>&ensp;' }}
+                    </li>
+                </ul>
+            </li>
+            {% include 'main/header/shared/cart' %}
+        </ul>
+    </div>
+</nav>
+<nav class="navbar navbar-inverse-light navbar-fixed-top visible-xs-block visible-sm-block" role="navigation">
+    <div class="container-fluid">
+        <div class="row">
+            {% include 'shared/search-bar' %}
+        </div>
+    </div>
+</nav>

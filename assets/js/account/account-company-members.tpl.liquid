@@ -1,107 +1,87 @@
-﻿<ng-outlet ng-init=""></ng-outlet>
-
+<div class="col-md-8">
+    <ng-outlet ng-init=""></ng-outlet>
+</div>
 <script id="account-company-members-list.tpl" type="text/ng-template">
-	<div ng-init="init('{{ shop.id }}', '{{ current_language.culture_name }}', '{{ "/account/register" | absolute_url }}')">
-	  <h4>{{ 'customer.edit_company_members.title' | t }}</h4>
-	  <table class="full" ng-if="$ctrl.entries.length">
-		<thead>
-		  <tr>
-			<th>{{ 'customer.edit_company_members.name' | t }}</th>
-			<th>{{ 'customer.edit_company_members.email' | t }}</th>
-			<th>{{ 'customer.edit_company_members.job_title' | t }}</th>
-      <th>{{ 'customer.edit_company_members.role' | t }}</th>
-			<th>{{ 'customer.edit_company_members.status' | t }}</th>
-			<th>{{ 'customer.edit_company_members.actions' | t }}</th>
-		  </tr>
-		</thead>
-		<tbody>
-		  <tr ng-repeat="member in $ctrl.entries">
-			<td ng-bind="member.fullName"></td>
-			<td ng-bind="member.emails"></td>
-			<td ng-bind="member.title"></td>
-      <td ng-bind="member.role"></td>
-			<td ng-bind="member.isActive?'Active':'Not active'"></td>
-			<td>
-			  <span ng-show="$ctrl.showActions(member)">
-				  <a ng-if="member.firstName" ng-click="$ctrl.edit(member.id)" href="">Edit | </a>
-				  <a ng-click="$ctrl.delete(member.id)" href="">Delete</a>
-				  <a ng-if="member.firstName && member.isActive" ng-click="$ctrl.changeStatus(member.id)" href=""> | Deactivate</a>
-				  <a ng-if="member.firstName && !member.isActive" ng-click="$ctrl.changeStatus(member.id)" href=""> | Activate</a>
-			  </span>
-			</td>
-		  </tr>
-		</tbody>
-	  </table>
 
-	  <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
+        <div ng-init="init('{{ shop.id }}', '{{ current_language.culture_name }}', '{{ "/account/register" | absolute_url }}')">
+            <div class="page-header">
+                <h3>{{ 'customer.edit_company_members.title' | t }}</h3>
+            </div>
+            <table class="table" ng-if="$ctrl.entries.length">
+                <thead>
+                    <tr>
+                        <th>{{ 'customer.edit_company_members.name' | t }}</th>
+                        <th>{{ 'customer.edit_company_members.email' | t }}</th>
+                        <th>{{ 'customer.edit_company_members.role' | t }}</th>
+                        <th>Budget</th>
+                        <th>{{ 'customer.edit_company_members.status' | t }}</th>
+                        <th>{{ 'customer.edit_company_members.actions' | t }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="member in $ctrl.entries">
+                        <td ng-bind="member.userName"></td>
+                        <td ng-bind="member.email"></td>
+                        <td ng-bind="member.role.name"></td>
+                        <td ng-bind="member.salutation ? '$' + member.salutation : 'n/a'"></td>
+                        <td ng-bind="member.isLockedOut ?'Not active':'Active'"></td>
+                        <td>
+                            <span ng-show="$ctrl.showActions(member)">
+                                <a ng-if="member.firstName" ng-click="$ctrl.edit(member.id)" href="">Edit | </a>
+                                <a ng-click="$ctrl.delete(member)" href="">Delete</a>
+                                <a ng-click="$ctrl.changeStatus(member)" href="" ng-bind="member.isLockedOut ? '| Activate' : '| Deactivate'"></a>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
+        <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.edit_company_members.none' | t }}</p>
 
-	  <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.edit_company_members.none' | t }}</p>
+        <button va-permission="storefront:user:invite" ng-click="$ctrl.inviteInfo={}" ng-if="!$ctrl.newMember && !$ctrl.inviteInfo" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
+            <span class="btn-text">{{ 'customer.edit_company_member.invite.title' | t }}</span>
+            <span class="btn-loading"></span>
+        </button>
+        <div ng-if="$ctrl.inviteInfo">
+            <h3>{{ 'customer.edit_company_member.invite.title' | t }}</h3>
+            <vc-errors message="errorMessage" errors="errors"></vc-errors>
+            <form accept-charset="UTF8" name="inviteForm" ng-submit="$ctrl.invite()" novalidate="novalidate">
+                <!--<h5>{{ 'customer.edit_company_member.invite.emails_placeholder' | t }}</h5>-->
+                <vc-labeled-text-area name="inviteEmails" form="inviteForm" label="{{ 'customer.edit_company_member.invite.emails_title' | t }}" value="$ctrl.inviteInfo.rawEmails" required="true" pattern="$ctrl.inviteEmailsValidationPattern" autofocus="true"></vc-labeled-text-area>
+                <!--<h5>{{ 'customer.edit_company_member.invite.message_title' | t }}</h5>-->
+                <vc-labeled-text-area name="inviteMessage" form="inviteForm" label="{{ 'customer.edit_company_member.invite.message_title' | t }}" value="$ctrl.inviteInfo.message" required="false"></vc-labeled-text-area>
+                <button ng-click="$ctrl.cancel()" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
+                    <span class="btn-text">{{ 'customer.edit_company_member.cancel' | t }}</span>
+                    <span class="btn-loading"></span>
+                </button>
+                <button ng-disabled="$ctrl.loader.isLoading" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }">
+                    <span class="btn-text">{{ 'customer.edit_company_member.invite.submit' | t }}</span>
+                    <span class="btn-loading"></span>
+                </button>
+            </form>
+        </div>
 
-	  <button ng-click="$ctrl.inviteInfo={}" ng-if="!$ctrl.newMember && !$ctrl.inviteInfo" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
-		<span class="btn-text">{{ 'customer.edit_company_member.invite.title' | t }}</span>
-		<span class="btn-loading"></span>
-	  </button>
-	  <div ng-if="$ctrl.inviteInfo">
-			<h3>{{ 'customer.edit_company_member.invite.title' | t }}</h3>
-			<vc-errors message="errorMessage" errors="errors"></vc-errors>
-			<form accept-charset="UTF8" name="inviteForm" ng-submit="$ctrl.invite()" novalidate="novalidate">
-				<h5>{{ 'customer.edit_company_member.invite.emails_title' | t }}</h5>
-				<vc-labeled-text-area name="inviteEmails" form="inviteForm" label="{{ 'customer.edit_company_member.invite.emails_placeholder' | t }}" value="$ctrl.inviteInfo.rawEmails" required="true" pattern="$ctrl.inviteEmailsValidationPattern" autofocus="true"></vc-labeled-text-area>
-				<h5>{{ 'customer.edit_company_member.invite.message_title' | t }}</h5>
-				<vc-labeled-text-area name="inviteMessage" form="inviteForm" label="{{ 'customer.edit_company_member.invite.message_placeholder' | t }}" value="$ctrl.inviteInfo.message" required="false"></vc-labeled-text-area>
-				<button ng-click="$ctrl.cancel()" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
-					<span class="btn-text">{{ 'customer.edit_company_member.cancel' | t }}</span>
-					<span class="btn-loading"></span>
-				</button>
-				<button ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }">
-					<span class="btn-text">{{ 'customer.edit_company_member.invite.submit' | t }}</span>
-					<span class="btn-loading"></span>
-				</button>
-			</form>
-	  </div>
-    
-	  <button ng-click="$ctrl.newMember={}" ng-if="!$ctrl.newMember && !$ctrl.inviteInfo" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
-		<span class="btn-text">{{ 'customer.edit_company_member.add_new' | t }}</span>
-		<span class="btn-loading"></span>
-	  </button>
-	  <div ng-if="$ctrl.newMember">
-			<div class="one-whole">
-				<h2>{{ 'customer.edit_company_member.add_new' | t }}</h2>
-				<vc-errors message="errorMessage" errors="errors"></vc-errors>
-				<vc-member-detail member="$ctrl.newMember" member-component="$ctrl.newMemberComponent" fields-config="$ctrl.addNewMemberFieldsConfig"></vc-member-detail>
-			</div>
-			<div class="one-whole">
-				<button ng-click="$ctrl.cancel()" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
-				<span class="btn-text">{{ 'customer.edit_company_member.cancel' | t }}</span>
-				<span class="btn-loading"></span>
-				</button>
-				<span class="form-spacer"></span>
-				<button ng-click="$ctrl.addNewMember()" ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
-				<span class="btn-text">{{ 'customer.edit_company_member.add' | t }}</span>
-				<span class="btn-loading"></span>
-				</button>
-			</div>
-	  </div>
-	</script>
-
-	<script id="account-company-members-detail.tpl" type="text/ng-template">
-	  <p>
-		<a ng-link="['MemberList', {pageNumber: $ctrl.pageNumber}]">
-		  <span class="fa fa-arrow-left"></span> {{ 'customer.edit_company_member.return_text' | t }}
-		</a>
-	  </p>
-
-	  <div class="one-whole" ng-init="init('{{ shop.id }}')">
-		<h4>{{ 'customer.edit_company_member.title' | t }}</h4>
-
-		<div ng-show="$ctrl.member">
-			<vc-member-detail member="$ctrl.member" member-component="$ctrl.memberComponent" fields-config="$ctrl.fieldsConfig"></vc-member-detail>
-		</div>
-
-		<button ng-click="$ctrl.submitMember()" ng-disabled="$ctrl.loader.isLoading" class="vc-btn" ng-class="{ 'loading': $ctrl.loader.isLoading }">
-		  <span class="btn-text">{{ 'customer.edit_company_member.btn_update' | t }}</span>
-		  <span class="btn-loading"></span>
-		</button>
-	  </div>
-	</div>
+        <button va-permission="storefront:user:create" ng-click="$ctrl.newMember={}" ng-if="!$ctrl.newMember && !$ctrl.inviteInfo" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
+            <span class="btn-text">{{ 'customer.edit_company_member.add_new' | t }}</span>
+            <span class="btn-loading"></span>
+        </button>
+        <div ng-if="$ctrl.newMember">
+            <div class="one-whole">
+                <h2>{{ 'customer.edit_company_member.add_new' | t }}</h2>
+                <vc-errors message="$ctrl.errorMessage" errors="$ctrl.errors"></vc-errors>
+                <vc-member-detail member="$ctrl.newMember" member-component="$ctrl.newMemberComponent" fields-config="$ctrl.addNewMemberFieldsConfig"></vc-member-detail>
+            </div>
+            <div class="one-whole">
+                <button ng-click="$ctrl.cancel()" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
+                    <span class="btn-text">{{ 'customer.edit_company_member.cancel' | t }}</span>
+                    <span class="btn-loading"></span>
+                </button>
+                <span class="form-spacer"></span>
+                <button ng-click="$ctrl.addNewMember()" ng-disabled="$ctrl.loader.isLoading" class="btn btn-primary" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
+                    <span class="btn-text">{{ 'customer.edit_company_member.add' | t }}</span>
+                    <span class="btn-loading"></span>
+                </button>
+            </div>
+        </div>
 </script>

@@ -1,0 +1,16 @@
+﻿{% assign collection_size = collection | size %}
+{% assign row_count = collection_size | divided_by: column_count %}
+{% assign last_column_incomplete = collection_size | modulo: column_count %}
+{% if last_column_incomplete != 0 %}
+    {% assign row_count = row_count | plus: 1 %}
+{% endif %}
+{% assign last_row_index = row_count | minus: 1 %}
+{% assign index_mod = forloop.index0 | modulo: row_count %}
+{% assign should_start_column = false %}
+{% assign should_end_column = false %}
+{% if index_mod == 0 %}
+    {% assign should_start_column = true %}
+{% endif %}
+{% if index_mod == last_row_index or forloop.last %}
+    {% assign should_end_column = true %}
+{% endif %}

@@ -1,0 +1,37 @@
+.loader {
+  background: rgba(0,0,0,.5);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 5000;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+
+  .indicator {
+    border-color: #fff #fff #fff transparent;
+    border-style: solid;
+    border-width: 6px;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    -webkit-animation: spinner 1s linear infinite;
+    animation: spinner 1s linear infinite;
+  }
+}
+
+@-webkit-keyframes spinner {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner {
+  100% {
+    transform: rotate(360deg);
+  }
+}

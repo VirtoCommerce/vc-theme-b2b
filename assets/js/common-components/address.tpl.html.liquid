@@ -1,80 +1,94 @@
-﻿<form accept-charset="UTF8" name="addrForm" novalidate="novalidate" ng-if="$ctrl.editMode">
-    <div class="form-fieldset" ng-init="$ctrl.setForm(addrForm)">
-        <div class="form-group form-select" ng-class="{'keyuped': addrForm.Addresses.$modelValue }" ng-if="$ctrl.addresses.length">
-            <label for="#" class="form-label">{{ 'checkout.address.selected_address' | t }}</label>
-            <select ng-model="$ctrl.address" ng-options="x as x.name for x in $ctrl.addresses" name="Addresses" class="form-input" size="1">
-                <option value="">{{ 'checkout.shipping_address_select_placeholder' | t }}</option>
-            </select>
-        </div>
+<form accept-charset="UTF8" name="addrForm" novalidate="novalidate" ng-if="$ctrl.editMode">
+    <div class="form-group" ng-init="$ctrl.setForm(addrForm)">
 
-      <div class="form-group form-select" ng-class="{'error': $ctrl.form.$submitted && $ctrl.form.Type.$invalid }">
-            <label for="#" class="form-label">{{ 'checkout.address.type' | t }}</label>
-            <select ng-model="$ctrl.address.addressType" ng-options="c.id as c.name for c in $ctrl.types" required="required" name="Type" class="form-input" size="1">
-              <option value="">{{ 'checkout.address.type' | t }}</option>
-            </select>
-        </div>
         <p class="form-error" ng-if="$ctrl.form.$submitted && $ctrl.form.Type.$error.required">
             {{ 'checkout.address.required_type' | t }}
         </p>
-
         <div class="form-group">
-            <div class="cols">
-                <div class="col col-50">
-                    <vc-labeled-input value="$ctrl.address.firstName" name="FirstName" placeholder="{{ 'checkout.address.first_name' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
+            <div class="row">
+                <div class="col-md-6">
+                    <input ng-model="$ctrl.address.firstName" class="form-control" name="firstName" type="text" required placeholder="{{ 'checkout.address.first_name' | t }}" />
+                    <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.firstName.$error.required">{{ 'common.required' | t }}</span>
                 </div>
-                <div class="col col-50">
-                    <vc-labeled-input value="$ctrl.address.lastName" name="LastName" placeholder="{{ 'checkout.address.last_name' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
+                <div class="col-md-6">
+                    <input ng-model="$ctrl.address.lastName" class="form-control" name="lastName" type="text" required placeholder="{{ 'checkout.address.last_name' | t }}" />
+                    <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.lastName.$error.required">{{ 'common.required' | t }}</span>
                 </div>
             </div>
         </div>
 
-        <vc-labeled-input value="$ctrl.address.organization" name="Organization" placeholder="{{ 'checkout.address.company' | t }}" form="$ctrl.form"></vc-labeled-input>
-
         <div class="form-group">
-            <div class="cols">
-                <div class="col col-66">
-                    <vc-labeled-input value="$ctrl.address.line1" name="Line1" placeholder="{{ 'checkout.address.address1' | t }}" form="$ctrl.form" required="true" required-error="{{ 'checkout.address1_required_message' | t }}"></vc-labeled-input>
+            <div class="row">
+                <div class="col-md-6">
+                    <input class="form-control" ng-model="$ctrl.address.line1" name="line1" type="text" required placeholder="{{ 'checkout.address.address1' | t }}" />
+                    <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.line1.$error.required">{{ 'common.required' | t }}</span>
                 </div>
-                <div class="col col-33">
-                    <vc-labeled-input value="$ctrl.address.line2" name="Line2" placeholder="{{ 'checkout.address.address2' | t }}" form="$ctrl.form"></vc-labeled-input>
+                <div class="col-md-6">
+                    <input class="form-control" ng-model="$ctrl.address.line2" name="line2" type="text" placeholder="{{ 'checkout.address.address2' | t }}" />
                 </div>
             </div>
         </div>
-
-        <vc-labeled-input value="$ctrl.address.city" name="City" placeholder="{{ 'checkout.address.city' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
-
         <div class="form-group">
-            <div class="cols">
-                <div class="col" ng-class="{ 'col-50': !$ctrl.address.country.regions.length, 'col-33': $ctrl.address.country.regions.length }">
-                    <div class="form-group form-select" ng-class="{'keyuped': $ctrl.form.Country.$modelValue, 'error': $ctrl.form.$submitted && $ctrl.form.Country.$invalid }">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-select">
                         <label for="#" class="form-label">{{ 'checkout.address.country' | t }}</label>
-                        <select ng-model="$ctrl.address.countryCode" ng-options="x.code3 as x.name for x in $ctrl.countries" name="Country" required="required" class="form-input" size="1">
+                        <select ng-model="$ctrl.address.countryCode" ng-options="x.code3 as x.name for x in $ctrl.countries" name="countryCode" required class="form-control" size="1">
                             <option value="">{{ 'checkout.address.country_select_placeholder' | t }}</option>
                         </select>
+                        <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.countryCode.$error.required">{{ 'checkout.country_required_message' | t }}</span>
                     </div>
-                    <p class="form-error" ng-if="$ctrl.form.$submitted && $ctrl.form.Country.$error.required">
-                        {{ 'checkout.country_required_message' | t }}
-                    </p>
                 </div>
-
-                <div class="col col-33" ng-if="$ctrl.address.country.regions.length">
-                    <div class="form-group form-select" ng-class="{'keyuped': $ctrl.address.regionId.length, 'error': $ctrl.form.$submitted && $ctrl.form.Region.$invalid }">
-                        <label for="#" class="form-label" ng-bind="$ctrl.address.country.regionType"></label>
-                        <select ng-model="$ctrl.address.regionId" ng-options="x.code as x.name for x in $ctrl.address.country.regions" name="Region" required="required" class="form-input" size="1">
+                <div class="col-md-6" ng-if="$ctrl.address.country.regions.length">
+                    <div class="form-group form-select">
+                        <label for="#" class="form-label" ng-bind="'{{ 'customer.register.work-region' | t }}' + $ctrl.address.country.regionType"></label>
+                        <select ng-model="$ctrl.address.regionId" ng-options="x.code as x.name for x in $ctrl.address.country.regions" name="region" required class="form-control" size="1">
                             <option value="" ng-bind="'Select ' + $ctrl.address.country.regionType"></option>
                         </select>
+                        <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.region.$error.required" ng-bind="'Please select ' + $ctrl.address.country.regionType"></span>
                     </div>
-                    <p class="form-error" ng-if="$ctrl.form.$submitted && $ctrl.form.Region.$error.required" ng-bind="'Please select ' + $ctrl.address.country.regionType"></p>
-                </div>
-
-                <div class="col" ng-class="{ 'col-50': !$ctrl.address.country.regions.length, 'col-33': $ctrl.address.country.regions.length }">
-                    <vc-labeled-input value="$ctrl.address.postalCode" name="PostalCode" placeholder="{{ 'checkout.address.zip' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
                 </div>
             </div>
         </div>
-
-        <vc-labeled-input value="$ctrl.address.phone" name="Phone" placeholder="{{ 'checkout.address.phone' | t }}" form="$ctrl.form"></vc-labeled-input>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <input class="form-control" ng-model="$ctrl.address.postalCode" name="postalCode" required pattern="\d{4,32}" placeholder="{{ 'checkout.address.zip' | t }}" />
+                    <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.postalCode.$error.required">{{ 'common.required' | t }}</span>
+                    <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.postalCode.$error.pattern">{{ 'common.invalid' | t }}</span>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" ng-model="$ctrl.address.city" name="city" type="text" required placeholder="{{ 'customer.addresses.city' | t }}" />
+                    <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.city.$error.required">{{ 'common.required' | t }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <input ng-model="$ctrl.address.email" class="form-control" name="email" type="email" required placeholder="{{ 'customer.register.email-work' | t }}" />
+                    <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.email.$error.required">{{ 'common.required' | t }}</span>
+                    <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.email.$error.email">{{ 'common.invalid' | t }}</span>
+                </div>
+                <div class="col-md-6">
+                    <input class="form-control" ng-model="$ctrl.address.address.phone" name="phone" type="tel" ng-pattern="/^[0-9]{1,12}$/" placeholder="{{ 'customer.register.phone' | t }}" />
+                    <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.phone.$error.required">{{ 'common.required' | t }}</span>
+                    <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.phone.$error.pattern">{{ 'common.invalid' | t }}</span>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
 
-<div ng-if="!$ctrl.editMode" ng-bind="$ctrl.address.name"></div>
+<address ng-if="!$ctrl.editMode">
+    <ng-transclude ng-transclude-slot="header"></ng-transclude>
+    <div class="h5" ng-if="$ctrl.address.firstName || $ctrl.address.lastName || $ctrl.address.organization">
+        <span ng-if="$ctrl.address.firstName" ng-bind="$ctrl.address.firstName"></span> <span ng-if="$ctrl.address.lastName" ng-bind="$ctrl.address.lastName"></span>
+        <span ng-if="organization"><small ng-bind="$ctrl.address.organization"></small></span>
+    </div>
+    <span ng-bind="$ctrl.address.line1"></span><span ng-if="$ctrl.address.line2">, <span ng-bind="$ctrl.address.line2"></span></span>
+    <span ng-bind="$ctrl.address.city"></span>, <span ng-bind="$ctrl.address.regionName"></span>, <span ng-bind="$ctrl.address.countryCode"></span> <span ng-bind="$ctrl.address.postalCode"></span><br>
+    <span ng-if="$ctrl.address.phone"><strong>{{ 'customer.addresses.phone' | t }}:</strong>&nbsp;<span ng-bind="$ctrl.address.phone"></span><br></span>
+    <span ng-if="$ctrl.address.email"><strong>{{ 'customer.addresses.email' | t }}:</strong>&nbsp;<span ng-bind="$ctrl.address.email"></span><br></span>
+    <ng-transclude ng-transclude-slot="footer"></ng-transclude>
+</address>

@@ -1,4 +1,17 @@
 {
+    "totals": {
+        "subtotal": "Subtotal",
+        "shipping": "Shipping",
+        "paymentFees": "Payment fees",
+        "taxes": "Tax",
+        "discount": "Discount",
+        "total": "Total",
+        "estimated": "Estimated",
+        "withTax": "(inc VAT)",
+        "free": "Free",
+        "estimated_fields": "Availability, shipping, tax & promotions",
+        "estimated_notice": "are not final until you complete your order."
+    },
     "tags": {
         "price": {
             "label": "Price"
@@ -17,22 +30,15 @@
     "common": {
         "required": "Required",
         "invalid": "Invalid",
+        "more": "More",
+        "go": "Go",
         "not_match": "Confirm password does not match the password"
     },
     "checkout": {
         "title": "Checkout",
         "description": "Description",
         "price": "Price",
-        "discount": "Discount",
         "apply": "Apply",
-        "subtotal": "Subtotal",
-        "subtotalWithTax": "Subtotal (Inc VAT)",
-        "shipping": "Shipping",
-        "shippingWithTax": "Shipping (Inc VAT)",
-        "paymentFees": "Payment fees",
-        "paymentFeesWithTax": "Payment fees (Inc VAT)",
-        "taxes": "Taxes",
-        "total": "Total",
         "cart": "Cart",
         "remove": "Remove",
         "coupon_code": "Coupon code",
@@ -62,6 +68,12 @@
         "invalid_bank_card_expiration_date_message": "Please enter valid expiration date of your bank card in MM / YY format",
         "bank_card_cvv_required_message": "Please enter verification code of your bank card",
         "invalid_bank_card_cvv_message": "Please enter correct verification code of your bank card",
+        "order_successfully": "Order <strong class=\"text-uppercase\" >{{ number }}</strong> has successfully been submitted. You will be sent an email notification as soon as your order is ready.",
+        "order-print": "Print order",
+        "order-summary": "Order summary",
+        "pickup-address": "Pickup address",
+        "payment-method": "Payment method",
+        "purchased-products": "My purchased products",
         "mobile": {
             "show_order_summary": "Show order summary",
             "hide_order_summary": "Hide order summary"
@@ -132,7 +144,7 @@
         "month_day_year": "%b %d, %Y"
     },
     "notification": {
-        "error_title": "Ooops! An error is occured!",
+        "error_title": "Ooops! An error has occurred!",
         "error_message": "Please tell us technical details for this error and we will be better!",
         "show_error_details_link_text": "Show me the technical details!",
         "hide_error_details_link_text": "Hide the technical details",
@@ -150,7 +162,7 @@
         },
         "breadcrumbs": {
             "home": "Home",
-            "home_link_title": "Back to the frontpage"
+            "home_link_title": "Back to frontpage"
         },
         "forms": {
             "post_error": "Sorry, looks like something went wrong. Please correct the following and submit again:",
@@ -162,7 +174,17 @@
             "title": "Search for products on our site"
         }
     },
+    "inventory": {
+        "select_branch": {
+            "title": "Select branch",
+            "enter_search_phrase": "Enter a full address, city, state, country, ZIP code or branch name:",
+            "close": "Close branch selection"
+        }
+    },
     "blogs": {
+        "featured": {
+            "learn_more": "Learn more"
+        },
         "article": {
             "author_on_date_html": "Posted by {{ author }} on {{ date }}",
             "older_post": "Older Post",
@@ -190,6 +212,11 @@
         "sidebar": {
             "recent_articles": "Recent Articles",
             "categories": "Categories"
+        },
+        "newsletter": {
+            "message": "Your connection to what's new at {{ shop.name }}. <br><strong>Sign Up Now!</strong>",
+            "sign_up": "Sign Up",
+            "email_placeholder": "Email Address"
         }
     },
     "cart": {
@@ -197,19 +224,23 @@
             "title": "Shopping Cart",
             "remove": "Remove",
             "note": "Special instructions for seller",
-            "subtotal": "Items total",
-            "subtotalWithTax": "Items total (Inc VAT)",
+            "price": "Price",
+            "quantity": "Quantity",
+            "subtotal": "Subtotal",
+            "subtotalWithTax": "Subtotal (inc VAT)",
             "total": "Total",
             "discounts_total": "Discounts total",
             "update": "Update cart",
             "updating_cart_message": "Updating cart...",
             "loading_cart_message": "Loading cart...",
-            "updating_cart_error_message": "An error occured while updating cart",
-            "checkout": "Checkout",
+            "updating_cart_error_message": "An error has occurred while updating the cart",
+            "checkout": "Proceed to checkout",
             "empty": "Your cart is currently empty.",
             "adding": "Adding product to cart...",
-            "continue_browsing_html": "Continue browsing <a href=\"collections\">here</a>.",
             "or": "or",
+            "added_to_cart": "product(s) is added to cart",
+            "products_in_cart": "You have {{ cartItemsCount }} product(s) in your shopping cart.",
+            "continue_shopping": "Continue shopping",
             "view_cart": "View Cart",
             "close_cart": "Close Cart",
             "quick_add_description": "You can quickly add a product to cart by entering its SKU or name in the field below",
@@ -222,8 +253,16 @@
     },
     "wishlist": {
         "general": {
-            "title": "Your lists",
+            "title": "Private lists",
+            "friends_lists": "Friends lists",
+            "select_list": "Please select list",
             "remove": "Remove",
+            "settings": "Lists settings",
+            "create": "Create list",
+            "public_list": "Public",
+            "add_all_products": "Add all products",
+            "emptyData": "No lists defined",
+            "copy_message": "Congratulations! Now you can copy link and share your list with friends",
             "update": "Update list",
             "add": "Add",
             "updating_wishlist_message": "Updating list...",
@@ -231,12 +270,12 @@
             "empty": "Your list is currently empty.",
             "continue_browsing_html": "Continue browsing <a href=\"collections\">here</a>.",
             "list_not_selected": "Please select a list",
-            "wish_list_title": "Wish List",
+            "wish_list_title": "Wish list",
             "wish_list_description": "Add items you like",
-            "shopping_list_title": "Shopping List",
+            "shopping_list_title": "Shopping list",
             "shopping_list_description": "Add items you want to shop for",
             "continue_shopping": "Continue shopping",
-            "view_your_list": "View Your List",
+            "view_your_list": "View your list",
             "list_contains": "Item already in the list",
             "cancel": "Cancel",
             "add_to_list": "Add to list",
@@ -267,19 +306,31 @@
     },
     "bulk_order": {
         "general": {
-            "title": "Bulk Order",
-            "description": "Quickly add items to your cart by entering item SKUs and quantities.",
+            "title": "Bulk Order Pad",
+            "description": "Quickly add items to your <a href=\"{{url}}\">{{text}}</a> by entering item SKUs and quantities.",
+            "subtitle": "Manually",
             "sku_field_header": "Product SKU",
             "quantity_field_header": "Quantity",
             "add_new_record": "Add a new record",
             "add_to_cart": "Add to cart",
-            "csv_description": "Want to save time and order faster? Simply copy and paste item records from your CSV file into the field below using the following format: SKU,Quantity. Each record should starts from a new line.",
-            "csv_field_placeholder": "Formatting example: 6AF8SM0VPFV6,10",
+            "csv_title": "Copy & paste",
+            "csv_subtitle": "Want to save time and order faster?",
+            "csv_subdescription": "Simply copy and paste item records from your CSV file into the field below using the following format: <strong>SKU,Quantity</strong>. Each record should starts from a new line.",
+            "csv_description": "SKU [COMMA] Quantity<br>SKU [COMMA] Quantity",
+            "csv_field_placeholder": "Formatting example:\r\n6AF8SM0VPFV6,10\r\n3RO1GEQI34E8,20",
             "items_not_found_message": "Products with following SKUs was not added to cart:"
         }
     },
     "collections": {
         "general": {
+            "about_category": "About this category",
+            "products_count": "{{ all_results_count }} results found. {{ displayed_results_count }} displayed that include {{ products_count }} products.",
+            "grid_view": "Grid",
+            "list_view": "List",
+            "products_per_page": "Results per page:",
+            "availability": "Branch availability",
+            "select_branch_title": "Select a pickup branch",
+            "select_branch_description": "to see products in stock now.",
             "no_matches": "Sorry, there are no products matching your search.",
             "link_title": "Browse our {{ title }} collection",
             "items_with_count": {
@@ -291,13 +342,15 @@
         "sidebar": {
             "dashboard": "Dashboard",
             "filters": "Filters",
+            "filter_by": "Filter results by",
+            "search_within": "Search within these results",
             "shop_by": "Shop By",
             "all": "All",
             "all_collection": "All {{ collection_title }}",
             "no_tags": "Add tags to your products for this list to build itself."
         },
         "sorting": {
-            "title": "Sort by",
+            "title": "Sort results by:",
             "featured": "Featured",
             "best_selling": "Best Selling",
             "az": "Alphabetically, A-Z",
@@ -306,6 +359,9 @@
             "price_descending": "Price, high to low",
             "date_descending": "Date, new to old",
             "date_ascending": "Date, old to new"
+        },
+        "filters": {
+            "applied_filters": "Applied filters"
         }
     },
     "contact": {
@@ -324,6 +380,7 @@
             "corporate": "Corporate",
             "details": "Account Details",
             "return": "Return to Account Details",
+            "specials": "Special order quotes",
             "menu_label": {
                 "orders": "Orders",
                 "subscriptions": "Subscriptions",
@@ -359,6 +416,7 @@
             "province": "Province",
             "zip": "Postal/Zip Code",
             "phone": "Phone",
+            "email": "Email",
             "set_default": "Set as default address?",
             "add": "Add Address",
             "update": "Update Address",
@@ -368,8 +426,8 @@
             "delete_confirm": "Are you sure you wish to delete this address?",
             "no_addresses_message": "You have no addresses yet."
         },
-        "login": {
-            "title": "Login",
+        "sign-in": {
+            "title": "Sign in",
             "email": "Email",
             "user_name": "User Name",
             "password": "Password",
@@ -379,7 +437,15 @@
             "or": "or",
             "cancel": "Return to Store",
             "guest_title": "Continue as a guest",
-            "guest_continue": "Let's go"
+            "guest_continue": "Let's go",
+            "registration_title": "Register with {{ shop.name }}",
+            "registration_advantages_title": "When you become a registered user on {{shop.url}} you can:",
+            "registration_advantages": [
+                "Take advantage of faster ordering options",
+                "Save favorite items to personal lists",
+                "View your customized account information",
+                "Track your order status and order history"
+            ]
         },
         "roles": {
             "placeholder": "Role",
@@ -408,6 +474,7 @@
             "billing_address": "Billing Address",
             "payment_status": "Payment Status",
             "new_payment": "Pay",
+            "reorder": "Reorder",
             "shipping_address": "Shipping Address",
             "subscription": "Subscription",
             "subscription_comment": "This order was generated by subscription",
@@ -435,6 +502,9 @@
         "order_payment": {
             "cancel": "Cancel payment",
             "submit": "Confirm payment"
+        },
+        "invoices": {
+            "title": "Invoice history"
         },
         "subscriptions": {
             "title": "My subscriptions",
@@ -515,18 +585,31 @@
             "submit": "Reset Password"
         },
         "register": {
-            "title": "Create Account",
-            "company_name": "Company Name",
+            "step-personal": "Provide Your Registration Information",
+            "step-address": "Provide Your Address",
+            "step-account": "Complete Your Registration",
+            "company_name": "Organization Name",
             "first_name": "First Name",
             "last_name": "Last Name",
-            "job_title": "Title",
+            "email-work": "Work Email",
             "email": "Email",
+            "phone": "Phone",
+            "account-number": "Account Number (optional)",
+            "work-country": "Work country",
+            "work-region": "Work ",
+            "work-address1": "Street Address",
+            "address1": "Street Address",
+            "work-address2": "Floor / Unit / Suite # (optional)",
+            "address2": "Floor / Unit / Suite # (optional)",
+            "job_title": "Title",
             "user_name": "User Name",
             "password": "Password",
             "confirm_password": "Confirm Password",
             "submit": "Create",
             "or": "or",
             "cancel": "Return to Store",
+            "password-length": "At least 5 characters required!",
+            "repeat-password": "Passwords doesn't match!",
             "registration_success_text": "Registration completed successfully",
             "registration_failed_text": "Registration failed",
             "registration_invite_revoked_text": "Your invitation is revoked",
@@ -559,11 +642,11 @@
             "title": "Edit company info",
             "company_name": "Company name",
             "company_addresses": "Company Addresses",
-            "no_addresses_message": "Company have no addresses yet."
+            "no_addresses_message": "Company has no addresses yet."
         },
         "edit_company_members": {
             "title": "Company members",
-            "none": "There is no any members yet.",
+            "none": "There is no members yet.",
             "name": "Name",
             "job_title": "Title",
             "email": "Email",
@@ -585,15 +668,29 @@
             "btn_update": "Update",
             "invite": {
                 "title": "Invite members",
-                "emails_title": "Enter email addresses",
-                "emails_placeholder": "Enter emails addresses for the persons you wish to invite. Use commas, semicolons or carriage returns to separate multiple entires.",
-                "message_title": "Email invitation message",
-                "message_placeholder": "Each person you wish to invite will receive an email with instructions. Customize the email with optional message.",
+                "emails_placeholder": "Enter email addresses",
+                "emails_title": "Enter email addresses of the persons you wish to invite. Use commas, semicolons or carriage returns to separate multiple entries",
+                "message_placeholder": "Person invitation message",
+                "message_title": "Each person you wish to invite will receive an email with instructions. Customize the email with optional message",
                 "submit": "Invite"
             },
             "add_new": "Add new member",
             "add": "Add",
             "cancel": "Cancel"
+        },
+        "lists": {
+            "title": "Lists"
+        },
+        "invite": {
+            "title": "Activate account",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "email": "Email",
+            "user_name": "User Name",
+            "password": "Password",
+            "confirm_password": "Confirm Password",
+            "submit": "Activate",
+            "confirmation": "Account successfully activated"
         }
     },
     "homepage": {
@@ -615,6 +712,19 @@
         }
     },
     "layout": {
+        "general": {
+            "close": "Close",
+            "clear_all": "Clear all"
+        },
+        "clear_all": "Clear all",
+        "header": {
+            "newsletter": "Sign up for email",
+            "feedback": "Feedback",
+            "help": "Help"
+        },
+        "products": {
+            "products": "All products"
+        },
         "cart": {
             "cart": "Cart"
         },
@@ -622,14 +732,16 @@
             "quotes": "Quotes"
         },
         "customer": {
-            "view_account": "View Account",
+            "account": "Account",
+            "view_account": "Go to my account",
             "logged_in_as_html": "Logged in as {{ first_name }}",
             "logged_in_as_label": "Logged in as",
             "logged_in_on_behalf_of_html": "Logged in on behalf of {{ first_name }}",
             "logged_in_on_behalf_of_label": "Logged in on behalf of",
             "log_out": "Log out",
             "sign_in": "Sign in",
-            "create_account": "Create an Account",
+            "register": "Register",
+            "register_now": "Register now",
             "or": "or"
         },
         "navigation": {
@@ -637,7 +749,7 @@
             "mobile_menu": "Menu"
         },
         "search_bar": {
-            "placeholder": "Search all products...",
+            "placeholder": "Enter keyword, item, model or replacement part number.",
             "submit": "Search"
         },
         "footer": {
@@ -647,9 +759,15 @@
             "quick_links": "Quick Links",
             "get_in_touch": "Get In Touch",
             "store_on_social_network": "{{ store_name }} on {{ social_network }}",
-            "newsletter_title": "Newsletter",
-            "newsletter_sign_up": "Sign Up",
-            "newsletter_email_placeholder": "Email Address"
+            "company_information": "Company information",
+            "customer_support": "Customer support",
+            "order_support": "Order support",
+            "resources": "Online resources",
+            "services": "Services",
+            "mobile_apps_title": "Check it out! We're mobile!",
+            "mobile_apps_message": "<strong>Anytime. Anywhere.</strong> <br>{{ store.name }} helps you get it done.",
+            "newsletter_title": "Let's Stick Together",
+            "call_us": "Questions? Call us"
         }
     },
     "products": {
@@ -659,18 +777,22 @@
             "share_on_pinterest": "Pin it",
             "share_on_fancy": "Fancy",
             "related_products": "We Also Recommend",
-            "save_html": "Save {{ saved_amount }}",
             "add_to_cart": "Add to cart",
             "add_to_quote": "Add to quote"
         },
         "product": {
             "sold_out": "Sold Out",
             "unavailable": "Unavailable",
+            "sku": "Item #",
+            "mmn": "Mfr. model #",
             "only_left": "Only {{ count }} left!",
             "quantity": "Quantity",
-            "add_to_cart": "Add to Cart",
             "details_tab": "Product details",
             "sign_in_to_see_price": "Sign in to see the price"
+        },
+        "price": {
+            "public": "Web price",
+            "private": "Your price"
         },
         "compare_list": {
             "add_to_compare": "Add to compare",

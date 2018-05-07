@@ -1,0 +1,17 @@
+﻿<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
+<!-- {% include 'google-fonts' %} -->
+
+{{ 'bundle/styles.css' | static_asset_url | append_version | stylesheet_tag }}
+{{ 'bundle/styles.scss.css' | static_asset_url | append_version | stylesheet_tag }}
+
+{{ content_for_header }}
+
+{% include 'oldIE-js' %}
+
+{{ 'bundle/dependencies.js' | static_asset_url | append_version | script_tag }}
+{{ 'consts.js' | asset_url | script_tag }}
+{{ 'bundle/scripts.js' | static_asset_url | append_version | script_tag }}
+
+{{ 'shop.js' | asset_url | script_tag }}
+{{ 'shopify_common.js' | asset_url | script_tag }}
+{{ 'customer_area.js'  | asset_url | script_tag }}

@@ -13,6 +13,9 @@ storefrontApp.component('vcAddress', {
     require: {
         checkoutStep: '?^vcCheckoutWizardStep'
     },
+    transclude: {
+        header: '?addressHeader', footer: '?addressFooter'
+    },
     controller: ['$scope', function ($scope) {
         var ctrl = this;
         ctrl.types = [{ id: 'Billing', name: 'Billing' }, { id: 'Shipping', name: 'Shipping' }, { id: 'BillingAndShipping', name: 'Billing and Shipping' }];

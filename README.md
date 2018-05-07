@@ -76,6 +76,9 @@ You need install:
     npm install gulp -g
     ```
 
+### Node.js starting from 8.0
+Execute the following command: `npm install --global --production windows-build-tools`
+
 ## Liquid reference
 
 Liquid is the templating engine that powers Virto Commerce templates. Go to [Liquid documentation](https://virtocommerce.com/docs/vc2devguide/working-with-storefront/theme-development/liquid-reference).

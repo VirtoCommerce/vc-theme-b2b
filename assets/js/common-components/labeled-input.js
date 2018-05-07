@@ -6,11 +6,13 @@
         value: '=',
         form: '=',
         name: '@',
+        inputClass: '<',
         placeholder: '@',
         type: '@?',
         required: '<',
         requiredError: '@?',
         autofocus: '<',
+        pattern: '@',
         disabled: '<'
     },
     controller: [function () {

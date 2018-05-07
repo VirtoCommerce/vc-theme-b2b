@@ -1,0 +1,21 @@
+.table {
+  > caption {
+    border-top: solid 1px $gray-light;
+    border-bottom: solid 1px $gray-light;
+
+    ul, ol {
+      margin-bottom: 0;
+    }
+  }
+
+  > thead > tr,
+  > tbody > tr,
+  > tfoot > tr {
+    > td.active,
+    > th.active,
+    &.active > td,
+    &.active > th {
+      color: $text-contrast;
+    }
+  }
+}

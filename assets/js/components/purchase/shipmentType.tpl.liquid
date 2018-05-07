@@ -1,0 +1,52 @@
+<div ng-if="$ctrl.isDropdown" class="ship-pickup dropdown" uib-dropdown is-open="$ctrl.isOpen" auto-close="disabled">
+    <a class="dropdown" href="" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+        {% raw %}{{ $ctrl.title }}{% endraw %}
+        <i class="fa fa-angle-down"></i>
+    </a>
+    <p>
+        {% raw %}{{ $ctrl.subtitle }}{% endraw %}
+    </p>
+    <div class="dropdown-menu" uib-dropdown-menu ng-include="'shipping-type.tpl'"></div>
+</div>
+<div ng-if="!$ctrl.isDropdown" class="ship-pickup" ng-include="'shipping-type.tpl'"></div>
+<script id="shipping-type.tpl" type="text/ng-template">
+    <div class="dropdown-head">
+        <div class="radio radio-inline">
+            <label>
+                <input type="radio" ng-model="$ctrl.shipmentType" value="shipping" ng-click="$ctrl.isChanging = !$ctrl.shipmentAddress; $ctrl.save(!$ctrl.isChanging)">
+                <span class="switch"></span>
+                <span class="name">Shipping</span>
+            </label>
+        </div>
+        <div class="radio radio-inline">
+            <label>
+                <input type="radio" ng-model="$ctrl.shipmentType" value="pickup" ng-click="$ctrl.isChanging = !$ctrl.shipmentFulfillmentCenter; $ctrl.save(!$ctrl.isChanging)">
+                <span class="switch"></span>
+                <span class="name">Pickup</span>
+            </label>
+        </div>
+    </div>
+    <div class="dropdown-body">
+        <div class="form-group" ng-class="{'group-flex': (!$ctrl.shipmentAddress || $ctrl.isChanging) && !ctrl.isDropdown}" ng-show="$ctrl.shipmentType === 'shipping'">
+            <p ng-if="!(!$ctrl.shipmentAddress || $ctrl.isChanging) && !ctrl.isDropdown">Expected to arrive Tue. Oct 31.</p>
+            <p ng-show="$ctrl.shipmentAddress && !$ctrl.isChanging">
+                Ship to <strong>{% raw %}{{ $ctrl.shipmentAddress.postalCode }}{% endraw %}</strong>
+                <a href="" ng-click="$ctrl.isChanging = true">(change)</a>
+            </p>
+            <input type="text" class="form-control" ng-style="{width: !$ctrl.isDropdown ? '100px' : 'auto'}" ng-show="!$ctrl.shipmentAddress || $ctrl.isChanging" ng-model="$ctrl.shipmentAddress.postalCode" placeholder="Enter index">
+            <button class="btn btn-default" ng-click="$ctrl.isChanging = false; $ctrl.save();" ng-if="(!$ctrl.shipmentAddress || $ctrl.isChanging) && !$ctrl.isDropdown">Save</button>
+        </div>        
+        <div class="form-group" ng-show="$ctrl.shipmentType === 'pickup'">
+            <p ng-if="!$ctrl.isDropdown && $ctrl.shipmentFulfillmentCenter">Available for pickup Tue. Oct 31 after 1:30 PM.</p>
+            <p>
+                <strong>{% raw %}{{ $ctrl.shipmentFulfillmentCenter.name  }}{% endraw %}</strong>
+                <a href="" ng-click="$ctrl.selectFulfillmentCenter()">{% raw %}{{ !$ctrl.shipment.shipmentFulfillmentCenter ? 'Select branch' : '(change)' }}{% endraw %}</a>
+            </p>
+        </div>
+    </div>
+    <div ng-if="$ctrl.isDropdown" class="dropdown-foot" ng-include="'shipping-type-foot.tpl'"></div>
+</script>
+<script id="shipping-type-foot.tpl" type="text/ng-template">
+    <button class="btn btn-link" ng-click="$ctrl.isChanging = false; $ctrl.isOpen = false;">Cancel</button>
+    <button class="btn btn-default" ng-click="$ctrl.save(); $ctrl.isChanging = false; $ctrl.isOpen = false;">Save</button>
+</script>

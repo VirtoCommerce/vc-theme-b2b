@@ -4,27 +4,22 @@
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['storefrontApp.mainContext', 'confirmService', '$translate', '$scope', 'storefront.corporateAccountApi', 'storefront.corporateApiErrorHelper', 'loadingIndicatorService', function (mainContext, confirmService, $translate, $scope, corporateAccountApi, corporateApiErrorHelper, loader) {
+    controller: ['storefrontApp.mainContext', 'confirmService', '$translate', '$scope', 'accountApi', 'loadingIndicatorService', function (mainContext, confirmService, $translate, $scope, accountApi, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
-        
+
+        $ctrl.currentMember = mainContext.customer;
         $scope.$watch(
             function () { return mainContext.customer; },
             function (customer) {
-                if (customer) {
-                    loader.wrapLoading(function() {
-                        return corporateAccountApi.getCompanyMember({ id: customer.id }, function (member) {
-                            $ctrl.currentMember = member;
-                        }).$promise;
-                    });
-                }
+                $ctrl.currentMember = customer;
             });
-
+      
         $ctrl.addNewAddress = function () {
             if (_.last(components).validate()) {
                 $ctrl.currentMember.addresses.push($ctrl.newAddress);
                 $ctrl.newAddress = null;
-                $ctrl.updateCompanyMember($ctrl.currentMember);
+                $ctrl.updateCompanyMember($ctrl.currentMember);              
             }
         };
 
@@ -60,9 +55,14 @@
 
         $ctrl.updateCompanyMember = function (companyMember, handler) {
             return loader.wrapLoading(function () {
-                return corporateAccountApi.updateCompanyMember(companyMember, handler, function (response) {
-                    corporateApiErrorHelper.clearErrors($scope);
-                }).$promise;
+                return accountApi.updateUserAddresses(companyMember.addresses).then(function (response) {
+                    return mainContext.loadCustomer().then(function (customer) {
+                        $ctrl.currentMember = customer;
+                        if (handler) {
+                            handler();
+                        }
+                    });
+                });
             });
         };
 

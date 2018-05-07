@@ -1,33 +1,53 @@
-﻿<h1>{{ 'bulk_order.general.title' | t }}</h1>
-{% if form.errors %}
-    <div class="note form-error">
-        <p>{{ 'bulk_order.general.items_not_found_message' | t }}</p>
-        <ul class="disc">
-            {% for field in form.errors %}
-                <li>{{ form.errors.messages[field] }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-{% endif %}
-<div class="grid">
-    <div class="grid-item two-thirds">
-        <p>{{ 'bulk_order.general.description' | t }}</p>
+<h1>{{ 'bulk_order.general.title' | t }}</h1>
+<div class="row">
+    {% if form.errors %}
+        <dl class="alert alert-danger" role="alert">
+            <dt>{{ 'bulk_order.general.items_not_found_message' | t }}</dt>
+            <dd>
+                <ul class="list-styled">
+                    {% for field in form.errors %}
+                        <li>{{ form.errors.messages[field] }}</li>
+                    {% endfor %}
+                </ul>
+            </dd>
+        </dl>
+    {% endif %}
+    <div class="col-md-8">
+        <dl>
+            <dt>{{ 'bulk_order.general.subtitle' | t }}</dt>
+            {% assign url = 'cart' | absolute_url %}
+            {% assign text = 'layout.cart.cart' | t %}
+            <dd>{{ 'bulk_order.general.description' | t: url: url, text: text }}</dd>
+        </dl>
         <form action="{{ '/bulkorder/addfielditems' | absolute_url }}" method="POST">
-            <div class="grid">
-                {% for col_index in (0..1) %}
-                    <div class="grid-item one-half">
-                        {% include 'bulk-order-fields-column', column_index: col_index %}
-                    </div>
-                {% endfor %}
+            {% assign column_count = 2 %}
+            {% assign rows_count = 15 %}
+            {% assign sku_grid_column_count = 4 %}
+            {% assign quantity_grid_column_count = 2 %}
+            <div class="form-group">
+                {% include 'shared/bulk-order-fields' %}
             </div>
-            <button class="btn" type="submit">{{ 'bulk_order.general.add_to_cart' | t }}</button>
+            <button class="btn btn-primary" type="submit">{{ 'bulk_order.general.add_to_cart' | t }}</button>
         </form>
     </div>
-    <div class="grid-item one-third">
-        <p>{{ 'bulk_order.general.csv_description' | t }}</p>
+    <div class="col-md-4">
+        <dl>
+            <dt>{{ 'bulk_order.general.csv_title' | t }}</dt>
+            <dd>
+                <p>
+                    <dl>
+                        <dt>{{ 'bulk_order.general.csv_subtitle' | t }}</dt>
+                        <dd>{{ 'bulk_order.general.csv_subdescription' | t }}</dd>
+                    </dl>
+                </p>
+                <strong>{{ 'bulk_order.general.csv_description' | t }}</strong>
+            </dd>
+        </dl>
         <form action="{{ '/bulkorder/addcsvitems' | absolute_url }}" method="POST">
-            <textarea name="csv" placeholder="{{ 'bulk_order.general.csv_field_placeholder' | t }}" rows="20"></textarea>
-            <button class="btn" type="submit">{{ 'bulk_order.general.add_to_cart' | t }}</button>
+            <div class="form-group">
+                <textarea name="csv" placeholder="{{ 'bulk_order.general.csv_field_placeholder' | t }}" rows="15" class="form-control"></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit">{{ 'bulk_order.general.add_to_cart' | t }}</button>
         </form>
     </div>
 </div>

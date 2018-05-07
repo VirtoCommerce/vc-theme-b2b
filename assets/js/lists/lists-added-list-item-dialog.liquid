@@ -1,0 +1,95 @@
+<script id="storefront.lists-added-list-item-dialog.tpl" type="text/ng-template">
+    <div ng-if="!itemAdded">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="close()" title="{{ 'cart.general.close_cart' | t }}" aria-label="{{ 'cart.general.close_cart' | t }}"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" ng-if="!selectedList.title">{{ 'wishlist.general.select_list' | t }}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="container-bordered container-drain">
+                <div class="row" ng-repeat="list in lists" >
+                    <div class="form-group">
+                        <div class="col-xs-1">
+                            <div class="radio-inline">
+                                <label >
+                                    <input type="radio" ng-model="selectedList.name" ng-value="list.name" ng-disabled="list.contains">
+                                    <span class="switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <address>
+                                <span><strong ng-bind="list.name"></strong></span><br>
+                            </address>
+                        </div>
+                        <div class="col-xs-5">
+                            <span ng-if="list.contains" >
+                                {{ 'wishlist.general.list_contains' | t }}
+                                <i ng-if="list.contains" class="fa fa-check-square " aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="grid">
+                <div class="grid-item text-right">
+                    <button class="btn btn-default" >
+                        <span ng-click="close()">{{ 'wishlist.general.cancel' | t }}</span>
+                    </button>
+                    <button ng-class="{ 'btn btn-primary btn btn-primary-clearfix' : inProgress }" ng-disabled="selectedList.contains || inProgress || !selectedList.name" class="btn btn-primary" ng-click="addProductToList()">
+                        <span ng-if="!inProgress">{{ 'wishlist.general.add_to_list' | t }}</span>
+                        <span ng-if="inProgress">{{ 'wishlist.general.adding_to_list' | t }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="itemAdded" class="product-list-modal-wrapper">
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="close()" title="{{ 'cart.general.close_cart' | t }}" aria-label="{{ 'cart.general.close_cart' | t }}"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"> <span ng-bind="'{{ 'wishlist.general.added_to_list' | t }}' + ' ' + selectedList.name"></span></h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table class="table table-hover">
+                        <tr>
+                            <td class="col-xs-2 col-md-1">
+                                <img class="img-responsive" ng-src="{% raw %}{{ dialogData.product.images['0'].url }}{% endraw %}" ng-if="dialogData.product.name" />
+                            </td>
+                            <td>
+                                <a ng-bind="dialogData.product.name"></a>
+                            </td>
+                            <td>
+                                <div ng-bind="dialogData.quantity"></div>
+                            </td>
+                            <td>
+                                <span ng-bind="dialogData.product.price.listPrice.formattedAmount"></span>
+                            </td>
+                            
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-xs-12">
+                    <div class="text-right">
+                        <button ng-click="redirect('{{ 'account#/lists/myLists' | absolute_url }}')" class="btn" >
+                            <span>{{ 'wishlist.general.view_your_list' | t }}</span>
+                        </button>
+                        <button ng-click="close()" class="btn" >
+                            <span>{{ 'wishlist.general.continue_shopping' | t }}</span>
+                        </button>
+                    </div>
+                </div>    
+                
+            </div>
+            
+        </div>
+    </div>
+    
+</script>

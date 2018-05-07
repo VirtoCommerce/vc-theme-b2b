@@ -1,36 +1,33 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 storefrontApp.component('vcCheckoutWizard', {
 	transclude: true,
 	templateUrl: 'themes/assets/js/checkout/checkout-wizard.tpl.html',
 	bindings: {
-		wizard: '=',
+		wizardModel: '=',
 		loading: '=',
 		onFinish: '&?',
 		onInitialized: '&?'
 	},
 	controller: ['$scope', function ($scope) {
 		var ctrl = this;
-		ctrl.wizard = ctrl;
+        ctrl.wizardModel = ctrl;
 		ctrl.steps = [];	
 		ctrl.goToStep = function (step) {
 			if (angular.isString(step))
 			{
 				step = _.find(ctrl.steps, function (x) { return x.name == step; });
 			}
-			if (step && ctrl.currentStep != step && step.canEnter) {
-				if (!step.final) {
-					step.isActive = true;
-					if (ctrl.currentStep) {
-						ctrl.currentStep.isActive = false;
-					}
-					ctrl.currentStep = step;
-				}
-				else if (ctrl.onFinish)
-				{
-					ctrl.onFinish();
-				}
-			}
-		};
+            if (step && ctrl.currentStep != step && step.canEnter) {
+                step.isActive = true;
+                if (ctrl.currentStep) {
+                    ctrl.currentStep.isActive = false;
+                }
+                ctrl.currentStep = step;
+                if (step.final && ctrl.onFinish) {
+                    ctrl.onFinish();
+                }
+            }
+        };
 
 		ctrl.nextStep = function () {
 			if (!ctrl.currentStep.validate || ctrl.currentStep.validate()) {

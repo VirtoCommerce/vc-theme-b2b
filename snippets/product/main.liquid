@@ -1,0 +1,92 @@
+<main class="container container-drain container-bordered-horizontal" role="main">
+    <div class="row">
+        <div class="col-xs-12">
+            {% include 'shared/breadcrumb' %}
+            <ul class="list-inline pull-right">
+                <li>                    
+                    <a href="" ng-click="sendToEmail('{{ shop.id }}', '{{ product.id }}', '{{ product.url | absolute_url }}', '{{ current_language.culture_name }}')"><i class="fa fa-envelope"></i>&ensp;Email</a>
+                </li>
+                <li>
+                    {% include 'shared/print' %}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-10 container-drain container-bordered" itemscope itemtype="http://schema.org/Product">
+            <meta itemprop="url" content="{{ product.url | absolute_url}}">
+            <meta itemprop="image" content="{{ product.featured_image.src | img_url }}">
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <a href="#">{{ product.metafields.properties['Brand'] }}</a>
+                    <h1>{{ product.title }}</h1>
+                    <ul class="list-inline">
+                        <li>
+                            <span class="text-muted">{{ 'products.product.sku' | t }}</span>&nbsp;<strong itemprop="productID">{{ product.selected_variant.sku }}</strong>
+                        </li>
+                        <li>
+                            <span class="text-muted">{{ 'products.product.mmn' | t }}</span>&nbsp;<strong itemprop="model">{{ product.metafields.properties['MMN'] }}</strong>
+                        </li>
+                        <li>
+                            <span class="text-muted">UNSPSC</span>&nbsp;<strong>#41112701</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row flexible">
+                <div class="col-md-2">
+                    {% include 'product/image' %}
+                    {% include 'product/compare' %}
+                    {% include 'product/product-compare-list-bar' %}
+                </div>
+                <div class="col-md-2" ng-controller="priceController">{% include 'product/price', product: product %}</div>
+                <div class="col-md-4" ng-controller="purchaseController" ng-init='loadPaymentPlan({{ settings.available_paymentPlans | json }}, "product", "{{ product.id }}")'>
+                    <p ng-show="shipmentType == 'shipping' && shipmentAddress">Expected to arrive: <strong ng-bind="availability['{{ product.id }}'].expectedArrival | date: 'fullDate'"></strong></p>
+                    <p ng-show="shipmentType == 'pickup' && shipmentFulfillmentCenter">Available for pickup: <strong ng-bind="availability['{{ product.id }}'].availableSince | date: 'fullDate'"></strong></p>
+                    <vc-payment-plan available-payment-plans="::availablePaymentPlans"></vc-payment-plan>
+                    <div class="form-group">
+                        {% include 'product/quantity' %}
+                    </div>
+                    <p><add-to-list-button selected-variation="selectedVariation"></add-to-list-button></p>
+                </div>
+                <div class="col-md-4">
+                    <vc-shipping-type is-dropdown="false" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
+                </div>
+            </div>
+            {% if product.properties.size > 0  %}
+                <div class="row">
+                    <div class="col-xs-12">
+                        <table class="table table-striped">
+                            <caption class="h2">Technical Specs</caption>
+                            {% for property in product.properties %}
+                                {% include 'shared/grid/rows', column_count: 2 %}
+                                {% if should_start_row %}
+                                    <tr>
+                                {% endif %}
+                                    <td><span class="text-muted">{{ property.name }}</span></td>
+                                    <td><strong>{{ property.value }}</strong></td>
+                                {% if should_end_row %}
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="row">  
+                <div class="col-xs-12"> 
+                    {% for description in product.descriptions %}
+                        {% if description.type == "FullReview" %}
+                            {{ description.content }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            
+        </div>
+        <div class="product-related hidden-xs hidden-sm col-md-10 hidden-print"></div>
+    </div>
+</main>

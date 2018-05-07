@@ -1,0 +1,41 @@
+﻿vc-labeled-input {
+  .form-group {
+    margin-top: $font-size-base;
+    position: relative;
+  }
+
+  label {
+    background: $input-bg;
+    color: $text-muted;
+    font-size: $font-size-base;
+    font-weight: normal;
+    cursor: text;
+    margin: 0;
+    padding: 0 $padding-xs-horizontal;
+    position: absolute;
+    transition: top 0.25s ease;
+  }
+
+  input:focus ~ label {
+    color: $input-border-focus;
+  }
+
+  input:disabled ~ label {
+    background-color: $input-bg-disabled;
+    color: $text-muted;
+    cursor: $cursor-disabled;
+  }
+}
+
+vc-labeled-input .form-group.keyuped {
+  label {
+    font-size: $font-size-small;
+    line-height: $line-height-small;
+    cursor: default;
+    top: floor(($line-height-small-computed + $padding-xs-vertical) / 2) * -1;
+  }
+}
+
+@include vc-labeled-input-size('', $padding-base-horizontal, $padding-base-vertical);
+@include vc-labeled-input-size('.input-lg', $padding-large-horizontal, $padding-large-vertical);
+@include vc-labeled-input-size('.input-sm', $padding-small-horizontal, $padding-small-vertical);

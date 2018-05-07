@@ -1,0 +1,165 @@
+<main class="container" role="main">
+    <div class="toolbar hidden-print clearfix">
+        {% include 'shared/breadcrumb' %}
+        <ul class="list-inline pull-right">
+            <li>
+                <a href="" ng-click="sendToEmail('{{ shop.id }}', '{{ product.id }}', '{{ product.url | absolute_url }}', '{{ current_language.culture_name }}')"><i class="fa fa-envelope"></i>&ensp;Email</a>
+            </li>
+            <li>
+                {% include 'shared/print' %}
+            </li>
+        </ul>
+    </div>
+    <div class="product-page clearfix" itemscope itemtype="http://schema.org/Product">
+        <meta itemprop="url" content="{{ product.url | absolute_url}}">
+
+        <h1>{{ product.title }}</h1>
+        <p>6 products found with these common attributes: {{ product.selected_variant }}</p>
+        <p>Narrow your results by</p>
+
+        <div ng-init="filters = { terms: undefined }" vc-query-target="filters">
+            <ul class="list-inline list-unstyled">
+                <li class="dropdown" ng-repeat="(propName, props) in filterableVariationPropsMap" uib-dropdown aria-haspopup="true">
+                    <button class="btn btn-alt btn-secondary" uib-dropdown-toggle>{% raw %}{{ propName }}{% endraw %}&nbsp;<i class="dropdown-ico fa fa-angle-down"></i></button>
+                    <ul class="dropdown-menu" role="menu" uib-dropdown-menu ng-init="propQuery = { terms: { [propName]: undefined } }" vc-query-target="propQuery">
+                        <li ng-repeat="prop in props">
+                            <div class="checkbox dropdown-menu-item">
+                                <label>
+                                    <input type="checkbox" ng-checked="propQuery.terms[propName].includes(prop.value)">
+                                    <a vc-query-source="{ terms: { [propName]: [prop.value] } }" switchable="true">
+                                        <span class="switch"></span>
+                                        <span class="name">{% raw %}{{ prop.value }}{% endraw %}</span>
+                                    </a>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="list-inline list-unstyled">
+                <li ng-repeat="term in filters.terms | toArray: true | orderBy: '$key'">
+                    <h6>{% raw %}{{ term.$key }}{% endraw %}</h6>
+                    <ul class="list-inline list-unstyled">
+                        <li ng-repeat="value in term">
+                            <div class="well well-sm">{% raw %}{{ value }}{% endraw %}&ensp;<a vc-query-source="{ terms: { [term.$key]: [value] } }" switchable="true" class="fa fa-times-circle"></a></div>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a ng-show="filters.terms" class="action" vc-query-source="{ terms: null }">Clear all</a>
+                </li>
+            </ul>
+        </div>
+
+        <div ng-if="!allVariations.length">
+            Sorry, no results available
+        </div>
+        <tr class="table-responsive" ng-if="allVariations.length">
+            <table class="table variations-table">
+                <caption>
+                    <h5 class="pull-left">
+                        Select items to compare
+                    </h5>
+                    <ul class="list-horizontal list-lg pull-right">
+                        <li>
+                            <label class="checkbox-inline">
+                                <input type="checkbox">
+                                <span class="switch"></span>
+                                <span class="name">View Previously Purchased</span>
+                            </label>
+                        </li>
+                        <li>
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <add-to-list-button selected-variation="selectedVariation"></add-to-list-button>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary">Add to cart</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </caption>
+                <thead>
+                    <tr>
+                        <th>Compare / item #</th>
+                        <th>Mfr. Model #</th>
+                        <th ng-repeat="(propName, props) in allVariationPropsMap">{% raw %}{{ propName }}{% endraw %}</th>
+                        <th>Price</th>
+                        <th>Qty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for variant in product.variants %}
+                        <tr class="variation" ng-if-start="allVariationsMap['{{ variant.id }}']" ng-init="isCollapsed['{{ variant.id }}'] = true;" ng-click="isCollapsed['{{ variant.id }}'] = !isCollapsed['{{ variant.id }}']">
+                            <td>
+                                <img class="img-responsive" src="{{ variant.featured_image.src }}" alt="">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox">
+                                        <span class="switch"></span>
+                                        <span class="name small">{{ variant.sku }}</span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td ng-repeat="property in allVariationsMap['{{ variant.id }}'].variationProperties">{% raw %}{{ property.value }}{% endraw %}</td>
+                            <td>
+                                {% if settings.show_prices_with_taxes %}
+                                    {% include 'product/price', price: variant.price_with_tax %}
+                                {% else %}
+                                    {% include 'product/price', price: variant.price %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <label>qty</label>
+                                <input class="form-control">
+                            </td>
+                        </tr>
+                        <tr class="variation-details" ng-if-end>
+                            <td ng-attr-colspan="{% raw %}{{allVariationPropsMapCount + 4}}{% endraw %}">
+                                <div class="expander text-center">
+                                    <span class="fa" ng-class="{'fa-angle-down': isCollapsed['{{ variant.id }}'], 'fa-angle-up': !isCollapsed['{{ variant.id }}'] }" ng-click="isCollapsed['{{ variant.id }}'] = !isCollapsed['{{ variant.id }}']"></span>
+                                </div>
+                                <div uib-collapse="isCollapsed['{{ variant.id }}']">
+                                    <div class="well container-bordered-vertical">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                {% if variant.featured_image %}
+                                                    <img class="img-responsive" ng-src="{{ variant.featured_image.src | img_url: "168x168" }}" fallback-src="{{ variant.featured_image.src | img_url }}" alt="{{ varoant.featured_image.alt | escape }}" />
+                                                {% else %}
+                                                    <img class="img-responsive" src="{{ 'no-image.svg' | asset_url }}" class="no-image" />
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="col-md-5">
+                                                <div>{{ product.metafields.properties['Brand'] }}</div>
+                                                <a href="{{ product_url }}">
+                                                    {{ variant.title }}
+                                                </a>
+                                                <div>
+                                                    {{ 'products.product.sku' | t }}&nbsp;<a href="{{ product_url }}">{{ variant.sku }}</a>
+                                                </div>
+                                                <div>
+                                                    {{ 'products.product.mmn' | t }}&nbsp;{{ variant.metafields.properties['MMN'] }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div>Catalog Page #  NA</div>
+                                                {% if settings.show_prices_with_taxes %}
+                                                    {% include 'product/price', price: variant.price_with_tax %}
+                                                {% else %}
+                                                    {% include 'product/price', price: variant.price %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
