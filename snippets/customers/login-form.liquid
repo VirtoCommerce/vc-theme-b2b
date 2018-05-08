@@ -5,20 +5,13 @@
     <div class="form-group" ng-controller="flyingController">
         <div class="row">
             <div class="col-md-12">
-                {% comment %} <input class="form-control" ng-model="username" name="customer[user_name]" required placeholder="{{ 'customer.sign-in.user_name' | t }}" /> {% endcomment %}
-                {% comment %} <span class="text-danger" ng-show="!customer_login['customer[user_name]'].$pristine && customer_login['customer[user_name]'].$error.required">{{ 'common.required' | t }}</span> {% endcomment %}
-                <div class="form-group" ng-class="{'keyuped': username.length}">
+                <div class="form-group">
                     <input class="form-control" ng-model="username" name="customer[user_name]" required vc-flying-placeholder="{{ 'customer.sign-in.user_name' | t }}"/>
+                    <span class="text-danger" ng-show="!customer_login['customer[user_name]'].$pristine && customer_login['customer[user_name]'].$error.required">{{ 'common.required' | t }}</span>
                 </div>
-
-                <vc-labeled-input value="username" name="customer[user_name]" placeholder="{{ 'customer.sign-in.user_name' | t }}" form="customer_login" required="true" autofocus="true"></vc-labeled-input>
-                    
-                    {% comment %} <label for="customer[user_name]"><span></span></label> {% endcomment %}
-                    
-                
             </div>
             <div class="col-md-12" style="margin-top:15px">
-                <input class="form-control" ng-model="password" type="password" name="customer[password]" required placeholder="{{ 'customer.sign-in.password' | t }}" />
+                <input class="form-control" ng-model="password" type="password" name="customer[password]" required vc-flying-placeholder="{{ 'customer.sign-in.password' | t }}" />
                 <span class="text-danger" ng-show="!customer_login['customer[password]'].$pristine && customer_login['customer[password]'].$error.required">{{ 'common.required' | t }}</span>
             </div>
         </div>
