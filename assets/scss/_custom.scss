@@ -89,7 +89,7 @@ main {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
-.vc-flying-placeholder-group-class {
+.form-group.vc-flying-placeholder-group-class {
   margin-top: $font-size-base;
   position: relative;
 }
@@ -108,17 +108,23 @@ label.vc-flying-placeholder-class {
   transition: 0.2s ease all;
 }
 
-input[vc-flying-placeholder]:focus ~ label.vc-flying-placeholder-class {
+input[vc-flying-placeholder]:focus ~ label.vc-flying-placeholder-class,
+textarea[vc-flying-placeholder]:focus ~ label.vc-flying-placeholder-class,
+select[vc-flying-placeholder]:focus ~ label.vc-flying-placeholder-class {
   color: $input-border-focus;
 }
 
-input[vc-flying-placeholder]:disabled ~ label.vc-flying-placeholder-class {
+input[vc-flying-placeholder]:disabled ~ label.vc-flying-placeholder-class,
+textarea[vc-flying-placeholder]:disabled ~ label.vc-flying-placeholder-class,
+select[vc-flying-placeholder]:disabled ~ label.vc-flying-placeholder-class {
   background-color: $input-bg-disabled;
   color: $text-muted;
   cursor: $cursor-disabled;
 }
 
-.keyuped input[vc-flying-placeholder] ~ label.vc-flying-placeholder-class {
+.keyuped input[vc-flying-placeholder] ~ label.vc-flying-placeholder-class,
+.keyuped textarea[vc-flying-placeholder] ~ label.vc-flying-placeholder-class,
+.keyuped select[vc-flying-placeholder] ~ label.vc-flying-placeholder-class {
     font-size: $font-size-small;
     line-height: $line-height-small;
     cursor: default;
@@ -127,7 +133,9 @@ input[vc-flying-placeholder]:disabled ~ label.vc-flying-placeholder-class {
 
 
 @mixin vc-flying-placeholder-size($input-class, $padding-horizontal, $padding-vertical) {
-  input[vc-flying-placeholder] {
+  input[vc-flying-placeholder],
+  textarea[vc-flying-placeholder],
+  select[vc-flying-placeholder] {
     &#{$input-class} ~ label.vc-flying-placeholder-class {
       left: $padding-horizontal - $padding-xs-horizontal + 1px; // 1px = border width
       top: $padding-vertical + 1px; // 1px = border

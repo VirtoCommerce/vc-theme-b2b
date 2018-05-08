@@ -8,11 +8,20 @@
                 <div class="form-group">
                     <input class="form-control" ng-model="username" name="customer[user_name]" required vc-flying-placeholder="{{ 'customer.sign-in.user_name' | t }}"/>
                     <span class="text-danger" ng-show="!customer_login['customer[user_name]'].$pristine && customer_login['customer[user_name]'].$error.required">{{ 'common.required' | t }}</span>
+
+                    
                 </div>
+                
+                <div class="form-group">
+                    <textarea class="form-control" name="customer[inviteEmails]" ng-model="inviteEmail" vc-flying-placeholder="Some"></textarea>
+                </div>
+                
             </div>
-            <div class="col-md-12" style="margin-top:15px">
-                <input class="form-control" ng-model="password" type="password" name="customer[password]" required vc-flying-placeholder="{{ 'customer.sign-in.password' | t }}" />
-                <span class="text-danger" ng-show="!customer_login['customer[password]'].$pristine && customer_login['customer[password]'].$error.required">{{ 'common.required' | t }}</span>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input class="form-control" ng-model="password" type="password" name="customer[password]" required vc-flying-placeholder="{{ 'customer.sign-in.password' | t }}" />
+                    <span class="text-danger" ng-show="!customer_login['customer[password]'].$pristine && customer_login['customer[password]'].$error.required">{{ 'common.required' | t }}</span>
+                </div>                    
             </div>
         </div>
     </div>
