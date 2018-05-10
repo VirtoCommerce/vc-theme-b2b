@@ -3,7 +3,7 @@
         <img class="img-responsive" alt="{% raw %}{{ lineItem.name }}{% endraw %}" ng-src="{% raw %}{{ $ctrl.lineItem.imageUrl }}{% endraw %}" fallback-src="{{ 'no-image.svg' | asset_url }}" "  />
     </div>
     <div class="col-xs-4 col-md-3">
-        <p><a ng-href="{% raw %}{{ $ctrl.lineItem.product.url}}{% endraw %}" ng-bind="$ctrl.lineItem.name"></a></p>
+        <p><a ng-href="{% raw %}{{ $ctrl.lineItem.product.url.replace('~/', '') }}{% endraw %}" ng-bind="$ctrl.lineItem.name"></a></p>
         <p>Item <strong ng-bind="$ctrl.lineItem.sku"></strong></p>
         <p>
             <span>Price</span>
@@ -47,10 +47,10 @@
 </div>
 <div ng-if="$ctrl.readOnly">
     <div class="col-xs-2 col-md-1">
-        <img class="img-responsive" alt="{% raw %}{{ $ctrl.lineItem.name }}{% endraw %}" ng-src="{% raw %}{{ $ctrl.lineItem.imageUrl }}{% endraw %}" fallback-src="{{ 'no-image.svg' | asset_url }}" "   />
+        <img class="img-responsive" alt="{% raw %}{{ $ctrl.lineItem.name }}{% endraw %}" ng-src="{% raw %}{{ $ctrl.lineItem.imageUrl }}{% endraw %}" fallback-src="{{ 'no-image.svg' | asset_url }}" />
     </div>
     <div class="col-xs-4 col-md-3">
-        <p><a ng-href="{% raw %}{{ $ctrl.lineItem.product.url}}{% endraw %}" ng-bind="$ctrl.lineItem.name"></a></p>
+        <p><a href="{% raw %}{{ $ctrl.lineItem.product.url.replace('~/', '') }}{% endraw %}" ng-bind="$ctrl.lineItem.name"></a></p>
         <p>Item <strong ng-bind="$ctrl.lineItem.sku"></strong></p>
         <p>
             <span>Price</span>
