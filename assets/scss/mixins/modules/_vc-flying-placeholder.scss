@@ -1,0 +1,10 @@
+@mixin vc-flying-placeholder-size($input-class, $padding-horizontal, $padding-vertical) {
+    input[vc-flying-placeholder],
+    textarea[vc-flying-placeholder],
+    select[vc-flying-placeholder] {
+      &#{$input-class} ~ label.vc-flying-placeholder-class {
+        left: $padding-horizontal - $padding-xs-horizontal + 1px; // 1px = border width
+        top: $padding-vertical + 1px; // 1px = border
+      }
+    }
+  }
