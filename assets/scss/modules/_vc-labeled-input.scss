@@ -27,15 +27,11 @@
   }
 }
 
-vc-labeled-input .form-group.keyuped {
-  label {
-    font-size: $font-size-small;
-    line-height: $line-height-small;
-    cursor: default;
-    top: floor(($line-height-small-computed + $padding-xs-vertical) / 2) * -1;
-  }
-}
-
 @include vc-labeled-input-size('', $padding-base-horizontal, $padding-base-vertical);
 @include vc-labeled-input-size('.input-lg', $padding-large-horizontal, $padding-large-vertical);
 @include vc-labeled-input-size('.input-sm', $padding-small-horizontal, $padding-small-vertical);
+
+
+
+
+

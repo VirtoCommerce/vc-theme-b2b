@@ -1,0 +1,47 @@
+.form-group.vc-flying-placeholder-group-class {
+    margin-top: $font-size-base;
+    position: relative;
+  }
+  
+  label.vc-flying-placeholder-class {
+    background: $input-bg;
+    color: $text-muted;
+    font-size: $font-size-base;
+    font-weight: normal;
+    cursor: text;
+    margin: 0;
+    padding: 0 $padding-xs-horizontal;
+    position: absolute;
+    pointer-events: none;
+    transition: 0.2s ease all;
+  }
+  
+  input[vc-flying-placeholder]:focus ~ label.vc-flying-placeholder-class,
+  textarea[vc-flying-placeholder]:focus ~ label.vc-flying-placeholder-class,
+  select[vc-flying-placeholder]:focus ~ label.vc-flying-placeholder-class {
+    color: $input-border-focus;
+  }
+  
+  input[vc-flying-placeholder]:disabled ~ label.vc-flying-placeholder-class,
+  textarea[vc-flying-placeholder]:disabled ~ label.vc-flying-placeholder-class,
+  select[vc-flying-placeholder]:disabled ~ label.vc-flying-placeholder-class {
+    background-color: $input-bg-disabled;
+    color: $text-muted;
+    cursor: $cursor-disabled;
+  }
+  
+  .keyuped input[vc-flying-placeholder] ~ label.vc-flying-placeholder-class,
+  .keyuped textarea[vc-flying-placeholder] ~ label.vc-flying-placeholder-class,
+  .keyuped select[vc-flying-placeholder] ~ label.vc-flying-placeholder-class {
+      font-size: $font-size-small;
+      line-height: $line-height-small;
+      cursor: default;
+      top: floor(($line-height-small-computed + $padding-xs-vertical) / 2) * -1;
+    }
+  
+  
+  
+  
+  @include vc-flying-placeholder-size('', $padding-base-horizontal, $padding-base-vertical);
+  @include vc-flying-placeholder-size('.input-lg', $padding-base-horizontal, $padding-base-vertical);
+  @include vc-flying-placeholder-size('.input-sm', $padding-base-horizontal, $padding-base-vertical);
