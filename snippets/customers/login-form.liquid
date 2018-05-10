@@ -2,23 +2,21 @@
 {% include 'form-errors-custom' %}
 
 <fieldset ng-keypress="login($event)">
-    <div class="form-group" ng-controller="flyingController">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <input class="form-control" ng-model="username" name="customer[user_name]" required vc-flying-placeholder="{{ 'customer.sign-in.user_name' | t }}"/>
-                    <span class="text-danger" ng-show="!customer_login['customer[user_name]'].$pristine && customer_login['customer[user_name]'].$error.required">{{ 'common.required' | t }}</span>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-group">
-                    <input class="form-control" ng-model="password" type="password" name="customer[password]" required vc-flying-placeholder="{{ 'customer.sign-in.password' | t }}" />
-                    <span class="text-danger" ng-show="!customer_login['customer[password]'].$pristine && customer_login['customer[password]'].$error.required">{{ 'common.required' | t }}</span>
-                </div>                    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <input class="form-control" ng-model="username" name="customer[user_name]" required vc-flying-placeholder="{{ 'customer.sign-in.user_name' | t }}"/>
+                <span class="text-danger" ng-show="!customer_login['customer[user_name]'].$pristine && customer_login['customer[user_name]'].$error.required">{{ 'common.required' | t }}</span>
             </div>
         </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <input class="form-control" ng-model="password" type="password" name="customer[password]" required vc-flying-placeholder="{{ 'customer.sign-in.password' | t }}" />
+                <span class="text-danger" ng-show="!customer_login['customer[password]'].$pristine && customer_login['customer[password]'].$error.required">{{ 'common.required' | t }}</span>
+            </div>                    
+        </div>
     </div>
-
+    
     {% if template != 'customers/login' %}
     <div class="form-group">
         {% include 'customers/forgot-links' %}

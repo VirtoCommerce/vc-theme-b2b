@@ -30,17 +30,3 @@ angular.module('storefrontApp')
         }
     };
   });
-
-
-  var storefrontApp = angular.module('storefrontApp');
-
-  storefrontApp.controller('flyingController', ['$q', '$scope', 
-      function ($q, $scope) {
-        var $ctrl = this;
-       // console.log($scope);
-        
-        $scope.$watch('username', function (address) {
-            //console.log($scope);
-        }, true);
-
-      }]);

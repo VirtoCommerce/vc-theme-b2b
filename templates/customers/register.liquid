@@ -121,21 +121,13 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">
-                    <select ng-model="registration.address.countryCode" ng-options="x.code3 as x.name for x in countries" name="countryCode" required class="form-control" size="1" vc-flying-placeholder="{{ 'checkout.address.country_select_placeholder' | t }}">
-                        <option value="">{{ 'checkout.address.country_select_placeholder' | t }}</option>
-                    </select>
-                    <span class="text-danger" ng-show="step2Form.$submitted && step2Form.countryCode.$error.required">{{ 'checkout.country_required_message' | t }}</span>
-                </div>
-                {% comment %} <div class="form-group form-select">
+                <div class="form-group form-select">
                     <label for="#" class="form-label">{{ 'checkout.address.country' | t }}</label>
-                    <select ng-model="registration.address.countryCode" ng-options="x.code3 as x.name for x in countries" name="countryCode" required class="form-control" size="1" vc-flying-placeholder="{{ 'checkout.address.country_select_placeholder' | t }}">
-                    </select>
                     <select ng-model="registration.address.countryCode" ng-options="x.code3 as x.name for x in countries" name="countryCode" required class="form-control" size="1">
                         <option value="">{{ 'checkout.address.country_select_placeholder' | t }}</option>
                     </select>
                     <span class="text-danger" ng-show="step2Form.$submitted && step2Form.countryCode.$error.required">{{ 'checkout.country_required_message' | t }}</span>
-                </div> {% endcomment %}
+                </div>
             </div>
             <div class="col-md-6" ng-if="registration.address.country.regions.length">
                 <div class="form-group form-select">
