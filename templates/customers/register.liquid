@@ -55,6 +55,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group" ng-class="{'has-error': step3Form.$submitted && step3Form.password.$error.required }">
                                                 <input class="form-control" ng-model="registration.password" name="password" vc-flying-placeholder="{{ 'customer.register.password' | t }}" required type="password" />
+                                                <span class="text-danger" ng-show="step3Form.$submitted && step3Form.password.$error.required">{{ 'common.required' | t }}</span>
                                             </div>        
                                         </div>
                                         <div class="col-md-6">
