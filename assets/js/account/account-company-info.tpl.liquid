@@ -5,7 +5,11 @@
     </div>
     <vc-errors message="errorMessage" errors="errors"></vc-errors>
     <form ng-submit="$ctrl.submit()" name="detailForm">
-        <vc-labeled-input value="$ctrl.company.name" name="company_name" placeholder="{{ 'customer.edit_company_info.company_name' | t }}" form="detailForm" required="true" autofocus="true"></vc-labeled-input>
+        {% comment %} <vc-labeled-input value="$ctrl.company.name" name="company_name" placeholder="{{ 'customer.edit_company_info.company_name' | t }}" form="detailForm" required="true" autofocus="true"></vc-labeled-input> {% endcomment %}
+        <div class="form-group">
+            <input class="form-control" ng-model="$ctrl.company.name" name="company_name" required vc-flying-placeholder="{{ 'customer.edit_company_info.company_name' | t }}"/>
+            <span class="text-danger" ng-show="!detailForm.company_name.$pristine && detailForm.company_name.$error.required">{{ 'common.required' | t }}</span>
+        </div>
 
         <button va-permission="storefront:organization:edit" ng-click="$ctrl.updateCompanyInfo($ctrl.company)" class="btn btn-primary" ng-disabled="$ctrl.loader.isLoading" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
             <span class="btn-text">{{ 'customer.edit_profile.submit' | t }}</span>
