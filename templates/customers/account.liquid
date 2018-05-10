@@ -45,9 +45,9 @@
                                 <a ng-link="['Quotes']">{{ 'customer.account.menu_label.quotes' | t }}</a>
                             </li>
                             {% endif %}
-                            <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCheckoutDefaults'}">
+                            {% comment %} <li ng-class="{active: $$ngOutlet.$$componentName === 'vcAccountCheckoutDefaults'}">
                                 <a ng-link="['CheckoutDefaults']">Checkout Details</a>
-                            </li>
+                            </li> {% endcomment %}
                         </ul>
                     </div>
                     <div class="row" va-permission="storefront:organization:view">

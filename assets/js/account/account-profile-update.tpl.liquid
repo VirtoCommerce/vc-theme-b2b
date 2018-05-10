@@ -5,14 +5,28 @@
     <vc-errors message="errorMessage" errors="errors"></vc-errors>
     <form ng-submit="$ctrl.submit()" name="detailForm" novalidate>
         <div class="form-group">
-            <vc-labeled-input value="$ctrl.member.firstName" name="first_name" placeholder="{{ 'customer.edit_profile.first_name' | t }}" form="detailForm"></vc-labeled-input>
-            <vc-labeled-input value="$ctrl.member.lastName" name="last_name" placeholder="{{ 'customer.edit_profile.last_name' | t }}" form="detailForm"></vc-labeled-input>
-            <vc-labeled-input value="$ctrl.member.title" name="title" type="text" placeholder="{{ 'customer.register.job_title' | t }}" form="detailForm"></vc-labeled-input>
-            <vc-labeled-input value="$ctrl.member.email" name="email" placeholder="{{ 'customer.edit_profile.email' | t }}" form="detailForm" required="true" type="email"></vc-labeled-input>
+            {% comment %} <vc-labeled-input value="$ctrl.member.firstName" name="first_name" placeholder="{{ 'customer.edit_profile.first_name' | t }}" form="detailForm"></vc-labeled-input> {% endcomment %}
+            <div class="form-group">
+                <input class="form-control" ng-model="$ctrl.member.firstName" name="first_name" required vc-flying-placeholder="{{ 'customer.edit_profile.first_name' | t }}"/>
+            </div>
+            {% comment %} <vc-labeled-input value="$ctrl.member.lastName" name="last_name" placeholder="{{ 'customer.edit_profile.last_name' | t }}" form="detailForm"></vc-labeled-input> {% endcomment %}
+            <div class="form-group">
+                <input class="form-control" ng-model="$ctrl.member.lastName" name="last_name" required vc-flying-placeholder="{{ 'customer.edit_profile.last_name' | t }}"/>
+            </div>
+            {% comment %} <vc-labeled-input value="$ctrl.member.title" name="title" type="text" placeholder="{{ 'customer.register.job_title' | t }}" form="detailForm"></vc-labeled-input> {% endcomment %}
+            <div class="form-group">
+                <input class="form-control" ng-model="$ctrl.member.title" name="title" type="text" vc-flying-placeholder="{{ 'customer.register.job_title' | t }}"/>
+            </div>
+            {% comment %} <vc-labeled-input value="$ctrl.member.email" name="email" placeholder="{{ 'customer.edit_profile.email' | t }}" form="detailForm" required="true" type="email"></vc-labeled-input> {% endcomment %}
+            <div class="form-group">
+                <input class="form-control" ng-model="$ctrl.member.email" name="email" type="email" required vc-flying-placeholder="{{ 'customer.edit_profile.email' | t }}"/>
+                <span class="text-danger" ng-show="!detailForm['email'].$pristine && detailForm['email'].$error.required">{{ 'common.required' | t }}</span>
+                <span class="text-danger" ng-show="!detailForm['email'].$pristine && detailForm['email'].$error.email">{{ 'common.invalid' | t }}</span>
+            </div>
 
-            <div class="form-select">
-                <select va-permission="storefront:organization:edit"  ng-model="$ctrl.member.role" ng-options="x as x.name for x in $ctrl.availableRoles" name="Roles" required class="form-input" size="1">
-                    <option value="">Please select role</option>
+            <div class="form-group">
+                <select class="form-control" va-permission="storefront:organization:edit"  ng-model="$ctrl.member.role" ng-options="x as x.name for x in $ctrl.availableRoles" name="Roles" required vc-flying-placeholder="Role">
+                    <option value=""></option>
                 </select>
             </div>
         </div>
