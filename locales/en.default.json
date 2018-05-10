@@ -597,6 +597,7 @@
             "account-number": "Account Number (optional)",
             "work-country": "Work country",
             "work-region": "Work ",
+            "work-region-type": "Work {{ type }}",
             "work-address1": "Street Address",
             "address1": "Street Address",
             "work-address2": "Floor / Unit / Suite # (optional)",
