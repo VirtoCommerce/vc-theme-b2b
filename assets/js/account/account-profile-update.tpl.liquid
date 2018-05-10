@@ -5,19 +5,15 @@
     <vc-errors message="errorMessage" errors="errors"></vc-errors>
     <form ng-submit="$ctrl.submit()" name="detailForm" novalidate>
         <div class="form-group">
-            {% comment %} <vc-labeled-input value="$ctrl.member.firstName" name="first_name" placeholder="{{ 'customer.edit_profile.first_name' | t }}" form="detailForm"></vc-labeled-input> {% endcomment %}
             <div class="form-group">
                 <input class="form-control" ng-model="$ctrl.member.firstName" name="first_name" required vc-flying-placeholder="{{ 'customer.edit_profile.first_name' | t }}"/>
             </div>
-            {% comment %} <vc-labeled-input value="$ctrl.member.lastName" name="last_name" placeholder="{{ 'customer.edit_profile.last_name' | t }}" form="detailForm"></vc-labeled-input> {% endcomment %}
             <div class="form-group">
                 <input class="form-control" ng-model="$ctrl.member.lastName" name="last_name" required vc-flying-placeholder="{{ 'customer.edit_profile.last_name' | t }}"/>
             </div>
-            {% comment %} <vc-labeled-input value="$ctrl.member.title" name="title" type="text" placeholder="{{ 'customer.register.job_title' | t }}" form="detailForm"></vc-labeled-input> {% endcomment %}
             <div class="form-group">
                 <input class="form-control" ng-model="$ctrl.member.title" name="title" type="text" vc-flying-placeholder="{{ 'customer.register.job_title' | t }}"/>
             </div>
-            {% comment %} <vc-labeled-input value="$ctrl.member.email" name="email" placeholder="{{ 'customer.edit_profile.email' | t }}" form="detailForm" required="true" type="email"></vc-labeled-input> {% endcomment %}
             <div class="form-group">
                 <input class="form-control" ng-model="$ctrl.member.email" name="email" type="email" required vc-flying-placeholder="{{ 'customer.edit_profile.email' | t }}"/>
                 <span class="text-danger" ng-show="!detailForm['email'].$pristine && detailForm['email'].$error.required">{{ 'common.required' | t }}</span>
