@@ -20,11 +20,11 @@
             <input class="form-control" ng-model="$ctrl.member.salutation" name="Budget" type="number" vc-flying-placeholder="Available amount"/>
         </div>
         <div class="form-group"  ng-show="$ctrl.showField('UserName')" ng-disabled="$ctrl.disableField('UserName')">
-            <input class="form-control" ng-model="$ctrl.member.userName" name="UserName" type="text" required vc-flying-placeholder="{{ 'customer.register.user_name' | t }}"/>
+            <input class="form-control" ng-model="$ctrl.member.userName" name="UserName" type="text" ng-required="$ctrl.requiredField('UserName')" vc-flying-placeholder="{{ 'customer.register.user_name' | t }}"/>
             <span class="text-danger" ng-show="!memberDetailForm.UserName.$pristine && memberDetailForm.UserName.$error.required">{{ 'common.required' | t }}</span>
         </div>
         <div class="form-group"  ng-show="$ctrl.showField('Password')" ng-disabled="$ctrl.disableField('Password')">
-            <input class="form-control" ng-model="$ctrl.member.password" name="Password" type="password" required vc-flying-placeholder="{{ 'customer.register.password' | t }}"/>
+            <input class="form-control" ng-model="$ctrl.member.password" name="Password" type="password" ng-required="$ctrl.requiredField('Password')" vc-flying-placeholder="{{ 'customer.register.password' | t }}"/>
             <span class="text-danger" ng-show="!memberDetailForm.Password.$pristine && memberDetailForm.Password.$error.required">{{ 'common.required' | t }}</span>
         </div>
         <div class="form-group">
