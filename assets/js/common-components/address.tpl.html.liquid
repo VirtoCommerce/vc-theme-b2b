@@ -84,7 +84,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <input class="form-control" ng-model="$ctrl.address.address.phone" name="phone" type="tel" ng-pattern="/^[0-9]{1,12}$/" vc-flying-placeholder="{{ 'customer.register.phone' | t }}" />
+                        <input class="form-control" ng-model="$ctrl.address.phone" name="phone" type="tel" ng-pattern="/^[0-9]{1,12}$/" vc-flying-placeholder="{{ 'customer.register.phone' | t }}" />
                         <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.phone.$error.required">{{ 'common.required' | t }}</span>
                         <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.phone.$error.pattern">{{ 'common.invalid' | t }}</span>
                     </div>
