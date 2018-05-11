@@ -3,20 +3,29 @@
         <div class="form-group">
             <div class="cols">
                 <div class="col col-50">
-                  <vc-labeled-input value="$ctrl.member.firstName" name="FirstName" placeholder="{{ 'customer.edit_company_member.first_name' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
+                    <div class="form-group">
+                        <input ng-model="$ctrl.member.firstName" name="FirstName" vc-flying-placeholder="{{ 'customer.edit_company_member.first_name' | t }}" required></input>
+                        <span class="text-danger" ng-show="!mbrForm.FirstName.$pristine && mbrForm.FirstName.$error.required">{{ 'common.required' | t }}</span>
+                    </div>
                 </div>
                 <div class="col col-50">
-                    <vc-labeled-input value="$ctrl.member.middleName" name="MiddleName" placeholder="{{ 'customer.edit_company_member.middle_name' | t }}" form="$ctrl.form"></vc-labeled-input>
+                    <div class="form-group">
+                        <input ng-model="$ctrl.member.middleName" name="MiddleName" vc-flying-placeholder="{{ 'customer.edit_company_member.middle_name' | t }}"></input>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="cols">
                 <div class="col col-50">
-                    <vc-labeled-input value="$ctrl.member.lastName" name="LastName" placeholder="{{ 'customer.edit_company_member.last_name' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
+                    <div class="form-groupp">
+                        <input ng-model="$ctrl.member.lastName" name="LastName" vc-flying-placeholder="{{ 'customer.edit_company_member.last_name' | t }}" required></input>
+                    </div>
                 </div>
                 <div class="col col-50">
-                    <vc-labeled-input value="$ctrl.member.fullName" name="FullName" placeholder="{{ 'customer.edit_company_member.full_name' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
+                    <div class="form-group">
+                        <input ng-model="$ctrl.member.fullName" name="FullName" vc-flying-placeholder="{{ 'customer.edit_company_member.full_name' | t }}" required></input>
+                    </div>
                 </div>
             </div>
         </div>

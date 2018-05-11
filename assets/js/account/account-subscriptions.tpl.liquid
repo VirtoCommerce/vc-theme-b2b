@@ -112,7 +112,10 @@
                             <li ng-repeat="e in $ctrl.errors" ng-bind="e"></li>
                         </ul>
                     </div>
-                    <vc-labeled-input value="$ctrl.cancelReason" name="reason" placeholder="{{ 'customer.subscription.cancel_reason_lbl' | t }}" form="cancelForm" required="true" autofocus="true"></vc-labeled-input>
+                    <div class="input-group">
+                        <input value="$ctrl.cancelReason" name="reason" vc-flying-placeholder="{{ 'customer.subscription.cancel_reason_lbl' | t }}" required autofocus></input>
+                    </div>
+                    
 
                     <button class="btn btn-primary" ng-disabled="$ctrl.loader.isLoading" ng-class="{ 'btn--disabled': cancelForm.$pristine, 'loading': $ctrl.loader.isLoading }">
                         <span class="btn-text">{{ 'customer.subscription.cancel_submit' | t }}</span>
