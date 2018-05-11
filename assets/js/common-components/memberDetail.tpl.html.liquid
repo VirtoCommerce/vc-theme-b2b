@@ -2,7 +2,7 @@
     <div class="form-group" ng-init="$ctrl.setForm(memberDetailForm)">
 
         <div class="form-group"  ng-show="$ctrl.showField('CompanyName')" ng-disabled="$ctrl.disableField('CompanyName')">
-            <input class="form-control" ng-model="$ctrl.member.companyName" name="CompanyName" type="text" required vc-flying-placeholder="{{ 'customer.register.company_name' | t }}"/>
+            <input class="form-control" ng-model="$ctrl.member.companyName" name="CompanyName" type="text" ng-required="$ctrl.requiredField('CompanyName')" vc-flying-placeholder="{{ 'customer.register.company_name' | t }}"/>
             <span class="text-danger" ng-show="!memberDetailForm.CompanyName.$pristine && memberDetailForm.CompanyName.$error.required">{{ 'common.required' | t }}</span>
         </div>
         <div class="form-group"  ng-show="$ctrl.showField('Email')" ng-disabled="$ctrl.disableField('Email')">
