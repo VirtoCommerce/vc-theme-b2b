@@ -1,5 +1,0 @@
-﻿{% if product.featured_image %}
-    <img class="img-responsive" ng-src="{{ product.featured_image.src | img_url: "168x168" }}" fallback-src="{{ product.featured_image.src | img_url }}" alt="{{ product.featured_image.alt | escape }}" />
-{% else %}
-    <img class="img-responsive" src="{{ 'no-image.svg' | asset_url }}" />
-{% endif %}

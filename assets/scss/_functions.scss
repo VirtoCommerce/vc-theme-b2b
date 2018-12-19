@@ -1,8 +1,0 @@
-@function odd($number) {
-    $remainder: $number % 2;
-    @if $remainder <= 1 {
-        @return $number - $remainder;
-    } @else {
-        @return $number - $remainder + 2;
-    }
-}

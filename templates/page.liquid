@@ -1,9 +1,0 @@
-﻿<main class="container" role="main">
-    <div class="toolbar clearfix">
-        {% include 'shared/breadcrumb' %}
-    </div>
-    {% if page.meta_info.title != nil %}
-        <div class="page-header"><h1>{{ page.title }}</h1></div>
-    {% endif %}
-    {{ page.content | render }}
-</main>
