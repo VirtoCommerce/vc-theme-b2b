@@ -1,7 +1,8 @@
+# VC Starter Theme
 Starter Theme represents the VC  Team's opinionated starting point for new projects. It strives to include up-to-date best practices and solutions that we have deemed needed for the majority of projects we build. It is a reflection of what’s possible when building a theme! 
 The Starter Theme is not a framework but rather a starting point for your project!
 
-The main project goals:
+## The main project goals:
 - Demonstration of all current and future functionality that can be presented in the VC platform and storefront
 - Plays opinionated starting point  for all new projects constructed on VC storefront. And due to its simplicity and well-knownness, it also provides of a special knowledge base and example.
 - Have a initial styles constructed by using popular CSS methodology and technologies such as BEM, Sass  and have a adaptive markup allows working on all popular devices and resolutions
