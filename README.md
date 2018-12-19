@@ -1,6 +1,6 @@
 # VC Starter Theme
 Starter Theme represents the VC  Team's opinionated starting point for new projects. It strives to include up-to-date best practices and solutions that we have deemed needed for the majority of projects we build. It is a reflection of what’s possible when building a theme! 
-The Starter Theme is not a framework but rather a starting point for your project!
+The Starter Theme is not a framework but rather a starting point for your theme in VC project!
 
 ## The main project goals:
 - Demonstration of all current and future functionality that can be presented in the VC platform and storefront
