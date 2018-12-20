@@ -11,4 +11,4 @@ The Starter Theme is not a framework but rather a starting point for your theme 
 - Provides a collection of handy utility JS libraries and components which assist theme developers with problems unique to VC themes development environment.Theme scripts components are uncoupled from a particular UI.  Typically, they are used alongside a customized solution for a particular theme and aren't  enforce a particular pattern to display or update the visual state.
 
 ## The project mindmap (not final)
-![theme strater](https://user-images.githubusercontent.com/7566324/50268363-27422400-0433-11e9-8781-43d949a3ac66.png)
+![theme strater](https://user-images.githubusercontent.com/7566324/50275716-aee65d80-0448-11e9-9d1a-6cf01799999f.png)
