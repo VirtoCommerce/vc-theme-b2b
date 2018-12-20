@@ -1,0 +1,340 @@
+{
+  "formatVersion": 3,
+  "id": "root",
+  "ideas": {
+    "1": {
+      "title": "VC Theme Starter",
+      "id": 1,
+      "attr": {
+        "position": [
+          -49,
+          -15,
+          1
+        ]
+      },
+      "ideas": {
+        "1": {
+          "title": "Primary goals",
+          "id": 2,
+          "attr": {
+            "style": {
+              "background": "#FF9900"
+            }
+          }
+        },
+        "2": {
+          "title": "CSS",
+          "id": 5,
+          "ideas": {
+            "1": {
+              "title": "BEM methodology",
+              "id": 16
+            },
+            "2": {
+              "title": "Adaptive design",
+              "id": 37,
+              "attr": {}
+            },
+            "3": {
+              "title": "Sass",
+              "id": 39
+            },
+            "4": {
+              "title": "File structure",
+              "id": 40
+            }
+          },
+          "attr": {
+            "style": {
+              "background": "#FF9900"
+            }
+          }
+        },
+        "3": {
+          "title": "3rd party dependencies",
+          "id": 46,
+          "attr": {
+            "position": [
+              133.79500000000007,
+              121.5,
+              1
+            ],
+            "style": {
+              "background": "#FF9900"
+            }
+          }
+        },
+        "-2": {
+          "title": "Server side templates",
+          "id": 7,
+          "ideas": {
+            "6": {
+              "title": "File structure",
+              "id": 50,
+              "ideas": {
+                "5": {
+                  "title": "Templates",
+                  "id": 51,
+                  "ideas": {
+                    "1": {
+                      "title": "Authentification",
+                      "id": 29,
+                      "ideas": {
+                        "1": {
+                          "title": "SignIn",
+                          "id": 30
+                        },
+                        "2": {
+                          "title": "SignOut",
+                          "id": 31
+                        },
+                        "3": {
+                          "title": "Forgot password",
+                          "id": 32
+                        },
+                        "4": {
+                          "title": "Forgot user name",
+                          "id": 33
+                        }
+                      },
+                      "attr": {}
+                    },
+                    "2": {
+                      "title": "Index page",
+                      "id": 47,
+                      "attr": {}
+                    },
+                    "3": {
+                      "title": "Catalog navigation/search result",
+                      "id": 48,
+                      "attr": {}
+                    },
+                    "4": {
+                      "title": "Product detail",
+                      "id": 49,
+                      "attr": {}
+                    },
+                    "5": {
+                      "title": "Cart",
+                      "id": 54,
+                      "attr": {}
+                    },
+                    "6": {
+                      "title": "Checkout",
+                      "id": 55,
+                      "attr": {}
+                    },
+                    "7": {
+                      "title": "Customer cabinet",
+                      "id": 56,
+                      "attr": {}
+                    }
+                  }
+                },
+                "6": {
+                  "title": "Layout",
+                  "id": 26,
+                  "ideas": {
+                    "1": {
+                      "title": "Main layout",
+                      "id": 35,
+                      "ideas": {
+                        "1": {
+                          "title": "Header",
+                          "id": 52
+                        },
+                        "2": {
+                          "title": "Footer",
+                          "id": 53
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "attr": {
+                "position": [
+                  160.80999999999995,
+                  87.10500000000002,
+                  2
+                ]
+              }
+            }
+          },
+          "attr": {
+            "style": {
+              "background": "#FF9900"
+            }
+          }
+        },
+        "-0.5": {
+          "title": "JS",
+          "id": 58,
+          "attr": {
+            "position": [
+              141.60500000000002,
+              -298.135,
+              2
+            ],
+            "style": {
+              "background": "#FF9900"
+            }
+          },
+          "ideas": {
+            "1": {
+              "title": "JS  e-commerce component (semver)",
+              "id": 4,
+              "ideas": {
+                "1": {
+                  "title": "Navigation",
+                  "id": 8
+                },
+                "2": {
+                  "title": "Catalog",
+                  "id": 10,
+                  "ideas": {
+                    "1": {
+                      "title": "SKU selector (cartesian product)",
+                      "id": 64,
+                      "attr": {}
+                    },
+                    "2": {
+                      "title": "Search",
+                      "id": 76,
+                      "ideas": {
+                        "1": {
+                          "title": "Filter bulder",
+                          "id": 77,
+                          "attr": {}
+                        }
+                      }
+                    }
+                  }
+                },
+                "3": {
+                  "title": "Checkout",
+                  "id": 11
+                },
+                "4": {
+                  "title": "Authentification",
+                  "id": 12
+                },
+                "5": {
+                  "title": "Search",
+                  "id": 13,
+                  "attr": {}
+                },
+                "6": {
+                  "title": "Cart",
+                  "id": 14,
+                  "ideas": {
+                    "1": {
+                      "title": "Cart widget",
+                      "id": 78
+                    },
+                    "4": {
+                      "title": "Cart detail",
+                      "id": 81,
+                      "ideas": {
+                        "1": {
+                          "title": "Line items list",
+                          "id": 80,
+                          "attr": {}
+                        },
+                        "2": {
+                          "title": "Totals",
+                          "id": 79,
+                          "attr": {}
+                        }
+                      }
+                    }
+                  }
+                },
+                "7": {
+                  "title": "Pricing",
+                  "id": 17
+                },
+                "8": {
+                  "title": "Marketing",
+                  "id": 18
+                },
+                "9": {
+                  "title": "SEO",
+                  "id": 19
+                },
+                "11": {
+                  "title": "Lists",
+                  "id": 21
+                },
+                "12": {
+                  "title": "Customer cabinet",
+                  "id": 22
+                },
+                "13": {
+                  "title": "Addresses",
+                  "id": 59,
+                  "ideas": {
+                    "1": {
+                      "title": "Address new/edit",
+                      "id": 69,
+                      "attr": {
+                        "position": [
+                          100.76499999999999,
+                          -55.120000000000005,
+                          1
+                        ]
+                      },
+                      "ideas": {
+                        "1": {
+                          "title": "Address typeahead",
+                          "id": 73
+                        }
+                      }
+                    },
+                    "2": {
+                      "title": "Address view",
+                      "id": 71
+                    }
+                  }
+                },
+                "14": {
+                  "title": "Money/Currency",
+                  "id": 60
+                }
+              }
+            },
+            "4": {
+              "title": "Technology stack",
+              "id": 68,
+              "ideas": {
+                "1": {
+                  "title": "RxJS",
+                  "id": 63,
+                  "attr": {}
+                },
+                "2": {
+                  "title": "Angular 7.0",
+                  "id": 61,
+                  "attr": {}
+                }
+              }
+            },
+            "1.5": {
+              "title": "JS common library",
+              "id": 65,
+              "attr": {},
+              "ideas": {
+                "1": {
+                  "title": "Wizard",
+                  "id": 74
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "title": "VC Theme Starter",
+  "links": []
+}
