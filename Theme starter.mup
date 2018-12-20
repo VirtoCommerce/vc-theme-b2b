@@ -13,15 +13,6 @@
         ]
       },
       "ideas": {
-        "1": {
-          "title": "Primary goals",
-          "id": 2,
-          "attr": {
-            "style": {
-              "background": "#FF9900"
-            }
-          }
-        },
         "2": {
           "title": "CSS",
           "id": 5,
@@ -181,50 +172,81 @@
             }
           },
           "ideas": {
-            "1": {
-              "title": "JS  e-commerce component (semver)",
-              "id": 4,
+            "4": {
+              "title": "Technology stack",
+              "id": 68,
               "ideas": {
                 "1": {
-                  "title": "Navigation",
-                  "id": 8
+                  "title": "RxJS",
+                  "id": 63,
+                  "attr": {}
                 },
                 "2": {
-                  "title": "Catalog",
-                  "id": 10,
+                  "title": "Angular 7.0",
+                  "id": 61,
+                  "attr": {}
+                },
+                "3": {
+                  "title": "TypeScript",
+                  "id": 99
+                },
+                "4": {
+                  "title": "WebPack",
+                  "id": 100
+                },
+                "5": {
+                  "title": "NSwag",
+                  "id": 103
+                }
+              }
+            },
+            "5": {
+              "title": "E-Commerce UI components",
+              "id": 87,
+              "ideas": {
+                "3": {
+                  "title": "Customer cabinet",
+                  "id": 22,
+                  "attr": {},
                   "ideas": {
                     "1": {
-                      "title": "SKU selector (cartesian product)",
-                      "id": 64,
-                      "attr": {}
+                      "title": "Orders list",
+                      "id": 89
                     },
                     "2": {
-                      "title": "Search",
-                      "id": 76,
-                      "ideas": {
-                        "1": {
-                          "title": "Filter bulder",
-                          "id": 77,
-                          "attr": {}
-                        }
-                      }
+                      "title": "Lists",
+                      "id": 90
                     }
                   }
                 },
-                "3": {
-                  "title": "Checkout",
-                  "id": 11
-                },
                 "4": {
-                  "title": "Authentification",
-                  "id": 12
+                  "title": "Lists",
+                  "id": 21,
+                  "attr": {}
                 },
                 "5": {
-                  "title": "Search",
-                  "id": 13,
+                  "title": "SEO",
+                  "id": 19,
                   "attr": {}
                 },
                 "6": {
+                  "title": "Marketing",
+                  "id": 18,
+                  "attr": {},
+                  "ideas": {
+                    "1": {
+                      "title": "Coupons",
+                      "id": 96,
+                      "attr": {}
+                    }
+                  }
+                },
+                "7": {
+                  "title": "Pricing",
+                  "id": 17,
+                  "attr": {}
+                },
+                "8": {
                   "title": "Cart",
                   "id": 14,
                   "ideas": {
@@ -248,87 +270,148 @@
                         }
                       }
                     }
-                  }
-                },
-                "7": {
-                  "title": "Pricing",
-                  "id": 17
-                },
-                "8": {
-                  "title": "Marketing",
-                  "id": 18
+                  },
+                  "attr": {}
                 },
                 "9": {
-                  "title": "SEO",
-                  "id": 19
+                  "title": "Search",
+                  "id": 13,
+                  "attr": {},
+                  "ideas": {}
+                },
+                "10": {
+                  "title": "Authentification",
+                  "id": 12,
+                  "attr": {}
                 },
                 "11": {
-                  "title": "Lists",
-                  "id": 21
+                  "title": "Checkout",
+                  "id": 11,
+                  "attr": {},
+                  "ideas": {}
                 },
                 "12": {
-                  "title": "Customer cabinet",
-                  "id": 22
-                },
-                "13": {
-                  "title": "Addresses",
-                  "id": 59,
+                  "title": "Catalog",
+                  "id": 10,
                   "ideas": {
-                    "1": {
-                      "title": "Address new/edit",
-                      "id": 69,
-                      "attr": {
-                        "position": [
-                          100.76499999999999,
-                          -55.120000000000005,
-                          1
-                        ]
-                      },
+                    "2": {
+                      "title": "Search",
+                      "id": 76,
                       "ideas": {
                         "1": {
-                          "title": "Address typeahead",
-                          "id": 73
+                          "title": "Filter bulder",
+                          "id": 77,
+                          "attr": {}
                         }
                       }
-                    },
-                    "2": {
-                      "title": "Address view",
-                      "id": 71
+                    }
+                  },
+                  "attr": {}
+                },
+                "13": {
+                  "title": "Navigation",
+                  "id": 8,
+                  "attr": {},
+                  "ideas": {
+                    "1": {
+                      "title": "Menu",
+                      "id": 88
                     }
                   }
                 },
                 "14": {
-                  "title": "Money/Currency",
-                  "id": 60
-                }
-              }
-            },
-            "4": {
-              "title": "Technology stack",
-              "id": 68,
-              "ideas": {
-                "1": {
-                  "title": "RxJS",
-                  "id": 63,
-                  "attr": {}
+                  "title": "Payment methods",
+                  "id": 95
                 },
-                "2": {
-                  "title": "Angular 7.0",
-                  "id": 61,
-                  "attr": {}
+                "15": {
+                  "title": "Shipment methods",
+                  "id": 98
                 }
-              }
+              },
+              "attr": {}
             },
-            "1.5": {
-              "title": "JS common library",
-              "id": 65,
-              "attr": {},
+            "4.5": {
+              "title": "Redistributed JS (semver)",
+              "id": 4,
               "ideas": {
-                "1": {
-                  "title": "Wizard",
-                  "id": 74
+                "16": {
+                  "title": "Common library",
+                  "id": 65,
+                  "attr": {},
+                  "ideas": {
+                    "1": {
+                      "title": "Wizard",
+                      "id": 74,
+                      "attr": {}
+                    },
+                    "2": {
+                      "title": "Popup",
+                      "id": 82,
+                      "attr": {}
+                    },
+                    "3": {
+                      "title": "Error handling/display",
+                      "id": 83,
+                      "attr": {}
+                    },
+                    "4": {
+                      "title": "Validation",
+                      "id": 84,
+                      "attr": {}
+                    }
+                  }
+                },
+                "17": {
+                  "title": "E-Commerce components",
+                  "id": 101,
+                  "attr": {},
+                  "ideas": {
+                    "1": {
+                      "title": "Money/Currency",
+                      "id": 60,
+                      "attr": {}
+                    },
+                    "2": {
+                      "title": "Url routing",
+                      "id": 102
+                    },
+                    "3": {
+                      "title": "SKU selector (cartesian product)",
+                      "id": 64,
+                      "attr": {}
+                    },
+                    "4": {
+                      "title": "Address",
+                      "id": 59,
+                      "ideas": {
+                        "1": {
+                          "title": "Address new/edit",
+                          "id": 69,
+                          "attr": {
+                            "position": [
+                              100.76499999999999,
+                              -55.120000000000005,
+                              1
+                            ]
+                          },
+                          "ideas": {
+                            "1": {
+                              "title": "Address typeahead",
+                              "id": 73
+                            }
+                          }
+                        },
+                        "2": {
+                          "title": "Address view",
+                          "id": 71
+                        }
+                      },
+                      "attr": {}
+                    }
+                  }
                 }
-              }
+              },
+              "attr": {}
             }
           }
         }
