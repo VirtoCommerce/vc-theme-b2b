@@ -13,7 +13,7 @@ angular.module('storefront.account')
     .component('vcAccountCompanyMembersList', {
         templateUrl: "account-company-members-list.tpl",
         bindings: { $router: '<' },
-        controller: ['storefrontApp.mainContext', '$scope', 'accountApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, $scope, accountApi, loader, confirmService, $location, $translate) {
+        controller: ['storefrontApp.mainContext', '$scope', 'accountApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', '$log', '$timeout', function (mainContext, $scope, accountApi, loader, confirmService, $location, $translate, $log, $timeout) {
             var $ctrl = this;
             $ctrl.currentMemberId = mainContext.customer.id;
             $ctrl.newMemberComponent = null;
@@ -106,21 +106,36 @@ angular.module('storefront.account')
                     loader.wrapLoading(function () {
                         return accountApi.registerNewUser($ctrl.newMember).then(function(response) {
                             if (response.data.succeeded) {
-                                $ctrl.cancel();
-                                $ctrl.pageSettings.currentPage = 1;
-                                $ctrl.pageSettings.pageChanged();
+                                $ctrl.throwAlert('success', 'new user added', undefined);
+                                //Give user time to look at the alert
+                                $timeout($ctrl.applyNewUser, 3000);
                             }
                             else {
-                                $ctrl.errors = _.pluck(response.data.errors, 'description');
+                                $ctrl.throwAlert('danger', undefined, response.data.errors);
                             }
                         });
                     });
                 }
             };
 
+            $ctrl.throwAlert = function (level, message, errors) {
+                $ctrl.level = level;
+                $ctrl.errorMessage = message;
+                if (errors) {
+                  $ctrl.errors = _.pluck(errors, 'description');
+                }
+            };
+
+            $ctrl.applyNewUser = function () {
+                $ctrl.cancel();
+                $ctrl.pageSettings.currentPage = 1;
+                $ctrl.pageSettings.pageChanged();
+            };
+
             $ctrl.cancel = function () {
                 $ctrl.inviteInfo = null;
                 $ctrl.newMember = null;
+                $ctrl.errorMessage = null;
             };
 
             $ctrl.changeStatus = function (member) {
