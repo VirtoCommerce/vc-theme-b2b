@@ -180,7 +180,7 @@ angular.module('storefront.account')
                     });
                 };
 
-                $translate('customer.edit_company_members.delete_confirm').then(showDialog, showDialog)
+                $translate('customer.edit_company_members.delete_confirm').then(showDialog, showDialog);
             };
 
             $ctrl.validate = function () {
