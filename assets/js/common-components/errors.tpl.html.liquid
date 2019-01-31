@@ -1,7 +1,11 @@
   <div class="alert" ng-class="'alert-' + $ctrl.level" ng-if="$ctrl.message || $ctrl.errors">
-    <p>{{ 'general.forms.post_error' | t }}</p>
-    
-    <p ng-if="$ctrl.message" ng-bind-html="$ctrl.message"></p>
+
+    <span ng-if="$ctrl.level === 'success'">{{ 'general.forms.post_success' | t }} <span ng-if="$ctrl.message" ng-bind-html="$ctrl.message"></span></span>
+    <div ng-if="$ctrl.level !== 'success'">
+      <p>{{ 'general.forms.post_error' | t }}</p>
+      <p ng-if="$ctrl.message" ng-bind-html="$ctrl.message"></p>
+    </div>
+
     <ul class="list-styled" ng-if="$ctrl.errors">
         <li ng-repeat="error in $ctrl.errors" ng-bind-html="error"></li>
     </ul>
