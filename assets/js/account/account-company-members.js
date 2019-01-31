@@ -121,9 +121,7 @@ angular.module('storefront.account')
             $ctrl.throwAlert = function (level, message, errors) {
                 $ctrl.level = level;
                 $ctrl.errorMessage = message;
-                if (errors) {
-                  $ctrl.errors = _.pluck(errors, 'description');
-                }
+                $ctrl.errors = _.pluck(errors, 'description');
             };
 
             $ctrl.applyNewUser = function () {
