@@ -37,6 +37,11 @@
             </table>
         </div>
         <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
+        <div ng-if="$ctrl.editMember">
+            <div class="one-whole">
+                <vc-errors message="$ctrl.errorMessage" level="$ctrl.level" errors="$ctrl.errors"></vc-errors>
+            </div>
+        </div>
         <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.edit_company_members.none' | t }}</p>
 
         <button va-permission="storefront:user:invite" ng-click="$ctrl.inviteInfo={}" ng-if="!$ctrl.newMember && !$ctrl.inviteInfo" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
