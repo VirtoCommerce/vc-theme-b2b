@@ -18,6 +18,7 @@ angular.module('storefront.account')
             $ctrl.currentMemberId = mainContext.customer.id;
             $ctrl.newMemberComponent = null;
             $ctrl.loader = loader;
+            $ctrl.editMember = null;
             $ctrl.pageSettings = { currentPage: 1, itemsPerPageCount: 5, numPages: 10 };
             $ctrl.pageSettings.pageChanged = function () { refresh(); };
 
@@ -133,6 +134,7 @@ angular.module('storefront.account')
             $ctrl.cancel = function () {
                 $ctrl.inviteInfo = null;
                 $ctrl.newMember = null;
+                $ctrl.editMember = null;
                 $ctrl.errorMessage = null;
             };
 
@@ -162,10 +164,15 @@ angular.module('storefront.account')
                             loader.wrapLoading(function () {
                                 return accountApi.deleteUser(member.id).then(function(response) {
                                     if (response.data.succeeded) {
-                                        refresh();
+                                        $ctrl.editMember = true;
+                                        $ctrl.throwAlert('success', 'user deleted', undefined);
+                                        $timeout(function(){
+                                            $ctrl.cancel();
+                                            refresh();
+                                        }, 3000);
                                     }
                                     else {
-                                        $ctrl.errors = _.pluck(response.data.errors, 'description');
+                                        $ctrl.throwAlert('danger', undefined, response.data.errors);
                                     }
                                 });
                             });
@@ -173,7 +180,7 @@ angular.module('storefront.account')
                     });
                 };
 
-                $translate('customer.edit_company_members.delete_confirm').then(showDialog, showDialog);
+                $translate('customer.edit_company_members.delete_confirm').then(showDialog, showDialog)
             };
 
             $ctrl.validate = function () {
