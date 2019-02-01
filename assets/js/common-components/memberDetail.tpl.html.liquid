@@ -9,7 +9,7 @@
 
         <vc-labeled-input value="$ctrl.member.lastName" name="LastName" type="text" placeholder="{{ 'customer.register.last_name' | t }}" form="$ctrl.form"></vc-labeled-input>
 
-        <vc-labeled-input value="$ctrl.member.budget" name="Budget" type="price" positive placeholder="Available amount" form="$ctrl.form"></vc-labeled-input>
+        <vc-labeled-input value="$ctrl.member.budget" name="Budget" type="price" placeholder="Available amount" form="$ctrl.form"></vc-labeled-input>
 
         <vc-labeled-input value="$ctrl.member.userName" name="UserName" type="text" placeholder="{{ 'customer.register.user_name' | t }}" form="$ctrl.form" required="$ctrl.requiredField('UserName')" ng-show="$ctrl.showField('UserName')" disabled="$ctrl.disableField('UserName')"></vc-labeled-input>
 

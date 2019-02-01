@@ -8,7 +8,6 @@ storefrontApp.component('vcMemberDetail', {
     },
     controller: ['$scope', 'availableRoles', function ($scope, availableRoles) {
         var $ctrl = this;
-        
         $ctrl.config = [
             {
                 field: 'CompanyName',

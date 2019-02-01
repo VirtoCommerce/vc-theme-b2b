@@ -72,17 +72,19 @@ storefrontApp.directive('contentType', function () {
         link: function (scope, element, attrs, ctrl) {
             var data = attrs.contentType;
             function isDigit(code) {
-                return (event.keyCode > '47') && (event.keyCode < '58') || (event.keyCode > '95') && (event.keyCode < '106');
+                return (code > '47') && (code < '58') || (code > '95') && (code < '106');
             }
             function isDecimalSeparator(code) {
-                return (event.keyCode == '188') || (event.keyCode == '189') || (event.keyCode == '110');
-                // return (event.keyCode == '110');
+                return (code == '188') || (code == '189') || (code == '110');
             }
             function isNavigationArrow(code) {
-                return (event.keyCode > '34') && (event.keyCode < '41');
+                return (code > '34') && (code < '41');
             }
             function isControll(code) {
-                return (event.keyCode == '8') || (event.keyCode == '45') || (event.keyCode == '46');
+                return (code == '8') || (code == '17') || (code == '45') || (code == '46');
+            }
+            function isCopyPaste(code, ctrlDown) {
+                return (ctrlDown && code=='67') || (ctrlDown && code=='86') || (ctrlDown && code=='88');
             }
             if(ctrl){
                 switch (data.toLowerCase()) {
@@ -94,8 +96,10 @@ storefrontApp.directive('contentType', function () {
                     }
                     case 'price': {
                         element.on('keydown', function(event){
-                            if( !(isDigit(event.keyCode) || isDecimalSeparator(event.keyCode) ||
-                                  isNavigationArrow(event.keyCode) || isControll(event.keyCode)) ){
+                            var e = event || $window.event, code = e.keyCode,
+                                ctrlDown = e.ctrlKey||e.metaKey;
+                            if( !(isDigit(code) || isDecimalSeparator(code) ||
+                                  isNavigationArrow(code) || isControll(code) || isCopyPaste(code, ctrlDown)) ){
                                 event.preventDefault();
                             }
                         });
@@ -107,7 +111,9 @@ storefrontApp.directive('contentType', function () {
                     }
                     case 'quantity': {
                         element.on('keydown', function(event){
-                            if( !(isDigit(event.keyCode) || isNavigationArrow(event.keyCode) || isControll(event.keyCode))){
+                            var e = event || $window.event, code = e.keyCode,
+                                ctrlDown = e.ctrlKey||e.metaKey;
+                            if( !(isDigit(code) || isNavigationArrow(code) || isControll(code) || isCopyPaste(code, ctrlDown))){
                                 event.preventDefault();
                             }
                         });

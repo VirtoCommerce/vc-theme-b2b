@@ -23,7 +23,7 @@
                         <td ng-bind="member.userName"></td>
                         <td ng-bind="member.email"></td>
                         <td ng-bind="member.role.name"></td>
-                        <td ng-bind="member.salutation ? '$' + member.salutation : 'n/a'"></td>
+                        <td ng-bind="member.budget ? '$' + member.budget : 'n/a'"></td>
                         <td ng-bind="member.isLockedOut ?'Not active':'Active'"></td>
                         <td>
                             <span ng-show="$ctrl.showActions(member)">
