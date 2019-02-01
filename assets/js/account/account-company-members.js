@@ -164,11 +164,11 @@ angular.module('storefront.account')
                             loader.wrapLoading(function () {
                                 return accountApi.deleteUser(member.id).then(function(response) {
                                     if (response.data.succeeded) {
+                                        refresh();
                                         $ctrl.editMember = true;
                                         $ctrl.throwAlert('success', 'user deleted', undefined);
                                         $timeout(function(){
                                             $ctrl.cancel();
-                                            refresh();
                                         }, 3000);
                                     }
                                     else {
