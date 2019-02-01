@@ -74,14 +74,14 @@ storefrontApp.directive('contentType', function () {
             function isDigit(code) {
                 return (code > '47') && (code < '58') || (code > '95') && (code < '106');
             }
-            function isDecimalSeparator(code) {
-                return (code == '188') || (code == '189') || (code == '110');
+            function isDecimalSeparator(key) {
+                return (key==',') || (key=='.');
             }
             function isNavigationArrow(code) {
                 return (code > '34') && (code < '41');
             }
             function isControll(code) {
-                return (code == '8') || (code == '17') || (code == '45') || (code == '46');
+                return (code == '8') || (code == '16') || (code == '17') || (code == '45') || (code == '46');
             }
             function isCopyPaste(code, ctrlDown) {
                 return (ctrlDown && code=='67') || (ctrlDown && code=='86') || (ctrlDown && code=='88');
@@ -96,9 +96,11 @@ storefrontApp.directive('contentType', function () {
                     }
                     case 'price': {
                         element.on('keydown', function(event){
-                            var e = event || $window.event, code = e.keyCode,
+
+                            var e = event || $window.event,
+                                code = (e.which) ? e.which : e.keyCode,
                                 ctrlDown = e.ctrlKey||e.metaKey;
-                            if( !(isDigit(code) || isDecimalSeparator(code) ||
+                            if( !(isDigit(code) || isDecimalSeparator(e.key) ||
                                   isNavigationArrow(code) || isControll(code) || isCopyPaste(code, ctrlDown)) ){
                                 event.preventDefault();
                             }
