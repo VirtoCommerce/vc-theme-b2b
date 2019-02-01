@@ -145,6 +145,10 @@ angular.module('storefront.account')
                     return action(member.id).then(function (response) {
                         if (response.data.succeeded) {
                             refresh();
+                            $ctrl.editMember = true;
+                            $ctrl.throwAlert('success', member.isLockedOut ? 'user deactivated' : 'user activated', undefined);
+                            //Give user time to look at the alert
+                            $timeout($ctrl.cancel(), 3000);
                         }
                         else {
                             $ctrl.errors = _.pluck(response.data.errors, 'description');
