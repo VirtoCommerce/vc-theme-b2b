@@ -18,12 +18,26 @@ angular.module('storefront.account')
             $ctrl.currentMemberId = mainContext.customer.id;
             $ctrl.newMemberComponent = null;
             $ctrl.loader = loader;
-            $ctrl.editMember = null;
+            $ctrl.alerts = {
+                editMember: {
+                    level: null,
+                    errors: undefined,
+                    errorMessage: undefined
+                },
+                newMember: {
+                    level: null,
+                    errors: undefined,
+                    errorMessage: undefined
+                },
+            };
             $ctrl.pageSettings = { currentPage: 1, itemsPerPageCount: 5, numPages: 10 };
             $ctrl.pageSettings.pageChanged = function () { refresh(); };
 
             function refresh() {
-                $ctrl.errors = undefined;
+                $ctrl.alerts.editMember.errors = null;
+                $ctrl.alerts.newMember.errors = null;
+                $ctrl.alerts.editMember.errorMessage = null;
+                $ctrl.alerts.newMember.errorMessage = null;
                 loader.wrapLoading(function () {
                     return accountApi.searchOrganizationUsers({
                         skip: ($ctrl.pageSettings.currentPage - 1) * $ctrl.pageSettings.itemsPerPageCount,
@@ -107,22 +121,25 @@ angular.module('storefront.account')
                     loader.wrapLoading(function () {
                         return accountApi.registerNewUser($ctrl.newMember).then(function(response) {
                             if (response.data.succeeded) {
-                                $ctrl.throwAlert('success', 'new user added', undefined);
+                                $ctrl.throwAlert('newMember', 'success', 'new user added', undefined);
                                 //Give user time to look at the alert
                                 $timeout($ctrl.applyNewUser, 3000);
                             }
                             else {
-                                $ctrl.throwAlert('danger', undefined, response.data.errors);
+                                $ctrl.throwAlert('newMember', 'danger', undefined, response.data.errors);
                             }
                         });
                     });
                 }
             };
 
-            $ctrl.throwAlert = function (level, message, errors) {
-                $ctrl.level = level;
-                $ctrl.errorMessage = message;
-                $ctrl.errors = _.pluck(errors, 'description');
+            $ctrl.throwAlert = function (key, level, message, errors) {
+                $ctrl.alerts[key].level = undefined;
+                $ctrl.alerts[key].errorMessage = undefined;
+                $ctrl.alerts[key].errors = null;
+                $ctrl.alerts[key].level = level;
+                $ctrl.alerts[key].errorMessage = message;
+                $ctrl.alerts[key].errors = _.pluck(errors, 'description');
             };
 
             $ctrl.applyNewUser = function () {
@@ -145,9 +162,16 @@ angular.module('storefront.account')
                     return action(member.id).then(function (response) {
                         if (response.data.succeeded) {
                             refresh();
+                            $ctrl.editMember = true;
+                            $ctrl.throwAlert('editMember', 'success', member.isLockedOut ? `user ${member.userName} deactivated` : `user ${member.userName} activated`, undefined);
+                            //Give user time to look at the alert
+                            $timeout(function (){
+                                $ctrl.cancel();
+                            }, 3000);
                         }
                         else {
-                            $ctrl.errors = _.pluck(response.data.errors, 'description');
+                            $ctrl.editMember = true;
+                            $ctrl.throwAlert('editMember', 'danger', undefined, response.data.errors);
                         }
                     });
                 });
@@ -166,13 +190,14 @@ angular.module('storefront.account')
                                     if (response.data.succeeded) {
                                         refresh();
                                         $ctrl.editMember = true;
-                                        $ctrl.throwAlert('success', 'user deleted', undefined);
+                                        $ctrl.throwAlert('editMember', 'success', `user ${member.userName} deleted`, undefined);
                                         $timeout(function(){
                                             $ctrl.cancel();
                                         }, 3000);
                                     }
                                     else {
-                                        $ctrl.throwAlert('danger', undefined, response.data.errors);
+                                        $ctrl.editMember = true;
+                                        $ctrl.throwAlert('editMember', 'danger', undefined, response.data.errors);
                                     }
                                 });
                             });

@@ -57,6 +57,18 @@ angular.module('storefront.account')
                 refresh();
             };
 
+            $ctrl.throwAlert = function (level, message, errors) {
+                $ctrl.level = level;
+                $ctrl.errorMessage = message;
+                $ctrl.errors = _.pluck(errors, 'description');
+            };
+
+            $ctrl.clearAlert = function () {
+                $ctrl.level = null;
+                $ctrl.errorMessage = undefined;
+                $ctrl.errors = null;
+            };
+
             $ctrl.submitMember = function () {
                 if ($ctrl.memberComponent.validate()) {
                     loader.wrapLoading(function () {
@@ -64,9 +76,15 @@ angular.module('storefront.account')
                         $ctrl.member.emails = [$ctrl.member.email];
                         $ctrl.member.roles = [$ctrl.member.role.id];
                         $ctrl.member.budget = $ctrl.member.budget.toString().replace(',', '.');
-                        return accountApi.updateUser($ctrl.member).then(function (response) {
-                            refresh();
-                        });
+                        
+                        return accountApi.updateUser($ctrl.member).then(
+                            function (response) {
+                                refresh();
+                                $ctrl.throwAlert('success', 'user updated', undefined);
+                                $timeout(function(){
+                                    $ctrl.clearAlert();
+                                }, 3000);
+                            });
                     });
                 };
             };
