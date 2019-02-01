@@ -120,6 +120,9 @@ angular.module('storefront.account')
             };
 
             $ctrl.throwAlert = function (level, message, errors) {
+                $ctrl.level = undefined;
+                $ctrl.errorMessage = undefined;
+                $ctrl.errors = null;
                 $ctrl.level = level;
                 $ctrl.errorMessage = message;
                 $ctrl.errors = _.pluck(errors, 'description');
@@ -145,9 +148,16 @@ angular.module('storefront.account')
                     return action(member.id).then(function (response) {
                         if (response.data.succeeded) {
                             refresh();
+                            $ctrl.editMember = true;
+                            $ctrl.throwAlert('success', member.isLockedOut ? `user ${member.userName} deactivated` : `user ${member.userName} activated`, undefined);
+                            //Give user time to look at the alert
+                            $timeout(function (){
+                                $ctrl.cancel();
+                            }, 3000);
                         }
                         else {
-                            $ctrl.errors = _.pluck(response.data.errors, 'description');
+                            $ctrl.editMember = true;
+                            $ctrl.throwAlert('danger', undefined, response.data.errors);
                         }
                     });
                 });
@@ -172,6 +182,7 @@ angular.module('storefront.account')
                                         }, 3000);
                                     }
                                     else {
+                                        $ctrl.editMember = true;
                                         $ctrl.throwAlert('danger', undefined, response.data.errors);
                                     }
                                 });
