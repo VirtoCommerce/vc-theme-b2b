@@ -57,15 +57,32 @@ angular.module('storefront.account')
                 refresh();
             };
 
+            $ctrl.throwAlert = function (level, message, errors) {
+                $ctrl.level = level;
+                $ctrl.errorMessage = message;
+                $ctrl.errors = _.pluck(errors, 'description');
+            };
+
+            $ctrl.clearAlert = function () {
+                $ctrl.level = null;
+                $ctrl.errorMessage = undefined;
+                $ctrl.errors = null;
+            };
+
             $ctrl.submitMember = function () {
                 if ($ctrl.memberComponent.validate()) {
                     loader.wrapLoading(function () {
                         $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;
                         $ctrl.member.emails = [$ctrl.member.email];
                         $ctrl.member.roles = [$ctrl.member.role.id];
-                        return accountApi.updateUser($ctrl.member).then(function (response) {
-                            refresh();
-                        });
+                        return accountApi.updateUser($ctrl.member).then(
+                            function (response) {
+                                refresh();
+                                $ctrl.throwAlert('success', 'user updated', undefined);
+                                $timeout(function(){
+                                    $ctrl.clearAlert();
+                                }, 3000);
+                            });
                     });
                 };
             };
