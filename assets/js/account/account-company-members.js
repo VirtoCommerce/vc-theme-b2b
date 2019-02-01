@@ -34,7 +34,10 @@ angular.module('storefront.account')
             $ctrl.pageSettings.pageChanged = function () { refresh(); };
 
             function refresh() {
-                $ctrl.errors = undefined;
+                $ctrl.alerts.editMember.errors = null;
+                $ctrl.alerts.newMember.errors = null;
+                $ctrl.alerts.editMember.errorMessage = null;
+                $ctrl.alerts.newMember.errorMessage = null;
                 loader.wrapLoading(function () {
                     return accountApi.searchOrganizationUsers({
                         skip: ($ctrl.pageSettings.currentPage - 1) * $ctrl.pageSettings.itemsPerPageCount,
