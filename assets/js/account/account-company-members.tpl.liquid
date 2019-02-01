@@ -37,6 +37,11 @@
             </table>
         </div>
         <div ng-if='$ctrl.pageSettings.totalItems > $ctrl.pageSettings.itemsPerPageCount' ng-include="'pagerTemplate.html'"></div>
+        <div ng-if="$ctrl.editMember">
+            <div class="one-whole">
+                <vc-errors message="$ctrl.errorMessage" level="$ctrl.level" errors="$ctrl.errors"></vc-errors>
+            </div>
+        </div>
         <p ng-if="!$ctrl.entries.length && !$ctrl.loader.isLoading">{{ 'customer.edit_company_members.none' | t }}</p>
 
         <button va-permission="storefront:user:invite" ng-click="$ctrl.inviteInfo={}" ng-if="!$ctrl.newMember && !$ctrl.inviteInfo" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
@@ -69,7 +74,7 @@
         <div ng-if="$ctrl.newMember">
             <div class="one-whole">
                 <h2>{{ 'customer.edit_company_member.add_new' | t }}</h2>
-                <vc-errors message="$ctrl.errorMessage" errors="$ctrl.errors"></vc-errors>
+                <vc-errors message="$ctrl.errorMessage" level="$ctrl.level" errors="$ctrl.errors"></vc-errors>
                 <vc-member-detail member="$ctrl.newMember" member-component="$ctrl.newMemberComponent" fields-config="$ctrl.addNewMemberFieldsConfig"></vc-member-detail>
             </div>
             <div class="one-whole">

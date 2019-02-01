@@ -13,11 +13,12 @@ angular.module('storefront.account')
     .component('vcAccountCompanyMembersList', {
         templateUrl: "account-company-members-list.tpl",
         bindings: { $router: '<' },
-        controller: ['storefrontApp.mainContext', '$scope', 'accountApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', function (mainContext, $scope, accountApi, loader, confirmService, $location, $translate) {
+        controller: ['storefrontApp.mainContext', '$scope', 'accountApi', 'loadingIndicatorService', 'confirmService', '$location', '$translate', '$log', '$timeout', function (mainContext, $scope, accountApi, loader, confirmService, $location, $translate, $log, $timeout) {
             var $ctrl = this;
             $ctrl.currentMemberId = mainContext.customer.id;
             $ctrl.newMemberComponent = null;
             $ctrl.loader = loader;
+            $ctrl.editMember = null;
             $ctrl.pageSettings = { currentPage: 1, itemsPerPageCount: 5, numPages: 10 };
             $ctrl.pageSettings.pageChanged = function () { refresh(); };
 
@@ -106,21 +107,35 @@ angular.module('storefront.account')
                     loader.wrapLoading(function () {
                         return accountApi.registerNewUser($ctrl.newMember).then(function(response) {
                             if (response.data.succeeded) {
-                                $ctrl.cancel();
-                                $ctrl.pageSettings.currentPage = 1;
-                                $ctrl.pageSettings.pageChanged();
+                                $ctrl.throwAlert('success', 'new user added', undefined);
+                                //Give user time to look at the alert
+                                $timeout($ctrl.applyNewUser, 3000);
                             }
                             else {
-                                $ctrl.errors = _.pluck(response.data.errors, 'description');
+                                $ctrl.throwAlert('danger', undefined, response.data.errors);
                             }
                         });
                     });
                 }
             };
 
+            $ctrl.throwAlert = function (level, message, errors) {
+                $ctrl.level = level;
+                $ctrl.errorMessage = message;
+                $ctrl.errors = _.pluck(errors, 'description');
+            };
+
+            $ctrl.applyNewUser = function () {
+                $ctrl.cancel();
+                $ctrl.pageSettings.currentPage = 1;
+                $ctrl.pageSettings.pageChanged();
+            };
+
             $ctrl.cancel = function () {
                 $ctrl.inviteInfo = null;
                 $ctrl.newMember = null;
+                $ctrl.editMember = null;
+                $ctrl.errorMessage = null;
             };
 
             $ctrl.changeStatus = function (member) {
@@ -150,9 +165,14 @@ angular.module('storefront.account')
                                 return accountApi.deleteUser(member.id).then(function(response) {
                                     if (response.data.succeeded) {
                                         refresh();
+                                        $ctrl.editMember = true;
+                                        $ctrl.throwAlert('success', 'user deleted', undefined);
+                                        $timeout(function(){
+                                            $ctrl.cancel();
+                                        }, 3000);
                                     }
                                     else {
-                                        $ctrl.errors = _.pluck(response.data.errors, 'description');
+                                        $ctrl.throwAlert('danger', undefined, response.data.errors);
                                     }
                                 });
                             });
