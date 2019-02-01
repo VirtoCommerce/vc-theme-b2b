@@ -11,6 +11,12 @@
         <vc-member-detail member="$ctrl.member" member-component="$ctrl.memberComponent" fields-config="$ctrl.fieldsConfig"></vc-member-detail>
     </div>
 
+    <div ng-if="$ctrl.level">
+        <div class="one-whole">
+            <vc-errors message="$ctrl.errorMessage" level="$ctrl.level" errors="$ctrl.errors"></vc-errors>
+        </div>
+    </div>
+
     <button ng-click="$ctrl.submitMember()" ng-disabled="$ctrl.loader.isLoading" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }">
         <span class="btn-text">{{ 'customer.edit_company_member.btn_update' | t }}</span>
         <span class="btn-loading"></span>
