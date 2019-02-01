@@ -5,11 +5,12 @@
            ng-attr-autofocus="{% raw %}{{ $ctrl.autofocus || undefined }}{% endraw %}"
            ng-focus="$ctrl.focused = true"
            ng-blur="$ctrl.focused = false"
-           type="{% raw %}{{ $ctrl.type }}{% endraw %}"
            ng-required="$ctrl.required"
            ng-disabled="$ctrl.disabled"
            ng-pattern="$ctrl.pattern"
            ng-class="$ctrl.inputClass"
+           type="{% raw %}{{ $ctrl.type }}{% endraw %}"
+           content-type="{% raw %}{{ $ctrl.type }}{% endraw %}"
            class="form-control" />
     <label for="{% raw %}{{ $ctrl.name }}{% endraw %}" class="control-label" ng-bind="$ctrl.placeholder"></label>
     <span class="help-block text-danger" ng-if="($ctrl.form[$ctrl.name].$dirty || $ctrl.form.$submitted) && $ctrl.form[$ctrl.name].$error.required" ng-bind="$ctrl.requiredError || '{{ 'common.required' | t }}'"></span>
