@@ -13,7 +13,8 @@
         requiredError: '@?',
         autofocus: '<',
         pattern: '@',
-        disabled: '<'
+        disabled: '<',
+        positive: '<'
     },
     controller: [function () {
         var $ctrl = this;
