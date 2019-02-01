@@ -81,7 +81,7 @@ storefrontApp.directive('contentType', function () {
                 return (code > '34') && (code < '41');
             }
             function isControll(code) {
-                return (code == '8') || (code == '16') || (code == '17') || (code == '45') || (code == '46');
+                return (code == '8') ||(code == '9') || (code == '16') || (code == '17') || (code == '45') || (code == '46');
             }
             function isCopyPaste(code, ctrlDown) {
                 return (ctrlDown && code=='67') || (ctrlDown && code=='86') || (ctrlDown && code=='88');
