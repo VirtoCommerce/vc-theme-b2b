@@ -75,6 +75,8 @@ angular.module('storefront.account')
                         $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;
                         $ctrl.member.emails = [$ctrl.member.email];
                         $ctrl.member.roles = [$ctrl.member.role.id];
+                        $ctrl.member.budget = $ctrl.member.budget.toString().replace(',', '.');
+                        
                         return accountApi.updateUser($ctrl.member).then(
                             function (response) {
                                 refresh();

@@ -117,7 +117,7 @@ angular.module('storefront.account')
                     $ctrl.newMember.organizationId = mainContext.customer.organizationId;
                     $ctrl.newMember.role = $ctrl.newMember.role ? $ctrl.newMember.role.id : undefined;
                     $ctrl.newMember.storeId = $ctrl.storeId;
-
+                    $ctrl.newMember.budget = $ctrl.newMember.budget.toString().replace(',', '.');
                     loader.wrapLoading(function () {
                         return accountApi.registerNewUser($ctrl.newMember).then(function(response) {
                             if (response.data.succeeded) {
