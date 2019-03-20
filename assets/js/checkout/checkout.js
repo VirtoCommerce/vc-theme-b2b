@@ -286,9 +286,9 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                     return;
                 }
 
-                if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() == 'preparedform' && orderProcessingResult.htmlForm) {
+                if (!order.workflowId && paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() == 'preparedform' && orderProcessingResult.htmlForm) {
                     $scope.outerRedirect($scope.baseUrl + 'cart/checkout/paymentform?orderNumber=' + order.number);
-                } else if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() == 'redirection' && orderProcessingResult.redirectUrl) {
+                } else if (!order.workflowId && paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() == 'redirection' && orderProcessingResult.redirectUrl) {
                     $window.location.href = orderProcessingResult.redirectUrl;
                 } else {
                     if (!$scope.customer.isRegisteredUser) {
