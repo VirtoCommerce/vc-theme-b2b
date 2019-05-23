@@ -18,7 +18,7 @@
                                     {% endfor %}
                                 </p>
                             {% endform %}
-                            {% form 'customer_login' %}
+                            <form accept-charset="UTF-8" action="{{ '~/account/login' | absolute_url }}" method="post" id="customer_login" name="customer_login">
                                 <input id="returnUrl" name="returnUrl" type="hidden" value="/checkout/step-1" />
                                 <div class="form-group">
                                     <label for="customer_email">Email address</label>
@@ -30,7 +30,7 @@
                                 </div>
                                 <p><a href="/account/login#recover">Forgot password?</a></p><br />
                                 <button class="btn btn-primary" type="submit">Sign in</button>
-                            {% endform %}
+                            </form>
                         </div>
                         <div class="col-md-6">
                             <h3>Continue without signing in</h3>

@@ -40,7 +40,10 @@
                     {% include 'product/compare' %}
                     {% include 'product/product-compare-list-bar' %}
                 </div>
-                <div class="col-md-2" ng-controller="priceController">{% include 'product/price', product: product %}</div>
+                <div class="col-md-2" ng-controller="priceController">
+                {% assign product = product %}
+                {% include 'product/price' %}
+                </div>
                 <div class="col-md-4" ng-controller="purchaseController" ng-init='loadPaymentPlan({{ settings.available_paymentPlans | json }}, "product", "{{ product.id }}")'>
                     <p ng-show="shipmentType == 'shipping' && shipmentAddress">Expected to arrive: <strong ng-bind="availability['{{ product.id }}'].expectedArrival | date: 'fullDate'"></strong></p>
                     <p ng-show="shipmentType == 'pickup' && shipmentFulfillmentCenter">Available for pickup: <strong ng-bind="availability['{{ product.id }}'].availableSince | date: 'fullDate'"></strong></p>
@@ -54,13 +57,14 @@
                     <vc-shipping-type is-dropdown="false" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
                 </div>
             </div>
-            {% if product.properties.size > 0  %}
+            {% if product.properties.size > 0 %}
                 <div class="row">
                     <div class="col-xs-12">
                         <table class="table table-striped">
                             <caption class="h2">Technical Specs</caption>
                             {% for property in product.properties %}
-                                {% include 'shared/grid/rows', column_count: 2 %}
+                                {% assign column_count = 2 %}
+                                {% include 'shared/grid/rows' %}
                                 {% if should_start_row %}
                                     <tr>
                                 {% endif %}

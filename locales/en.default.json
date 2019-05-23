@@ -17,14 +17,14 @@
             "label": "Price"
         },
         "pricerange": {
-            "less": "Under {{ upper }}",
-            "between": "{{ lower }} to {{ upper }}",
-            "greater": "{{ lower }} & Above"
+            "less": "Under {0}",
+            "between": "{0} to {1}",
+            "greater": "{0} & Above"
         },
         "range": {
-            "less": "Under {{ upper }}",
-            "between": "{{ lower }} to {{ upper }}",
-            "greater": "{{ lower }} & Up"
+            "less": "Under {0}",
+            "between": "{0} to {1}",
+            "greater": "{0} & Up"
         }
     },
     "common": {
@@ -68,7 +68,7 @@
         "invalid_bank_card_expiration_date_message": "Please enter valid expiration date of your bank card in MM / YY format",
         "bank_card_cvv_required_message": "Please enter verification code of your bank card",
         "invalid_bank_card_cvv_message": "Please enter correct verification code of your bank card",
-        "order_successfully": "Order <strong class=\"text-uppercase\" >{{ number }}</strong> has successfully been submitted. You will be sent an email notification as soon as your order is ready.",
+        "order_successfully": "Order <strong class=\"text-uppercase\" >{0}</strong> has successfully been submitted. You will be sent an email notification as soon as your order is ready.",
         "order-print": "Print order",
         "order-summary": "Order summary",
         "pickup-address": "Pickup address",
@@ -81,7 +81,7 @@
         "customer_information": {
             "title": "Customer information",
             "email": "Email",
-            "email_suggestion_text": "Did you mean <a href=\"{{ email }}\"></a>?",
+            "email_suggestion_text": "Did you mean <a href=\"{0}\"></a>?",
             "has_account_text": "Already have an account with us?",
             "log_in": "Log in",
             "save_information_text": "Save this information for faster checkout next time",
@@ -153,8 +153,8 @@
     "general": {
         "loading": "Working...",
         "meta": {
-            "tags": "Tagged \"{{ tags }}\"",
-            "page": "Page {{ page }}"
+            "tags": "Tagged \"{0}\"",
+            "page": "Page {0}"
         },
         "404": {
             "title": "404 Page Not Found",
@@ -166,11 +166,11 @@
         },
         "forms": {
             "post_error": "Sorry, looks like something went wrong. Please correct the following and submit again:",
-            "post_field_error_html": "The <strong>{{ field }}</strong> {{ error }}"
+            "post_field_error_html": "The <strong>{0}</strong> {1}"
         },
         "search": {
-            "no_results_html": "Your search for \"{{ terms }}\" did not yield any results.",
-            "results_for_html": "Your search for \"{{ terms }}\" revealed the following:",
+            "no_results_html": "Your search for \"{0}\" did not yield any results.",
+            "results_for_html": "Your search for \"{0}\" revealed the following:",
             "title": "Search for products on our site"
         }
     },
@@ -186,11 +186,11 @@
             "learn_more": "Learn more"
         },
         "article": {
-            "author_on_date_html": "Posted by {{ author }} on {{ date }}",
+            "author_on_date_html": "Posted by {0} on {1}",
             "older_post": "Older Post",
             "newer_post": "Newer Post",
             "tags": "Tags",
-            "comment_meta_html": "{{ author }} on {{ date }}",
+            "comment_meta_html": "{0} on {1}",
             "read_more": "Read more",
             "share_this_post": "Share this post"
         },
@@ -206,7 +206,7 @@
             "comments_with_count": {
                 "zero": "0 comment",
                 "one": "1 comment",
-                "other": "{{ count }} comments"
+                "other": "{0} comments"
             }
         },
         "sidebar": {
@@ -214,7 +214,7 @@
             "categories": "Categories"
         },
         "newsletter": {
-            "message": "Your connection to what's new at {{ shop.name }}. <br><strong>Sign Up Now!</strong>",
+            "message": "Your connection to what's new at {0}. <br><strong>Sign Up Now!</strong>",
             "sign_up": "Sign Up",
             "email_placeholder": "Email Address"
         }
@@ -239,7 +239,7 @@
             "adding": "Adding product to cart...",
             "or": "or",
             "added_to_cart": "product(s) is added to cart",
-            "products_in_cart": "You have {{ cartItemsCount }} product(s) in your shopping cart.",
+            "products_in_cart": "You have {0} product(s) in your shopping cart.",
             "continue_shopping": "Continue shopping",
             "view_cart": "View Cart",
             "close_cart": "Close Cart",
@@ -307,7 +307,7 @@
     "bulk_order": {
         "general": {
             "title": "Bulk Order Pad",
-            "description": "Quickly add items to your <a href=\"{{url}}\">{{text}}</a> by entering item SKUs and quantities.",
+            "description": "Quickly add items to your <a href=\"{0}\">{1}</a> by entering item SKUs and quantities.",
             "subtitle": "Manually",
             "sku_field_header": "Product SKU",
             "quantity_field_header": "Quantity",
@@ -324,7 +324,7 @@
     "collections": {
         "general": {
             "about_category": "About this category",
-            "products_count": "{{ all_results_count }} results found. {{ displayed_results_count }} displayed that include {{ products_count }} products.",
+            "products_count": "{0} results found. {1} displayed that include {2} products.",
             "grid_view": "Grid",
             "list_view": "List",
             "products_per_page": "Results per page:",
@@ -332,11 +332,11 @@
             "select_branch_title": "Select a pickup branch",
             "select_branch_description": "to see products in stock now.",
             "no_matches": "Sorry, there are no products matching your search.",
-            "link_title": "Browse our {{ title }} collection",
+            "link_title": "Browse our {0} collection",
             "items_with_count": {
                 "zero": "0 item",
                 "one": "1 item",
-                "other": "{{ count }} items"
+                "other": "{0} items"
             }
         },
         "sidebar": {
@@ -346,7 +346,7 @@
             "search_within": "Search within these results",
             "shop_by": "Shop By",
             "all": "All",
-            "all_collection": "All {{ collection_title }}",
+            "all_collection": "All {0}",
             "no_tags": "Add tags to your products for this list to build itself."
         },
         "sorting": {
@@ -438,8 +438,8 @@
             "cancel": "Return to Store",
             "guest_title": "Continue as a guest",
             "guest_continue": "Let's go",
-            "registration_title": "Register with {{ shop.name }}",
-            "registration_advantages_title": "When you become a registered user on {{shop.url}} you can:",
+            "registration_title": "Register with {0}",
+            "registration_advantages_title": "When you become a registered user on {0} you can:",
             "registration_advantages": [
                 "Take advantage of faster ordering options",
                 "Save favorite items to personal lists",
@@ -466,10 +466,10 @@
             "none": "You haven't placed any orders yet."
         },
         "order": {
-            "title": "Order {{ name }}",
+            "title": "Order {0}",
             "get_invoice": "Get invoice",
-            "placed_on_date_html": "Placed on {{ date }}",
-            "cancelled_on": "Order Cancelled on {{ date }}",
+            "placed_on_date_html": "Placed on {0}",
+            "cancelled_on": "Order Cancelled on {0}",
             "cancel_reason": "Reason",
             "billing_address": "Billing Address",
             "payment_status": "Payment Status",
@@ -487,7 +487,7 @@
             "price": "Price",
             "quantity": "Quantity",
             "total": "Total",
-            "fulfilled_on": "Fulfilled on {{ date }}",
+            "fulfilled_on": "Fulfilled on {0}",
             "subtotal": "Subtotal",
             "status": {
                 "unpaid": "Unpaid",
@@ -530,12 +530,12 @@
             }
         },
         "subscription": {
-            "title": "Subscription {{ number }}",
-            "placed_on_date_html": "Placed on {{ date }}",
-            "cancelled_on": "Subscription was canceled on {{ date | date: 'medium'}}",
+            "title": "Subscription {0}",
+            "placed_on_date_html": "Placed on {0}",
+            "cancelled_on": "Subscription was canceled on {0}",
             "cancel_reason": "Reason",
-            "details-sentence_": "Subscription shipping every {{intervalCount}} {{interval}} from {{createdDate | date }} until {{endDate | date }}. Next billing on {{currentPeriodEnd | date }}.",
-            "details-sentence": "Subscription shipping every {{intervalCount}} {{interval}} from {{createdDate | date }}. Next billing on {{currentPeriodEnd | date }}.",
+            "details-sentence_": "Subscription shipping every {0} {1} from {2} until {3}. Next billing on {4}.",
+            "details-sentence": "Subscription shipping every {0} {1} from {2}. Next billing on {3}.",
             "details-sentence1": "Subscription shipping every 20 days from Nov 22, 2016. Next billing on Dec 31, 2016.",
             "details-sentence2": "Subscription shipping every 2 weeks from Nov 22, 2016 until Nov 21, 2017. Next billing on Dec 31, 2016.",
             "shipping_address": "Shipping Address",
@@ -550,7 +550,7 @@
             "subtotal": "Subtotal",
             "balance": "Balance",
             "orders": "Orders",
-            "order-sentence": "{{order | orderToSummarizedStatusLabel}} {{order.number}} from {{order.createdDate | date}}, {{order.total.formattedAmount}}",
+            "order-sentence": "{0} {1} from {2}, {3}",
             "billing_address": "Billing address",
             "cancel": "Cancel Subscription",
             "cancel_reason_lbl": "Describe the cancellation reason",
@@ -565,7 +565,7 @@
             "status": "Status"
         },
         "quote": {
-            "title": "Quote request {{ number }}",
+            "title": "Quote request {0}",
             "comment": "About this quote:",
             "date": "Quote request date:",
             "status": "Quote status:"
@@ -579,7 +579,7 @@
         },
         "reset_password": {
             "title": "Reset account password",
-            "subtext": "Enter a new password for {{ email }}",
+            "subtext": "Enter a new password for {0}",
             "password": "Password",
             "password_confirm": "Confirm Password",
             "submit": "Reset Password"
@@ -704,11 +704,11 @@
         "featured_collection_rows": {
             "heading": "Featured Collection",
             "more": "More",
-            "no_products_in_collection_html": "You have no products in your {{ collection_title }} collection.",
-            "instructions_to_add_products_to_collection_html": "This placeholder will appear until you <a href=\"{{ collection_admin_url }}\">add a product to this collection</a> or disable <em>Featured Row 1</em> in your theme settings.",
+            "no_products_in_collection_html": "You have no products in your {0} collection.",
+            "instructions_to_add_products_to_collection_html": "This placeholder will appear until you <a href=\"{0}\">add a product to this collection</a> or disable <em>Featured Row 1</em> in your theme settings.",
             "add_a_product": "Add a Product",
             "example_product_title": "Example Product Title",
-            "more_in_collection": "More {{ collection_title }}"
+            "more_in_collection": "More {0}"
         }
     },
     "layout": {
@@ -734,9 +734,9 @@
         "customer": {
             "account": "Account",
             "view_account": "Go to my account",
-            "logged_in_as_html": "Logged in as {{ first_name }}",
+            "logged_in_as_html": "Logged in as {0}",
             "logged_in_as_label": "Logged in as",
-            "logged_in_on_behalf_of_html": "Logged in on behalf of {{ first_name }}",
+            "logged_in_on_behalf_of_html": "Logged in on behalf of {0}",
             "logged_in_on_behalf_of_label": "Logged in on behalf of",
             "log_out": "Log out",
             "sign_in": "Sign in",
@@ -754,18 +754,18 @@
         },
         "footer": {
             "theme_settings": "Theme Settings",
-            "instructions_for_linklist_html": "Pick a link list to show here in your {{ theme_settings_link }} under {{ theme_settings_footer_linklist_path }}.",
-            "instructions_for_text_content_html": "Add some text to show here in your {{ theme_settings_link }}.",
+            "instructions_for_linklist_html": "Pick a link list to show here in your {0} under {1}.",
+            "instructions_for_text_content_html": "Add some text to show here in your {0}.",
             "quick_links": "Quick Links",
             "get_in_touch": "Get In Touch",
-            "store_on_social_network": "{{ store_name }} on {{ social_network }}",
+            "store_on_social_network": "{0} on {1}",
             "company_information": "Company information",
             "customer_support": "Customer support",
             "order_support": "Order support",
             "resources": "Online resources",
             "services": "Services",
             "mobile_apps_title": "Check it out! We're mobile!",
-            "mobile_apps_message": "<strong>Anytime. Anywhere.</strong> <br>{{ store.name }} helps you get it done.",
+            "mobile_apps_message": "<strong>Anytime. Anywhere.</strong> <br>{0} helps you get it done.",
             "newsletter_title": "Let's Stick Together",
             "call_us": "Questions? Call us"
         }
@@ -785,7 +785,7 @@
             "unavailable": "Unavailable",
             "sku": "Item #",
             "mmn": "Mfr. model #",
-            "only_left": "Only {{ count }} left!",
+            "only_left": "Only {0} left!",
             "quantity": "Quantity",
             "details_tab": "Product details",
             "sign_in_to_see_price": "Sign in to see the price"
@@ -803,10 +803,10 @@
             "removed_from_list_dialog_header": "Product is removed from compare list",
             "go_to_compare_list": "Go to compare list",
             "continue_shopping": "Continue shopping",
-            "capacity_exceeded_header": "You may compare up to {{ capacity }} items at a time.",
+            "capacity_exceeded_header": "You may compare up to {0} items at a time.",
             "capacity_exceeded_message": "Would you like to compare the first four items you selected?",
             "compare_list_empty_header": "Your product compare list is currently empty",
-            "compare_list_empty_body": "Continue browsing <a href=\"{{ url }}\">here</a>.",
+            "compare_list_empty_body": "Continue browsing <a href=\"{0}\">here</a>.",
             "show_only_differences": "Show only differences",
             "clear_compare_list": "Clear product compare list",
             "remove": "Remove"
@@ -817,11 +817,11 @@
     },
     "gift_cards": {
         "issued": {
-            "title": "Here's your {{ value }} gift card for {{ shop }}!",
+            "title": "Here's your {0} gift card for {1}!",
             "subtext": "Here's your gift card!",
             "disabled": "Disabled",
-            "expired": "Expired on {{ expiry }}",
-            "active": "Expires on {{ expiry }}",
+            "expired": "Expired on {0}",
+            "active": "Expires on {0}",
             "redeem": "Use this code at checkout to redeem your gift card",
             "shop_link": "Start shopping",
             "print": "Print"

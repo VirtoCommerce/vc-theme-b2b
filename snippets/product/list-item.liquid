@@ -21,12 +21,12 @@
             <div ng-if="product['{{product.id}}'].isDescriptionTruncated">
                 {% if quick_review contains '</ul>' %}
                     {% assign separated_list = quick_review | replace: '</li>', '&#x2063;&#x2063;' | replace: '<li> ', '&#x2063;' | split: '&#x2063;&#x2063;' %}
-                    {%- capture short_quick_review -%}
-                        {%- for item in separated_list | limit: 3 -%}
+                    {% capture short_quick_review %}
+                        {% for item in separated_list | limit: 3 %}
                             {{ item }}
-                        {%- endfor -%}
+                        {% endfor %}
                         {{ separated_list.last }}
-                    {%- endcapture -%}
+                    {% endcapture %}
                     {% assign short_quick_review = short_quick_review | replace: '&#x2063;&#x2063;', '</li>' | replace:  '&#x2063;', '<li> ' %}
                 {% else %}
                     {% assign short_quick_review = quick_review | strip_html | truncatewords: 30 %}
@@ -41,7 +41,8 @@
         <div class="row">
             <div class="col-md-4">{% include 'product/price' %}</div>
             <div class="col-md-8">
-                {% include 'product/quantity', show_label: true %}
+                {% assign show_label = true %}
+                {% include 'product/quantity' %}
                 <vc-shipping-type is-dropdown="true" title="Ship or pickup" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
             </div>
         </div>

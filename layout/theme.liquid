@@ -109,8 +109,10 @@
 
                             </div>
                             <br class="medium-down--hide" />
+                            {% comment %}
                         {% endif %}
-                        {% include 'search-bar' %}
+                        {% endcomment %}
+                        {% include 'shared/search-bar' %}
                         {% if settings.product_compare_enabled %}
                             <a class="header-cart-btn cart-toggle" href="{{ 'compare' | absolute_url }}" ng-controller="productCompareListBarController" ng-show="itemsCount > 0">
                                 <span class="fa fa-bar-chart"></span>
@@ -132,8 +134,11 @@
             </header>
             <nav class="nav-bar" role="navigation">
                 <div class="wrapper">
-                    {% include 'search-bar' %}
+                    {% include 'shared/search-bar' %}
+                    {% comment %}
+                    21.05.2019 - Не могу найти site-nav.
                     {% include 'site-nav' %}
+                    {% endcomment %}
                 </div>
             </nav>
             <div id="mobileNavBar">
@@ -151,9 +156,9 @@
                 {{ content_for_layout }}
             </main>
             {% if settings.product_compare_enabled %}
-            {% include 'product-compare-list-dialog' %}
+            {% include 'dialogs/product-compare-list-dialog' %}
             {% endif %}
-            {% include 'footer' %}
+            {% include 'main/footer' %}
             <script>
                 window.quotesEnabled = {{ shop.quotes_enabled }};
                 window.suggestionsLimit = {{ settings.suggestions_limit }};

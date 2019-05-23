@@ -1,4 +1,4 @@
-﻿{% form 'customer_login' %}
+﻿<form accept-charset="UTF-8" action="{{ '~/account/login' | absolute_url }}" method="post" id="customer_login" name="customer_login">
 {% include 'form-errors-custom' %}
 
 <fieldset ng-keypress="login($event)">
@@ -48,4 +48,4 @@
         </div>
         {% endif %}
 </fieldset> 
-{% endform %}
+</form>

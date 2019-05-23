@@ -106,9 +106,11 @@
                             <td ng-repeat="property in allVariationsMap['{{ variant.id }}'].variationProperties">{% raw %}{{ property.value }}{% endraw %}</td>
                             <td>
                                 {% if settings.show_prices_with_taxes %}
-                                    {% include 'product/price', price: variant.price_with_tax %}
+                                    {% assign price = variant.price_with_tax %}
+                                    {% include 'product/price' %}
                                 {% else %}
-                                    {% include 'product/price', price: variant.price %}
+                                    {% assign price = variant.price %}
+                                    {% include 'product/price' %}
                                 {% endif %}
                             </td>
                             <td>
@@ -147,9 +149,11 @@
                                             <div class="col-md-5">
                                                 <div>Catalog Page #  NA</div>
                                                 {% if settings.show_prices_with_taxes %}
-                                                    {% include 'product/price', price: variant.price_with_tax %}
+                                                    {% assign price = variant.price_with_tax %}
+                                                    {% include 'product/price' %}
                                                 {% else %}
-                                                    {% include 'product/price', price: variant.price %}
+                                                    {% assign price = variant.price %}
+                                                    {% include 'product/price' %}
                                                 {% endif %}
                                             </div>
                                         </div>

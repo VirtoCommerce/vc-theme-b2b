@@ -2,7 +2,7 @@
     <div class="ajaxify-modal is-visible" id="ajaxifyModal" style="opacity: 1;">
         <button class="ajaxifyCart--close" title="{{ 'products.compare_list.close_dialog' | t }}" ng-click="close()">{{ 'products.compare_list.close_dialog' | t }}</button>
         <div class="ajaxifyCart--content" id="ajaxifyCart" ng-if="dialogData.capacityExceeded">
-            <h1 class="h2">{{ 'products.compare_list.capacity_exceeded_header' | t: capacity: settings.product_compare_list_capacity }}</h1>
+            <h1 class="h2">{{ 'products.compare_list.capacity_exceeded_header' | t: settings.product_compare_list_capacity }}</h1>
             <div class="cart-row">
                 <div class="grid">
                     <div class="grid-item">

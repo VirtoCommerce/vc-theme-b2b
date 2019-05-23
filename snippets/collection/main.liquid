@@ -23,17 +23,20 @@
                 {% endfor %}
                 {% assign all_results_count = collection.products_count %}
                 {% assign displayed_results_count = collection.products | size %}
-                <p>{{ 'collections.general.products_count' | t, all_results_count: all_results_count, displayed_results_count: displayed_results_count, products_count: variants_count }}</p>
+                <p>{{ 'collections.general.products_count' | t: all_results_count, displayed_results_count, variants_count }}</p>
                 <p class="collapse" uib-collapse="isAboutCollapsed">{{ collection.description }}</p>
             </div>
             <div class="col-md-3">
-                {% include 'collection/sidebar', collection: collection %}
+                {% assign collection = collection %}
+                {% include 'collection/sidebar' %}
             </div>
             <div class="col-md-9">
                 <div class="container-drain container-bordered" ng-controller="priceController">
-                    {% include 'collection/nav', position: 'top' %}
+                    {% assign position = 'top' %}
+                    {% include 'collection/nav' %}
                     {% include product_items %}
-                    {% include 'collection/nav', position: 'bottom' %}
+                    {% assign position = 'bottom' %}
+                    {% include 'collection/nav' %}
                     {% include 'shared/pagination' %}
                     <script>
                         window.products = [];
