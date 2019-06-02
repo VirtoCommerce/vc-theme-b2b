@@ -24,15 +24,15 @@
 <div class="grid">
 
   <div class="grid-item two-thirds medium-down--one-whole">
-    <h4>{{ 'customer.order.title' | t: name: order.name }}</h4>
+    <h4>{{ 'customer.order.title' | t: order.name }}</h4>
 
-    {% capture date %}<strong>{{ order.created_at | date: format: 'long' }}</strong>{% endcapture %}
-    <p>{{ 'customer.order.placed_on_date_html' | t: date: date }}</p>
+    {% capture date %}<strong>{{ order.created_at | date: 'long' }}</strong>{% endcapture %}
+    <p>{{ 'customer.order.placed_on_date_html' | t: date }}</p>
 
     {% if order.cancelled %}
     <div class="errors">
       {% capture date %}{{ order.cancelled_at | date: format: 'long' }}{% endcapture %}
-      <h5>{{ 'customer.order.cancelled_on' | t: date: date }}</h5>
+      <h5>{{ 'customer.order.cancelled_on' | t: date }}</h5>
       <p>{{ 'customer.order.cancel_reason' | t }}: {{ order.cancel_reason }}</p>
     </div>
     {% endif %}
@@ -54,8 +54,8 @@
             {{ line_item.title | link_to: line_item.product.url }}
             {% if line_item.fulfillment %}
               <div class="note">
-                {% assign date = line_item.fulfillment.created_at | date: format: 'month_day_year' %}
-				{{ 'customer.order.fulfilled_on' | t: date: date }}
+                {% assign date = line_item.fulfillment.created_at | date: 'month_day_year' %}
+				{{ 'customer.order.fulfilled_on' | t: date }}
                 {% if line_item.fulfillment.tracking_number %}
                   <a href="{{ line_item.fulfillment.tracking_url }}">{{ line_item.fulfillment.tracking_company }} #{{ line_item.fulfillment.tracking_number}}</a>
                 {% endif %}

@@ -768,6 +768,10 @@
             "mobile_apps_message": "<strong>Anytime. Anywhere.</strong> <br>{0} helps you get it done.",
             "newsletter_title": "Let's Stick Together",
             "call_us": "Questions? Call us"
+        },
+        "maintenance": {
+            "store_closed": "Store is closed right now",
+            "visit_later": "Please visit us a little bit later!"
         }
     },
     "products": {

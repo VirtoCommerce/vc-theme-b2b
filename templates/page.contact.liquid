@@ -11,7 +11,7 @@
     </div>
 
     <div>
-      {% form 'contact' %}
+      <form accept-charset="UTF-8" action="{{ '~/contact' | absolute_url }}" method="post" id="contact" name="contact">
 
         {% if form.posted_successfully %}
           <p class="note form-success">
@@ -37,7 +37,7 @@
           <input type="submit" class="btn right" value="{{ 'contact.form.send' | t }}">
         </div>
 
-      {% endform %}
+      </form>
     </div>
 
   </div>

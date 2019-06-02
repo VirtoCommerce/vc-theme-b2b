@@ -13,7 +13,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="format-detection" content="telephone=no">
 
-  <title>{{ 'gift_cards.issued.title' | t: value: formatted_initial_value_stripped, shop: shop.name }}</title>
+  <title>{{ 'gift_cards.issued.title' | t: formatted_initial_value_stripped, shop.name }}</title>
   <meta name="description" content="Here's your gift card!">
 
   {{ 'gift-card.css' | asset_url | stylesheet_tag }}
@@ -68,10 +68,10 @@
                 {% endunless %}
                 {% assign gift_card_expiry_date = gift_card.expires_on | date: "%d/%m/%y" %}
                 {% if gift_card.expired and gift_card.enabled %}
-                   <span class="tag">{{ 'gift_cards.issued.expired' | t: expiry: gift_card_expiry_date }}</span>
+                   <span class="tag">{{ 'gift_cards.issued.expired' | t: gift_card_expiry_date }}</span>
                 {% endif %}
                 {% if gift_card.expired != true and gift_card.expires_on and gift_card.enabled %}
-                  <span class="tag light">{{ 'gift_cards.issued.active' | t: expiry: gift_card_expiry_date }}</span>
+                  <span class="tag light">{{ 'gift_cards.issued.active' | t: gift_card_expiry_date }}</span>
                 {% endif %}
               </header>
 

@@ -1,4 +1,4 @@
-﻿{% if form.errors %}
+﻿{% unless form.errors.empty? %}
 <div class="alert alert-danger">
     <p>{{ 'general.forms.post_error' | t }}</p>
 
@@ -20,4 +20,4 @@
         {% endfor %}
     </ul>
 </div>
-{% endif %}
+{% endunless %}

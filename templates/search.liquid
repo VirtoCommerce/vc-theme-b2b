@@ -1,48 +1,42 @@
-{% assign grid_results = true %}
-{% assign respond_js_secret_key = shop.domain | md5 %}
-{% unless search.terms == respond_js_secret_key %}
+{% assign respond_js_secret_key = shop.url | md5 %}
+{% assign search = current_product_search_criteria %}
+{% unless search.keyword == respond_js_secret_key %}
+{% assign search_results = product_search_result.products %}
+
 <main class="main" role="main">
     <article class="container">
-        {% if search.performed %}
-        {% paginate search.results by settings.product_list_capacity %}
-        {% if search.results_count == 0 %}
-        <h2 class="text-center">{{ 'general.search.no_results_html' | t: terms: search.terms }}</h2>
+        {% if search and search_results.empty? == false %}
+        {% paginator = search_results | paginate settings.product_list_capacity %}        
+        {% if search_results.size == 0 %}
+        <h2 class="text-center">{{ 'general.search.no_results_html' | t: search.keyword }}</h2>
         {% else %}
         <div class="page-header">
-            <h2 class="text-center">{{ 'general.search.results_for_html' | t: terms: search.terms }}</h2>
+            <h2 class="text-center">{{ 'general.search.results_for_html' | t: search.keyword }}</h2>
         </div>
-        {% if grid_results == false %}
-        {% for item in search.results %}
-        {% include 'search-result' %}
-        {% endfor %}
-        {% else %}
         <div class="row">
-            {% for item in search.results %}
+            {% for item in search_results %}
             {% assign product = item %}
             {% assign col_size = "col-xs-12 col-sm-6 col-md-4 col-lg-3" %}
             {% assign hide_quantity = true %}
-            {% include 'product/grid-item', product_list_capacity: settings.product_list_capacity %}
+            {% assign product_list_capacity = settings.product_list_capacity %}
+            {% include 'product/grid-item' %}
             {% endfor %}
         </div>
         {% endif %}
+        {% if paginator.pages > 1 %}
+                <div class="text-center">
+                    {% include 'pagination-custom' %}
+                </div>
         {% endif %}
-        {% if paginate.pages > 1 %}
-        <div class="text-center">
-            {% include 'shared/pagination' %}
-        </div>
-        {% endif %}
-        {% endpaginate %}
         {% else %}
-        {% comment %}
-        If search.performed is false, someone either accessed the page without the q parameter, or it was blank.
-        {% endcomment %}
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="text-center">{{ 'general.search.title' | t }}</h2>
-                {% include 'shared/search-bar', form_class: "text-center" %}
+                {% assign form_class = "text-center" %}
+                {% include 'shared/search-bar'%}
             </div>
         </div>
-        {% endif %}
+        {% endif %} 
     </article>
 </main>
 {% else %}

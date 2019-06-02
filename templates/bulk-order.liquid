@@ -17,7 +17,7 @@
             <dt>{{ 'bulk_order.general.subtitle' | t }}</dt>
             {% assign url = 'cart' | absolute_url %}
             {% assign text = 'layout.cart.cart' | t %}
-            <dd>{{ 'bulk_order.general.description' | t: url: url, text: text }}</dd>
+            <dd>{{ 'bulk_order.general.description' | t: url, text }}</dd>
         </dl>
         <form action="{{ '/bulkorder/addfielditems' | absolute_url }}" method="POST">
             {% assign column_count = 2 %}

@@ -15,8 +15,8 @@
                 <td>
                     <a ng-href="{% raw %}{{ 'product/' + lineItem.productId }}{% endraw %}" ng-bind="lineItem.name"></a>
                     <div class="note" ng-if="lineItem.fulfillment" ng-cloak>
-                        {% assign date = line_item.fulfillment.created_at | date: format: 'month_day_year' %}
-                        {{ 'customer.order.fulfilled_on' | t: date: date }}
+                        {% assign date = line_item.fulfillment.created_at | date: 'month_day_year' %}
+                        {{ 'customer.order.fulfilled_on' | t: date }}
                         {% if line_item.fulfillment.tracking_number %}
                             <a href="{{ line_item.fulfillment.tracking_url }}">{{ line_item.fulfillment.tracking_company }} #{{ line_item.fulfillment.tracking_number}}</a>
                         {% endif %}

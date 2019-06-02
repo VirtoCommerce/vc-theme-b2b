@@ -1,1 +1,14 @@
-﻿{% include 'collection/main', product_items: 'product/list', product_item: 'product/list-item' %}
+﻿{% assign product_items = 'product/list' %}
+{% assign product_item = 'product/list-item' %}
+{% include 'collection/main' %}
+
+<script>
+    window.products = [];
+    {% for product in collection.products %}
+        window.products.push({
+            id: "{{ product.id }}",
+            catalogId: "{{ product.catalog_id }}",
+            categoryId: "{{ product.category_id }}"
+        });
+    {% endfor %}
+</script>

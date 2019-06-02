@@ -6,7 +6,7 @@
     <h1>{{ 'customer.activate_account.title' | t }}</h1>
     <p>{{ 'customer.activate_account.subtext' | t }}</p>
 
-    {% form 'activate_customer_password' %}
+    <form accept-charset="UTF-8" action="{{ '~/account/activate' | absolute_url }}" method="post" id="activate_customer_password" name="activate_customer_password">
 
       {% include 'form-errors-custom' %}
 
@@ -22,7 +22,7 @@
         </p>
         or <input type="submit" class="text-link" name="decline" id="customer_decline" value="{{ 'customer.activate_account.cancel' | t }}">
       </div>
-    {% endform %}
+    </form>
 
   </div>
 </div>

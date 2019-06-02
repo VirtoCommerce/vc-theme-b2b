@@ -1,4 +1,7 @@
-﻿{% paginate collection.products by settings.product_list_capacity %}
+﻿{{ paginator =  collection.products  | paginate settings.product_list_capacity }}
+{% comment %}
+{% paginate collection.products by settings.product_list_capacity %}
+{% endcomment %}
     <main class="container" role="main">
         <div class="row" ng-controller="collectionController as $collection">
             <div class="col-xs-12">
@@ -6,7 +9,7 @@
             </div>
             <div class="col-xs-12" ng-init="isAboutCollapsed = true">
                 <h1>{{ collection.title }}
-                    {% if collection.description != blank %}
+                    {% if collection.description.empty? == false %}
                         <a href="" class="link-reset pull-right" ng-click="isAboutCollapsed = !isAboutCollapsed">
                             <small>
                                 <i class="fa" ng-class="{'fa-question-circle': isAboutCollapsed, 'fa-times-circle': !isAboutCollapsed}"></i>
@@ -21,7 +24,7 @@
                     {% assign product_variant_count = product.variants | size %}
                     {% assign variants_count = variants_count | plus: product_variant_count %}
                 {% endfor %}
-                {% assign all_results_count = collection.products_count %}
+                {% assign all_results_count = collection.all_products_count %}
                 {% assign displayed_results_count = collection.products | size %}
                 <p>{{ 'collections.general.products_count' | t: all_results_count, displayed_results_count, variants_count }}</p>
                 <p class="collapse" uib-collapse="isAboutCollapsed">{{ collection.description }}</p>
@@ -33,7 +36,7 @@
             <div class="col-md-9">
                 <div class="container-drain container-bordered" ng-controller="priceController">
                     {% assign position = 'top' %}
-                    {% include 'collection/nav' %}
+                    {% include 'collection/nav' %}                    
                     {% include product_items %}
                     {% assign position = 'bottom' %}
                     {% include 'collection/nav' %}
@@ -63,7 +66,10 @@
                         taxType: "{{ product.tax_type }}"
                     });
                 {% endfor %}
-            </script>
+            </script>           
         </div>
     </main>
+
+{% comment %}
 {% endpaginate %}
+{% endcomment %}

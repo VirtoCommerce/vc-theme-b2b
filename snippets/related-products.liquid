@@ -9,7 +9,7 @@
         {% endfor %}
         <script>
             window.productList = [];
-            {% for related_product in product.related_products: number_of_products %}
+            {% for related_product in product.related_products limit: number_of_products %}
                 window.productList.push({
                     id: "{{ related_product.id }}",
                     catalogId: "{{ related_product.catalog_id }}",
