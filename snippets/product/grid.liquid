@@ -1,12 +1,20 @@
-﻿{% for product in collection.products %}
+{% assign for_length = collection.products.size %}
+{% for product in collection.products %}
+    <script>
+        console.log({{ for.index }});
+        onsole.log({{ for.length }});
+    </script> 
+
     {% assign column_count = 4 %}
     {% include 'shared/grid/rows' %}
     {% if should_start_row %}
         <div class="row flexible">
     {% endif %}
-    {% assign product = product %}
+    
     {% include product_item %}
     {% if should_end_row %}
         </div>
     {% endif %}
+    
+   
 {% endfor %}

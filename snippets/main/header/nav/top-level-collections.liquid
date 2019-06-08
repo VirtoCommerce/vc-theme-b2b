@@ -9,7 +9,7 @@
                     <div class="col-md-6" ng-repeat="link in links" ng-if="$even">
                         <ul class="nav nav-sm nav-pills nav-stacked text-nowrap">
                             <li>
-                                <a ng-href="{% raw %}{{ link.Url}}{% endraw %}" ng-bind="link.Title">
+                                <a ng-href="{% raw %}{{ link.Url}}{% endraw %}" ng-bind="link.title">
                                 </a>
                             </li>
                         </ul>
@@ -17,7 +17,7 @@
                     <div class="col-md-6" ng-repeat="link in links" ng-if="!$even">
                         <ul class="nav nav-sm nav-pills nav-stacked text-nowrap">
                             <li>
-                                <a ng-href="{% raw %}{{ link.Url}}{% endraw %}" ng-bind="link.Title">
+                                <a ng-href="{% raw %}{{ link.url}}{% endraw %}" ng-bind="link.title">
                                 </a>
                             </li>
                         </ul>
