@@ -25,15 +25,18 @@
         {% endif %}
         {% if paginator.pages > 1 %}
                 <div class="text-center">
-                    {% include 'pagination-custom' %}
+                    {% include 'shared/pagination' %}
                 </div>
         {% endif %}
         {% else %}
         <div class="row">
             <div class="col-xs-12">
-                <h2 class="text-center">{{ 'general.search.title' | t }}</h2>
-                {% assign form_class = "text-center" %}
-                {% include 'shared/search-bar'%}
+                <h2 class="text-center">{{ 'general.search.no_results_html' | t: search.keyword }}</h2>
+                {% comment %}
+                <h2 class="text-center">{{ 'general.search.title' | t }}</h2>                
+                {% assign form_class = "text-center" %}                
+                {% include 'shared/search-bar' %}
+                {% endcomment %}
             </div>
         </div>
         {% endif %} 
