@@ -19,7 +19,7 @@
 
     {% unless collection.handle == 'frontpage' or collection.handle == 'all' %}
       {% include 'collection-list-item' %}
-      {% unless forloop.last %}<hr>{% endunless %}
+      {% unless for.last %}<hr>{% endunless %}
     {% endunless %}
 
   {% endfor %}

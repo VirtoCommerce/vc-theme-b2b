@@ -101,7 +101,7 @@
                 {% endif %}
 
                 {% for comment in article.comments %}
-                <li id="{{ comment.id }}" class="comment{% unless number_of_comments > article.comments_count %}{% if forloop.first %} first{% endif %}{% endunless %}{% if forloop.last %} last {% endif %}">
+                <li id="{{ comment.id }}" class="comment{% unless number_of_comments > article.comments_count %}{% if for.first %} first{% endif %}{% endunless %}{% if for.last %} last {% endif %}">
 
                   {% include 'comment' %}
 

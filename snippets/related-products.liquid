@@ -40,7 +40,7 @@
           {% if product.handle == current_product.handle %}
             {% assign current_product_found = true %}
           {% else %}
-            {% unless current_product_found == false and forloop.last %}
+            {% unless current_product_found == false and for.last %}
               {% include 'product-grid-item' %}
             {% endunless %}
           {% endif %}

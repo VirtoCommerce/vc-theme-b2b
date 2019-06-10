@@ -24,7 +24,7 @@
                     snippet/advanced-tag-loop.liquid is required for this to work.
                 {% endcomment %}
                 {% for tag in current_tags %}
-                    {% if forloop.first %}
+                    {% if for.first %}
                         {% assign additional_tag = false %}
                     {% else %}
                         {% assign additional_tag = true %}
@@ -53,7 +53,7 @@
             {% else %}
                 {% if collection %}
                     {% for parent in collection.parents %}
-                        {% if forloop.last == true %}
+                        {% if for.last == true %}
                             <li class="active">
                                 {{ parent.title }}
                             </li>
