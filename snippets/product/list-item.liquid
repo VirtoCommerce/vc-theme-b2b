@@ -1,4 +1,4 @@
-﻿{% unless current_collection %}
+{% unless current_collection %}
     {% assign current_collection = collection %}
 {% endunless %}
 
@@ -18,23 +18,25 @@
                     {% break %}
                 {% endif %}
             {% endfor %}
-            <div ng-if="product['{{product.id}}'].isDescriptionTruncated">
-                {% if quick_review contains '</ul>' %}
-                    {% assign separated_list = quick_review | replace: '</li>', '&#x2063;&#x2063;' | replace: '<li> ', '&#x2063;' | split: '&#x2063;&#x2063;' %}
-                    {% capture short_quick_review %}
-                        {% for item in separated_list | limit: 3 %}
-                            {{ item }}
-                        {% endfor %}
-                        {{ separated_list.last }}
-                    {% endcapture %}
-                    {% assign short_quick_review = short_quick_review | replace: '&#x2063;&#x2063;', '</li>' | replace:  '&#x2063;', '<li> ' %}
-                {% else %}
-                    {% assign short_quick_review = quick_review | strip_html | truncatewords: 30 %}
-                {% endif %}
-                {{ short_quick_review }}
-            </div>
+            {% if quick_review  %}
+            <div ng-if="product['{{product.id}}'].isDescriptionTruncated">                                                
+                    {% if quick_review contains '</ul>' %}
+                     {% assign separated_list = quick_review | replace: '</li>', '&#x2063;&#x2063;' | replace: '<li> ', '&#x2063;' | split: '&#x2063;&#x2063;' %}                   
+                     {% capture short_quick_review %}
+                         {% for item in separated_list | limit: 3 %}
+                             {{ item }}
+                         {% endfor %}
+                         {{ separated_list.last }}
+                     {% endcapture %}                     
+                     {% assign short_quick_review = short_quick_review | replace: '&#x2063;&#x2063;', '</li>' | replace:  '&#x2063;', '<li> ' %}                    
+                 {% else %}                                
+                     {% assign short_quick_review = quick_review | strip_html | truncatewords: 30 %}
+                      {{ short_quick_review }}                 
+                 {% endif %}                                 
+            </div>            
             <a href="" ng-show="product['{{product.id}}'].isDescriptionTruncated" ng-click="product['{{product.id}}'].isDescriptionTruncated = false">{{ 'common.more' | t }}</a>
             <div ng-if="!product['{{product.id}}'].isDescriptionTruncated">{{ quick_review }}</div>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-5">
