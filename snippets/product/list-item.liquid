@@ -13,17 +13,19 @@
         {% include 'product/item/title-and-codes' %}
         <div class="list-descr" ng-init="product['{{product.id}}'].isDescriptionTruncated = true">
             {% for description in product.descriptions %}
-                {% if description.type == 'QuickReview' %}
+            {% assign quick_review = nil %}
+                {% if description.review_type == 'QuickReview' %}
                     {% assign quick_review = description.content %}
                     {% break %}
                 {% endif %}
             {% endfor %}
-            {% if quick_review  %}
+           
+            {% if quick_review  %}            
             <div ng-if="product['{{product.id}}'].isDescriptionTruncated">                                                
-                    {% if quick_review contains '</ul>' %}
+                 {% if quick_review contains '</ul>' %}
                      {% assign separated_list = quick_review | replace: '</li>', '&#x2063;&#x2063;' | replace: '<li> ', '&#x2063;' | split: '&#x2063;&#x2063;' %}                   
                      {% capture short_quick_review %}
-                         {% for item in separated_list | limit: 3 %}
+                         {% for item in separated_list limit: 3 %}
                              {{ item }}
                          {% endfor %}
                          {{ separated_list.last }}
