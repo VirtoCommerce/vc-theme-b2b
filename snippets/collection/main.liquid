@@ -1,5 +1,11 @@
-﻿{{ paginator =  collection.products  | paginate settings.product_list_capacity }}
+
+{% unless page_size %}
+{% assign page_size = settings.product_list_capacity  %}
+{% endif %}
+
+{{ paginator =  collection.products  | paginate page_size }}
 {% comment %}
+{% assign products_page_size = settings.product_list_capacity %}
 {% paginate collection.products by settings.product_list_capacity %}
 {% endcomment %}
     <main class="container" role="main">
