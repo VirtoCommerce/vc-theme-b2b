@@ -19,14 +19,14 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                    <a href="#">{{ product.metafields.properties['Brand'] }}</a>
+                    <a href="#">{{ product.properties['Brand'].value }}</a>
                     <h1>{{ product.title }}</h1>
                     <ul class="list-inline">
                         <li>
                             <span class="text-muted">{{ 'products.product.sku' | t }}</span>&nbsp;<strong itemprop="productID">{{ product.selected_variant.sku }}</strong>
                         </li>
                         <li>
-                            <span class="text-muted">{{ 'products.product.mmn' | t }}</span>&nbsp;<strong itemprop="model">{{ product.metafields.properties['MMN'] }}</strong>
+                            <span class="text-muted">{{ 'products.product.mmn' | t }}</span>&nbsp;<strong itemprop="model">{{ product.properties['MMN'].value }}</strong>
                         </li>
                         <li>
                             <span class="text-muted">UNSPSC</span>&nbsp;<strong>#41112701</strong>

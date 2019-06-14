@@ -1,12 +1,17 @@
-﻿<ng-controller ng-controller="productController">
-    {% if product.variants.size == 1 %}
+<ng-controller ng-controller="productController">
+
+{% assign variants_size = product.variants | size %}
+
+    {% if variants_size == 1 %}    
         {% include 'product/main' %}
-    {% else %}
+    {% else %}    
         {% include 'product/variations' %}
     {% endif %}
 </ng-controller>
 
-<script>
+
+
+<script>  
     window.product = {
         id: "{{ product.id }}",
         catalogId: "{{ product.catalog_id }}",
