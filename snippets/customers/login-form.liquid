@@ -1,37 +1,65 @@
-﻿<form accept-charset="UTF-8" action="{{ '~/account/login' | absolute_url }}" method="post" id="customer_login" name="customer_login">
+<form accept-charset="UTF-8" action="{{ '~/account/login' | absolute_url }}" method="post" id="customer_login" name="customer_login">
+{%comment%} 
 {% include 'form-errors-custom' %}
 
+
 <fieldset ng-keypress="login($event)">
+
+<fieldset>
+{%endcomment%}
     <div class="form-group">
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <input class="form-control" ng-model="username" name="customer[user_name]" required vc-flying-placeholder="{{ 'customer.sign-in.user_name' | t }}"/>
+                 {%comment%} 
+                     <input type="text" value="" name="customer[user_name]" id="customer_user_name" placeholder="{{ 'customer.sign-in.user_name' | t }}"
+                     {% if form.errors contains 'user_name' %} class="error" {% endif %} autocorrect="off" autocapitalize="off" autofocus>
+               {%endcomment%}
+                    <input class="form-control" ng-model="username" name="customer[user_name]" required vc-flying-placeholder="{{ 'customer.sign-in.user_name' | t }}"/>                    
                     <span class="text-danger" ng-show="!customer_login['customer[user_name]'].$pristine && customer_login['customer[user_name]'].$error.required">{{ 'common.required' | t }}</span>
+                
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">
+                {%comment%} 
+                    <input type="password" value="" name="customer[password]" id="customer_password" placeholder="{{ 'customer.sign-in.password' | t }}"
+                    {% if form.errors contains 'password' %} class="error" {% endif %}>
+                 {%endcomment%}
                     <input class="form-control" ng-model="password" type="password" name="customer[password]" required vc-flying-placeholder="{{ 'customer.sign-in.password' | t }}" />
                     <span class="text-danger" ng-show="!customer_login['customer[password]'].$pristine && customer_login['customer[password]'].$error.required">{{ 'common.required' | t }}</span>
+                    
                 </div>                    
             </div>
         </div>
     </div>
-    
+
+    <div class="form-group">               
+                {%comment%} 
+                <button class="btn btn-primary btn-block">{{ 'customer.sign-in.sign_in' | t }}</button>
+                {%endcomment%}
+                 <input type="submit" class="btn btn-primary btn-block" value="{{ 'customer.sign-in.sign_in' | t }}">                
+   </div>
+
+   {%comment%} 
     {% if template != 'customers/login' %}
     <div class="form-group">
         {% include 'customers/forgot-links' %}
     </div>
     {% endif %}
-
+   
     {% if template != 'customers/login' %}
     <div class="row">
         <div class="col-md-8">
             {% else %}
             <div class="form-group">
                 {% endif %}
+                {%endcomment%}
+                {%comment%} 
                 <button class="btn btn-primary btn-block">{{ 'customer.sign-in.sign_in' | t }}</button>
+                {%endcomment%}
+                 {%comment%} 
+                 <input type="submit" class="btn btn-primary btn-block" value="{{ 'customer.sign-in.sign_in' | t }}">
                 {% if template != 'customers/login' %}
             </div>
             {% endif %}
@@ -47,5 +75,9 @@
             {% include 'customers/forgot-links' %}
         </div>
         {% endif %}
-</fieldset> 
+  {%endcomment%}
+ {%comment%} 
+</fieldset>
+ {%endcomment%}
+ {{ antiforgery }}
 </form>
