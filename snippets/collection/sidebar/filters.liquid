@@ -1,33 +1,36 @@
 ﻿<uib-accordion close-others="false">
 {% unless product_search_result.aggregations.empty? %}
-    {% for aggregation in product_search_result.aggregations %}                
+    {% for aggregation in product_search_result.aggregations %}
     {% assign current_tags = current_product_search_criteria.terms %}
     {% capture group_label %}{% if aggregation.field == 'price' %}{{ 'tags.price.label' | t }}{% else %}{{ aggregation.label }}{% endif %}{% endcapture %}
     <div class="panel-default" uib-accordion-group heading="{{ group_label | escape }}" template-url="collection-sidebar-default-group.html" is-open="true">
         <ol class="list-unstyled">
-            {% for tag in current_tags %}
-                {% if aggregation.field == tag.name %}
-                    {% assign current_tag = tag %}
-                {% endif %}
-            {% endfor %}
-            {% for custom_tag in aggregation.items %}                        
+            {% for custom_tag in aggregation.items %}
+                {% assign tag_checked = false %}
+                {% for c_tag in current_tags %}
+                    {% if aggregation.field == c_tag.name and custom_tag.value == c_tag.value%}
+                        {% assign tag_checked = true %}
+                        {% break %}
+                    {% endif %}
+                {% endfor %}
                 {% assign tag = custom_tag %}
-                {% include 'tag-label' %}                
-                {% if current_tag and current_tag.value == custom_tag.value  %}
-                    <li class="checkbox advanced-filter active-filter" data-group="{{ aggregation.field }}" data-handle="{{ current_tag.name | handleize }}">
+                {% include 'tag-label' %}
+                {% if tag_checked  %}
+                    <li class="checkbox advanced-filter active-filter" data-group="{{ aggregation.field }}" data-handle="{{ custom_tag.name | handleize }}">
                 {% else %}
                     <li class="checkbox advanced-filter" data-group="{{ aggregation.field }}">
                 {% endif %}
-                <label>                                    
-                    <input type="checkbox" ng-checked="{{ current_tag.value == custom_tag.value }}">
-                    <a vc-query-source="{ terms: { '{{ aggregation.field }}': ['{{ custom_tag.value }}'] } }" switchable="true">
-                        <span class="switch"></span>
-                        <span class="name">{{ tag_label }} <span class="count">({{ custom_tag.count }})</span></span>
-                    </a>
-                </label>                       
-            {% endfor %}  
+                        <label>
+                            <input type="checkbox" ng-checked="{{ tag_checked }}">
+                            <a vc-query-source="{ terms: { '{{ aggregation.field }}': ['{{ custom_tag.value }}'] } }" switchable="true">
+                                <span class="switch"></span>
+                                <span class="name">{{ tag_label }} <span class="count">({{ custom_tag.count }})</span></span>
+                            </a>
+                        </label>
+                    </li>
+            {% endfor %}
         </ol>
-    </div>    
+    </div>
     {% endfor %}
 {% endunless %}
 </uib-accordion>
