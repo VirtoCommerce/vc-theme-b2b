@@ -15,7 +15,7 @@
       Default collection order
     {% endcomment %}
     {% for product in collection.products limit:5 %}
-      {% include 'product-grid-item' %}
+      {% include 'product/grid-item' %}
     {% endfor %}
 
   {% else %}
@@ -23,7 +23,7 @@
       Custom order collections by 'all-collections' linklist
     {% endcomment %}
     {% for product in collections[collection.handle].products limit:5 %}
-      {% include 'product-grid-item' %}
+      {% include 'product/grid-item' %}
     {% endfor %}
 
   {% endif %}
