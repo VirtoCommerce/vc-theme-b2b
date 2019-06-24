@@ -1,7 +1,8 @@
 ﻿<uib-accordion close-others="false">
 {% unless product_search_result.aggregations.empty? %}
-    {% for aggregation in product_search_result.aggregations %}
     {% assign current_tags = current_product_search_criteria.terms %}
+    {% for aggregation in product_search_result.aggregations %}
+
     {% capture group_label %}{% if aggregation.field == 'price' %}{{ 'tags.price.label' | t }}{% else %}{{ aggregation.label }}{% endif %}{% endcapture %}
     <div class="panel-default" uib-accordion-group heading="{{ group_label | escape }}" template-url="collection-sidebar-default-group.html" is-open="true">
         <ol class="list-unstyled">
@@ -32,7 +33,7 @@
         </ol>
     </div>
     {% endfor %}
-{% endunless %}
+{%endunless%}
 </uib-accordion>
 {% raw %}
     <script type="text/ng-template" id="collection-sidebar-default-group.html">
