@@ -65,7 +65,8 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h3>{{ 'customer.order.title' | t }} {% raw %}{{$ctrl.orderNumber}}{% endraw %}</h3>
+                                        {% capture order_number %}{% raw %}{{$ctrl.orderNumber}}{% endraw %}{% endcapture %}
+                                    <h3>{{ 'customer.order.title' | t: order_number }}</h3>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <p>{{ 'customer.orders.status' | t }} <span ng-bind="$ctrl.order | orderToSummarizedStatusLabel"></span></p>
@@ -73,13 +74,13 @@
                                         </div>
                                         <div class="col-md-8">
                                             <span class="pull-right">
-                                                {{ 'customer.order.placed_on_date_html' | t }}
-                                                <strong ng-bind="$ctrl.order.createdDate | date: 'medium'"></strong>
+                                                {% capture created_date %}<strong ng-bind="$ctrl.order.createdDate | date: 'medium'"></strong>{% endcapture %}
+                                                {{ 'customer.order.placed_on_date_html' | t: created_date }}
                                             </span>
                                             <div ng-if="$ctrl.order.isCancelled">
+                                                {% capture cancelled_on %}<span ng-bind="$ctrl.order.modifiedDate | date: 'medium'"></span>{% endcapture %}
                                                 <p>
-                                                    {{ 'customer.order.cancelled_on' | t }}
-                                                    <span ng-bind="$ctrl.order.modifiedDate | date: 'medium'"></span>
+                                                    {{ 'customer.order.cancelled_on' | t: cancelled_on }}
                                                 </p>
                                                 <p>{{ 'customer.order.cancel_reason' | t }}: {% raw %}{{ $ctrl.order.cancelReason }}{% endraw %}</p>
                                             </div>
@@ -158,15 +159,12 @@
                             <div class="vc-t">{{ 'customer.order.subscription' | t }}</div>
                             <div class="vc-descr">
                                 {{ 'customer.order.subscription_comment' | t }}
-                                <p ng-bind="'customer.order.subscription_link' | translate: $ctrl.order"></p>
-                            </div>
-                            <div class="vc-descr">
                                 <a ng-bind="$ctrl.order.subscriptionNumber" ng-link="['/Subscriptions/SubscriptionDetail', {number: $ctrl.order.subscriptionNumber}]"></a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>           
+            </div>
             <div class="row">
                 <div class="panel panel-default">
                     <div class="panel-heading">Order totals</div>
