@@ -554,7 +554,8 @@
             "billing_address": "Billing address",
             "cancel": "Cancel Subscription",
             "cancel_reason_lbl": "Describe the cancellation reason",
-            "cancel_submit": "Submit cancellation"
+            "cancel_submit": "Submit cancellation",
+            "totals": "Subscription totals"
         },
         "quotes": {
             "title": "Quote requests",
