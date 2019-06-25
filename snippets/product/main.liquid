@@ -3,7 +3,7 @@
         <div class="col-xs-12">
             {% include 'shared/breadcrumb' %}
             <ul class="list-inline pull-right">
-                <li>                    
+                <li>
                     <a href="" ng-click="sendToEmail('{{ shop.id }}', '{{ product.id }}', '{{ product.url | absolute_url }}', '{{ current_language.culture_name }}')"><i class="fa fa-envelope"></i>&ensp;Email</a>
                 </li>
                 <li>
@@ -23,7 +23,7 @@
                     <h1>{{ product.title }}</h1>
                     <ul class="list-inline">
                         <li>
-                            <span class="text-muted">{{ 'products.product.sku' | t }}</span>&nbsp;<strong itemprop="productID">{{ product.selected_variant.sku }}</strong>
+                            <span class="text-muted">{{ 'products.product.sku' | t }}</span>&nbsp;<strong itemprop="productID">{{ product.sku }}</strong>
                         </li>
                         <li>
                             <span class="text-muted">{{ 'products.product.mmn' | t }}</span>&nbsp;<strong itemprop="model">{{ product.properties['MMN'].value }}</strong>
@@ -79,8 +79,8 @@
                 </div>
             {% endif %}
 
-            <div class="row">  
-                <div class="col-xs-12"> 
+            <div class="row">
+                <div class="col-xs-12">
                     {% for description in product.descriptions %}
                         {% if description.type == "FullReview" %}
                             {{ description.content }}
@@ -89,7 +89,7 @@
                 </div>
             </div>
 
-            
+
         </div>
         <div class="product-related hidden-xs hidden-sm col-md-10 hidden-print"></div>
     </div>
