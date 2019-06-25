@@ -1,6 +1,6 @@
 <h1>{{ 'bulk_order.general.title' | t }}</h1>
 <div class="row">
-    {% if form.errors %}
+    {% unless form.errors.empty? %}
         <dl class="alert alert-danger" role="alert">
             <dt>{{ 'bulk_order.general.items_not_found_message' | t }}</dt>
             <dd>
@@ -11,7 +11,7 @@
                 </ul>
             </dd>
         </dl>
-    {% endif %}
+        {% endunless %}
     <div class="col-md-8">
         <dl>
             <dt>{{ 'bulk_order.general.subtitle' | t }}</dt>
