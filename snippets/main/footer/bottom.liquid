@@ -5,7 +5,7 @@
                 <ul class="list-horizontal hidden-xs hidden-sm">
                     {% for link in linklists[settings.footer_legallinks_linklist].links %}
                         <li>
-                            <a class="navbar-link text-normal" href="{{ link.url }}">{{ link.title }}</a>
+                            <a class="navbar-link text-normal" href="{{ link.url | absolute_url }}">{{ link.title }}</a>
                         </li>
                     {% endfor %}
                 </ul>
