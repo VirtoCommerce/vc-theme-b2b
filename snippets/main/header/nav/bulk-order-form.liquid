@@ -19,27 +19,26 @@
                 </div>
             </div>
             <div class="panel-body" ng-controller="productController">
-                <form ng-show="state == 'manual'">
-                    {% assign column_count = 1 %}
-                    {% assign rows_count = 5 %}
-                    {% assign sku_grid_column_count = 7 %}
-                    {% assign quantity_grid_column_count = 5 %}
-                    <div class="container-fluid">
-                        {% include 'shared/bulk-order-fields' %}
-                        <p><a class="small" href="{{ 'bulkorder' | absolute_url }}">Show More Entry Fields</a></p>
-                        <!-- TODO: Replace mock with real method -->
-                        <button class="btn btn-primary" ng-click="addProductsToCartMock()" vc-dropdown-close>{{ 'bulk_order.general.add_to_cart' | t }}</button>
-                    </div>
-                </form>
+                    <form action="{{ '/bulkorder/addfielditems' | absolute_url }}" method="POST" ng-show="state == 'manual'">
+                        {% assign column_count = 1 %}
+                        {% assign rows_count = 5 %}
+                        {% assign sku_grid_column_count = 7 %}
+                        {% assign quantity_grid_column_count = 5 %}
+                        <div class="container-fluid">
+                            {% include 'shared/bulk-order-fields' %}
+                            <p><a class="small" href="{{ 'bulkorder' | absolute_url }}">Show More Entry Fields</a></p>
+                        <button class="btn btn-primary" type="submit">{{ 'bulk_order.general.add_to_cart' | t }}</button>
+                        </div>
+                    </form>
                 <dl ng-show="state == 'csv'">
                     <dt>{{ 'bulk_order.general.csv_subtitle' | t }}</dt>
                     <dd>{{ 'bulk_order.general.csv_subdescription' | t }}</dd>
                 </dl>
-                <form ng-show="state == 'csv'">
+                <form action="{{ '/bulkorder/addcsvitems' | absolute_url }}" method="POST" ng-show="state == 'csv'">
                     <div class="form-group">
                         <textarea name="csv" placeholder="{{ 'bulk_order.general.csv_field_placeholder' | t }}" rows="10" class="form-control"></textarea>
                     </div>
-                    <button class="btn btn-primary" ng-click="addProductsToCartMock()" vc-dropdown-close>{{ 'bulk_order.general.add_to_cart' | t }}</button>
+                    <button class="btn btn-primary" type="submit">{{ 'bulk_order.general.add_to_cart' | t }}</button>
                 </form>
             </div>
         </div>

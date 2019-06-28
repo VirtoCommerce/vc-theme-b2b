@@ -1,4 +1,4 @@
-﻿{% unless current_collection %}
+{% unless current_collection %}
     {% assign current_collection = collection %}
 {% endunless %}
 
@@ -13,37 +13,51 @@
         {% include 'product/item/title-and-codes' %}
         <div class="list-descr" ng-init="product['{{product.id}}'].isDescriptionTruncated = true">
             {% for description in product.descriptions %}
-                {% if description.type == 'QuickReview' %}
+            {% assign quick_review = nil %}
+                {% if description.review_type == 'QuickReview' %}
                     {% assign quick_review = description.content %}
                     {% break %}
                 {% endif %}
             {% endfor %}
-            <div ng-if="product['{{product.id}}'].isDescriptionTruncated">
-                {% if quick_review contains '</ul>' %}
-                    {% assign separated_list = quick_review | replace: '</li>', '&#x2063;&#x2063;' | replace: '<li> ', '&#x2063;' | split: '&#x2063;&#x2063;' %}
-                    {%- capture short_quick_review -%}
-                        {%- for item in separated_list | limit: 3 -%}
-                            {{ item }}
-                        {%- endfor -%}
-                        {{ separated_list.last }}
-                    {%- endcapture -%}
-                    {% assign short_quick_review = short_quick_review | replace: '&#x2063;&#x2063;', '</li>' | replace:  '&#x2063;', '<li> ' %}
-                {% else %}
-                    {% assign short_quick_review = quick_review | strip_html | truncatewords: 30 %}
-                {% endif %}
-                {{ short_quick_review }}
-            </div>
+           
+            {% if quick_review  %}            
+            <div ng-if="product['{{product.id}}'].isDescriptionTruncated">                                                
+                 {% if quick_review contains '</ul>' %}
+                     {% assign separated_list = quick_review | replace: '</li>', '&#x2063;&#x2063;' | replace: '<li> ', '&#x2063;' | split: '&#x2063;&#x2063;' %}                   
+                     {% capture short_quick_review %}
+                         {% for item in separated_list limit: 3 %}
+                             {{ item }}
+                         {% endfor %}
+                         {{ separated_list.last }}
+                     {% endcapture %}                     
+                     {% assign short_quick_review = short_quick_review | replace: '&#x2063;&#x2063;', '</li>' | replace:  '&#x2063;', '<li> ' %}                    
+                 {% else %}                                
+                     {% assign short_quick_review = quick_review | strip_html | truncatewords: 30 %}
+                      {{ short_quick_review }}                 
+                 {% endif %}                                 
+            </div>            
             <a href="" ng-show="product['{{product.id}}'].isDescriptionTruncated" ng-click="product['{{product.id}}'].isDescriptionTruncated = false">{{ 'common.more' | t }}</a>
             <div ng-if="!product['{{product.id}}'].isDescriptionTruncated">{{ quick_review }}</div>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-5">
         <div class="row">
             <div class="col-md-4">{% include 'product/price' %}</div>
             <div class="col-md-8">
-                {% include 'product/quantity', show_label: true %}
+                {% assign show_label = true %}
+                {% include 'product/quantity' %}
                 <vc-shipping-type is-dropdown="true" title="Ship or pickup" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    window.products = [];
+    window.products.push({
+        id: "{{ product.id }}",
+        catalogId: "{{ product.catalog_id }}",
+        categoryId: "{{ product.category_id }}"
+    });
+</script>

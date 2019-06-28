@@ -1,7 +1,7 @@
-﻿<div class="row">
-    <div class="col-xs-12 container-drain container-bordered-horizontal">
-        {% for product in collection.products %}
-            {% include product_item, product: product %}
+<div class="row">
+    <div class="col-xs-12 container-drain container-bordered-horizontal">    
+        {% for product in collection.products %}            
+            {% include product_item %}
         {% endfor %}
     </div>
 </div>

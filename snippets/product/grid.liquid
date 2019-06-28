@@ -1,10 +1,16 @@
-﻿{% for product in collection.products %}
-    {% include 'shared/grid/rows', column_count: 4 %}
+{% for product in collection.products %}
+    
+    {% assign column_count = 4 %}
+    {% include 'shared/grid/rows' %}
     {% if should_start_row %}
         <div class="row flexible">
     {% endif %}
-    {% include product_item, product: product %}
+    
+    {% include product_item %}
     {% if should_end_row %}
         </div>
     {% endif %}
+    
+   
 {% endfor %}
+

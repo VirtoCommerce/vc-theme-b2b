@@ -22,17 +22,17 @@
   </aside>
     <div class="grid-uniform">
 
-        {% for product in vendor.products %}
-
-        {% include 'product-list-item' %}
-
-        {% else %}
-
+        {% if vendor.products.empty? %}
         <div class="grid-item">
             <p>{{ 'collections.general.no_matches' | t }}</p>
         </div>
+        
+        {% else %}
 
+        {% for product in vendor.products %}
+        {% include 'product-list-item' %}        
         {% endfor %}
+        {% endif %}        
 
     </div>
 </div>

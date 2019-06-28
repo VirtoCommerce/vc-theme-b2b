@@ -1,4 +1,12 @@
-﻿{% paginate collection.products by settings.product_list_capacity %}
+
+{% unless page_size %}
+{% assign page_size = settings.product_list_capacity  %}
+{% endif %}
+
+{{ paginator =  collection.products  | paginate page_size }}
+{% comment %}
+{% paginate collection.products by settings.product_list_capacity %}
+{% endcomment %}
     <main class="container" role="main">
         <div class="row" ng-controller="collectionController as $collection">
             <div class="col-xs-12">
@@ -6,7 +14,7 @@
             </div>
             <div class="col-xs-12" ng-init="isAboutCollapsed = true">
                 <h1>{{ collection.title }}
-                    {% if collection.description != blank %}
+                    {% if collection.description.empty? == false %}
                         <a href="" class="link-reset pull-right" ng-click="isAboutCollapsed = !isAboutCollapsed">
                             <small>
                                 <i class="fa" ng-class="{'fa-question-circle': isAboutCollapsed, 'fa-times-circle': !isAboutCollapsed}"></i>
@@ -21,19 +29,22 @@
                     {% assign product_variant_count = product.variants | size %}
                     {% assign variants_count = variants_count | plus: product_variant_count %}
                 {% endfor %}
-                {% assign all_results_count = collection.products_count %}
+                {% assign all_results_count = collection.all_products_count %}
                 {% assign displayed_results_count = collection.products | size %}
-                <p>{{ 'collections.general.products_count' | t, all_results_count: all_results_count, displayed_results_count: displayed_results_count, products_count: variants_count }}</p>
+                <p>{{ 'collections.general.products_count' | t: all_results_count, displayed_results_count, variants_count }}</p>
                 <p class="collapse" uib-collapse="isAboutCollapsed">{{ collection.description }}</p>
             </div>
             <div class="col-md-3">
-                {% include 'collection/sidebar', collection: collection %}
+                {% assign collection = collection %}
+                {% include 'collection/sidebar' %}
             </div>
             <div class="col-md-9">
                 <div class="container-drain container-bordered" ng-controller="priceController">
-                    {% include 'collection/nav', position: 'top' %}
+                    {% assign position = 'top' %}
+                    {% include 'collection/nav' %}                    
                     {% include product_items %}
-                    {% include 'collection/nav', position: 'bottom' %}
+                    {% assign position = 'bottom' %}
+                    {% include 'collection/nav' %}
                     {% include 'shared/pagination' %}
                     <script>
                         window.products = [];
@@ -60,7 +71,10 @@
                         taxType: "{{ product.tax_type }}"
                     });
                 {% endfor %}
-            </script>
+            </script>           
         </div>
     </main>
+
+{% comment %}
 {% endpaginate %}
+{% endcomment %}

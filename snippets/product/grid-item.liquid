@@ -11,3 +11,12 @@
     {% include 'product/price' %}
     {% include 'product/quantity' %}
 </div>
+
+<script>
+    window.products = [];
+    window.products.push({
+        id: "{{ product.id }}",
+        catalogId: "{{ product.catalog_id }}",
+        categoryId: "{{ product.category_id }}"
+    });
+</script>

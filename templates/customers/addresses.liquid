@@ -19,7 +19,7 @@
   <div class="grid-item two-thirds medium-down--one-whole">
 
     <div id="add_address" style="display: none;">
-      {% form 'customer_address', customer.new_address %}
+      <form accept-charset="UTF-8" action="{{ '~/account/addresses' | absolute_url }}" method="post" id="customer_address" name="customer_address">
 
         <h2>{{ 'customer.addresses.add_new' | t }}</h2>
 
@@ -83,12 +83,13 @@
         <a href="#" onclick="Shopify.CustomerAddress.toggleNewForm(); return false;">{{ 'customer.addresses.cancel' | t }}</a>
 
         <hr>
-      {% endform %}
+      {{ antiforgery }}
+      </form>
     </div>
 
     <h2>{{ 'customer.addresses.title' | t }}</h2>
 
-    {% paginate customer.addresses by 5 %}
+    {% paginator =  customer.addresses | paginate 5 %}
       {% for address in customer.addresses %}
 
         <h3>
@@ -113,9 +114,9 @@
         </p>
 
         <div id="edit_address_{{ address.id }}" style="display:none;">
-          {% form 'customer_address', address %}
+          <form accept-charset="UTF-8" action="{{ '~/account/addresses' | absolute_url }}" method="post" id="customer_address" name="customer_address">
 
-            <h4>Edit address</h4>
+            <h4>{{ 'customer.addresses.edit_old' | t }}</h4>
 
             <div class="grid">
               <input type="hidden" id="address_id_{{ address.id }}" name="address[id]" value="{{ address.id }}">
@@ -173,18 +174,20 @@
             or <a href="#" onclick="Shopify.CustomerAddress.toggleForm({{ address.id }}); return false;">{{ 'customer.addresses.cancel' | t }}</a>
 
             <hr>
-          {% endform %}
+          {{ antiforgery }}
+          </form>
         </div>
 
       {% endfor %}
 
-      {% if paginate.pages > 1 %}
+      {% if paginator.pages > 1 %}
       <div class="text-center">
         {% include 'pagination-custom' %}
       </div>
       {% endif %}
-
+    {% comment %}
     {% endpaginate %}
+    {% endcomment %}
   </div>
 
 </div>

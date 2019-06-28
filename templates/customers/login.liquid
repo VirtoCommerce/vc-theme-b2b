@@ -6,9 +6,9 @@
                 {% include 'customers/login-form' %}
             </div>
             <div class="col-md-8">
-                <h1>{{ 'customer.sign-in.registration_title' | t: shop: shop }}</h1>
+                <h1>{{ 'customer.sign-in.registration_title' | t: shop.name }}</h1>
                 <p>
-                    {{ 'customer.sign-in.registration_advantages_title' | t: shop: shop }}
+                    {{ 'customer.sign-in.registration_advantages_title' | t: shop.name }}
                     <ul>
                         {% for i in (0..10) %}
                         {% assign registration_advantage_path = 'customer.sign-in.registration_advantages[' | append: i | append: ']' %}

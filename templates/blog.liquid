@@ -1,4 +1,4 @@
-﻿{% paginate blog.articles by 5 %}
+﻿{{ paginator =  blog.articles  | paginate 5 }}
 
 {% include 'shared/breadcrumb' %}
 
@@ -18,9 +18,9 @@
 
           <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
           <p class="text-light">
-            {% capture date %}<strong><time pubdate datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time></strong>{% endcapture %}
+            {% capture pubdate %}<strong><time pubdate datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: 'month_day_year' }}</time></strong>{% endcapture %}
             {% capture author %}<strong>{{ article.author }}</strong>{% endcapture %}
-            {{ 'blogs.article.author_on_date_html' | t: author: author, date: date }}
+            {{ 'blogs.article.author_on_date_html' | t: author, pubdate }}
           </p>
 
           <div class="rte">
@@ -35,7 +35,7 @@
             {% if blog.comments_enabled? %}
             <li>
               <a href="{{ article.url }}#comments">
-                {{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+                {{ 'blogs.comments.comments_with_count' | t: article.comments_count }}
               </a>
             </li>
             {% endif %}
@@ -47,7 +47,7 @@
 
         {% endfor %}
 
-        {% if paginate.pages > 1 %}
+        {% if paginator.pages > 1 %}
         <hr>
         <div class="text-center">
           {% include 'pagination-custom' %}
@@ -63,4 +63,3 @@
   </aside>
 </div>
 
-{% endpaginate %}

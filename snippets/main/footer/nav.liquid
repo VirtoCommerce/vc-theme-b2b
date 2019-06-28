@@ -5,7 +5,7 @@
                     <h4>
                         <a href="#">{{ 'layout.footer.mobile_apps_title' | t }}</a>
                     </h4>
-                    <p>{{ 'layout.footer.mobile_apps_message' | t }}</p>
+                    <p>{{ 'layout.footer.mobile_apps_message' | t: shop.name }}</p>
                     <p>
                         <a href="#" class="">
                             <img class="mobile-app" src="{{ 'app-store-badge.svg' | asset_url }}" />
@@ -17,7 +17,7 @@
                 </div>
                 <div class="col-md-3">
                     <h4>{{ 'layout.footer.newsletter_title' | t }}</h4>
-                    <p>{{ 'blogs.newsletter.message' | t }}</p>
+                    <p>{{ 'blogs.newsletter.message' | t: shop.name }}</p>
                     <!-- Show popup? -->
                     <p>
                         <a href="" class="btn btn-primary btn-block">{{ 'blogs.newsletter.sign_up' | t }}</a>

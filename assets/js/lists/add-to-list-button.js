@@ -33,7 +33,7 @@
 				customerService.getCurrentCustomer().then(function(response) {
 					$ctrl.customer = response.data;
 				});
-				
+
 			}
 
 			function toListsDialogDataModel(product, quantity) {
