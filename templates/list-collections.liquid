@@ -3,6 +3,7 @@
 {% comment %}
   Custom order collections by 'all-collections' linklist
 {% endcomment %}
+{% comment %}
 {% for link in linklists.all-collections.links %}
 
   {% assign collection = link.object %}
@@ -10,6 +11,7 @@
   {% unless forloop.last %}<hr>{% endunless %}
 
 {% else %}
+{% endcomment %}
   {% comment %}
     Default collection order
   {% endcomment %}
@@ -17,9 +19,10 @@
 
     {% unless collection.handle == 'frontpage' or collection.handle == 'all' %}
       {% include 'collection-list-item' %}
-      {% unless forloop.last %}<hr>{% endunless %}
+      {% unless for.last %}<hr>{% endunless %}
     {% endunless %}
 
   {% endfor %}
-
+{% comment %}
 {% endfor %}
+{% endcomment %}

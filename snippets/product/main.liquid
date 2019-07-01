@@ -3,7 +3,7 @@
         <div class="col-xs-12">
             {% include 'shared/breadcrumb' %}
             <ul class="list-inline pull-right">
-                <li>                    
+                <li>
                     <a href="" ng-click="sendToEmail('{{ shop.id }}', '{{ product.id }}', '{{ product.url | absolute_url }}', '{{ current_language.culture_name }}')"><i class="fa fa-envelope"></i>&ensp;Email</a>
                 </li>
                 <li>
@@ -19,14 +19,14 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                    <a href="#">{{ product.metafields.properties['Brand'] }}</a>
+                    <a href="#">{{ product.properties['Brand'].value }}</a>
                     <h1>{{ product.title }}</h1>
                     <ul class="list-inline">
                         <li>
-                            <span class="text-muted">{{ 'products.product.sku' | t }}</span>&nbsp;<strong itemprop="productID">{{ product.selected_variant.sku }}</strong>
+                            <span class="text-muted">{{ 'products.product.sku' | t }}</span>&nbsp;<strong itemprop="productID">{{ product.sku }}</strong>
                         </li>
                         <li>
-                            <span class="text-muted">{{ 'products.product.mmn' | t }}</span>&nbsp;<strong itemprop="model">{{ product.metafields.properties['MMN'] }}</strong>
+                            <span class="text-muted">{{ 'products.product.mmn' | t }}</span>&nbsp;<strong itemprop="model">{{ product.properties['MMN'].value }}</strong>
                         </li>
                         <li>
                             <span class="text-muted">UNSPSC</span>&nbsp;<strong>#41112701</strong>
@@ -40,7 +40,10 @@
                     {% include 'product/compare' %}
                     {% include 'product/product-compare-list-bar' %}
                 </div>
-                <div class="col-md-2" ng-controller="priceController">{% include 'product/price', product: product %}</div>
+                <div class="col-md-2" ng-controller="priceController">
+                {% assign product = product %}
+                {% include 'product/price' %}
+                </div>
                 <div class="col-md-4" ng-controller="purchaseController" ng-init='loadPaymentPlan({{ settings.available_paymentPlans | json }}, "product", "{{ product.id }}")'>
                     <p ng-show="shipmentType == 'shipping' && shipmentAddress">Expected to arrive: <strong ng-bind="availability['{{ product.id }}'].expectedArrival | date: 'fullDate'"></strong></p>
                     <p ng-show="shipmentType == 'pickup' && shipmentFulfillmentCenter">Available for pickup: <strong ng-bind="availability['{{ product.id }}'].availableSince | date: 'fullDate'"></strong></p>
@@ -54,13 +57,14 @@
                     <vc-shipping-type is-dropdown="false" pickup-method-code="{{ settings.pickup_shipping_method }}"></vc-shipping-type>
                 </div>
             </div>
-            {% if product.properties.size > 0  %}
+            {% if product.properties.size > 0 %}
                 <div class="row">
                     <div class="col-xs-12">
                         <table class="table table-striped">
                             <caption class="h2">Technical Specs</caption>
                             {% for property in product.properties %}
-                                {% include 'shared/grid/rows', column_count: 2 %}
+                                {% assign column_count = 2 %}
+                                {% include 'shared/grid/rows' %}
                                 {% if should_start_row %}
                                     <tr>
                                 {% endif %}
@@ -75,8 +79,8 @@
                 </div>
             {% endif %}
 
-            <div class="row">  
-                <div class="col-xs-12"> 
+            <div class="row">
+                <div class="col-xs-12">
                     {% for description in product.descriptions %}
                         {% if description.type == "FullReview" %}
                             {{ description.content }}
@@ -85,7 +89,7 @@
                 </div>
             </div>
 
-            
+
         </div>
         <div class="product-related hidden-xs hidden-sm col-md-10 hidden-print"></div>
     </div>

@@ -16,9 +16,9 @@
           <div class="section-header--left">
             <h1>{{ article.title }}</h1>
             <p class="text-light">
-              {% capture date %}<strong><time pubdate datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time></strong>{% endcapture %}
+              {% capture pubdate %}<strong><time pubdate datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: 'month_day_year' }}</time></strong>{% endcapture %}
               {% capture author %}<strong>{{ article.author }}</strong>{% endcapture %}
-              {{ 'blogs.article.author_on_date_html' | t: author: author, date: date }}
+              {{ 'blogs.article.author_on_date_html' | t: author, pubdate }}
             </p>
           </div>
         </header>
@@ -65,24 +65,24 @@
         {% endif %}
 
 
-        {% if blog.comments_enabled? %}
+        {% if blog.comments_enabled %}
 
         <hr>
 
         <div class="section-header">
-          <p class="h1 section-header--left">{{ 'blogs.comments.comments_with_count' | t: count: number_of_comments }}</p>
+          <p class="h1 section-header--left">{{ 'blogs.comments.comments_with_count' | t: number_of_comments }}</p>
           <div class="section-header--right">
             <a href="#write-comment">{{ 'blogs.comments.title' | t }} &rsaquo;</a>
           </div>
         </div>
 
-          {% paginate article.comments by 5 %}
+          {{ paginator =  article.comments | paginate 5 }}
 
           <div id="comments">
 
             {% if comment and comment.created_at %}
             <p class="note form-success">
-              {% if blog.moderated? %}
+              {% if blog.moderated %}
                 {{ 'blogs.comments.success_moderated' | t }}
               {% else %}
                 {{ 'blogs.comments.success' | t }}
@@ -101,7 +101,7 @@
                 {% endif %}
 
                 {% for comment in article.comments %}
-                <li id="{{ comment.id }}" class="comment{% unless number_of_comments > article.comments_count %}{% if forloop.first %} first{% endif %}{% endunless %}{% if forloop.last %} last {% endif %}">
+                <li id="{{ comment.id }}" class="comment{% unless number_of_comments > article.comments_count %}{% if for.first %} first{% endif %}{% endunless %}{% if for.last %} last {% endif %}">
 
                   {% include 'comment' %}
 
@@ -144,7 +144,7 @@
 
                 </div>
 
-                {% if blog.moderated? %}
+                {% if blog.moderated %}
                   <p class="text-light"><em>{{ 'blogs.comments.moderated' | t }}</em></p>
                 {% endif %}
 
@@ -156,7 +156,7 @@
                   </script>
                 {% endif %}
 
-                {% if form.posted_successfully? %}
+                {% if form.posted_successfully %}
                   <script>
                     window.location.hash = '#comments';
                   </script>
@@ -167,7 +167,7 @@
 
           </div>
 
-          {% endpaginate %}
+          
 
         {% endif %}
       </div>

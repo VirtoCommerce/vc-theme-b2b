@@ -1,7 +1,7 @@
 <ul class="list-inline">
     {% if settings.social_google_plus_link != blank %}
     <li>
-        <a class="btn btn-social-icon btn-google" href="{{ settings.social_google_plus_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Google' | escape }}">
+        <a class="btn btn-social-icon btn-google" href="{{ settings.social_google_plus_link }}" title="{{ 'layout.footer.store_on_social_network' | t: shop.name, 'Google' | escape }}">
             <i class="fa fa-google" aria-hidden="true"></i>
             <span class="text-hide">Google</span>
         </a>
@@ -9,7 +9,7 @@
     {% endif %}
     {% if settings.social_facebook_link != blank %}
     <li>
-        <a class="btn btn-social-icon btn-facebook" href="{{ settings.social_facebook_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Facebook' | escape }}">
+        <a class="btn btn-social-icon btn-facebook" href="{{ settings.social_facebook_link }}" title="{{ 'layout.footer.store_on_social_network' | t: shop.name, 'Facebook' | escape }}">
             <i class="fa fa-facebook" aria-hidden="true"></i>
             <span class="text-hide">Facebook</span>
         </a>
@@ -17,7 +17,7 @@
     {% endif %}
     {% if settings.social_twitter_link != blank %}
     <li>
-        <a class="btn btn-social-icon btn-twitter" href="{{ settings.social_twitter_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Twitter' | escape }}">
+        <a class="btn btn-social-icon btn-twitter" href="{{ settings.social_twitter_link }}" title="{{ 'layout.footer.store_on_social_network' | t: shop.name, 'Twitter' | escape }}">
             <i class="fa fa-twitter" aria-hidden="true"></i>
             <span class="text-hide">Twitter</span>
         </a>
@@ -27,7 +27,7 @@
 <ul class="list-inline">
     {% if settings.social_instagram_link != blank %}
     <li>
-        <a class="btn btn-social-icon btn-instagram" href="{{ settings.social_instagram_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Instagram' | escape }}">
+        <a class="btn btn-social-icon btn-instagram" href="{{ settings.social_instagram_link }}" title="{{ 'layout.footer.store_on_social_network' | t: shop.name, 'Instagram' | escape }}">
             <i class="fa fa-instagram" aria-hidden="true"></i>
             <span class="text-hide">Instagram</span>
         </a>
@@ -35,7 +35,7 @@
     {% endif %}
     {% if settings.social_linkedin_link != blank %}
     <li>
-        <a class="btn btn-social-icon btn-linkedin" href="{{ settings.social_linkedin_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'LinkedIn' | escape }}">
+        <a class="btn btn-social-icon btn-linkedin" href="{{ settings.social_linkedin_link }}" title="{{ 'layout.footer.store_on_social_network' | t: shop.name, 'LinkedIn' | escape }}">
             <i class="fa fa-linkedin" aria-hidden="true"></i>
             <span class="text-hide">LinkedIn</span>
         </a>
@@ -43,7 +43,7 @@
     {% endif %}
     {% if settings.social_youtube_link != blank %}
     <li>
-        <a class="btn btn-social-icon btn-youtube" href="{{ settings.social_youtube_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'YouTube' | escape }}">
+        <a class="btn btn-social-icon btn-youtube" href="{{ settings.social_youtube_link }}" title="{{ 'layout.footer.store_on_social_network' | t: shop.name, 'YouTube' | escape }}">
             <i class="fa fa-youtube" aria-hidden="true"></i>
             <span class="text-hide">YouTube</span>
         </a>
@@ -51,7 +51,7 @@
     {% endif %}
     {% if settings.social_vimeo_link != blank %}
     <li>
-        <a class="btn btn-social-icon btn-vimeo" href="{{ settings.social_vimeo_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Vimeo' | escape }}">
+        <a class="btn btn-social-icon btn-vimeo" href="{{ settings.social_vimeo_link }}" title="{{ 'layout.footer.store_on_social_network' | t: shop.name, 'Vimeo' | escape }}">
             <i class="fa fa-vimeo" aria-hidden="true"></i>
             <span class="text-hide">Vimeo</span>
         </a>
@@ -59,7 +59,7 @@
     {% endif %}
     {% if settings.social_tumblr_link != blank %}
     <li>
-        <a class="btn btn-social-icon btn-tumblr" href="{{ settings.social_tumblr_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Tumblr' | escape }}">
+        <a class="btn btn-social-icon btn-tumblr" href="{{ settings.social_tumblr_link }}" title="{{ 'layout.footer.store_on_social_network' | t: shop.name, 'Tumblr' | escape }}">
             <i class="fa fa-tumblr" aria-hidden="true"></i>
             <span class="text-hide">Tumblr</span>
         </a>
@@ -67,7 +67,7 @@
     {% endif %}
     {% if settings.social_pinterest_link != blank %}
     <li>
-        <a class="btn btn-social-icon btn-pinterest" href="{{ settings.social_pinterest_link }}" title="{{ 'layout.footer.store_on_social_network' | t: store_name: shop.name, social_network: 'Pinterest' | escape }}">
+        <a class="btn btn-social-icon btn-pinterest" href="{{ settings.social_pinterest_link }}" title="{{ 'layout.footer.store_on_social_network' | t: shop.name, 'Pinterest' | escape }}">
             <i class="fa fa-pinterest" aria-hidden="true"></i>
             <span class="text-hide">Pinterest</span>
         </a>

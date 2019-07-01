@@ -1,4 +1,4 @@
-﻿{% if form.errors %}
+﻿{% unless form.errors.empty? %}
 <div class="alert alert-danger">
     <p>{{ 'general.forms.post_error' | t }}</p>
 
@@ -13,11 +13,11 @@
         {% else %}
         <li>
             {% assign field_name = field | replace: 'body', message %}
-            {{ 'general.forms.post_field_error_html' | t: field: field_name, error: form.errors.messages[field] }}
+            {{ 'general.forms.post_field_error_html' | t: field_name, form.errors.messages[field] }}
         </li>
         {% endif %}
 
         {% endfor %}
     </ul>
 </div>
-{% endif %}
+{% endunless %}

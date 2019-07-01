@@ -2,7 +2,7 @@
   <li>
     <span>{{ 'blogs.article.tags' | t }}:</span>
     {% for tag in article.tags %}
-      <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
+      <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless for.last %}, {% endunless %}
     {% endfor %}
   </li>
 {% endif %}

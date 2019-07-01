@@ -6677,6 +6677,7 @@ vc-labeled-input {
     border-width: 2px;
     border-color: #10acd2; }
 
+input .form-group.keyuped label,
 vc-labeled-input .form-group.keyuped label {
   font-size: 12px;
   line-height: 1.7;

@@ -20,7 +20,7 @@
   {% if more_link %}
     <div class="section-header--right">
       {% assign header_title = header_title | downcase %}
-      <a href="{{ more_link }}">{{ 'homepage.featured_collection_rows.more_in_collection' | t: collection_title: header_title }} &rsaquo;</a>
+      <a href="{{ more_link }}">{{ 'homepage.featured_collection_rows.more_in_collection' | t: header_title }} &rsaquo;</a>
     </div>
   {% endif %}
 </div>
