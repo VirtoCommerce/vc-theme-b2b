@@ -6,7 +6,7 @@
             <dd>
                 <ul class="list-styled">
                     {% for field in form.errors %}
-                        <li>{{ form.errors.messages[field] }}</li>
+                        <li>{{ field.message }}</li>
                     {% endfor %}
                 </ul>
             </dd>
