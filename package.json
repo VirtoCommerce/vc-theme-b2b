@@ -55,6 +55,7 @@
         "gulp-zip": "^4.0.0",
         "main-bower-files": "^2.13.1",
         "merge-stream": "^1.0.1",
+        "merge2": "^1.2.3",
         "node-bourbon": "^4.2.8",
         "node-sass": "^4.8.3",
         "postcss-import": "^11.0.0",
