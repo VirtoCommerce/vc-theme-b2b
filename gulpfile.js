@@ -1,7 +1,7 @@
 ﻿/// <binding BeforeBuild='default' Clean='clean' ProjectOpened='watch' />
 
 var gulp = require('gulp'),
-    
+
     filter = require('gulp-filter'),
     concat = require('gulp-concat'),
     replace = require('gulp-replace'),
@@ -27,9 +27,10 @@ var gulp = require('gulp'),
     bootlint = require('gulp-bootlint'),
     imagemin = require('gulp-image'),
     sourcemaps = require('gulp-sourcemaps'),
+    merge2 = require("merge2");
 
     eslint = require('gulp-eslint'),
-        
+
     zip = require('gulp-zip'),
     gitignore = require('gulp-exclude-gitignore');
 
@@ -110,7 +111,7 @@ gulp.task('min:scss', function () {
             //        }),
             //        prefix: "_",
             //        extension: ".scss",
-            //        glob: false 
+            //        glob: false
             //    }),
             //    autoprefix()
             //], { syntax: scss }))
@@ -232,10 +233,14 @@ gulp.task('eslint', function () {
 
 gulp.task('compress', ['min'], function() {
     var package = getPackage();
-    return gulp.src([].concat(['./*/**'], [].concat.apply([], getBundleConfig().map(function(bundle) {
-            return bundle.inputFiles.map(function(inputFile) { return '!' + inputFile; })
-        }))))
-        .pipe(gitignore())
+    return merge2(
+        gulp.src([].concat(['./*/**'], [].concat.apply([], getBundleConfig().map(function(bundle) {
+                return bundle.inputFiles.map(function(inputFile) { return '!' + inputFile; })
+            }))))
+            .pipe(gitignore()),
+            // Need to add them manually because otherwise all bundles will be skipped as they are in .gitignore
+            gulp.src("assets/static/bundle/**", {base: '.'})
+        )
         .pipe(rename(function(path) {
             path.dirname = 'default/' + path.dirname;
         }))
