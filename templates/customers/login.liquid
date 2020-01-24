@@ -3,6 +3,7 @@
         <div class="row">
             <div class="col-md-4">
                 <h1>{{ 'customer.sign-in.title' | t }}</h1>
+                {% capture loginUrl %} {{ requestUrl }} {% endcapture %}
                 {% include 'customers/login-form' %}
             </div>
             <div class="col-md-8">
