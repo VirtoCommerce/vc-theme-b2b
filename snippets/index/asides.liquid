@@ -7,6 +7,7 @@
 <aside class="panel panel-default" ng-if="customer && !customer.isRegisteredUser">
     <div class="panel-body">
         <h4>{{ 'customer.sign-in.title' | t }}</h4>
+        {% capture loginUrl %} {{ '~/account/login' | absolute_url }} {% endcapture %}
         {% include 'customers/login-form' %}
     </div>
 </aside>
