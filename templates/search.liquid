@@ -8,10 +8,10 @@
         {% if search and search_results.empty? == false %}
         {% paginator = search_results | paginate settings.product_list_capacity %}        
         {% if search_results.size == 0 %}
-        <h2 class="text-center">{{ 'general.search.no_results_html' | t: search.keyword }}</h2>
+        <h2 class="text-center">{{ 'general.search.no_results_html' | t: (search.keyword | escape) }}</h2>
         {% else %}
         <div class="page-header">
-            <h2 class="text-center">{{ 'general.search.results_for_html' | t: search.keyword }}</h2>
+            <h2 class="text-center">{{ 'general.search.results_for_html' | t: (search.keyword | escape) }}</h2>
         </div>
         <div class="row">
             {% for item in search_results %}
@@ -31,6 +31,7 @@
         {% else %}
         <div class="row">
             <div class="col-xs-12">
+                
                 <h2 class="text-center">{{ 'general.search.no_results_html' | t: search.keyword }}</h2>
                 {% comment %}
                 <h2 class="text-center">{{ 'general.search.title' | t }}</h2>                
