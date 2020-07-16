@@ -1,4 +1,4 @@
-﻿<aside class="panel panel-default" ng-if="customer && customer.isRegisteredUser">
+<aside class="panel panel-default" ng-if="customer && customer.isRegisteredUser">
     <div class="panel-body">
         <h4>{% raw %}{{ customer.firstName }} {{ customer.lastName }}{% endraw %}</h4>
         {% include 'customers/badge' %}
@@ -6,7 +6,7 @@
 </aside>
 <aside class="panel panel-default" ng-if="customer && !customer.isRegisteredUser">
     <div class="panel-body">
-        <h4>{{ 'customer.sign-in.title' | t }}</h4>
+        <h4>{{ 'customer.sign_in.title' | t }}</h4>
         {% capture loginUrl %} {{ '~/account/login' | absolute_url }} {% endcapture %}
         {% include 'customers/login-form' %}
     </div>

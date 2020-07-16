@@ -2,17 +2,17 @@
     <aside class="container">
         <div class="row">
             <div class="col-md-4">
-                <h1>{{ 'customer.sign-in.title' | t }}</h1>
+                <h1>{{ 'customer.sign_in.title' | t }}</h1>
                 {% capture loginUrl %} {{ requestUrl }} {% endcapture %}
                 {% include 'customers/login-form' %}
             </div>
             <div class="col-md-8">
-                <h1>{{ 'customer.sign-in.registration_title' | t: shop.name }}</h1>
+                <h1>{{ 'customer.sign_in.registration_title' | t: shop.name }}</h1>
                 <p>
-                    {{ 'customer.sign-in.registration_advantages_title' | t: shop.name }}
+                    {{ 'customer.sign_in.registration_advantages_title' | t: shop.name }}
                     <ul>
                         {% for i in (0..10) %}
-                        {% assign registration_advantage_path = 'customer.sign-in.registration_advantages[' | append: i | append: ']' %}
+                        {% assign registration_advantage_path = 'customer.sign_in.registration_advantages[' | append: i | append: ']' %}
                         {% assign registration_advantage = registration_advantage_path | t %}
                         {% if registration_advantage != registration_advantage_path %}
                         <li>{{ registration_advantage }}</li>
