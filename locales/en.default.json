@@ -156,7 +156,7 @@
             "tags": "Tagged \"{0}\"",
             "page": "Page {0}"
         },
-        "404": {
+        "error404": {
             "title": "404 Page Not Found",
             "subtext_html": "The page you requested does not exist. Click <a href=\"collections/all\">here</a> to continue shopping."
         },
@@ -426,7 +426,7 @@
             "delete_confirm": "Are you sure you wish to delete this address?",
             "no_addresses_message": "You have no addresses yet."
         },
-        "sign-in": {
+        "sign_in": {
             "title": "Sign in",
             "email": "Email",
             "user_name": "User Name",
@@ -534,10 +534,10 @@
             "placed_on_date_html": "Placed on {0}",
             "cancelled_on": "Subscription was canceled on {0}",
             "cancel_reason": "Reason",
-            "details-sentence_": "Subscription shipping every {0} {1} from {2} until {3}. Next billing on {4}.",
-            "details-sentence": "Subscription shipping every {0} {1} from {2}. Next billing on {3}.",
-            "details-sentence1": "Subscription shipping every 20 days from Nov 22, 2016. Next billing on Dec 31, 2016.",
-            "details-sentence2": "Subscription shipping every 2 weeks from Nov 22, 2016 until Nov 21, 2017. Next billing on Dec 31, 2016.",
+            "details_sentence_": "Subscription shipping every {0} {1} from {2} until {3}. Next billing on {4}.",
+            "details_sentence": "Subscription shipping every {0} {1} from {2}. Next billing on {3}.",
+            "details_sentence1": "Subscription shipping every 20 days from Nov 22, 2021. Next billing on Dec 31, 2021.",
+            "details_sentence2": "Subscription shipping every 2 weeks from Nov 22, 2021 until Nov 21, 2017. Next billing on Dec 31, 2021.",
             "shipping_address": "Shipping Address",
             "discount": "Discount",
             "shipping": "Shipping",

@@ -1,4 +1,4 @@
-﻿<div class="col-md-8">
+<div class="col-md-8">
     <ng-outlet></ng-outlet>
 </div>
 
@@ -54,7 +54,7 @@
                         {% capture subscription_interval_count %}{% raw %}{{$ctrl.subscription.intervalCount}}{% endraw %}{% endcapture %}
                         {% capture subscription_interval %}{% raw %}{{$ctrl.subscription.interval}}{% endraw %}{% endcapture %}
                         {% capture subscription_next_billing %}{% raw %}{{$ctrl.subscription.currentPeriodEnd | date: "MMM d, y"}}{% endraw %}{% endcapture %}
-                        <strong>{{ 'customer.subscription.details-sentence' | t: subscription_interval_count,subscription_interval,subscription_created_date,subscription_next_billing }}</strong>
+                        <strong>{{ 'customer.subscription.details_sentence' | t: subscription_interval_count,subscription_interval,subscription_created_date,subscription_next_billing }}</strong>
                 </p>
 
                 <div ng-if="$ctrl.subscription.isCancelled" class="errors">

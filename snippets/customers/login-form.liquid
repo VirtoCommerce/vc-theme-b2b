@@ -5,14 +5,14 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">                
-                    <input class="form-control" ng-model="username" name="customer[user_name]" required vc-flying-placeholder="{{ 'customer.sign-in.user_name' | t }}"/>                    
+                    <input class="form-control" ng-model="username" name="customer[user_name]" required vc-flying-placeholder="{{ 'customer.sign_in.user_name' | t }}"/>                    
                     <span class="text-danger" ng-show="!customer_login['customer[user_name]'].$pristine && customer_login['customer[user_name]'].$error.required">{{ 'common.required' | t }}</span>
                 
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-group">               
-                    <input class="form-control" ng-model="password" type="password" name="customer[password]" required vc-flying-placeholder="{{ 'customer.sign-in.password' | t }}" />
+                    <input class="form-control" ng-model="password" type="password" name="customer[password]" required vc-flying-placeholder="{{ 'customer.sign_in.password' | t }}" />
                     <span class="text-danger" ng-show="!customer_login['customer[password]'].$pristine && customer_login['customer[password]'].$error.required">{{ 'common.required' | t }}</span>
                     
                 </div>                    
@@ -32,7 +32,7 @@
     {% else %}
             <div class="form-group">
     {% endif %}  
-                 <input type="submit" class="btn btn-primary btn-block" value="{{ 'customer.sign-in.sign_in' | t }}">
+                 <input type="submit" class="btn btn-primary btn-block" value="{{ 'customer.sign_in.sign_in' | t }}">
         {% if template != 'customers/login' %}
             </div>
         {% endif %}
