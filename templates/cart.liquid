@@ -292,7 +292,7 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <div class="center-block text-center"><p>{{ 'checkout.order-summary' | t }}</p></div>
+                                            <div class="center-block text-center"><p>{{ 'checkout.order_summary' | t }}</p></div>
                                             <vc-totals order="checkout.order"></vc-totals>
                                         </div>
                                         <div class="col-md-4" ng-if="checkout.deliveryMethod.type == 'shipping'">
@@ -300,11 +300,11 @@
                                             <vc-address address="checkout.order.shipments[0].deliveryAddress"></vc-address>
                                         </div>
                                         <div class="col-md-4" ng-if="checkout.deliveryMethod.type == 'pickup'">
-                                            <div class="center-block text-center"><p>{{ 'checkout.pickup-address' | t }}</p></div>
+                                            <div class="center-block text-center"><p>{{ 'checkout.pickup_address' | t }}</p></div>
                                             <vc-address address="checkout.deliveryMethod.fulfillmentCenter.address"></vc-address>
                                         </div>
                                         <div class="col-md-4">
-                                            <div class="center-block text-center">{{ 'checkout.payment-method' | t }}</div>
+                                            <div class="center-block text-center">{{ 'checkout.payment_method' | t }}</div>
                                             <address>
                                                 <div class="col-xs-2 col-md-1">
                                                     <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ checkout.payment.logoUrl }}{% endraw %}" />
@@ -328,7 +328,7 @@
                                 <div class="panel-heading">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <p>{{ 'checkout.purchased-products' | t }}</p>
+                                            <p>{{ 'checkout.purchased_products' | t }}</p>
                                         </div>
                                     </div>
                                 </div>

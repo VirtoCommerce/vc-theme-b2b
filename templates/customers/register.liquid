@@ -11,8 +11,8 @@
                     <vc-errors message="errorMessage" errors="errors"></vc-errors>
                     <wizard on-finish="finishedWizard()" indicators-position="top">
                         <form name="step1Form" novalidate ng-class="{'ng-submitted': step1Form.$submitted}">
-                            <wz-step wz-title="{{ 'customer.register.step-personal' | t }}" canexit="step1Form.$valid">
-                                <h1>{{ 'customer.register.step-personal' | t }}</h1>
+                            <wz-step wz-title="{{ 'customer.register.step_personal' | t }}" canexit="step1Form.$valid">
+                                <h1>{{ 'customer.register.step_personal' | t }}</h1>
                                 <div class="form-group">
                                     <label class="radio-inline">
                                         <input ng-model="registration.type" value="Business" type="radio" ng-click="switchTemplate(registration.type)">
@@ -30,16 +30,16 @@
                             </wz-step>
                         </form>
                         <form name="step2Form" novalidate ng-class="{'ng-submitted': step2Form.$submitted}">
-                            <wz-step wz-title="{{ 'customer.register.step-address' | t }}" canexit="step2Form.$valid">
-                                <h1>{{ 'customer.register.step-address' | t }}</h1>
+                            <wz-step wz-title="{{ 'customer.register.step_address' | t }}" canexit="step2Form.$valid">
+                                <h1>{{ 'customer.register.step_address' | t }}</h1>
                                 <div class="form-group" ng-include="step2TemplateUrl"></div>
                                 <input type="submit" class="btn btn-primary pull-right" wz-next ng-click="step2Form.$submitted = true" value="Continue" />
                                 <input type="submit" class="btn btn-alt" wz-previous value="Back" />
                             </wz-step>
                         </form>
                         <form name="step3Form" novalidate ng-class="{'ng-submitted': step3Form.$submitted}">
-                            <wz-step wz-title="{{ 'customer.register.step-account' | t }}" canexit="step3Form.$valid">
-                                <h1>{{ 'customer.register.step-account' | t }}</h1>
+                            <wz-step wz-title="{{ 'customer.register.step_account' | t }}" canexit="step3Form.$valid">
+                                <h1>{{ 'customer.register.step_account' | t }}</h1>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -87,7 +87,7 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-6">
-                <input ng-model="registration.email" class="form-control" name="email" type="email" required placeholder="{{ 'customer.register.email-work' | t }}" />
+                <input ng-model="registration.email" class="form-control" name="email" type="email" required placeholder="{{ 'customer.register.email_work' | t }}" />
                 <span class="text-danger" ng-show="step1Form.$submitted && step1Form.email.$error.required">{{ 'common.required' | t }}</span>
                 <span class="text-danger" ng-show="step1Form.$submitted && step1Form.email.$error.email">{{ 'common.invalid' | t }}</span>
             </div>
@@ -103,7 +103,7 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-12">
-                <input class="form-control" ng-model="registration.accountNo" name="account_no" placeholder="{{ 'customer.register.account-number' | t }}" />
+                <input class="form-control" ng-model="registration.accountNo" name="account_no" placeholder="{{ 'customer.register.account_number' | t }}" />
             </div>
         </div>
     </div>
@@ -131,7 +131,7 @@
             </div>
             <div class="col-md-6" ng-if="registration.address.country.regions.length">
                 <div class="form-group form-select">
-                    <label for="#" class="form-label" ng-bind="'{{ 'customer.register.work-region' | t }}' + registration.address.country.regionType"></label>
+                    <label for="#" class="form-label" ng-bind="'{{ 'customer.register.work_region' | t }}' + registration.address.country.regionType"></label>
                     <select ng-model="registration.address.regionId" ng-options="x.code as x.name for x in registration.address.country.regions" name="region" required class="form-control" size="1">
                         <option value="" ng-bind="'Select ' + registration.address.country.regionType"></option>
                     </select>
@@ -199,7 +199,7 @@
     <div class="form-group">
         <div class="row">
             <div class="col-md-12">
-                <input class="form-control" ng-model="registration.accountNo" name="account_no" placeholder="{{ 'customer.register.account-number' | t }}" />
+                <input class="form-control" ng-model="registration.accountNo" name="account_no" placeholder="{{ 'customer.register.account_number' | t }}" />
             </div>
         </div>
     </div>
@@ -219,7 +219,7 @@
             </div>
             <div class="col-md-6" ng-if="registration.address.country.regions.length">
                 <div class="form-group form-select">
-                    <label for="#" class="form-label" ng-bind="'{{ 'customer.register.work-region' | t }}' + registration.address.country.regionType"></label>
+                    <label for="#" class="form-label" ng-bind="'{{ 'customer.register.work_region' | t }}' + registration.address.country.regionType"></label>
                     <select ng-model="registration.address.regionId" ng-options="x.code as x.name for x in registration.address.country.regions" name="region" required class="form-control" size="1">
                         <option value="" ng-bind="'Select ' + registration.address.country.regionType"></option>
                     </select>
