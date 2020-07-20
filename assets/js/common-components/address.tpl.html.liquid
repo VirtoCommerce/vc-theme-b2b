@@ -41,7 +41,7 @@
                 </div>
                 <div class="col-md-6" ng-if="$ctrl.address.country.regions.length">
                     <div class="form-group form-select">
-                        <label for="#" class="form-label" ng-bind="'{{ 'customer.register.work-region' | t }}' + $ctrl.address.country.regionType"></label>
+                        <label for="#" class="form-label" ng-bind="'{{ 'customer.register.work_region' | t }}' + $ctrl.address.country.regionType"></label>
                         <select ng-model="$ctrl.address.regionId" ng-options="x.code as x.name for x in $ctrl.address.country.regions" name="region" required class="form-control" size="1">
                             <option value="" ng-bind="'Select ' + $ctrl.address.country.regionType"></option>
                         </select>
@@ -66,7 +66,7 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-md-6">
-                    <input ng-model="$ctrl.address.email" class="form-control" name="email" type="email" required placeholder="{{ 'customer.register.email-work' | t }}" />
+                    <input ng-model="$ctrl.address.email" class="form-control" name="email" type="email" required placeholder="{{ 'customer.register.email_work' | t }}" />
                     <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.email.$error.required">{{ 'common.required' | t }}</span>
                     <span class="text-danger" ng-show="$ctrl.form.$submitted && $ctrl.form.email.$error.email">{{ 'common.invalid' | t }}</span>
                 </div>

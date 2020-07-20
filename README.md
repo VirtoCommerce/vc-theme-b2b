@@ -2,7 +2,7 @@
 
 _B2B theme_ for VirtoCommerce Storefront used by _B2B-Store_ sample store. It is a showcase for b2b features support of VirtoCommerce.
 
-![B2B theme UI](https://user-images.githubusercontent.com/6369252/29848754-2b16fa0c-8d3c-11e7-8839-2e335e518838.png)
+![B2B theme UI](https://user-images.githubusercontent.com/7566324/39862095-02bf14a8-5443-11e8-86eb-fffd6a7412e1.png)
 
 *Main article: [theme development on virtocommerce.com/docs](https://virtocommerce.com/docs/vc2devguide/working-with-storefront/theme-development)*
 
@@ -40,13 +40,7 @@ _B2B theme_ for VirtoCommerce Storefront used by _B2B-Store_ sample store. It is
 
 ### Storefront
 
-You need to have local installation of storefront. Follow [this article](https://virtocommerce.com/docs/vc2devguide/deployment/storefront-deployment) step-by-step to install storefront from binaries or source code.
-
-Add app setting **VirtoCommerce:B2B:ApiEndpoint** and set its value to URL of B2B module API endpoint (usually the same url as for admin site) with slash as last symbol.
-
-### Platform
-
-[B2B Extensions module](https://github.com/VirtoCommerce/vc-module-b2b-extensions) must be installed.
+You need to have local installation of storefront. Follow [this article](https://github.com/VirtoCommerce/vc-storefront-core/blob/master/README.md) step-by-step to install storefront from binaries or source code.
 
 ### Visual Studio 2015.3 and above (up to Visual Studio 2017.3 at least)
 
@@ -177,7 +171,7 @@ Storefront theme localization is very similar to [VirtoCommerce Platform localiz
 
 
 # License
-Copyright (c) Virtosoftware Ltd.  All rights reserved.
+Copyright (c) Virto Solutions LTD.  All rights reserved.
 
 Licensed under the Virto Commerce Open Software License (the "License"); you
 may not use this file except in compliance with the License. You may

@@ -94,7 +94,7 @@
                     <div class="vc-t">{{ 'customer.subscription.orders' | t }}</div>
                     <div class="vc-descr" ng-repeat="order in $ctrl.subscription.customerOrders">
                         <a ng-link="['/Orders/OrderDetail', {number: order.number}]">
-                            {% raw %}{{ 'customer.subscription.order-sentence' | translate: {order:order} }}{% endraw %}
+                            {% raw %}{{ 'customer.subscription.order_sentence' | translate: {order:order} }}{% endraw %}
                         </a>
                     </div>
                 </div>
