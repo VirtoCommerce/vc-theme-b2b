@@ -284,7 +284,7 @@
                                         <div class="col-md-9"><p><span><i class="fa fa-check-circle fa-2x text-middle success" aria-hidden="true"></i></span> Order<span ng-bind="checkout.order.number"></span> {{ 'checkout.order_successfully' | t: number: number }}</p></div>
                                         <div class="col-md-3">
                                             <div class="btn-group pull-right" role="group">
-                                                <button type="button" class="btn btn-default" ng-click="getInvoicePdf()"><p> {{ 'checkout.order-print' | t }}</p></button>
+                                                <button type="button" class="btn btn-default" ng-click="getInvoicePdf()"><p> {{ 'checkout.order_print' | t }}</p></button>
                                             </div>
                                         </div>
                                     </div>
@@ -304,7 +304,7 @@
                                             <vc-address address="checkout.deliveryMethod.fulfillmentCenter.address"></vc-address>
                                         </div>
                                         <div class="col-md-4">
-                                            <div class="center-block text-center">{{ 'checkout.payment_method' | t }}</div>
+                                            <div class="center-block text-center">{{ 'checkout.payment_method.title' | t }}</div>
                                             <address>
                                                 <div class="col-xs-2 col-md-1">
                                                     <img class="img-responsive" fallback-src="{{ 'no-image.svg' | asset_url }}" ng-src="{% raw %}{{ checkout.payment.logoUrl }}{% endraw %}" />
