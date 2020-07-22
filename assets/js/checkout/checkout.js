@@ -90,6 +90,12 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 });
             };
 
+            $scope.clearCart = function () {
+                return wrapLoading(function () {
+                    return cartService.clearCart().then($scope.reloadCart);
+                });
+            };
+
             $scope.changeItemQty = function (lineItem) {
                 return wrapLoading(function () {
                     return cartService.changeLineItemsQuantity({ lineItemId: lineItem.id, Quantity: lineItem.quantity }).then($scope.reloadCart);
