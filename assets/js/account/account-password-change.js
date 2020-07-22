@@ -28,7 +28,7 @@ angular.module('storefront.account')
 
             if (!hasError) {
                 loader.wrapLoading(function () {
-                    accountApi.changeUserPassword(ctrl.passwordChangeData).then(function (result) {
+                    return accountApi.changeUserPassword(ctrl.passwordChangeData).then(function (result) {
                         angular.extend(ctrl, result);
                         ctrl.passwordChangeData = {};
                         ctrl.form.$setPristine();
