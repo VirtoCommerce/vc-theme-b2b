@@ -1,4 +1,4 @@
-﻿var storefrontApp = angular.module('storefrontApp');
+var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.service('dialogService', ['$uibModal', function ($uibModal) {
     return {
@@ -80,8 +80,11 @@ storefrontApp.service('cartService', ['$http', function ($http) {
         changeLineItemQuantity: function (lineItemId, quantity) {
             return $http.put('storefrontapi/cart/items', { lineItemId: lineItemId, quantity: quantity });
         },
-        changeLineItemsQuantity: function(items) {
-            return $http.put('storefrontapi/cart/items', items);
+        changeLineItemsQuantity: function(item) {
+            return $http.put('storefrontapi/cart/items', item);
+        },
+        changeLineItemsQuantityBulk: function (items) {
+            return $http.put('storefrontapi/cart/items/bulk', items);
         },
         removeLineItem: function (lineItemId) {
             return $http.delete('storefrontapi/cart/items?lineItemId=' + lineItemId);
