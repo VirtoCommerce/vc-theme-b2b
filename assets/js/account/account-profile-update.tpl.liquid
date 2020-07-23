@@ -3,10 +3,10 @@
         <h3>{{ 'customer.edit_profile.title' | t }}</h3>
     </div>
     <vc-errors message="errorMessage" errors="errors"></vc-errors>
-    <form ng-submit="$ctrl.submit()" name="detailForm" novalidate>
+    <form ng-submit="$ctrl.submit()" name="detailForm">
         <div class="form-group">
-            <vc-labeled-input value="$ctrl.member.firstName" name="first_name" placeholder="{{ 'customer.edit_profile.first_name' | t }}" form="detailForm"></vc-labeled-input>
-            <vc-labeled-input value="$ctrl.member.lastName" name="last_name" placeholder="{{ 'customer.edit_profile.last_name' | t }}" form="detailForm"></vc-labeled-input>
+            <vc-labeled-input value="$ctrl.member.firstName" name="first_name" placeholder="{{ 'customer.edit_profile.first_name' | t }}" form="detailForm" required="true"></vc-labeled-input>
+            <vc-labeled-input value="$ctrl.member.lastName" name="last_name" placeholder="{{ 'customer.edit_profile.last_name' | t }}" form="detailForm" required="true"></vc-labeled-input>
             <vc-labeled-input value="$ctrl.member.title" name="title" type="text" placeholder="{{ 'customer.register.job_title' | t }}" form="detailForm"></vc-labeled-input>
             <vc-labeled-input value="$ctrl.member.email" name="email" placeholder="{{ 'customer.edit_profile.email' | t }}" form="detailForm" required="true" type="email"></vc-labeled-input>
 
