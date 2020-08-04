@@ -24,7 +24,7 @@
                 <button class="btn" >
                     <span ng-click="close()">{{ 'wishlist.general.cancel' | t }}</span>
                 </button>
-                <button class="btn" >
+                <button class="btn" ng-disabled="isSelected()">
                     <span ng-click="submitSettings()">{{ 'Submit' | t }}</span>
                 </button>
             </div>
