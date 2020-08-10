@@ -21,8 +21,8 @@ storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope',
         $scope.selectedList.items = items;
     };
 
-    $scope.isSelected = function () {
-        return _.find(dialogData.lists,  function (item) { return  item.delete; }) == undefined;
+    $scope.isAnySelected = function () {
+        return _.find(dialogData.lists,  function (item) { return  item.delete; }) != undefined;
     } 
 
     $scope.submitSettings = function () {
