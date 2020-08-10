@@ -21,6 +21,10 @@ storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope',
         $scope.selectedList.items = items;
     };
 
+    $scope.isAnySelected = function () {
+        return _.find(dialogData.lists,  function (item) { return  item.delete; }) != undefined;
+    } 
+
     $scope.submitSettings = function () {
         var showDialog = function (text) {
             confirmService.confirm(text).then(function (confirmed) {
@@ -31,9 +35,11 @@ storefrontApp.controller('recentlyCreateNewListDialogController', ['$rootScope',
                             listIds.push(list.id);
                     });
 
-                    listsApi.deleteListsByIds(listIds).then(function (result) {
-                        $uibModalInstance.close();
-                    });
+                    if(listIds.length > 0){
+                        listsApi.deleteListsByIds(listIds).then(function (result) {
+                            $uibModalInstance.close();
+                        });
+                    }
                 }
             });
         };
