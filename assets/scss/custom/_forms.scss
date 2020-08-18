@@ -30,7 +30,7 @@
   .has-warning & {
     box-shadow: 0 0 0 1px $state-warning-text inset;
   }
-    
+
   .has-error & {
     box-shadow: 0 0 0 1px $state-danger-text inset;
   }
@@ -51,4 +51,10 @@ select:-webkit-autofill {
     -webkit-text-fill-color: $input-color;
     -webkit-box-shadow: 0 0 0px 1000px $input-bg inset;
   }
+}
+
+form label.required:after
+{
+    color: #f0ad4e;
+    content: "*";
 }
