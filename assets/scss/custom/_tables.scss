@@ -19,3 +19,28 @@
     }
   }
 }
+
+.table > tbody > tr,
+.table > tfoot > tr {
+  line-height: 54px;
+  min-height: 54px;
+  height: 54px;
+}
+
+.table > thead > tr {
+  height: 37px;
+}
+
+.table > tbody > tr > td,
+.table > tbody > tr > th,
+.table > tfoot > tr > td,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > thead > tr > th {
+  border: none;
+  vertical-align: middle;
+}
+
+.table > thead > tr > th {
+  border-bottom: 1px solid $gray-lighter;
+}
