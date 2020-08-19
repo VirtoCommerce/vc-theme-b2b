@@ -1,25 +1,97 @@
 <form accept-charset="UTF8" name="memberDetailForm" novalidate="novalidate">
     <div class="form-group" ng-init="$ctrl.setForm(memberDetailForm)">
 
-        <vc-labeled-input value="$ctrl.member.companyName" name="CompanyName" type="text" placeholder="{{ 'customer.register.company_name' | t }}" form="$ctrl.form" required="$ctrl.requiredField('CompanyName')" ng-show="$ctrl.showField('CompanyName')" disabled="$ctrl.disableField('CompanyName')"></vc-labeled-input>
-
-        <vc-labeled-input value="$ctrl.member.email" name="Email" type="email" placeholder="{{ 'customer.register.email' | t }}" form="$ctrl.form" required="$ctrl.requiredField('Email')" ng-show="$ctrl.showField('Email')" disabled="$ctrl.disableField('Email')"></vc-labeled-input>
-
-        <vc-labeled-input value="$ctrl.member.firstName" name="FirstName" type="text" placeholder="{{ 'customer.register.first_name' | t }}" form="$ctrl.form" required="true"></vc-labeled-input>
-
-        <vc-labeled-input value="$ctrl.member.lastName" name="LastName" type="text" placeholder="{{ 'customer.register.last_name' | t }}" form="$ctrl.form"></vc-labeled-input>
-
-        <vc-labeled-input value="$ctrl.member.salutation" type="number"  name="Budget" placeholder="Available amount" form="$ctrl.form"></vc-labeled-input>
-
-        <vc-labeled-input value="$ctrl.member.userName" name="UserName" type="text" placeholder="{{ 'customer.register.user_name' | t }}" form="$ctrl.form" required="$ctrl.requiredField('UserName')" ng-show="$ctrl.showField('UserName')" disabled="$ctrl.disableField('UserName')"></vc-labeled-input>
-
-        <vc-labeled-input value="$ctrl.member.password" name="Password" type="password" placeholder="{{ 'customer.register.password' | t }}" form="$ctrl.form" required="$ctrl.requiredField('Password')" ng-show="$ctrl.showField('Password')" disabled="$ctrl.disableField('Password')"></vc-labeled-input>
-
-       
-        <div class="form-select">
-            <select ng-model="$ctrl.member.role" ng-options="x as x.name for x in $ctrl.availableRoles" name="Roles" required="required" class="form-input" size="1">
-                <option value="">Please select role</option>
-            </select>
+        <div class="form-group" ng-show="$ctrl.showField('CompanyName')">
+            <div class="row">
+                <div class="col-md-8">
+                    <div ng-class="{'has-error': (memberDetailForm.CompanyName.$dirty || memberDetailForm.$submitted) && memberDetailForm.CompanyName.$invalid }">
+                        <label for="CompanyName" class="form-label" ng-class="{'required': $ctrl.requiredField('CompanyName') }">{{ 'customer.register.company_name' | t }}</label>
+                        <input ng-model="$ctrl.member.companyName" name="CompanyName" type="text" placeholder="{{ 'customer.register.company_name' | t }}" class="form-control" ng-required="$ctrl.requiredField('CompanyName')" ng-disabled="$ctrl.disableField('CompanyName')"></input>
+                        <span class="help-block text-danger" ng-if="(memberDetailForm.CompanyName.$dirty || memberDetailForm.$submitted) && memberDetailForm.CompanyName.$error.required" ng-bind="'{{ 'common.required' | t }}'"></span>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-8">
+                    <div ng-class="{'has-error': (memberDetailForm.first_name.$dirty || memberDetailForm.$submitted) && memberDetailForm.first_name.$invalid }">
+                        <label for="first_name" class="form-label required">{{ 'customer.edit_profile.first_name' | t }}</label>
+                        <input ng-model="$ctrl.member.firstName" name="first_name" type="text" placeholder="{{ 'customer.edit_profile.first_name' | t }}" class="form-control" required></input>
+                        <span class="help-block text-danger" ng-if="(memberDetailForm.first_name.$dirty || memberDetailForm.$submitted) && memberDetailForm.first_name.$error.required" ng-bind="'{{ 'common.required' | t }}'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-8">
+                    <div ng-class="{'has-error': (memberDetailForm.last_name.$dirty || memberDetailForm.$submitted) && memberDetailForm.last_name.$invalid }">
+                        <label for="last_name" class="form-label required">{{ 'customer.edit_profile.last_name' | t }}</label>
+                        <input ng-model="$ctrl.member.lastName" name="last_name" placeholder="{{ 'customer.edit_profile.last_name' | t }}" class="form-control" required></input>
+                        <span class="help-block text-danger" ng-if="(memberDetailForm.last_name.$dirty || memberDetailForm.$submitted) && memberDetailForm.last_name.$error.required" ng-bind="'{{ 'common.required' | t }}'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-8">
+                    <div>
+                        <label for="title" class="form-label">{{ 'customer.register.job_title' | t }}</label>
+                        <input ng-model="$ctrl.member.title" type="text" name="title" placeholder="{{ 'customer.register.job_title_placeholder' | t }}" class="form-control"></input>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-show="$ctrl.showField('Email')">
+            <div class="row">
+                <div class="col-md-8">
+                    <div ng-class="{'has-error': (memberDetailForm.Email.$dirty || memberDetailForm.$submitted) && memberDetailForm.Email.$invalid }">
+                        <label for="Email" class="form-label" ng-class="{'required': $ctrl.requiredField('Email') }">{{ 'customer.edit_profile.email' | t }}</label>
+                        <input ng-model="$ctrl.member.email" name="Email" type="email" placeholder="{{ 'customer.edit_profile.email' | t }}" class="form-control" ng-required="$ctrl.requiredField('Email')" ng-disabled="$ctrl.disableField('Email')"></input>
+                        <span class="help-block text-danger" ng-if="(memberDetailForm.Email.$dirty || memberDetailForm.$submitted) && memberDetailForm.Email.$error.required" ng-bind="'{{ 'common.required' | t }}'"></span>
+                        <span class="help-block text-danger" ng-if="(memberDetailForm.Email.$dirty || memberDetailForm.$submitted) && !memberDetailForm.Email.$error.required && memberDetailForm.Email.$invalid">{{ 'common.invalid' | t }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-show="$ctrl.showField('UserName')">
+            <div class="row">
+                <div class="col-md-8">
+                    <div ng-class="{'has-error': (memberDetailForm.UserName.$dirty || memberDetailForm.$submitted) && memberDetailForm.UserName.$invalid }">
+                        <label for="UserName" class="form-label" ng-class="{'required': $ctrl.requiredField('UserName') }">{{ 'customer.register.user_name' | t }}</label>
+                        <input ng-model="$ctrl.member.userName" type="text" name="UserName" placeholder="{{ 'customer.register.user_name' | t }}" class="form-control" ng-required="$ctrl.requiredField('UserName')" ng-disabled="$ctrl.disableField('UserName')"></input>
+                        <span class="help-block text-danger" ng-if="(memberDetailForm.UserName.$dirty || memberDetailForm.$submitted) && memberDetailForm.UserName.$error.required" ng-bind="'{{ 'common.required' | t }}'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-show="$ctrl.showField('Password')">
+            <div class="row">
+                <div class="col-md-8">
+                    <div ng-class="{'has-error': (memberDetailForm.Password.$dirty || memberDetailForm.$submitted) && memberDetailForm.Password.$invalid }">
+                        <label for="Password" class="form-label" ng-class="{'required': $ctrl.requiredField('Password') }">{{ 'customer.register.password' | t }}</label>
+                        <input ng-model="$ctrl.member.password" type="password" name="Password" placeholder="{{ 'customer.register.password' | t }}" class="form-control" ng-required="$ctrl.requiredField('Password')" ng-disabled="$ctrl.disableField('Password')"></input>
+                        <span class="help-block text-danger" ng-if="(memberDetailForm.Password.$dirty || memberDetailForm.$submitted) && memberDetailForm.Password.$error.required" ng-bind="'{{ 'common.required' | t }}'"></span>
+                        <span class="help-block text-danger" ng-if="(memberDetailForm.Password.$dirty || memberDetailForm.$submitted) && !memberDetailForm.Password.$error.required && memberDetailForm.Password.$invalid">{{ 'common.invalid' | t }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-4">
+                    <div>
+                        <label for="Roles" class="form-label required">{{ 'customer.edit_profile.role' | t }}</label>
+                        <select ng-model="$ctrl.member.role" ng-options="x as x.name for x in $ctrl.availableRoles" name="Roles" required class="form-control" size="1">
+                            <option value="">Please select role</option>
+                        </select>
+                        <span class="help-block text-danger" ng-if="(memberDetailForm.Roles.$dirty || memberDetailForm.$submitted) && memberDetailForm.Roles.$error.required" ng-bind="'{{ 'common.required' | t }}'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </form>

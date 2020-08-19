@@ -21,6 +21,13 @@ h4, .h4 {
   }
 }
 
+h1, .h1,
+h2, .h2,
+h3, .h3 {
+  margin-bottom: 15px;
+}
+
+
 @include text-emphasis-variant('.text-contrast', $text-contrast);
 
 .text-serif {
