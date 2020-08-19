@@ -55,6 +55,6 @@ select:-webkit-autofill {
 
 form label.required:after
 {
-    color: #f0ad4e;
+    color: $brand-primary;
     content: "*";
 }
