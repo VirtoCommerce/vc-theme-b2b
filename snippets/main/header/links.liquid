@@ -2,9 +2,9 @@
     <div class="container">
         <div class="row flexible">
             <div class="navbar-header col-md-6" itemscope itemtype="http://schema.org/Organization">
-                <div>{% include 'main/header/links/brand' %}</div>
+                {% include 'main/header/links/brand' %}
                 {% if current_user.contact.organization.name %}
-                <div class="navbar-user-organization">{{current_user.contact.organization.name}}</div>
+                <div class="navbar-text text-uppercase navbar-user-organization">{{current_user.contact.organization.name}}</div>
                 {% endif %}
             </div>
             <div class="col-md-6">
