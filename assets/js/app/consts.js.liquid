@@ -5,6 +5,8 @@ angular.module('storefrontApp.consts', [])
 .constant('availableRoles', {{ available_roles | json }})
 .constant('b2bRoles', {{ business_to_business_roles | json }})
 .constant('availablePaymentPlans', {{ settings.available_paymentPlans | json }})
+.constant('sortAscending', 'asc')
+.constant('sortDescending', 'desc')
 .constant('itemResponseGroup', {
     None: 0,
     ItemInfo: 1,

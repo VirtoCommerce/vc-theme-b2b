@@ -6,27 +6,63 @@ angular.module('storefront.account')
             { path: '/:number', name: 'OrderDetail', component: 'vcAccountOrderDetail' }
         ],
         controller: [function () {
-            var $ctrl = this;           
+            var $ctrl = this;
         }]
     })
     .component('vcAccountOrdersList', {
         templateUrl: "account-orders-list.tpl",
-        controller: ['accountApi', 'loadingIndicatorService', function (accountApi, loader) {
+        controller: ['accountApi', 'loadingIndicatorService', '$window', 'sortAscending', 'sortDescending', function (accountApi, loader, $window, sortAscending, sortDescending ) {
             var $ctrl = this;
+            $ctrl.sortDescending = sortDescending;
+            $ctrl.sortAscending = sortAscending;
             $ctrl.loader = loader;
             $ctrl.pageSettings = { currentPage: 1, itemsPerPageCount: 10, numPages: 10 };
             $ctrl.pageSettings.pageChanged = function () {
+                loadData();
+            };
+
+            $ctrl.getInvoicePdf = function (orderNumber) {
+                var url = $window.BASE_URL + 'storefrontapi/orders/' + orderNumber + '/invoice';
+                $window.open(url, '_blank');
+            }
+
+            $ctrl.getPurchaseOrder = function (order) {
+                return order.dynamicProperties.find(x => x.name === 'Purchase order')?.values[0].value;
+            }
+
+            $ctrl.sortInfos = {
+                sortBy: 'number',
+                sortDirection: sortDescending
+            }
+
+            $ctrl.sortChanged = function (sortBy) {
+                $ctrl.sortInfos.sortDirection = ($ctrl.sortInfos.sortBy === sortBy) ?
+                invertSortDirection($ctrl.sortInfos.sortDirection)
+                : sortAscending;
+                $ctrl.sortInfos.sortBy = sortBy;
+                loadData();
+            }
+
+            $ctrl.getSortDirection = function (fieldName) {
+                return $ctrl.sortInfos.sortBy === fieldName ? $ctrl.sortInfos.sortDirection : '';
+            }
+
+            function loadData() {
                 return loader.wrapLoading(function () {
                     return accountApi.searchUserOrders({
                         pageNumber: $ctrl.pageSettings.currentPage,
                         pageSize: $ctrl.pageSettings.itemsPerPageCount,
-                        sortInfos: $ctrl.sortInfos
+                        sort: `${$ctrl.sortInfos.sortBy}:${$ctrl.sortInfos.sortDirection}`
                     }).then(function (response) {
                         $ctrl.entries = response.data.results;
                         $ctrl.pageSettings.totalItems = response.data.totalCount;
                     });
                 });
-            };
+            }
+
+            function invertSortDirection(sortDirection) {
+                return sortDirection == sortAscending ? sortDescending : sortAscending;
+            }
 
             this.$routerOnActivate = function (next) {
                 $ctrl.pageSettings.currentPage = next.params.pageNumber || $ctrl.pageSettings.currentPage;
@@ -54,7 +90,7 @@ angular.module('storefront.account')
                         var lastPayment = _.last(_.sortBy(order.inPayments, 'createdDate'));
                         $ctrl.billingAddress = (lastPayment && lastPayment.billingAddress) ||
                             _.findWhere(order.addresses, { type: 'billing' }) ||
-                            _.first(order.addresses);                     
+                            _.first(order.addresses);
 
                         accountApi.getUserOrderNewPaymentData(order.number).then(function (response) {
                             _.each($ctrl.order.inPayments, function (x) {
@@ -72,7 +108,7 @@ angular.module('storefront.account')
                             if ($ctrl.deliveryMethod.fulfillmentCenter) {
                                 $ctrl.deliveryMethod.type ='pickup';
                             }
-                        });                        
+                        });
                     });
                 });
             }
@@ -107,7 +143,7 @@ angular.module('storefront.account')
             if (!order)
                 return false;
 
-            var retVal = order.status || 'New';        
+            var retVal = order.status || 'New';
 
             return retVal;
         };
