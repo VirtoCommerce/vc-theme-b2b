@@ -1,8 +1,14 @@
 ﻿.navbar {
   margin-bottom: 0;
 
-  .row .navbar-brand {
+  .navbar-brand {
     height: 100%;
+  }
+
+  .navbar-user-organization {
+    border-left: 2px solid #f3b00a;
+    padding-left: 23px;
+    margin-left: 8px;
   }
 
   .row + .row {
@@ -12,6 +18,12 @@
       margin-top: 0;
     }
   }
+}
+
+.navbar-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 $navbars-count: 3;
@@ -218,7 +230,7 @@ $navbars-count: 3;
         color: $navbar-inverse-light-link-disabled-color;
       }
     }
-  }  
+  }
 }
 
 .navbar-default,

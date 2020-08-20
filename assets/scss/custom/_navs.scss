@@ -14,5 +14,18 @@
   > li > a {
     color: $text-color;
     font-weight: normal;
+    border-left: 3px $body-bg solid;
   }
+}
+
+.nav-stacked > li > a:focus, .nav-stacked > li > a:hover {
+  background-color: $body-bg;
+  border-left: 3px $brand-primary solid;
+}
+
+.nav-stacked > li.active >a, .nav-stacked > li.active > a:focus, .nav-stacked > li.active > a:hover {
+  background-color: $gray-lighter;
+  border-left: 3px $brand-primary solid;
+  color: $text-color;
+  font-weight: bold;
 }

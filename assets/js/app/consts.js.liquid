@@ -3,6 +3,7 @@ angular.module('storefrontApp.consts', [])
 .constant('apiBaseUrl', '{{ application_settings['VirtoCommerce:B2B:ApiEndpoint'] }}')
 .constant('reCaptchaKey', '{{ application_settings['VirtoCommerce:B2B:reCaptcha:public'] }}')
 .constant('availableRoles', {{ available_roles | json }})
+.constant('b2bRoles', {{ business_to_business_roles | json }})
 .constant('availablePaymentPlans', {{ settings.available_paymentPlans | json }})
 .constant('itemResponseGroup', {
     None: 0,
