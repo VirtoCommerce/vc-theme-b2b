@@ -194,7 +194,7 @@ export const compress = series(min, function() {
             src([
                 './*/**', ...bundleConfig.map(function(bundle) {
                     return bundle.inputFiles.map(function(inputFile) { return '!' + inputFile; });
-                }).flat()
+                }).reduce((acc, val) => acc.concat(val), [])
             ])
             .pipe(gitignore()),
             // Need to add them manually because otherwise all bundles will be skipped as they are in .gitignore
