@@ -25,12 +25,9 @@ _B2B theme_ for VirtoCommerce Storefront used by _B2B-Store_ sample store. It is
     ```
     (where **C:\vc-platform\VirtoCommerce.Platform.Web\App_Data\cms-content** is path to CMS content storage configured at platform & storefront deployment steps, **'B2B-Store'** is your store name and **'C:\vc-theme-b2b'** is path to your theme repo).
 4. Open theme folder in your IDE
-    1. In Visual Studio (including 2017) go to  **File** → **Open** → **Website**
-    2. In Visual Studio Code, go to **File** → **Open** → **Folder**
-    3. Select **C:\vc-theme-b2b** (where **C:\vc-theme-b2b** is path to folder where you want to clone repo) and open it.
-5. Install Node.js dependencies.
-    1. In Visual Studio all dependencies will be installed automatically. Just wait a few minutes.
-    2. In Visual Studio Code and other editors, you need to run
+    1. Go to **File** → **Open** → **Folder**
+    2. Select **C:\vc-theme-b2b** (where **C:\vc-theme-b2b** is path to folder where you want to clone repo) and open it.
+5. Install Node.js dependencies. Run
     ```
     npm install
     ```
@@ -42,36 +39,10 @@ _B2B theme_ for VirtoCommerce Storefront used by _B2B-Store_ sample store. It is
 
 You need to have local installation of storefront. Follow [this article](https://github.com/VirtoCommerce/vc-storefront-core/blob/master/README.md) step-by-step to install storefront from binaries or source code.
 
-### Visual Studio 2015.3 and above (up to Visual Studio 2017.3 at least)
+### Node.js
 
-If you have Visual Studio 2015 with Update 3 and above, you don't need install any prerequisites. Latest versions of Node.js and Gulp already included in your Visual Studio installation and supported in built-in Task Runner Explorer.
-
-### Visual Studio from 2015 up to 2015.2
-
-Task Runner Explorer, Node.js and Gulp already included in your Visual Studio installation. However, you need update your Node.js to at least 4.0.0.
-1. Update Node.js to v4.0.0 at least (we recommend [latest LTS version](https://nodejs.org/en/)). Use **C:\Program Files\nodejs** installation path (change **Program Files** to **Program Files (x86)** on 64-bit machine).
-2. Add Node.js installation path to External Web Tools or move **$(PATH)** to top: ![External Web Tools](https://user-images.githubusercontent.com/6369252/30007184-a14aefe6-9122-11e7-81e2-c1ba792991cf.png)
-
-### Visual Studio from 2013.3 up to 2013.5
-
-You need install:
-1. [Task Runner Explorer](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.TaskRunnerExplorer) Visual Studio extension
-2. Install Node.js v4.0.0 or above (we recommend [latest LTS version](https://nodejs.org/en/))
-3.
-    ```
-    npm install gulp -g
-    ```
-
-### Visual Studio Code and other editors
-
-1. Install Node.js v4.0.0 or above (we recommend [latest LTS version](https://nodejs.org/en/))
-2.
-    ```
-    npm install gulp -g
-    ```
-
-### Node.js starting from 8.0
-Execute the following command: `npm install --global --production windows-build-tools`
+1. Install Node.js v12.0.0 or above (we recommend [latest LTS version](https://nodejs.org/en/))
+2. Execute the following command: `npm install --global --production windows-build-tools`
 
 ## Liquid reference
 
@@ -112,37 +83,19 @@ When you run the **default** task to bundle & minify theme, the following happen
 
 ![Bundling and minification flowchart](https://user-images.githubusercontent.com/6369252/29952970-3b946cba-8ee6-11e7-8f15-55e4123c0da7.png "Bundling and minification flowchart")
 
-### IDE configuration
+### Commands
 
-#### Visual Studio (any version)
-
-Bundling & minification will work automatically when you save file and on build.
-
-#### Visual Studio Code
-
-Bundling & minification will work automatically on build. If you want to automatically bundle & minify files on save, please, install & configure [Blade Runnner](https://marketplace.visualstudio.com/items?itemName=yukidoi.blade-runner) Visual Studio Code extension.
-
-#### Other editors
+> **Attention:** while theme including **bundlesconfig.json** file, you *must not* use [Bundler & Minifier](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.BundlerMinifier) Visual Studio extension with theme. We're using gulp to bundle & minify files on theme, because it support a lot of possible customizations and has a plugins for css minification and correct source maps generation. Wrong source map generation and lack of css minification is a primary reason why we do not use Bundler & Minifier extension in Visual Studio.
 
 Run
 ```
-gulp watch
+npx gulp watch
 ```
 on command line if you want to bundle & minify files on save or run
 ```
-gulp default
+npx gulp default
 ```
 manually when you need to bundle & minify theme files.
-
-### Tips & tricks
-
-**Attention:** while theme including **bundlesconfig.json** file, you *must not* use [Bundler & Minifier](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.BundlerMinifier) Visual Studio extension with theme. We're using gulp to bundle & minify files on theme, because it support a lot of possible customizations and has a plugins for css minification and correct source maps generation. Wrong source map generation and lack of css minification is a primary reason why we do not use Bundler & Minifier extension in Visual Studio.
-
-**Tip:** if bundling & minification failed, you, probably, need to run gulp **watch** task manually after that. In Visual Studio, go to **Task Runner Explorer** and click **Run** on task **watch**. In Visual Studio Code go to **Command Palette (Ctrl+Shift+P)** and type
-```
-task watch
-```
-then press **Enter**.
 
 The following gulp tasks available to you: 
 1. **default**: default task. Bundles and minifies theme files.
