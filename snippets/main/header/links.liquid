@@ -1,10 +1,13 @@
 ﻿<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
     <div class="container">
         <div class="row flexible">
-            <div class="navbar-header col-md-4" itemscope itemtype="http://schema.org/Organization">
+            <div class="navbar-header col-md-6" itemscope itemtype="http://schema.org/Organization">
                 {% include 'main/header/links/brand' %}
+                {% if current_user.contact.organization.name %}
+                <div class="navbar-text text-uppercase navbar-user-organization">{{current_user.contact.organization.name}}</div>
+                {% endif %}
             </div>
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <div class="row">
                     <div class="navbar-text navbar-right small">
                         <ul class="list-inline">
