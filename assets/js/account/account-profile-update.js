@@ -4,12 +4,12 @@ angular.module('storefront.account')
     require: {
         accountManager: '^vcAccountManager'
     },
-    controller: ['$q', '$scope', 'storefrontApp.mainContext', 'accountApi', 'loadingIndicatorService', 'availableRoles', function ($q, $scope, mainContext, accountApi, loader, availableRoles) {
+    controller: ['$q', '$scope', 'storefrontApp.mainContext', 'accountApi', 'loadingIndicatorService', 'b2bRoles', function ($q, $scope, mainContext, accountApi, loader, b2bRoles) {
         var $ctrl = this;
         $ctrl.loader = loader;
-        $ctrl.availableRoles = availableRoles;
+        $ctrl.availableRoles = b2bRoles;
         $ctrl.member = mainContext.customer;
-  
+
         $scope.$watch(
             function () { return mainContext.customer; },
             function (customer) {
@@ -30,7 +30,7 @@ angular.module('storefront.account')
             return loader.wrapLoading(function () {
                 return accountApi.updateUser($ctrl.member).then(function (response) {
                     return mainContext.loadCustomer().then(function (customer) {
-                        $ctrl.member = customer;                      
+                        $ctrl.member = customer;
                     });
                 });
             });

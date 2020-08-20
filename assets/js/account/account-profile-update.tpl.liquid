@@ -1,19 +1,61 @@
 <div class="col-md-8">
-    <div class="page-header">
+    <div class="page-header border-none">
         <h3>{{ 'customer.edit_profile.title' | t }}</h3>
     </div>
     <vc-errors message="errorMessage" errors="errors"></vc-errors>
     <form ng-submit="$ctrl.submit()" name="detailForm">
         <div class="form-group">
-            <vc-labeled-input value="$ctrl.member.firstName" name="first_name" placeholder="{{ 'customer.edit_profile.first_name' | t }}" form="detailForm" required="true"></vc-labeled-input>
-            <vc-labeled-input value="$ctrl.member.lastName" name="last_name" placeholder="{{ 'customer.edit_profile.last_name' | t }}" form="detailForm" required="true"></vc-labeled-input>
-            <vc-labeled-input value="$ctrl.member.title" name="title" type="text" placeholder="{{ 'customer.register.job_title' | t }}" form="detailForm"></vc-labeled-input>
-            <vc-labeled-input value="$ctrl.member.email" name="email" placeholder="{{ 'customer.edit_profile.email' | t }}" form="detailForm" required="true" type="email"></vc-labeled-input>
+            <div class="row">
+                <div class="col-md-6">
+                    <div ng-class="{'has-error': (detailForm.first_name.$dirty || detailForm.$submitted) && detailForm.first_name.$invalid }">
+                        <label for="first_name" class="form-label required">{{ 'customer.edit_profile.first_name' | t }}</label>
+                        <input ng-model="$ctrl.member.firstName" name="first_name" placeholder="{{ 'customer.edit_profile.first_name' | t }}" class="form-control" required></input>
+                        <span class="help-block text-danger" ng-if="(detailForm.first_name.$dirty || detailForm.$submitted) && detailForm.first_name.$error.required" ng-bind="'{{ 'common.required' | t }}'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <div ng-class="{'has-error': (detailForm.last_name.$dirty || detailForm.$submitted) && detailForm.last_name.$invalid }">
+                        <label for="last_name" class="form-label required">{{ 'customer.edit_profile.last_name' | t }}</label>
+                        <input ng-model="$ctrl.member.lastName" name="last_name" placeholder="{{ 'customer.edit_profile.last_name' | t }}" class="form-control" required></input>
+                        <span class="help-block text-danger" ng-if="(detailForm.last_name.$dirty || detailForm.$submitted) && detailForm.last_name.$error.required" ng-bind="'{{ 'common.required' | t }}'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <div>
+                        <label for="title" class="form-label">{{ 'customer.register.job_title' | t }}</label>
+                        <input ng-model="$ctrl.member.title" type="text" name="title" placeholder="{{ 'customer.register.job_title_placeholder' | t }}" class="form-control"></input>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <div class="form-select">
-                <select va-permission="storefront:organization:edit"  ng-model="$ctrl.member.role" ng-options="x as x.name for x in $ctrl.availableRoles" name="Roles" required class="form-input" size="1">
-                    <option value="">Please select role</option>
-                </select>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <div>
+                        <label for="email" class="form-label">{{ 'customer.edit_profile.email' | t }}</label>
+                        <span ng-bind="$ctrl.member.email" name="email" class="show"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6">
+                    <div>
+                        <label for="role" class="form-label">{{ 'customer.edit_profile.role' | t }}</label>
+                        <span ng-bind="$ctrl.member.role.name" name="role" class="show"></span>
+                    </div>
+                </div>
             </div>
         </div>
 
