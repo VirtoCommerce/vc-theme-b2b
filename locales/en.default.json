@@ -662,8 +662,8 @@
             "delete_confirm": "Are you sure you wish to delete this member?"
         },
         "edit_company_member": {
-            "return_text": "Return to members list",
-            "title": "Member information",
+            "return_text": "Back",
+            "title": "Edit {0}'s profile",
             "first_name": "First name",
             "last_name": "Last name",
             "middle_name": "Middle name",

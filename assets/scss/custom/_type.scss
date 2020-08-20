@@ -26,6 +26,17 @@ h4, .h4 {
   }
 }
 
+h1, .h1,
+h2, .h2,
+h3, .h3 {
+  margin-bottom: 15px;
+}
+
+.border-top-light {
+  border-top: 1px solid $gray-lighter;
+}
+
+
 @include text-emphasis-variant('.text-contrast', $text-contrast);
 
 .text-serif {

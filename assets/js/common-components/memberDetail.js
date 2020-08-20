@@ -6,9 +6,9 @@ storefrontApp.component('vcMemberDetail', {
         memberComponent: '=',
         fieldsConfig: '<'
     },
-    controller: ['$scope', 'availableRoles', function ($scope, availableRoles) {
+    controller: ['$scope', 'b2bRoles', function ($scope, b2bRoles) {
         var $ctrl = this;
-        
+
         $ctrl.config = [
             {
                 field: 'CompanyName',
@@ -43,14 +43,14 @@ storefrontApp.component('vcMemberDetail', {
             angular.extend($ctrl.config, $ctrl.fieldsConfig);
 
 
-        $ctrl.availableRoles = availableRoles;
+        $ctrl.availableRoles = b2bRoles;
 
         $scope.$watch('$ctrl.member', function (member) {
             //Need to replace member.role to the same object from roles list for correct ui-select works
             if (member && member.roles) {
                 member.role = _.find($ctrl.availableRoles, function (x) { return x.id == member.roles[0].id });
             }
-        });     
+        });
 
         $ctrl.rolesComponent = null;
 
