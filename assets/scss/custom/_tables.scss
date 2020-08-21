@@ -44,3 +44,18 @@
 .table > thead > tr > th {
   border-bottom: 1px solid $gray-lighter;
 }
+
+.sortable th:hover {
+    background-color: $gray-striped-table;
+    cursor: pointer;
+}
+
+.desc:after {
+    content: url(../../images/arrow-active-down.svg);
+    padding-left: 10px;
+}
+
+.asc:after {
+    content: url(../../images/arrow-active-up.svg);
+    padding-left: 10px;
+}

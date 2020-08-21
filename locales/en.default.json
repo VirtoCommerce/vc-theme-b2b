@@ -460,6 +460,8 @@
             "title": "Order History",
             "return": "Return to list",
             "order_number": "Order Number",
+            "invoice": "Invoice",
+            "purchase_order": "Purchase order",
             "date": "Date",
             "status": "Status",
             "total": "Total",
