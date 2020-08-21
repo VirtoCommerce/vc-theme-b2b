@@ -1,9 +1,11 @@
 <script id="storefront.send-cart-to-email.tpl" type="text/ng-template">
-    <div class="modal-header">
-        <button type="button" class="close" ng-click="close()" title="{{ 'cart.send_to_email.close' | t }}" aria-label="{{ 'cart.send_to_email.close' | t }}"><span aria-hidden="true">&times;</span></button>
+    <div class="modal-header bg-gray-light rounded-top rounded-lg">
+        <button type="button" class="close" ng-click="close()" title="{{ 'cart.send_to_email.close' | t }}" aria-label="{{ 'cart.send_to_email.close' | t }}">
+            <i class="fa fa-times vertical-align-center"></i>
+        </button>
         <h4 class="modal-title">{{ 'cart.send_to_email.title' | t }}</h4>
     </div>
-    <div class="modal-body">
+    <div class="modal-body pt-0">
         <div ng-if="isLoading" class="loader">
             <div class="indicator"></div>
         </div>
@@ -13,7 +15,7 @@
                     <th>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" onclick="return false;">
+                                <input type="checkbox" ng-model="allMembersSelected" ng-checked="hasAllOrganizationMemberChecked()" ng-click="toggleAllOrganizationMembers()">
                                 <span class="switch"></span><span ng-bind="$ctrl.test"></span>
                             </label>
                         </div>
@@ -41,7 +43,7 @@
         <textarea class="form-control" placeholder="{{ 'cart.send_to_email.message.placeholder' | t }}" rows="5"></textarea>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" ng-click="close()">{{ 'cart.send_to_email.cancel' | t }}</button>
+        <button type="button" class="btn btn-default pull-left" ng-click="close()">{{ 'cart.send_to_email.cancel' | t }}</button>
         <button type="button" class="btn btn-primary" ng-click="send(email)" ng-disabled="!hasAnyOrganizationMemberCheck()">{{ 'cart.send_to_email.send' | t }}</button>
     </div>
 </script>

@@ -6,6 +6,7 @@ angular.module('storefrontApp')
         $scope.sortAscending = sortAscending;
         $scope.organizationMembers = [];
         $scope.organizationMemberChecks = {};
+        $scope.allMembersSelected = {};
 
         $scope.sortInfos = {
             sortBy: 'name',
@@ -47,6 +48,17 @@ angular.module('storefrontApp')
         $scope.hasAnyOrganizationMemberCheck = function() {
             return Object.values($scope.organizationMemberChecks).includes(true);
         }
+
+        $scope.hasAllOrganizationMemberChecked = function () {
+            const organizationMemberChecks = Object.values($scope.organizationMemberChecks);
+            return organizationMemberChecks.length && organizationMemberChecks.every(x => x === true);
+        }
+
+        $scope.toggleAllOrganizationMembers = function() {
+            for (const member of $scope.organizationMembers) {
+                $scope.organizationMemberChecks[member.id] = $scope.allMembersSelected;
+            }
+        };
 
         $scope.close = function(result) {
             if (result) {
