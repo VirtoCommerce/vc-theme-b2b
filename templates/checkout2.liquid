@@ -1,7 +1,7 @@
-﻿<div class="wrap">
+<div class="wrap">
     <div class="sidebar">
         <div class="sidebar__header">
-            <a class="logo logo--left" href="{{ '/' | absolute_url }}">
+            <a class="logo logo--left" href="{{ '' | absolute_url }}">
                 <h1 class="logo__text">{{ shop.name }}</h1>
             </a>
         </div>
@@ -21,7 +21,7 @@
                 <div class="form-group" ng-if="checkout.canCartBeRecurring">
                     <div class="form-box">
                         <label class="check-box" ng-init="isRecurring = !!checkout.cart.paymentPlan">
-                            <input ng-model="isRecurring" ng-checked="isRecurring" ng-change="isRecurringChanged(isRecurring)" ng-disabled="checkout.loading" class="check" type="checkbox"/>
+                            <input ng-model="isRecurring" ng-checked="isRecurring" ng-change="isRecurringChanged(isRecurring)" ng-disabled="checkout.loading" class="check" type="checkbox" />
                             <div class="switch"></div>
                             <div class="name">{{ 'checkout.make_recurring_order' | t }}</div>
                         </label>
@@ -41,7 +41,7 @@
     </div>
     <div class="main" role="main">
         <div class="main__header">
-            <a class="logo logo--left" href="{{ '/' | absolute_url }}">
+            <a class="logo logo--left" href="{{ '' | absolute_url }}">
                 <h1 class="logo__text">{{ shop.name }}</h1>
             </a>
             <ul class="breadcrumb">
@@ -56,7 +56,7 @@
         </div>
         <div class="main__content">
             <vc-checkout-wizard wizard="checkout.wizard" on-initialized="initialize()" on-finish="createOrder()" loading="checkout.loading">
-                <vc-checkout-wizard-step name="shipping-address"  on-next-step="updateShipment(checkout.shipment)" title="{{ 'checkout.customer_information.title' | t }}" step-disabled="!checkout.cart.hasPhysicalProducts">
+                <vc-checkout-wizard-step name="shipping-address" on-next-step="updateShipment(checkout.shipment)" title="{{ 'checkout.customer_information.title' | t }}" step-disabled="!checkout.cart.hasPhysicalProducts">
                     <div class="edit_checkout animate-floating-labels">
                         <div class="step__sections">
                             <div class="section section--contact-information">
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                 </vc-checkout-wizard-step>
-                <vc-checkout-wizard-step  name="shipping-method" title="{{ 'checkout.shipping_method.title' | t }}" on-next-step="updateShipment(checkout.shipment)" step-disabled="!checkout.cart.hasPhysicalProducts">
+                <vc-checkout-wizard-step name="shipping-method" title="{{ 'checkout.shipping_method.title' | t }}" on-next-step="updateShipment(checkout.shipment)" step-disabled="!checkout.cart.hasPhysicalProducts">
                     <div class="edit_checkout animate-floating-labels">
                         <div class="section section--shipping-address-recap">
                             <div class="section__header">
@@ -106,7 +106,7 @@
                         </div>
                     </div>
                 </vc-checkout-wizard-step>
-                <vc-checkout-wizard-step  name="payment-method" title="{{ 'checkout.payment_method.title' | t }}">
+                <vc-checkout-wizard-step name="payment-method" title="{{ 'checkout.payment_method.title' | t }}">
                     <vc-payment-methods get-avail-payment-methods="getAvailPaymentMethods()" payment-method="checkout.paymentMethod" on-select-method="selectPaymentMethod(paymentMethod)"></vc-payment-methods>
                     <div class="edit_checkout animate-floating-labels">
                         <div class="step__sections">
@@ -119,7 +119,7 @@
                                     <div class="content-box">
                                         <div class="checkbox-wrapper content-box__row" ng-if="checkout.cart.hasPhysicalProducts">
                                             <div class="checkbox__input">
-                                                <input class="input-checkbox" id="BillingAddressEqualsShipping" name="BillingAddressEqualsShipping" ng-model="checkout.billingAddressEqualsShipping" type="checkbox" ng-checked="checkout.billingAddressEqualsShipping" ng-change="validateCheckout(checkout)"  />
+                                                <input class="input-checkbox" id="BillingAddressEqualsShipping" name="BillingAddressEqualsShipping" ng-model="checkout.billingAddressEqualsShipping" type="checkbox" ng-checked="checkout.billingAddressEqualsShipping" ng-change="validateCheckout(checkout)" />
                                             </div>
                                             <label class="checkbox__label" for="BillingAddressEqualsShipping">{{ 'checkout.payment_method.billing_address_equals_shipping' | t }}</label>
                                         </div>
@@ -132,7 +132,7 @@
                         </div>
                     </div>
                 </vc-checkout-wizard-step>
-                <vc-checkout-wizard-step  name="create-order" title="Create order" final="true" can-enter="checkout.isValid">
+                <vc-checkout-wizard-step name="create-order" title="Create order" final="true" can-enter="checkout.isValid">
                 </vc-checkout-wizard-step>
             </vc-checkout-wizard>
         </div>

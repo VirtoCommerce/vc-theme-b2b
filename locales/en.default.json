@@ -460,6 +460,8 @@
             "title": "Order History",
             "return": "Return to list",
             "order_number": "Order Number",
+            "invoice": "Invoice",
+            "purchase_order": "Purchase order",
             "date": "Date",
             "status": "Status",
             "total": "Total",
@@ -603,6 +605,7 @@
             "work_address2": "Floor / Unit / Suite # (optional)",
             "address2": "Floor / Unit / Suite # (optional)",
             "job_title": "Title",
+            "job_title_placeholder": "ex Manager",
             "user_name": "User Name",
             "password": "Password",
             "confirm_password": "Confirm Password",
@@ -623,6 +626,7 @@
             "first_name": "First Name",
             "last_name": "Last Name",
             "email": "Email",
+            "role": "Role",
             "submit": "Update",
             "cancel": "Cancel"
         },
@@ -660,8 +664,8 @@
             "delete_confirm": "Are you sure you wish to delete this member?"
         },
         "edit_company_member": {
-            "return_text": "Return to members list",
-            "title": "Member information",
+            "return_text": "Back",
+            "title": "Edit {0}'s profile",
             "first_name": "First name",
             "last_name": "Last name",
             "middle_name": "Middle name",

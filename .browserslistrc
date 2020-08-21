@@ -1,0 +1,10 @@
+defaults
+Explorer >= 10
+Edge >= 12
+Firefox >= 19
+Chrome >= 20
+Safari >= 8
+Opera >= 15
+iOS >= 8
+Android >= 4.4
+ExplorerMobile >= 10

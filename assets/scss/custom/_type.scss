@@ -2,6 +2,11 @@
   margin: 0 0 $line-height-computed;
 }
 
+.border-none {
+  border: none;
+  padding: 0;
+}
+
 h1, .h1 {
   :not(strong) {
     font-weight: normal;
@@ -20,6 +25,17 @@ h4, .h4 {
     font-size: 65%;
   }
 }
+
+h1, .h1,
+h2, .h2,
+h3, .h3 {
+  margin-bottom: 15px;
+}
+
+.border-top-light {
+  border-top: 1px solid $gray-lighter;
+}
+
 
 @include text-emphasis-variant('.text-contrast', $text-contrast);
 
@@ -53,6 +69,15 @@ h4, .h4 {
 
 .list-inline > li {
   vertical-align: inherit;
+}
+
+.list-inline-divider > li {
+  &:not(:first-child)::before {
+    content: '\FF5C'; // 1px width full height vertical line
+    position: absolute;
+    left: calc(-0.5em - 1px); // horizontal align
+    opacity: (1/3);
+  }
 }
 
 .list-horizontal {
@@ -124,4 +149,8 @@ dl:only-child {
 
 address:last-child {
   margin-bottom: 0;
+}
+
+.cursor-pointer:hover {
+    cursor: pointer;
 }

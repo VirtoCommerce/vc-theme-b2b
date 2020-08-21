@@ -9,24 +9,30 @@
            ]"></ng-outlet>
 
 <script id="account-orders-list.tpl" type="text/ng-template">
-    <div class="page-header">
+    <div class="page-header border-none">
         <h3>{{ 'customer.orders.title' | t }}</h3>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-hover" ng-if="$ctrl.entries.length">
+            <table class="table table-striped border-top-light sortable" ng-if="$ctrl.entries.length">
                 <thead>
                     <tr>
-                        <th>{{ 'customer.orders.order_number' | t }}</th>
-                        <th>{{ 'customer.orders.date' | t }}</th>
-                        <th>{{ 'customer.orders.status' | t }}</th>
-                        <th>{{ 'customer.orders.total' | t }}</th>
+                        <th ng-click="$ctrl.sortChanged('number')" ng-class="{'desc': $ctrl.getSortDirection('number') == $ctrl.sortDescending, 'asc': $ctrl.getSortDirection('number') == $ctrl.sortAscending }">{{ 'customer.orders.order_number' | t }}</th>
+                        <th>{{ 'customer.orders.purchase_order' | t }}</th>
+                        <th>{{ 'customer.orders.invoice' | t }}</th>
+                        <th ng-click="$ctrl.sortChanged('createdDate')" ng-class="{'desc': $ctrl.getSortDirection('createdDate') == $ctrl.sortDescending, 'asc': $ctrl.getSortDirection('createdDate') == $ctrl.sortAscending }">{{ 'customer.orders.date' | t }}</th>
+                        <th ng-click="$ctrl.sortChanged('status')" ng-class="{'desc': $ctrl.getSortDirection('status') == $ctrl.sortDescending, 'asc': $ctrl.getSortDirection('status') == $ctrl.sortAscending }">{{ 'customer.orders.status' | t }}</th>
+                        <th ng-click="$ctrl.sortChanged('total.amount')" ng-class="{'desc': $ctrl.getSortDirection('total.amount') == $ctrl.sortDescending, 'asc': $ctrl.getSortDirection('total.amount') == $ctrl.sortAscending }">{{ 'customer.orders.total' | t }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="order in $ctrl.entries">
                         <td>
                             <a ng-bind="order.number" ng-link="['OrderDetail', {number: order.number, pageNumber: $ctrl.pageSettings.currentPage}]"></a>
+                        </td>
+                        <td ng-bind="$ctrl.getPurchaseOrder(order)"></td>
+                        <td>
+                            <a ng-bind="order.number" ng-click="$ctrl.getInvoicePdf(order.number)" class="cursor-pointer"></a>
                         </td>
                         <td ng-bind="order.createdDate | date"></td>
                         <td ng-bind="order | orderToSummarizedStatusLabel"></td>

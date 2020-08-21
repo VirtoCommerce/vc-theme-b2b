@@ -29,7 +29,7 @@ angular.module('storefront.account')
                         take: $ctrl.pageSettings.itemsPerPageCount,
                         sortInfos: $ctrl.sortInfos
                     }).then(function (response) {
-                        $ctrl.entries = response.data.results;                       
+                        $ctrl.entries = response.data.results;
                         $ctrl.pageSettings.totalItems = response.data.totalCount;
                     });
                 });
@@ -51,12 +51,14 @@ angular.module('storefront.account')
                 {
                     field: 'UserName',
                     disabled: false,
-                    visible: true
+                    visible: true,
+                    required: true
                 },
                 {
                     field: 'Password',
                     disabled: false,
-                    visible: true
+                    visible: true,
+                    required: true
                 },
                 {
                     field: 'Roles',
@@ -92,7 +94,7 @@ angular.module('storefront.account')
                         else {
                             $ctrl.errors = _.pluck(response.data.errors, 'description');
                         }
-                       
+
                     });
                 });
             };
