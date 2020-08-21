@@ -21,92 +21,89 @@
 // Helpers from Bootstrap 4
 
 .rounded {
-    @include border-top-radius($border-radius-base);
-    @include border-bottom-radius($border-radius-base);
+  @include border-top-radius($border-radius-base);
+  @include border-bottom-radius($border-radius-base);
 
-    &.rounded-lg {
-        @include border-top-radius($border-radius-large);
-        @include border-bottom-radius($border-radius-large);
-    }
+  &.rounded-lg {
+    @include border-top-radius($border-radius-large);
+    @include border-bottom-radius($border-radius-large);
+  }
 
-    &.rounded-sm {
-        @include border-top-radius($border-radius-small);
-        @include border-bottom-radius($border-radius-small);
-    }
+  &.rounded-sm {
+    @include border-top-radius($border-radius-small);
+    @include border-bottom-radius($border-radius-small);
+  }
 }
 
 .rounded-top {
-    @include border-top-radius($border-radius-base);
+  @include border-top-radius($border-radius-base);
 
-    &.rounded-lg {
-        @include border-top-radius($border-radius-large);
-    }
+  &.rounded-lg {
+    @include border-top-radius($border-radius-large);
+  }
 
-    &.rounded-sm {
-        @include border-top-radius($border-radius-small);
-    }
+  &.rounded-sm {
+    @include border-top-radius($border-radius-small);
+  }
 }
 
 .rounded-right {
-    @include border-right-radius($border-radius-base);
+  @include border-right-radius($border-radius-base);
 
-    &.rounded-lg {
-        @include border-right-radius($border-radius-large);
-    }
+  &.rounded-lg {
+    @include border-right-radius($border-radius-large);
+  }
 
-    &.rounded-sm {
-        @include border-right-radius($border-radius-small);
-    }
+  &.rounded-sm {
+    @include border-right-radius($border-radius-small);
+  }
 }
-
 
 .rounded-bottom {
-    @include border-bottom-radius($border-radius-base);
+  @include border-bottom-radius($border-radius-base);
 
-    &.rounded-lg {
-        @include border-bottom-radius($border-radius-large);
-    }
+  &.rounded-lg {
+    @include border-bottom-radius($border-radius-large);
+  }
 
-    &.rounded-sm {
-        @include border-bottom-radius($border-radius-small);
-    }
+  &.rounded-sm {
+    @include border-bottom-radius($border-radius-small);
+  }
 }
-
 
 .rounded-left {
-    @include border-left-radius($border-radius-base);
+  @include border-left-radius($border-radius-base);
 
-    &.rounded-lg {
-        @include border-left-radius($border-radius-large);
-    }
+  &.rounded-lg {
+    @include border-left-radius($border-radius-large);
+  }
 
-    &.rounded-sm {
-        @include border-left-radius($border-radius-small);
-    }
+  &.rounded-sm {
+    @include border-left-radius($border-radius-small);
+  }
 }
 
-
 .rounded-0 {
-    @include border-top-radius(0);
-    @include border-bottom-radius(0);
+  @include border-top-radius(0);
+  @include border-bottom-radius(0);
 }
 
 .p-0 {
-    padding: 0;
+  padding: 0;
 }
 
 .pl-0 {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 .pt-0 {
-    padding-top: 0;
+  padding-top: 0;
 }
 
 .pr-0 {
-    padding-right: 0;
+  padding-right: 0;
 }
 
 .pb-0 {
-    padding-bottom: 0;
+  padding-bottom: 0;
 }
