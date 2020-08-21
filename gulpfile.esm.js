@@ -15,7 +15,7 @@ import sourcemaps from 'gulp-sourcemaps';
 import terser from 'gulp-terser';
 import zip from 'gulp-zip';
 import merge from "merge2";
-import bundleConfig from './bundleConfig.json';
+import bundleConfig from './bundleconfig.json';
 import packageJson from './package.json';
 
 const regex = {
