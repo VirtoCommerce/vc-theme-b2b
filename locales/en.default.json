@@ -249,6 +249,18 @@
             "product_search_progress": "Searching...",
             "categories": "Categories",
             "products": "Products"
+        },
+        "send_to_email": {
+            "title": "Select persons to send the email",
+            "name": "Name",
+            "email": "Email",
+            "message": {
+                "title": "Message",
+                "placeholder": "Enter your message for recipients (optional)"
+            },
+            "cancel": "Cancel",
+            "send": "Send",
+            "close": "Close"
         }
     },
     "wishlist": {
