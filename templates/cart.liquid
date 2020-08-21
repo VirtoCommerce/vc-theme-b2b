@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-xs-12" ng-show="checkout.cart.itemsCount == 0" ng-cloak>
             <h2>{{ 'cart.general.empty' | t }}</h2>
-            <a href="{{ '/' | absolute_url }}" class="btn btn-lg btn-primary">{{ 'cart.general.continue_shopping' | t }}</a>
+            <a href="{{ '' | absolute_url }}" class="btn btn-lg btn-primary">{{ 'cart.general.continue_shopping' | t }}</a>
         </div>
     </div>
     <div class="row" ng-show="checkout.cart.itemsCount > 0">
