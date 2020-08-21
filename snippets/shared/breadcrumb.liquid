@@ -1,7 +1,7 @@
 {% unless template == 'index' or template == 'cart' %}
     <ol class="breadcrumb pull-left" role="navigation" aria-label="breadcrumbs">
         <li>
-            <a href="{{ "/" | absolute_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+            <a href="{{ "" | absolute_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
         </li>
         {% if template contains 'vendor' %}
             <li class="active">{{ vendor.url }}</li>
