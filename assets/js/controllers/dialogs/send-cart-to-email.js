@@ -18,7 +18,12 @@ angular.module('storefrontApp')
                 invertSortDirection($scope.sortInfos.sortDirection)
                 : sortAscending;
             $scope.sortInfos.sortBy = sortBy;
-            loadData();
+            $scope.organizationMembers.sort((a, b) => {
+                const first = a[$scope.sortInfos.sortBy];
+                const second = b[$scope.sortInfos.sortBy];
+                const shouldComeFirst = ($scope.sortInfos.sortDirection === sortAscending ? first < second : second < first);
+                return shouldComeFirst === true ? -1 : 1;
+            });
         }
 
         $scope.getSortDirection = function (fieldName) {
@@ -26,24 +31,19 @@ angular.module('storefrontApp')
         }
 
         function invertSortDirection(sortDirection) {
-            return sortDirection == sortAscending ? sortDescending : sortAscending;
+            return sortDirection === sortAscending ? sortDescending : sortAscending;
         }
 
-        function loadData() {
-            $scope.isLoading = true;
-            return accountApi.searchOrganizationUsers({
-                skip: 0,
-                take: 100,
-                sort: `${$scope.sortInfos.sortBy}:${$scope.sortInfos.sortDirection}`
-            }).then(function(result) {
-                    $scope.isLoading = false;
-                    $scope.organizationMembers.length = 0;
-                    $scope.organizationMembers.push(...result.data.results);
-                },
-                function() { $scope.isLoading = false; });
-        }
+        accountApi.searchOrganizationUsers({
+            skip: 0,
+            take: 100
+        }).then(function(result) {
+                $scope.isLoading = false;
+                $scope.organizationMembers.length = 0;
+                $scope.organizationMembers.push(...result.data.results);
 
-        loadData();
+            },
+            function() { $scope.isLoading = false; });
 
         $scope.hasAnyOrganizationMemberCheck = function() {
             return Object.values($scope.organizationMemberChecks).includes(true);
