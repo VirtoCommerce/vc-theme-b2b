@@ -1,32 +1,76 @@
-﻿<div class="col-md-8">
+<div>
     <div class="page-header">
         <h3>{{ 'customer.addresses.title' | t }}</h3>
     </div>
     <div class="vc-product-address">
-        <ul class="list">
-            <li ng-repeat="item in $ctrl.currentMember.addresses" ng-class="{ 'list-item': $ctrl.editIdx !== $index, 'one-half': $ctrl.editIdx === $index }">
-                <a ng-click="$ctrl.delete($index)" ng-if="$ctrl.editIdx !== $index" class="list-action">{{ 'customer.addresses.delete' | t }}</a>
-                <a ng-click="$ctrl.edit($index)" ng-if="$ctrl.editIdx !== $index" class="list-action">{{ 'customer.addresses.edit' | t }}</a>
-                <h3 ng-if="$ctrl.editIdx === $index">{{ 'customer.addresses.edit_old' | t }}</h3>
-                <vc-errors message="errorMessage" errors="errors"></vc-errors>
-                <vc-address address="$ctrl.editIdx === $index ? $ctrl.editItem : item" edit-mode="$ctrl.editIdx === $index" validation-container="$ctrl" countries="$ctrl.accountManager.availCountries" get-country-regions="$ctrl.accountManager.getCountryRegions(country)"></vc-address>
-                <div ng-if="$ctrl.editIdx === $index" class="form-actions">
-                    <button ng-click="$ctrl.cancel()" ng-disabled="$ctrl.loader.isLoading" class="btn btn-primary" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
-                        <span class="btn-text">{{ 'customer.addresses.cancel' | t }}</span>
-                        <span class="btn-loading"></span>
-                    </button>
-                    <span class="form-spacer"></span>
-                    <button ng-click="$ctrl.submit()" ng-disabled="$ctrl.loader.isLoading" class="btn btn-primary" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
-                        <span class="btn-text">{{ 'customer.addresses.update' | t }}</span>
-                        <span class="btn-loading"></span>
-                    </button>
-                </div>
-            </li>
-        </ul>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Recipient's name</th>
+                    <th>Address</th>
+                    <th>{{ 'customer.addresses.phone' | t }}</th>
+                    <th>{{ 'customer.addresses.email' | t }}</th>
+                    <th>Default address</th>
+                    <th aria-label="Actions"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="address in $ctrl.currentMember.addresses">
+                    <td ng-if-start="$ctrl.editIndex !== $index">
+                        <span ng-if="address.firstName" ng-bind="address.firstName"></span>
+                        <span ng-if="address.lastName" ng-bind="address.lastName"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="address.line1"></span><span ng-if="address.line2">
+                            , <span ng-bind="address.line2"></span>
+                        </span>
+                        <span ng-bind="address.city"></span>, <span ng-bind="address.regionName"></span>, <span ng-bind="address.countryCode"></span> <span ng-bind="address.postalCode"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="address.phone"></span>
+                    </td>
+                    <td>
+                        <span ng-bind="address.email"></span>
+                    </td>
+                    <td>
+                        <label ng-if="$ctrl.currentMember.defaultShippingAddress.key === address.key">
+                            <i class="fa fa-check text-primary" aria-hidden="true"></i>&nbsp;Default
+                        </label>
+                        <label ng-if="$ctrl.currentMember.defaultShippingAddress.key !== address.key">
+                            <a role="button" href="" ng-click="$ctrl.setAsDefault(address)">Set as default</a>
+                        </label>
+                    </td>
+                    <td ng-if-end="">
+                        <button type="button" class="btn btn-white" ng-click="$ctrl.edit($index)">
+                            <i class="fa fa-pencil text-primary" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-white" ng-click="$ctrl.delete($index)">
+                            <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                    <td ng-if="$ctrl.editIndex === $index" colspan="6">
+                        <h3 ng-if="$ctrl.editIndex === $index">{{ 'customer.addresses.edit_old' | t }}</h3>
+                        <vc-errors message="errorMessage" errors="errors"></vc-errors>
+                        <vc-address address="$ctrl.editIndex === $index ? $ctrl.editItem : address" edit-mode="$ctrl.editIndex === $index" validation-container="$ctrl" countries="$ctrl.accountManager.availCountries" get-country-regions="$ctrl.accountManager.getCountryRegions(country)"></vc-address>
+                        <div ng-if="$ctrl.editIndex === $index" class="form-actions">
+                            <button ng-click="$ctrl.cancel()" ng-disabled="$ctrl.loader.isLoading" class="btn btn-primary" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
+                                <span class="btn-text">{{ 'customer.addresses.cancel' | t }}</span>
+                                <span class="btn-loading"></span>
+                            </button>
+                            <span class="form-spacer"></span>
+                            <button ng-click="$ctrl.submit()" ng-disabled="$ctrl.loader.isLoading" class="btn btn-primary" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
+                                <span class="btn-text">{{ 'customer.addresses.update' | t }}</span>
+                                <span class="btn-loading"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
         <p ng-if="!$ctrl.currentMember.addresses || !$ctrl.currentMember.addresses.length">{{ 'customer.addresses.no_addresses_message' | t }}</p>
 
-        <button ng-click="$ctrl.newAddress={}" ng-if="!$ctrl.newAddress && !($ctrl.editIdx >= 0)" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
+        <button ng-click="$ctrl.newAddress={}" ng-if="!$ctrl.newAddress && !($ctrl.editIndex >= 0)" class="btn btn-primary" ng-class="{ 'loading': $ctrl.loader.isLoading }" ng-disabled="$ctrl.loader.isLoading">
             <span class="btn-text">{{ 'customer.addresses.add_new' | t }}</span>
             <span class="btn-loading"></span>
         </button>

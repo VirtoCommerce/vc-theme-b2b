@@ -1,4 +1,4 @@
-﻿.btn {
+.btn {
   border-width: 2px;
   font-family: $btn-font-family;
   text-transform: uppercase;
@@ -54,6 +54,14 @@
 
 .btn-default {
   @include button-variant($btn-default-color, $btn-default-bg, $btn-default-border, 'lighten', 2);
+}
+
+.btn-white {
+  @include button-variant($btn-white-color, $btn-white-bg, $btn-white-border, 'lighten', 0);
+}
+
+.btn-white.btn-alt {
+  @include button-variant-alt($btn-white-color, $btn-white-bg, $btn-white-border, 'lighten', 0);
 }
 
 .btn-alt {
