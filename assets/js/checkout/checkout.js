@@ -17,11 +17,15 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 shipment: {},
                 payment: {},
                 coupon: {},
-                availCountries: [],               
+                availCountries: [],
                 loading: false,
                 isValid: false,
                 newAddress: {}
             };
+            
+            $scope.sendToEmail = function () {
+                dialogService.showDialog({}, 'sendCartToEmailDialogController', 'storefront.send-cart-to-email.tpl');
+            }
 
             $scope.getInvoicePdf = function () {
                 var url = $window.BASE_URL + 'storefrontapi/orders/' + $scope.checkout.order.number + '/invoice';
