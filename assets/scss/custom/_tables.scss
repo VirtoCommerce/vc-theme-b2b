@@ -50,12 +50,19 @@
     cursor: pointer;
 }
 
-.desc:after {
+th {
+  &.desc:after {
     content: url(../../images/arrow-active-down.svg);
     padding-left: 10px;
-}
+  }
 
-.asc:after {
+  &.asc:after {
     content: url(../../images/arrow-active-up.svg);
     padding-left: 10px;
+  }
+
+  &.desc,
+  &.asc {
+    cursor: pointer
+  }
 }
