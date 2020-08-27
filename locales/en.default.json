@@ -477,7 +477,7 @@
             "date": "Date",
             "status": "Status",
             "total": "Total",
-            "none": "You haven't placed any orders yet."
+            "none": "No data"
         },
         "order": {
             "title": "Order {0}",

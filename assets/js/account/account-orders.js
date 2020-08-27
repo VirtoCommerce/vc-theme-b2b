@@ -11,10 +11,12 @@ angular.module('storefront.account')
     })
     .component('vcAccountOrdersList', {
         templateUrl: "account-orders-list.tpl",
-        controller: ['accountApi', 'loadingIndicatorService', '$window', 'sortAscending', 'sortDescending', function (accountApi, loader, $window, sortAscending, sortDescending ) {
+        controller: ['accountApi', 'loadingIndicatorService', '$window', 'sortAscending', 'sortDescending', 'orderStatuses', function (accountApi, loader, $window, sortAscending, sortDescending, orderStatuses ) {
             var $ctrl = this;
             $ctrl.sortDescending = sortDescending;
             $ctrl.sortAscending = sortAscending;
+            $ctrl.orderStatuses = orderStatuses;
+            $ctrl.selectedStatus = "All";
             $ctrl.loader = loader;
             $ctrl.pageSettings = { currentPage: 1, itemsPerPageCount: 10, numPages: 10 };
             $ctrl.pageSettings.pageChanged = function () {
@@ -43,6 +45,11 @@ angular.module('storefront.account')
                 loadData();
             }
 
+            $ctrl.selectedStatusChanged = function () {
+                $ctrl.pageSettings.currentPage = 1;
+                loadData();
+            }
+
             $ctrl.getSortDirection = function (fieldName) {
                 return $ctrl.sortInfos.sortBy === fieldName ? $ctrl.sortInfos.sortDirection : '';
             }
@@ -52,7 +59,8 @@ angular.module('storefront.account')
                     return accountApi.searchUserOrders({
                         pageNumber: $ctrl.pageSettings.currentPage,
                         pageSize: $ctrl.pageSettings.itemsPerPageCount,
-                        sort: `${$ctrl.sortInfos.sortBy}:${$ctrl.sortInfos.sortDirection}`
+                        sort: `${$ctrl.sortInfos.sortBy}:${$ctrl.sortInfos.sortDirection}`,
+                        status: getSelectedStatus(),
                     }).then(function (response) {
                         $ctrl.entries = response.data.results;
                         $ctrl.pageSettings.totalItems = response.data.totalCount;
@@ -62,6 +70,10 @@ angular.module('storefront.account')
 
             function invertSortDirection(sortDirection) {
                 return sortDirection == sortAscending ? sortDescending : sortAscending;
+            }
+
+            function getSelectedStatus() {
+                return $ctrl.selectedStatus === "All" ? '' : $ctrl.selectedStatus;
             }
 
             this.$routerOnActivate = function (next) {
