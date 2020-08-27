@@ -1,4 +1,4 @@
-﻿// Disable anchor border for controls which is not real link
+// Disable anchor border for controls which is not real link
 @import "_text-decoration.scss";
 
 a {
@@ -11,9 +11,10 @@ a {
     border-bottom: 1px $link-hover-border-style $link-hover-color;
   }
 
+  &[href^="#"],
   &[href=""] {
     &:hover,
-    &:focus {
+    &:focus{
       border-bottom: 1px $internal-link-hover-border-style $link-hover-color;
     }
   }

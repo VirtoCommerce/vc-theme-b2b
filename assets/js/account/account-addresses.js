@@ -1,4 +1,4 @@
-﻿angular.module('storefront.account')
+angular.module('storefront.account')
 .component('vcAccountAddresses', {
     templateUrl: "themes/assets/account-addresses.tpl.liquid",
     require: {
@@ -14,30 +14,35 @@
             function (customer) {
                 $ctrl.currentMember = customer;
             });
-      
+
         $ctrl.addNewAddress = function () {
             if (_.last(components).validate()) {
                 $ctrl.currentMember.addresses.push($ctrl.newAddress);
                 $ctrl.newAddress = null;
-                $ctrl.updateCompanyMember($ctrl.currentMember);              
+                $ctrl.updateAddresses($ctrl.currentMember);              
             }
         };
 
+        $ctrl.setAsDefault = function(address) {
+            $ctrl.currentMember.defaultShippingAddress = $ctrl.currentMember.contact.defaultShippingAddress = address;
+            $ctrl.updateCustomer($ctrl.currentMember);
+        }
+
         $ctrl.submit = function () {
-            if (components[$ctrl.editIdx].validate()) {
-                angular.copy($ctrl.editItem, $ctrl.currentMember.addresses[$ctrl.editIdx]);
-                $ctrl.updateCompanyMember($ctrl.currentMember, $ctrl.cancel);
+            if (components[$ctrl.editIndex].validate()) {
+                angular.copy($ctrl.editAddress, $ctrl.currentMember.addresses[$ctrl.editIndex]);
+                $ctrl.updateAddresses($ctrl.currentMember, $ctrl.cancel);
             }
         };
 
         $ctrl.cancel = function () {
-            $ctrl.editIdx = -1;
-            $ctrl.editItem = null;
+            $ctrl.editIndex = -1;
+            $ctrl.editAddress = null;
         };
 
         $ctrl.edit = function ($index) {
-            $ctrl.editIdx = $index;
-            $ctrl.editItem = angular.copy($ctrl.currentMember.addresses[$ctrl.editIdx]);
+            $ctrl.editIndex = $index;
+            $ctrl.editAddress = angular.copy($ctrl.currentMember.addresses[$ctrl.editIndex]);
         };
 
         $ctrl.delete = function ($index) {
@@ -45,7 +50,7 @@
                 confirmService.confirm(text).then(function (confirmed) {
                     if (confirmed) {
                         $ctrl.currentMember.addresses.splice($index, 1);
-                        $ctrl.updateCompanyMember($ctrl.currentMember);
+                        $ctrl.updateAddresses($ctrl.currentMember);
                     }
                 });
             };
@@ -53,9 +58,25 @@
             $translate('customer.addresses.delete_confirm').then(showDialog, showDialog);
         };
 
-        $ctrl.updateCompanyMember = function (companyMember, handler) {
+        $ctrl.updateCustomer = function (customer, handler) {
             return loader.wrapLoading(function () {
-                return accountApi.updateUserAddresses(companyMember.addresses).then(function (response) {
+                if (customer.role) {
+                    customer.roles = [customer.role.id];
+                }
+                return accountApi.updateUser(customer).then(function () {
+                    return mainContext.loadCustomer().then(function (customer) {
+                        $ctrl.currentMember = customer;
+                        if (handler) {
+                            handler();
+                        }
+                    });
+                });
+            });
+        };
+
+        $ctrl.updateAddresses = function (companyMember, handler) {
+            return loader.wrapLoading(function () {
+                return accountApi.updateUserAddresses(companyMember.addresses).then(function () {
                     return mainContext.loadCustomer().then(function (customer) {
                         $ctrl.currentMember = customer;
                         if (handler) {
