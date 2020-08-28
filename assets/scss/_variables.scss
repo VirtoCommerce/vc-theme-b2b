@@ -14,7 +14,7 @@
    $gray:          #abb0b6; // lighten($gray-base, 33.5%) // #555
    $gray-light:    #d8d8d8; // lighten($gray-base, 46.7%) // #777
    $gray-lighter:  #eee;    // lighten($gray-base, 93.5%) // #eee
-   $gray-striped-table: #f8f8f8;
+
 
    $brand-primary: #f0ad4e; // darken(#428bca, 6.5%) // #337ab7
    $brand-alt:     #00739E; // not predefined
@@ -23,6 +23,11 @@
    $brand-warning: #f0ad4e; // #f0ad4e
    $brand-danger:  #d9534f; // #d9534f
 
+//## Other colors
+
+   $gray-striped-table: #f8f8f8; // not predefined
+   $gray-totals: #9f9f9f; //not predefined
+   $dark-green: #3c763d; // not predefined
 
 //== Scaffolding
 //

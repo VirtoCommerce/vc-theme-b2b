@@ -59,6 +59,14 @@ h3, .h3 {
   vertical-align: middle;
 }
 
+.text-green {
+  color: $dark-green;
+}
+
+.text-gray-totals {
+  color: $gray-totals;
+}
+
 .text-truncate {
   display: inline-block;
   max-width: 100%;
@@ -153,4 +161,13 @@ address:last-child {
 
 .cursor-pointer:hover {
     cursor: pointer;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+dl {
+    margin-bottom: 10px;
 }
