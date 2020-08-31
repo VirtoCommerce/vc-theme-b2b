@@ -1,29 +1,30 @@
 <div class="row">
     <div class="col-md-12" ng-init="$ctrl.showWithTaxes = '{{ settings.show_prices_with_taxes }}'">
         <dl class="dl-horizontal">
-            <dt ng-if-start="$ctrl.options.show.subtotal" ng-init="title = '{{ 'totals.subtotal' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
+            <dt ng-if-start="$ctrl.options.show.subtotal" class="text-normal" ng-init="title = '{{ 'totals.subtotal' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
             <dd ng-if-end><span class="pull-right" ng-bind="$ctrl.order[$ctrl.fieldNames.subTotal].formattedAmount"></span></dd>
-
-            <dt ng-if-start="$ctrl.options.show.shipping" ng-init="title = '{{ 'totals.shipping' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
+            <hr>
+            <dt ng-if-start="$ctrl.options.show.shipping" class="text-normal" ng-init="title = '{{ 'totals.shipping' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
             <dd ng-if-end ng-init="field = $ctrl.order[$ctrl.fieldNames.shippingPrice] || $ctrl.order[$ctrl.fieldNames.shippingTotal]" ng-include="'totals-field-with-free-template.tpl'"></dd>
-
+            <hr>
             <dt ng-if-start="$ctrl.options.show.payment" ng-init="title = '{{ 'totals.paymentFees' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
             <dd ng-if-end ng-init="field = $ctrl.order[$ctrl.fieldNames.payment]" ng-include="'totals-field-with-free-template.tpl'"></dd>
 
             {% unless settings.show_prices_with_taxes %}
-            <dt ng-if-start="$ctrl.options.show.taxes" ng-init="title = '{{ 'totals.taxes' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
+            <dt ng-if-start="$ctrl.options.show.taxes" class="text-normal" ng-init="title = '{{ 'totals.taxes' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
             <dd ng-if-end><span class="pull-right" ng-bind="$ctrl.order.taxTotal.formattedAmount"></span></dd>
             {% endunless %}
 
-            <dt ng-if-start="$ctrl.options.show.discount" ng-init="title = '{{ 'totals.discount' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
+            <dt ng-if-start="$ctrl.options.show.discount" class="text-normal" ng-init="title = '{{ 'totals.discount' | t }}'" ng-include="'totals-title-template.tpl'"></dt>
             <dd ng-if-end><span class="pull-right" ng-bind="$ctrl.order[$ctrl.fieldNames.discount].formattedAmount"></span></dd>
+            <hr>
         </dl>
         <dl class="dl-horizontal">
             <dt><strong class="pull-left">{{ 'totals.total' | t }}</strong></dt>
             <dd><span class="pull-right" ng-bind="$ctrl.order.total.formattedAmount"></span></dd>
         </dl>
         <p ng-if="!$ctrl.options.complete">
-            <small><a href="#">{{ 'totals.estimated_fields' | t }}</a> {{ 'totals.estimated_notice' | t }}</small>
+            <small class="text-gray-totals">{{ 'totals.estimated_fields' | t }} {{ 'totals.estimated_notice' | t }}</small>
         </p>
     </div>
 </div>

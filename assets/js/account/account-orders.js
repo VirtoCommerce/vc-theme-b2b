@@ -87,7 +87,7 @@ angular.module('storefront.account')
         require: {
             accountManager: '^vcAccountManager'
         },
-        controller: ['$rootScope', '$window', 'loadingIndicatorService', 'confirmService', 'accountApi', 'inventoryApi', function($rootScope, $window, loader, confirmService, accountApi, inventoryApi) {
+        controller: ['$rootScope', '$window', 'loadingIndicatorService', 'confirmService', 'accountApi', 'inventoryApi', 'orderService', function($rootScope, $window, loader, confirmService, accountApi, inventoryApi, orderService ) {
             var $ctrl = this;
             $ctrl.loader = loader;
             $ctrl.hasPhysicalProducts = true;
@@ -97,6 +97,7 @@ angular.module('storefront.account')
                 loader.wrapLoading(function () {
                     return accountApi.getUserOrder($ctrl.orderNumber).then(function (result) {
                         $ctrl.order = result.data;
+                        $ctrl.paymentNumber = $ctrl.order.inPayments[0].number;
                         return $ctrl.order;
                     }).then(function (order) {
                         var lastPayment = _.last(_.sortBy(order.inPayments, 'createdDate'));
@@ -105,10 +106,12 @@ angular.module('storefront.account')
                             _.first(order.addresses);
 
                         accountApi.getUserOrderNewPaymentData(order.number).then(function (response) {
+                            $ctrl.paymentMethods = response.data.paymentMethods;
                             _.each($ctrl.order.inPayments, function (x) {
-                                var paymentMethod = _.find(response.data.paymentMethods, function (pm) { return pm.code == x.gatewayCode; });
-                                if (paymentMethod) {
-                                    x.paymentMethod = paymentMethod;
+                                $ctrl.selectedPaymentMethod = _.find($ctrl.paymentMethods, function (pm) { return pm.code == x.gatewayCode; });
+                                if ($ctrl.selectedPaymentMethod) {
+                                    x.paymentMethod = $ctrl.selectedPaymentMethod;
+                                    $ctrl.selectedPaymentMethodCode = $ctrl.selectedPaymentMethod.code;
                                 }
                             });
                         });
@@ -137,6 +140,37 @@ angular.module('storefront.account')
                 $window.open(url, '_blank');
             }
 
+            $ctrl.paymentMethodChanged = function () {
+                loader.wrapLoading(function() {
+                    $ctrl.selectedPaymentMethod = _.find($ctrl.paymentMethods, function (pm) { return pm.code == $ctrl.selectedPaymentMethodCode; });
+                    $ctrl.order.inPayments[0].gatewayCode = $ctrl.selectedPaymentMethod.code;
+                    $ctrl.order.inPayments[0].paymentMethodType = $ctrl.selectedPaymentMethod.paymentMethodType;
+                    return orderService.addOrUpdatePayment($ctrl.orderNumber, $ctrl.order.inPayments[0]).then(function(response) {
+                        refresh();
+                    });
+                });
+            }
+
+            $ctrl.payInvoice = function () {
+                if ($ctrl.selectedPaymentMethod.paymentMethodType && $ctrl.selectedPaymentMethod.paymentMethodType.toLowerCase() == 'preparedform') {
+                    outerRedirect($window.BASE_URL + 'cart/checkout/paymentform?orderNumber=' + $ctrl.orderNumber);
+                } else {
+                    loader.wrapLoading(function() {
+                        return orderService.processOrderPayment($ctrl.orderNumber, $ctrl.paymentNumber, null).then(function(response) {
+                            var orderProcessingResult = response.data.orderProcessingResult;
+                            if (orderProcessingResult.isSuccess) {
+                                $ctrl.order.inPayments[0].status = "Paid";
+                                orderService.addOrUpdatePayment($ctrl.orderNumber, $ctrl.order.inPayments[0]).then(function(response) {
+                                    refresh();
+                                });
+                            } else {
+                                handleBadPaymentResult(orderProcessingResult);
+                            }
+                        });
+                    });
+                }
+            }
+
             var components = [];
             $ctrl.addComponent = function (component) {
                 components.push(component);
@@ -147,6 +181,16 @@ angular.module('storefront.account')
 
             function outerRedirect(absUrl) {
                 $window.location.href = absUrl;
+            };
+
+            function handleBadPaymentResult(orderProcessingResult) {
+                loader.isLoading = false;
+                $rootScope.$broadcast('storefrontError', {
+                    type: 'error',
+                    title: ['Error in new order processing: ', orderProcessingResult.error, 'New Payment status: ' + orderProcessingResult.newPaymentStatus].join(' '),
+                    message: orderProcessingResult.error,
+                });
+                return;
             };
         }]
     })

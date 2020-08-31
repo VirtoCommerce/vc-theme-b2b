@@ -482,8 +482,8 @@
         "order": {
             "title": "Order {0}",
             "get_invoice": "Get invoice",
-            "placed_on_date_html": "Placed on {0}",
-            "cancelled_on": "Order Cancelled on {0}",
+            "placed_on_date_html": "Placed on: {0}",
+            "cancelled_on": "Order Cancelled on: {0}",
             "cancel_reason": "Reason",
             "billing_address": "Billing Address",
             "payment_status": "Payment Status",
@@ -511,7 +511,9 @@
                 "sent": "Sent",
                 "partially_sent": "Partially sent",
                 "cancelled": "Cancelled"
-            }
+            },
+            "payment_type": "Payment type",
+            "pay_invoice": "Pay invoice"
         },
         "order_payment": {
             "cancel": "Cancel payment",

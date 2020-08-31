@@ -22,14 +22,14 @@
                 {% endif %}
             </td>
             <td>
-                <p ng-bind="lineItem.quantity"></p>
+                <span ng-bind="lineItem.quantity"></span>
             </td>
             <td>
                 {% if settings.show_prices_with_taxes %}
                 <p ng-bind="lineItem.placedPriceWithTax.formattedAmount"></p>
                 <s ng-if="lineItem.listPriceWithTax.amount > lineItem.placedPriceWithTax.amount" ng-bind="lineItem.listPriceWithTax.formattedAmount"></s>
                 {% else %}
-                <p class="span cost" ng-bind="lineItem.placedPrice.formattedAmount"></p>
+                <strong class="text-green" ng-bind="lineItem.placedPrice.formattedAmount"></strong>
                 <s ng-if="lineItem.listPrice.amount > lineItem.placedPrice.amount" ng-bind="lineItem.listPrice.formattedAmount"></s>
                 {% endif %}
             </td>
