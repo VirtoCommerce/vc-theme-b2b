@@ -51,6 +51,10 @@ h3, .h3 {
   font-weight: normal;
 }
 
+.text-primary {
+    color: $brand-primary;
+}
+
 .text-normalize {
   text-transform: none;
 }

@@ -16,8 +16,10 @@ angular.module('storefront.account')
             $ctrl.sortDescending = sortDescending;
             $ctrl.sortAscending = sortAscending;
             $ctrl.orderStatuses = orderStatuses;
-            $ctrl.selectedStatus = "All";
+            $ctrl.selectedStatuses = [];
             $ctrl.loader = loader;
+            $ctrl.filterDropdownSettings = { template: '{{option}}', smartButtonTextConverter(skip, option) { return option; }, };
+            $ctrl.dropdownEvents = { onSelectionChanged: filtersChanged };
             $ctrl.pageSettings = { currentPage: 1, itemsPerPageCount: 10, numPages: 10 };
             $ctrl.pageSettings.pageChanged = function () {
                 loadData();
@@ -45,7 +47,7 @@ angular.module('storefront.account')
                 loadData();
             }
 
-            $ctrl.selectedStatusChanged = function () {
+            function filtersChanged() {
                 $ctrl.pageSettings.currentPage = 1;
                 loadData();
             }
@@ -60,7 +62,7 @@ angular.module('storefront.account')
                         pageNumber: $ctrl.pageSettings.currentPage,
                         pageSize: $ctrl.pageSettings.itemsPerPageCount,
                         sort: `${$ctrl.sortInfos.sortBy}:${$ctrl.sortInfos.sortDirection}`,
-                        status: getSelectedStatus(),
+                        statuses: $ctrl.selectedStatuses
                     }).then(function (response) {
                         $ctrl.entries = response.data.results;
                         $ctrl.pageSettings.totalItems = response.data.totalCount;
@@ -70,10 +72,6 @@ angular.module('storefront.account')
 
             function invertSortDirection(sortDirection) {
                 return sortDirection == sortAscending ? sortDescending : sortAscending;
-            }
-
-            function getSelectedStatus() {
-                return $ctrl.selectedStatus === "All" ? '' : $ctrl.selectedStatus;
             }
 
             this.$routerOnActivate = function (next) {
@@ -160,6 +158,10 @@ angular.module('storefront.account')
                             var orderProcessingResult = response.data.orderProcessingResult;
                             if (orderProcessingResult.isSuccess) {
                                 $ctrl.order.inPayments[0].status = "Paid";
+                                $rootScope.$broadcast('successOperation', {
+                                    type: 'success',
+                                    message: 'Invoice ' + $ctrl.orderNumber + ' has been successfully paid',
+                                });
                                 orderService.addOrUpdatePayment($ctrl.orderNumber, $ctrl.order.inPayments[0]).then(function(response) {
                                     refresh();
                                 });

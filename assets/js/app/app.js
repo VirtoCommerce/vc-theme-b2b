@@ -6,7 +6,8 @@
     'ui.bootstrap',
     'vcRecaptcha',
     'storefrontApp.consts',
-    'mgo-angular-wizard'
+    'mgo-angular-wizard',
+    'angularjs-dropdown-multiselect'
 ];
 var storefrontApp = angular.module('storefrontApp', storefrontAppDependencies);
 
