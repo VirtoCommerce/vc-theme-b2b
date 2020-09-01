@@ -51,7 +51,7 @@
                     <td ng-if="$ctrl.editIndex === $index" colspan="6">
                         <h3 ng-if="$ctrl.editIndex === $index">{{ 'customer.addresses.edit_old' | t }}</h3>
                         <vc-errors message="errorMessage" errors="errors"></vc-errors>
-                        <vc-address address="$ctrl.editIndex === $index ? $ctrl.editItem : address" edit-mode="$ctrl.editIndex === $index" validation-container="$ctrl" countries="$ctrl.accountManager.availCountries" get-country-regions="$ctrl.accountManager.getCountryRegions(country)"></vc-address>
+                        <vc-address address="$ctrl.editIndex === $index ? $ctrl.editAddress : address" edit-mode="$ctrl.editIndex === $index" validation-container="$ctrl" countries="$ctrl.accountManager.availCountries" get-country-regions="$ctrl.accountManager.getCountryRegions(country)"></vc-address>
                         <div ng-if="$ctrl.editIndex === $index" class="form-actions">
                             <button ng-click="$ctrl.cancel()" ng-disabled="$ctrl.loader.isLoading" class="btn btn-primary" ng-class="{ 'btn--disabled': detailForm.$pristine, 'loading': $ctrl.loader.isLoading }">
                                 <span class="btn-text">{{ 'customer.addresses.cancel' | t }}</span>
