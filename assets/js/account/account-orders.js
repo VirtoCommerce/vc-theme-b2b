@@ -160,6 +160,10 @@ angular.module('storefront.account')
                             var orderProcessingResult = response.data.orderProcessingResult;
                             if (orderProcessingResult.isSuccess) {
                                 $ctrl.order.inPayments[0].status = "Paid";
+                                $rootScope.$broadcast('successOperation', {
+                                    type: 'success',
+                                    message: 'Invoice ' + $ctrl.orderNumber + ' has been successfully paid',
+                                });
                                 orderService.addOrUpdatePayment($ctrl.orderNumber, $ctrl.order.inPayments[0]).then(function(response) {
                                     refresh();
                                 });
