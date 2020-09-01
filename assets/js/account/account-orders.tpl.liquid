@@ -35,7 +35,7 @@
                         <td>
                             <a ng-bind="order.number" ng-link="['OrderDetail', {number: order.number, pageNumber: $ctrl.pageSettings.currentPage}]"></a>
                         </td>
-                        <td ng-bind="$ctrl.getPurchaseOrder(order)"></td>
+                        <td ng-bind="order.purchaseOrderNumber"></td>
                         <td>
                             <a ng-bind="order.number" ng-click="$ctrl.getInvoicePdf(order.number)" class="cursor-pointer"></a>
                         </td>
