@@ -1,4 +1,6 @@
 .alert {
+  border: none;
+  border-radius: 0;
   a {
   color: #a94442;
   cursor: pointer;
@@ -12,4 +14,18 @@
   left:0;
   right:0;
   z-index: 9999;
+}
+
+.alert {
+  button.close {
+      color: $text-contrast;
+      font-size: 25px;
+      opacity: 1;
+    }
+}
+
+.alert.alert-success {
+  background-color: $alert-success-bg;
+  color: $alert-success-text;
+  border-color: $alert-success-border;
 }
