@@ -21,11 +21,10 @@
                         <th>{{ 'customer.orders.purchase_order' | t }}</th>
                         <th>{{ 'customer.orders.invoice' | t }}</th>
                         <th ng-click="$ctrl.sortChanged('createdDate')" ng-class="{'desc': $ctrl.getSortDirection('createdDate') == $ctrl.sortDescending, 'asc': $ctrl.getSortDirection('createdDate') == $ctrl.sortAscending }">{{ 'customer.orders.date' | t }}</th>
-                        <th>
+                        <th ng-dropdown-multiselect="" options="$ctrl.orderStatuses" selected-model="$ctrl.selectedStatuses" events="$ctrl.dropdownEvents" extra-settings="$ctrl.filterDropdownSettings" class="filter" ng-class="{'filtered': $ctrl.selectedStatuses.length > 0 }">
+                            <toggle-dropdown>
                             {{ 'customer.orders.status' | t }}
-                            <select name="statusSelect" id="statusSelect" ng-model="$ctrl.selectedStatus" ng-change="$ctrl.selectedStatusChanged()">
-                                <option ng-repeat="option in $ctrl.orderStatuses" ng-value="option" ng-bind="option"></option>
-                            </select>
+                            </toggle-dropdown>
                         </th>
                         <th ng-click="$ctrl.sortChanged('total.amount')" ng-class="{'desc': $ctrl.getSortDirection('total.amount') == $ctrl.sortDescending, 'asc': $ctrl.getSortDirection('total.amount') == $ctrl.sortAscending }">{{ 'customer.orders.total' | t }}</th>
                     </tr>
