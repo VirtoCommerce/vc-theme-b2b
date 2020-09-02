@@ -30,10 +30,6 @@ angular.module('storefront.account')
                 $window.open(url, '_blank');
             }
 
-            $ctrl.getPurchaseOrder = function (order) {
-                return order.dynamicProperties.find(x => x.name === 'Purchase order')?.values[0].value;
-            }
-
             $ctrl.sortInfos = {
                 sortBy: 'number',
                 sortDirection: sortDescending

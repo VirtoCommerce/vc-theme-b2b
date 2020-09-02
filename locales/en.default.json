@@ -74,6 +74,10 @@
         "pickup_address": "Pickup address",
         "payment_method": "Payment method",
         "purchased_products": "My purchased products",
+        "purchase_order_number": {
+            "title": "Purchase Order",
+            "placeholder": "Enter purchase order number"
+        }, 
         "mobile": {
             "show_order_summary": "Show order summary",
             "hide_order_summary": "Hide order summary"

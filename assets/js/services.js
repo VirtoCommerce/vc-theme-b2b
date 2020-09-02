@@ -119,6 +119,9 @@ storefrontApp.service('cartService', ['$http', function ($http) {
         removePaymentPlan: function () {
             return $http.delete('storefrontapi/cart/paymentPlan');
         },
+        updatePurchaseOrderNumber: function (purchaseOrderNumber) {
+            return $http.put('storefrontapi/cart/purchaseOrderNumber', { purchaseOrderNumber: purchaseOrderNumber });
+        },
         createOrder: function (bankCardInfo) {
             return $http.post('storefrontapi/cart/createorder', { bankCardInfo: bankCardInfo });
         }
