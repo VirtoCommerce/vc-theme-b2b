@@ -14,7 +14,7 @@
    $gray:          #abb0b6; // lighten($gray-base, 33.5%) // #555
    $gray-light:    #d8d8d8; // lighten($gray-base, 46.7%) // #777
    $gray-lighter:  #eee;    // lighten($gray-base, 93.5%) // #eee
-   $gray-striped-table: #f8f8f8;
+
 
    $brand-primary: #f0ad4e; // darken(#428bca, 6.5%) // #337ab7
    $brand-alt:     #00739E; // not predefined
@@ -23,6 +23,11 @@
    $brand-warning: #f0ad4e; // #f0ad4e
    $brand-danger:  #d9534f; // #d9534f
 
+//## Other colors
+
+   $gray-striped-table: #f8f8f8; // not predefined
+   $gray-totals: #9f9f9f; //not predefined
+   $dark-green: #3c763d; // not predefined
 
 //== Scaffolding
 //
@@ -593,9 +598,9 @@
 //
 //## Define colors for form feedback states and, by default, alerts.
 
-// $state-success-text:             #3c763d
-// $state-success-bg:               #dff0d8
-// $state-success-border:           darken(adjust-hue($state-success-bg, -10), 5%)
+$state-success-text:             $text-contrast;
+$state-success-bg:               $brand-primary;
+$state-success-border:           darken(adjust-hue($state-success-bg, -10), 5%);
 
 // $state-info-text:                #31708f
 // $state-info-bg:                  #d9edf7
@@ -721,9 +726,9 @@
 // $alert-border-radius:         $border-radius-base
 // $alert-link-font-weight:      bold
 
-// $alert-success-bg:            $state-success-bg
-// $alert-success-text:          $state-success-text
-// $alert-success-border:        $state-success-border
+$alert-success-bg:            $state-success-bg;
+$alert-success-text:          $state-success-text;
+$alert-success-border:        $state-success-border;
 
 // $alert-info-bg:               $state-info-bg
 // $alert-info-text:             $state-info-text

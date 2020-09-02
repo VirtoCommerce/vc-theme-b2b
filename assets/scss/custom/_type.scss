@@ -51,12 +51,24 @@ h3, .h3 {
   font-weight: normal;
 }
 
+.text-primary {
+    color: $brand-primary;
+}
+
 .text-normalize {
   text-transform: none;
 }
 
 .text-middle {
   vertical-align: middle;
+}
+
+.text-green {
+  color: $dark-green;
+}
+
+.text-gray-totals {
+  color: $gray-totals;
 }
 
 .text-truncate {
@@ -153,4 +165,13 @@ address:last-child {
 
 .cursor-pointer:hover {
     cursor: pointer;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+dl {
+    margin-bottom: 10px;
 }

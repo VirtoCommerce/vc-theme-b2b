@@ -94,7 +94,7 @@ storefrontApp.service('cartService', ['$http', function ($http) {
         },
         clearCart: function () {
             return $http.post('storefrontapi/cart/clear');
-        },     
+        },
         addCoupon: function (couponCode) {
             return $http.post('storefrontapi/cart/coupons/' + couponCode);
         },
@@ -177,6 +177,12 @@ storefrontApp.service('orderService', ['$http', function ($http) {
     return {
         getOrder: function (orderNumber) {
             return $http.get('storefrontapi/orders/' + orderNumber + '?t=' + new Date().getTime());
+        },
+        processOrderPayment: function (orderNumber, paymentNumber, bankCardInfo) {
+            return $http.post('storefrontapi/orders/' + orderNumber + '/payments/' + paymentNumber + '/process', { bankCardInfo: bankCardInfo });
+        },
+        addOrUpdatePayment: function (orderNumber, payment) {
+            return $http.post('storefrontapi/orders/' + orderNumber + '/payments', payment);
         }
     }
 }]);

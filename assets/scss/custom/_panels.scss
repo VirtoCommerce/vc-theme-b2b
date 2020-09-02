@@ -23,6 +23,10 @@
   font-family: $panel-heading-font-family;
   font-weight: $panel-heading-font-weight;
   text-transform: uppercase;
+  .info {
+      font-weight: normal;
+  }
+
 }
 
 .panel-title {
@@ -49,3 +53,5 @@
     margin-bottom: 0;
   }
 }
+
+

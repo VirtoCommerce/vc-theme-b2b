@@ -20,6 +20,11 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
             $rootScope.storefrontNotification.detailsVisible = false;
         });
 
+        $rootScope.$on('successOperation', function (event, data) {
+            $rootScope.storefrontNotification = data;
+            $rootScope.storefrontNotification.detailsVisible = true;
+        })
+
         $rootScope.toggleNotificationDetails = function () {
             $rootScope.storefrontNotification.detailsVisible = !$rootScope.storefrontNotification.detailsVisible;
         }
@@ -73,7 +78,7 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
                     mainContext.customer = $scope.customer = response.data;
                     return response.data;
                 });
-                
+
             });
         };
 
