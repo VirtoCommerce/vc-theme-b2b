@@ -83,12 +83,7 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
             });
         };
 
-    //    $scope.loadCustomer();
     }])
-
-    // .factory('storefrontApp.mainContext', function () {
-    //     return {};
-    // });
 
     function adjustCurrentCustomerResponse(response) {
         var addressId = 1;
@@ -105,16 +100,15 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
         var initInjector = angular.injector(['ng']);
         var $http = initInjector.get('$http');
 
-        // Get user info.
+        // Get customer info.
         $http.get('storefrontapi/account?t=' + new Date().getTime()).then(
             function(response) {
                 adjustCurrentCustomerResponse(response);
-                // Define a 'userInfo' module.
-                //angular.module('storefrontApp', []).constant('userInfo', success.data);
-                angular.module('customerInfo', []).factory('storefrontApp.mainContext', function () {
+                // Define a 'customerInfo' module with 'mainContext' service
+                angular.module('storefrontApp.customerInfo', []).factory('storefrontApp.mainContext', function () {
                     return { customer: response.data };
                 });
-                // Start myAngularApp manually.
+                // Start myAngularApp manually instead of using directive 'ng-app'.
                 angular.element(document).ready(function() {
                     angular.bootstrap(document, ['storefrontApp']);
                 });
