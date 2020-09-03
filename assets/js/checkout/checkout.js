@@ -68,26 +68,15 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
 
             $scope.changeShippingAddress = function () {
                 var dialogData =
-                    {                     
+                    {
+                        customer: $scope.customer,
                         checkout: $scope.checkout,
                         addresses: $scope.checkout.cart.customer.addresses
                     };
 
-                var dialogInstance = dialogService.showDialog(dialogData, 'universalDialogController', 'storefront.select-address-dialog.tpl');
-                dialogInstance.result.then(function (address) {
-                    if (address == $scope.checkout.newAddress) {
-                        dialogInstance = dialogService.showDialog(dialogData, 'universalDialogController', 'storefront.new-address-dialog.tpl');
-                        dialogInstance.result.then(function (address) {
-                            if (!$scope.checkout.cart.customer.addresses) {
-                                $scope.checkout.cart.customer.addresses = [];
-                            }
-                            $scope.checkout.cart.customer.addresses.push(address);
-                            $scope.checkout.shipment.deliveryAddress = address;
-                        });
-                    }
-                    else {
-                        $scope.checkout.shipment.deliveryAddress = address;
-                    }
+                var dialogInstance = dialogService.showDialog(dialogData, 'universalDialogController', 'storefront.select-address-dialog.tpl', 'lg');
+                dialogInstance.result.then(function () {
+                    $scope.checkout.shipment.deliveryAddress = $scope.checkout.deliveryAddress;
                     $scope.updateShipment($scope.checkout.shipment);
                 });
             };
@@ -167,9 +156,10 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                     else {
                         //Set default shipping address
                         if ($scope.checkout.cart.customer.addresses) {
-                            $scope.checkout.shipment.deliveryAddress = $scope.checkout.cart.customer.addresses[0];
+                            $scope.checkout.shipment.deliveryAddress = $scope.checkout.cart.customer.defaultShippingAddress;
                         }
                     }
+                    $scope.checkout.deliveryAddress = $scope.checkout.shipment.deliveryAddress;
                     $scope.checkout.billingAddressEqualsShipping = cart.hasPhysicalProducts && !angular.isObject($scope.checkout.payment.billingAddress);
 
                     $scope.checkout.canCartBeRecurring = $scope.customer.isRegisteredUser && _.all(cart.items, function (x) { return !x.isReccuring });

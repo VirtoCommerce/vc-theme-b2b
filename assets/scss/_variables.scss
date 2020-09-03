@@ -667,7 +667,9 @@ $state-success-border:           darken(adjust-hue($state-success-bg, -10), 5%);
 //##
 
 //** Default label background color
-// $label-default-bg:            $gray-light
+   $label-default-bg:            $gray-base;
+//** Alternative label background color
+   $label-alt-bg:                $brand-alt;
 //** Primary label background color
 // $label-primary-bg:            $brand-primary
 //** Success label background color

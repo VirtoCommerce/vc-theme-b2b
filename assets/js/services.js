@@ -2,10 +2,11 @@ var storefrontApp = angular.module('storefrontApp');
 
 storefrontApp.service('dialogService', ['$uibModal', function ($uibModal) {
     return {
-        showDialog: function (dialogData, controller, templateUrl) {
+        showDialog: function (dialogData, controller, templateUrl, size) {
             var modalInstance = $uibModal.open({
                 controller: controller,
                 templateUrl: templateUrl,
+                size: size,
                 resolve: {
                     dialogData: function () {
                         return dialogData;
