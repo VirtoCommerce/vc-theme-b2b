@@ -70,12 +70,7 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
         mainContext.loadCustomer = $scope.loadCustomer = function () {
             return loader.wrapLoading(function() {
                 return accountApi.getCurrentUser().then(function (response) {
-                    var addressId = 1;
-                    _.each(response.data.addresses, function (address) {
-                        address.id = addressId;
-                        addressId++;
-                    });
-                    response.data.isContact = response.data.memberType === 'Contact';
+                    adjustCurrentCustomerResponse(response);
                     mainContext.customer = $scope.customer = response.data;
                     return response.data;
                 });
@@ -94,6 +89,10 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
         response.data.isContact = response.data.memberType === 'Contact';
     }
 
+
+    /**
+     * this function gets the customer info and after start 'storefrontApp'
+     */
     (function() {
 
         // Get Angular's $http module.
