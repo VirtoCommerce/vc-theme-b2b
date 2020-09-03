@@ -1,5 +1,5 @@
 angular.module('storefrontApp')
-    .controller('sendCartToEmailDialogController', ['$scope', '$uibModalInstance', 'accountApi', 'sortAscending', 'sortDescending', function ($scope, $uibModalInstance, accountApi, sortAscending, sortDescending) {
+    .controller('sendCartToEmailDialogController', ['$scope', '$uibModalInstance', 'accountApi', 'sortAscending', 'sortDescending', '$rootScope', function ($scope, $uibModalInstance, accountApi, sortAscending, sortDescending, $rootScope) {
 
         $scope.isLoading = true;
         $scope.sortDescending = sortDescending;
@@ -66,6 +66,15 @@ angular.module('storefrontApp')
             } else {
                 $uibModalInstance.dismiss('cancel');
             }
+        }
+
+        $scope.send = function (email) {
+            $scope.close();
+            var ending = ` person${Object.values($scope.organizationMemberChecks).length !== 1 ? 's' : '' }`;
+            $rootScope.$broadcast('successOperation', {
+                type: 'success',
+                message: 'The contents of the shopping cart was sent to ' + Object.values($scope.organizationMemberChecks).length + ending,
+            });
         }
 
     }
