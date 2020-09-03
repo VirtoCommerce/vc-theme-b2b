@@ -101,7 +101,7 @@
                                                            class="form-control"
                                                            ng-model="checkout.cart.purchaseOrderNumber"
                                                            ng-change="setPurchaseOrderNumber()"
-                                                           ng-model-options="{ updateOn: 'blur' }"
+                                                           ng-model-options="{ updateOn: 'keyup', debounce: 300 }"
                                                            name="PurchaseOrderNumber"
                                                            placeholder="{{ 'checkout.purchase_order_number.placeholder' | t }}"
                                                            required="required"
