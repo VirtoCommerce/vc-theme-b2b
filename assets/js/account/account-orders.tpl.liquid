@@ -34,7 +34,7 @@
                         <td>
                             <a ng-bind="order.number" ng-link="['OrderDetail', {number: order.number, pageNumber: $ctrl.pageSettings.currentPage}]"></a>
                         </td>
-                        <td ng-bind="$ctrl.getPurchaseOrder(order)"></td>
+                        <td ng-bind="order.purchaseOrderNumber"></td>
                         <td>
                             <a ng-bind="order.number" ng-click="$ctrl.getInvoicePdf(order.number)" class="cursor-pointer"></a>
                         </td>
@@ -161,7 +161,7 @@
                                 </div>
                                 <div class="form-group">
                                     <select name="paymentMethodSelect" id="paymentMethodSelect" ng-model="$ctrl.selectedPaymentMethodCode" ng-change="$ctrl.paymentMethodChanged()" class="form-control" ng-disabled="$ctrl.order.inPayments[0].status === 'Paid'">
-                                        <option ng-repeat="method in $ctrl.paymentMethods" ng-value="method.code" ng-bind="method.name"></option>
+                                        <option ng-repeat="method in $ctrl.paymentMethods" ng-value="method.code" ng-bind="method.displayName"></option>
                                     </select>
                                 </div>
                                 <div ng-if="$ctrl.order.inPayments[0].status !== 'Paid'">

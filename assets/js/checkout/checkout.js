@@ -9,6 +9,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
         function ($rootScope, $scope, $window, cartService, commonService, dialogService, orderService) {
             $scope.checkout = {
                 wizard: {},
+                cart: {},
                 order: {},
                 deliveryAddress: {},
                 paymentMethod: {},
@@ -22,6 +23,12 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 isValid: false,
                 newAddress: {}
             };
+
+            $scope.setPurchaseOrderNumber = function () {
+                return wrapLoading(function () {
+                    return cartService.updatePurchaseOrderNumber($scope.checkout.cart.purchaseOrderNumber);
+                });
+            }
             
             $scope.sendToEmail = function () {
                 dialogService.showDialog({}, 'sendCartToEmailDialogController', 'storefront.send-cart-to-email.tpl');

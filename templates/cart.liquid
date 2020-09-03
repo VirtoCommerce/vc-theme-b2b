@@ -92,6 +92,28 @@
                                     </div>
                                     <div class="panel panel-default panel-static">
                                         <div class="panel-heading">
+                                            {{ 'checkout.purchase_order_number.title' | t }}
+                                        </div>
+                                        <div class="panel-body">
+                                            <form accept-charset="UTF-8" action="" name="$ctrl.form" novalidate="novalidate">
+                                                <div class="form-group">
+                                                    <input id="PurchaseOrderNumber"
+                                                           class="form-control"
+                                                           ng-model="checkout.cart.purchaseOrderNumber"
+                                                           ng-change="setPurchaseOrderNumber()"
+                                                           ng-model-options="{ updateOn: 'blur' }"
+                                                           name="PurchaseOrderNumber"
+                                                           placeholder="{{ 'checkout.purchase_order_number.placeholder' | t }}"
+                                                           required="required"
+                                                           size="30"
+                                                           type="text">
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default panel-static">
+                                        <div class="panel-heading">
                                             Promotion code
                                         </div>
                                         <div class="panel-body">

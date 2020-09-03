@@ -62,7 +62,7 @@ angular.module('storefront.account')
                     loader.wrapLoading(function () {
                         $ctrl.member.fullName = $ctrl.member.firstName + ' ' + $ctrl.member.lastName;
                         $ctrl.member.emails = [$ctrl.member.email];
-                        $ctrl.member.roles = [$ctrl.member.role.id];
+                        $ctrl.member.roles = [$ctrl.member.role.name];
                         return accountApi.updateUser($ctrl.member).then(function (response) {
                             refresh();
                         });
