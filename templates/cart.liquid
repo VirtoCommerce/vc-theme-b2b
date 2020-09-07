@@ -80,7 +80,7 @@
                                     </button>
                                 <p ng-if="customer && !customer.isRegisteredUser" ng-cloak >
                                     {{ 'cart.general.checkout' | t | customer_login_link | replace: 'href', 'class="btn btn-lg btn-block btn-primary" href' }}
-                                </p>                  
+                                </p>
                                 <div class="panel-group">
                                     <div class="panel panel-default panel-static">
                                         <div class="panel-heading">
@@ -203,7 +203,7 @@
                                                     <div class="h5">
                                                         <span class="name" ng-bind="checkout.shipment.shipmentMethod.name"></span><span ng-bind="checkout.shipment.shipmentMethod.optionName"></span>
                                                         <span>
-                                                            <strong class="text-success" ng-bind="'(' + checkout.shipment.price.formattedAmount + ')'"></strong>
+                                                            <strong ng-bind="'(' + checkout.shipment.price.formattedAmount + ')'"></strong>
                                                         </span>
                                                     </div>
                                                 </address>
@@ -441,13 +441,13 @@
                     <div class="col-md-9">
                         <span class="name" ng-bind="method.name"></span><span ng-bind="method.optionName"></span>
                         <span>
-                            <strong class="text-success" ng-bind="'(' + method.price.formattedAmount + ')'"></strong>
+                            <strong ng-bind="'(' + method.price.formattedAmount + ')'"></strong>
                         </span>
                     </div>
                     <div class="col-md-3 form-group">
                         <a ng-if="checkout.shipment.shipmentMethodOption != method.optionName" class="btn btn-default form-control" ng-click="close(method)">Select</a>
                         <a ng-if="checkout.shipment.shipmentMethodOption == method.optionName" class="btn btn-default form-control" ng-disabled="true">Selected</a>
-                    </div>                    
+                    </div>
                 </div>
             </div>
         </div>

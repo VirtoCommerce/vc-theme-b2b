@@ -1,7 +1,6 @@
 var storefrontApp = angular.module('storefrontApp');
 
-storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location', '$window', 'accountApi', 'storefrontApp.mainContext', 'loadingIndicatorService',
-    function ($rootScope, $scope, $location, $window, accountApi, mainContext, loader) {
+storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location', '$window', 'accountApi', 'storefrontApp.mainContext', 'loadingIndicatorService', function ($rootScope, $scope, $location, $window, accountApi, mainContext, loader) {
         var $ctrl = this;
         $ctrl.loader = loader;
 
@@ -66,15 +65,12 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
             return size;
         }
 
+        $scope.customer = mainContext.customer;
+
         mainContext.loadCustomer = $scope.loadCustomer = function () {
             return loader.wrapLoading(function() {
                 return accountApi.getCurrentUser().then(function (response) {
-                    var addressId = 1;
-                    _.each(response.data.addresses, function (address) {
-                        address.id = addressId;
-                        addressId++;
-                    });
-                    response.data.isContact = response.data.memberType === 'Contact';
+                    adjustCurrentCustomerResponse(response);
                     mainContext.customer = $scope.customer = response.data;
                     return response.data;
                 });
@@ -82,9 +78,38 @@ storefrontApp.controller('mainController', ['$rootScope', '$scope', '$location',
             });
         };
 
-       $scope.loadCustomer();
     }])
 
-    .factory('storefrontApp.mainContext', function () {
-        return {};
-    });
+    function adjustCurrentCustomerResponse(response) {
+        var addressId = 1;
+        _.each(response.data.addresses, function (address) {
+            address.id = addressId;
+            addressId++;
+        });
+        response.data.isContact = response.data.memberType === 'Contact';
+    }
+
+
+    /**
+     * this function gets the customer info and after start 'storefrontApp'
+     */
+    (function() {
+
+        // Get Angular's $http module.
+        var initInjector = angular.injector(['ng']);
+        var $http = initInjector.get('$http');
+
+        // Get customer info.
+        $http.get('storefrontapi/account?t=' + new Date().getTime()).then(
+            function(response) {
+                adjustCurrentCustomerResponse(response);
+                // Define a 'customerInfo' module with 'mainContext' service
+                angular.module('storefrontApp.customerInfo', []).factory('storefrontApp.mainContext', function () {
+                    return { customer: response.data };
+                });
+                // Start myAngularApp manually instead of using directive 'ng-app'.
+                angular.element(document).ready(function() {
+                    angular.bootstrap(document, ['storefrontApp']);
+                });
+            });
+    })();
