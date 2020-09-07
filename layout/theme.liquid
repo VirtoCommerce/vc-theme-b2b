@@ -12,13 +12,13 @@
 
     <link rel="canonical" href="{{ canonical_url }}" />
 
-    {% include 'main/dependencies' %}
-
-    {% include 'third-party/zendesk' %}
-
     <script>
         var BASE_URL = '{{ "" | full_url }}';
     </script>
+
+    {% include 'main/dependencies' %}
+
+    {% include 'third-party/zendesk' %}
 </head>
 <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" ng-controller="mainController" ng-init="baseUrl='{{ '' | absolute_url }}'" data-target="#toc" data-spy="scroll">
     {% include 'third-party/google-tag-manager-body' %}
