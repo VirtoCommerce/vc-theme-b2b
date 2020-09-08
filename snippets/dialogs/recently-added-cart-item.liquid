@@ -15,26 +15,28 @@
                 </div>
                 <div class="col-md-5">
                     <div class="row">
-                        <div class="col-md-4"><p class="text-muted small">{{ 'cart.general.price' | t }}</p></div>
-                        <div class="col-md-4"><p class="text-muted small">{{ 'cart.general.quantity' | t }}</p></div>
-                        <div class="col-md-4"><p class="text-muted small">{{ 'cart.general.total' | t }}</p></div>
+                        <div class="col-md-6"><p class="text-muted small">{{ 'cart.general.price' | t }}</p></div>
+                        <div class="col-md-6"><p class="text-muted small">{{ 'cart.general.quantity' | t }}</p></div>
+                        <!-- There is no such data as item.price.extendedPrice and item.price.extendedPriceWithTax. Therefore it is temporally hided -->
+                        <!-- <div class="col-md-4"><p class="text-muted small">{{ 'cart.general.total' | t }}</p></div> -->
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             {% if settings.show_prices_with_taxes %}
                             <span class="small" ng-bind="item.price.actualPriceWithTax.formattedAmount"></span>
                             {% else %}
                             <span class="small" ng-bind="item.price.actualPrice.formattedAmount"></span>
                             {% endif %}
                         </div>
-                        <div class="col-md-4"><span class="small" ng-bind="item.quantity"></span></div>
-                        <div class="col-md-4">
+                        <div class="col-md-6"><span class="small" ng-bind="item.quantity"></span></div>
+                        <!-- There is no such data as item.price.extendedPrice and item.price.extendedPriceWithTax. Therefore it is temporally hided -->
+                        <!-- <div class="col-md-4">
                             {% if settings.show_prices_with_taxes %}
                             <span class="small" ng-bind="item.price.extendedPriceWithTax.formattedAmount"></span>
                             {% else %}
                             <span class="small" ng-bind="item.price.extendedPrice.formattedAmount"></span>
                             {% endif %}
-                        </div>
+                        </div>                         -->
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 <nav ng-show="checkout.cart.itemsCount > 0" class="navbar navbar-default navbar-fixed-top visible-xs-block visible-sm-block" role="navigation">
     <p class="navbar-text navbar-left">
         <small>{{ 'checkout.total' | t }}:</small>
-        <strong class="text-success" ng-bind="checkout.cart.total.formattedAmount"></strong>
+        <strong ng-bind="checkout.cart.total.formattedAmount"></strong>
     </p>
 </nav>
 <main class="container" role="main" ng-controller="checkoutController">
