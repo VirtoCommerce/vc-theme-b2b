@@ -1,4 +1,4 @@
-﻿{% assign formatted_price = price | money %}
+{% assign formatted_price = price | money %}
 {% if settings.remove_dollar_symbol %}
     {% assign formatted_price = formatted_price | remove: '$' %}
 {% endif %}
@@ -9,4 +9,4 @@
     we will wrap them in a sup (superscript) element.
 {% endcomment %}
 
-<strong ng-show="loader.isLoading || !prices.length" class="text-success">{{ formatted_price }}</strong>
+<strong ng-show="loader.isLoading || !prices.length">{{ formatted_price }}</strong>
