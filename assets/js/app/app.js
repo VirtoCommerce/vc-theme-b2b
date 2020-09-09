@@ -76,3 +76,27 @@ storefrontApp.run(['$rootScope', '$window', function ($rootScope, $window) {
         $window.print();
     };
 }]);
+
+
+/**
+ * this function gets the customer info and after that it starts 'storefrontApp'
+ */
+(function() {
+    // Get Angular's $http module.
+    var initInjector = angular.injector(['ng']);
+    var $http = initInjector.get('$http');
+    var requestUrl = BASE_URL + 'storefrontapi/account?t=' + new Date().getTime();
+    // Get customer info.
+    $http.get(requestUrl).then(
+        function(response) {
+            adjustCurrentCustomerResponse(response);
+            // Define a 'customerInfo' module with 'mainContext' service
+            angular.module('storefrontApp.customerInfo', []).factory('storefrontApp.mainContext', function () {
+                return { customer: response.data };
+            });
+            // Start myAngularApp manually instead of using directive 'ng-app'.
+            angular.element(document).ready(function() {
+                angular.bootstrap(document, ['storefrontApp']);
+            });
+        });
+})();
