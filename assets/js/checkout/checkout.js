@@ -314,13 +314,7 @@ angular.module(moduleName, ['credit-cards', 'angular.filter'])
                 } else if (paymentMethod.paymentMethodType && paymentMethod.paymentMethodType.toLowerCase() == 'redirection' && orderProcessingResult.redirectUrl) {
                     $window.location.href = orderProcessingResult.redirectUrl;
                 } else {
-                    if (!$scope.customer.isRegisteredUser) {
-                        $scope.checkout.wizard.nextStep();
-                        // $scope.outerRedirect($scope.baseUrl + 'cart/thanks/' + order.number);
-                    } else {
-                        $scope.checkout.wizard.nextStep();
-                        // $scope.outerRedirect($scope.baseUrl + 'account#/orders/' + order.number);
-                    }
+                    $scope.checkout.wizard.nextStep();
                 }
             }
 

@@ -99,11 +99,7 @@ storefrontApp.controller('cartController', ['$rootScope', '$scope', '$timeout', 
         if ($scope.formCart.$invalid) {
             return;
         }
-        if ($scope.cart.hasPhysicalProducts) {
-            $scope.outerRedirect($scope.baseUrl + 'cart/checkout');
-        } else {
-            $scope.outerRedirect($scope.baseUrl + 'cart/checkout');
-        }
+        $scope.outerRedirect($scope.baseUrl + 'cart/checkout');
     }
 
     $scope.searchProduct = function () {
