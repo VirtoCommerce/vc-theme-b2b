@@ -158,7 +158,7 @@ angular.module('storefront.account')
                                     type: 'success',
                                     message: 'Invoice ' + $ctrl.orderNumber + ' has been successfully paid',
                                 });
-                                orderService.addOrUpdatePayment($ctrl.orderNumber, $ctrl.order.inPayments[0]).then(function(response) {
+                                orderService.addOrUpdatePayment($ctrl.orderNumber, $ctrl.order.inPayments[0]).then(function(response1) {
                                     refresh();
                                 });
                             } else {

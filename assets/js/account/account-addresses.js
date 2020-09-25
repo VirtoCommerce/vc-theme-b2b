@@ -64,8 +64,8 @@ angular.module('storefront.account')
                     customer.roles = [customer.role.id];
                 }
                 return accountApi.updateUser(customer).then(function () {
-                    return mainContext.loadCustomer().then(function (customer) {
-                        $ctrl.currentMember = customer;
+                    return mainContext.loadCustomer().then(function (customer1) {
+                        $ctrl.currentMember = customer1;
                         if (handler) {
                             handler();
                         }
