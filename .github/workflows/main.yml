@@ -38,35 +38,42 @@ jobs:
       uses: warchant/setup-sonar-scanner@v1
 
     - name: Get Image Version
-      uses: VirtoCommerce/vc-github-actions/get-image-version@dev
+      uses: VirtoCommerce/vc-github-actions/get-image-version@master
       id: image
 
+    - name: Get changelog
+      id: changelog
+      uses: VirtoCommerce/vc-github-actions/changelog-generator@master
+
     - name: SonarCloud Scan
-      uses: VirtoCommerce/vc-github-actions/sonar-theme@dev
+      uses: VirtoCommerce/vc-github-actions/sonar-theme@master
 
     - name: Build
-      uses: VirtoCommerce/vc-github-actions/build-theme@dev
+      if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' }}
+      uses: VirtoCommerce/vc-github-actions/build-theme@master
 
     - name: Publish
+      if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev' }}
       id: publish
-      uses: VirtoCommerce/vc-github-actions/publish-theme@dev
+      uses: VirtoCommerce/vc-github-actions/publish-theme@master
 
     - name: Create Release
       if: github.ref == 'refs/heads/master'
       id: create_release
       uses: actions/create-release@v1
       with:
-        tag_name: ${{ steps.image.outputs.tag }}
-        release_name: ${{ steps.image.outputs.tag }}
+        tag_name: ${{ steps.image.outputs.prefix }}
+        release_name: ${{ steps.image.outputs.prefix }}
         draft: false
         prerelease: false
+        body: ${{ steps.changelog.outputs.changelog }}
 
     - name: Upload Release Asset
       if: github.ref == 'refs/heads/master'
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ${{ steps.publish.outputs.artifactPath }}
         asset_name: ${{ steps.publish.outputs.artifactName }}
         asset_content_type: application/zip
