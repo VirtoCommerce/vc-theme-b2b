@@ -23,6 +23,8 @@ jobs:
     - name: Get Image Version
       uses: VirtoCommerce/vc-github-actions/get-image-version@master
       id: image
+      with:
+        releaseBranch: '' #Always creates tags for alpha version regardless of the forced branch
 
     - name: Get changelog
       id: changelog
