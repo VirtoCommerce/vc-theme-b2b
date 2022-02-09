@@ -56,7 +56,7 @@
         "gulp-util": "^3.0.8",
         "gulp-zip": "^5.0.2",
         "merge2": "^1.2.3",
-        "node-sass": "^4.8.3",
+        "node-sass": "^7.0.0",
         "postcss-smart-import": "^0.7.5",
         "svg2png": "^3.0.1"
     },
