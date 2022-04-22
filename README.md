@@ -1,3 +1,10 @@
+## Deprecation warning ⚠️
+The theme is no longer being maintained by Virto Commerce. Developers are encouraged to check out [Vue B2B Theme](https://github.com/VirtoCommerce/vc-theme-b2b-vue) .
+
+You can continue to use the theme with Virto Commerce Platform 3.x and Storefront 5.x; however, this repo will not be kept up-to-date.
+
+---
+
 # B2B theme for VirtoCommerce Storefront
 
 _B2B theme_ for VirtoCommerce Storefront used by _B2B-Store_ sample store. It is a showcase for b2b features support of VirtoCommerce.
